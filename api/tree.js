@@ -1,4 +1,4 @@
-// api/tree.js - Con estructura de 2 niveles (carpetas y subcarpetas)
+// api/tree.js - Con estructura de 2 niveles incluyendo archivos en raíz
 const fs = require('fs');
 const path = require('path');
 
@@ -10,7 +10,7 @@ module.exports = (req, res) => {
   try {
     const publicDir = path.join(process.cwd(), 'public');
     
-    console.log('=== Escaneando estructura de 2 niveles:', publicDir);
+    console.log('=== Escaneando estructura de 2 niveles (con archivos raíz):', publicDir);
     
     if (!fs.existsSync(publicDir)) {
       return res.status(500).json({ 
@@ -34,8 +34,13 @@ module.exports = (req, res) => {
         if (stat.isDirectory() && !excludeFolders.includes(item)) {
           console.log(`📁 Procesando carpeta principal: ${item}`);
           
-          // Escanear subcarpetas dentro de esta carpeta principal
+          // Array para subcarpetas
           const subfolders = [];
+          
+          // Array para archivos en la raíz
+          const rootFiles = [];
+          
+          // Escanear todo el contenido de la carpeta principal
           const subItems = fs.readdirSync(itemPath);
           
           for (const subItem of subItems) {
@@ -45,6 +50,7 @@ module.exports = (req, res) => {
               const subStat = fs.statSync(subItemPath);
               
               if (subStat.isDirectory() && !subItem.startsWith('.')) {
+                // Es una subcarpeta
                 console.log(`  📂 Subcarpeta encontrada: ${subItem}`);
                 
                 // Escanear archivos dentro de la subcarpeta
@@ -83,20 +89,53 @@ module.exports = (req, res) => {
                   fileCount: files.length,
                   path: `${item}/${subItem}`
                 });
+              } 
+              else if (subStat.isFile() && !subItem.startsWith('.')) {
+                // Es un archivo en la raíz de la carpeta principal
+                const ext = subItem.split('.').pop().toLowerCase();
+                const relativePath = path.relative(publicDir, subItemPath);
+                rootFiles.push({
+                  name: subItem,
+                  type: ext,
+                  size: subStat.size,
+                  url: '/' + relativePath.replace(/\\/g, '/')
+                });
+                console.log(`  📄 Archivo raíz encontrado: ${subItem} (${ext})`);
               }
             } catch (err) {
-              console.error(`Error procesando subcarpeta ${subItem}:`, err.message);
+              console.error(`Error procesando ${subItem}:`, err.message);
             }
           }
+          
+          // Si hay archivos en la raíz, crear una subcarpeta virtual "Raíz"
+          if (rootFiles.length > 0) {
+            subfolders.unshift({
+              name: "📁 Raíz",
+              nameRaw: "Raíz",
+              files: rootFiles,
+              fileCount: rootFiles.length,
+              isVirtual: true,
+              path: item
+            });
+            console.log(`  ✅ Creada carpeta virtual "Raíz" con ${rootFiles.length} archivos`);
+          }
+          
+          // Ordenar subcarpetas: primero "Raíz" (si existe), luego las demás alfabéticamente
+          subfolders.sort((a, b) => {
+            if (a.name === "📁 Raíz") return -1;
+            if (b.name === "📁 Raíz") return 1;
+            return a.name.localeCompare(b.name);
+          });
           
           folders.push({
             name: item,
             subfolders: subfolders,
             totalSubfolders: subfolders.length,
-            totalFiles: subfolders.reduce((sum, sub) => sum + sub.fileCount, 0)
+            totalFiles: subfolders.reduce((sum, sub) => sum + sub.fileCount, 0),
+            rootFilesCount: rootFiles.length
           });
           
-          console.log(`✅ Carpeta ${item}: ${subfolders.length} subcarpetas encontradas`);
+          console.log(`✅ Carpeta ${item}: ${subfolders.length} subcarpetas (incluyendo virtual), ${rootFiles.length} archivos raíz`);
         }
       } catch (err) {
         console.error(`Error procesando ${item}:`, err.message);

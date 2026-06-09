@@ -33,6 +33,7 @@
             padding: 50px 30px;
             text-align: center;
             color: white;
+            position: relative;
         }
 
         .hero-logo {
@@ -61,6 +62,25 @@
             opacity: 0.9;
         }
 
+        .refresh-btn {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .refresh-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.05);
+        }
+
         /* Tabs */
         .tabs {
             display: flex;
@@ -68,6 +88,7 @@
             background: #f8f9fa;
             border-bottom: 2px solid #e0e0e0;
             padding: 0 20px;
+            gap: 5px;
         }
 
         .tab-button {
@@ -115,6 +136,18 @@
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            background: #f0f0f0;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            color: #666;
+            border-bottom: 1px solid #e0e0e0;
         }
 
         /* File Groups */
@@ -203,6 +236,7 @@
         .file-name {
             font-weight: 500;
             color: #333;
+            word-break: break-word;
         }
 
         .file-type {
@@ -225,6 +259,7 @@
             transition: all 0.2s;
             border: none;
             cursor: pointer;
+            display: inline-block;
         }
 
         .btn-view {
@@ -245,6 +280,13 @@
         .btn-download:hover {
             background: #38a169;
             transform: translateY(-2px);
+        }
+
+        .empty-folder {
+            text-align: center;
+            padding: 50px;
+            color: #999;
+            font-size: 1.1rem;
         }
 
         /* Loading State */
@@ -301,6 +343,12 @@
                 width: 100%;
                 justify-content: flex-end;
             }
+            
+            .refresh-btn {
+                position: static;
+                margin-top: 15px;
+                display: inline-block;
+            }
         }
     </style>
 </head>
@@ -310,6 +358,7 @@
             <img src="/logos/logo-RetailMind-R-cuadrada.png" alt="RetailMind Logo" class="hero-logo">
             <h1>Gestor de Archivos</h1>
             <p>Administra y organiza todos tus documentos de manera eficiente</p>
+            <button class="refresh-btn" onclick="refreshFiles()">🔄 Refrescar</button>
         </div>
         
         <div id="app">
@@ -323,46 +372,50 @@
     <script>
         let currentData = null;
 
-async function loadFiles() {
-    try {
-        // Cambiar la URL de la API
-        const response = await fetch('/api/tree.js');
-        
-        console.log('Response status:', response.status);
-        
-        if (!response.ok) {
-            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        async function loadFiles() {
+            try {
+                // Añadir timestamp para evitar caché
+                const response = await fetch(`/api/tree.js?t=${Date.now()}`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    currentData = data.folders;
+                    renderApp(data.folders);
+                    
+                    // Mostrar mensaje de éxito con info
+                    console.log(`✅ Cargadas ${data.totalFolders} carpetas dinámicamente`);
+                } else {
+                    showError(data.error || 'Error desconocido');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showError(`No se pudieron cargar los archivos: ${error.message}`);
+            }
         }
-        
-        const text = await response.text();
-        console.log('Respuesta recibida:', text.substring(0, 200)); // Primeros 200 caracteres
-        
-        let data;
-        try {
-            data = JSON.parse(text);
-        } catch (e) {
-            console.error('Error parsing JSON:', e);
-            throw new Error('La respuesta no es JSON válido');
+
+        function refreshFiles() {
+            const app = document.getElementById('app');
+            app.innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Refrescando archivos...</p>
+                </div>
+            `;
+            loadFiles();
         }
-        
-        if (data.success) {
-            currentData = data.folders;
-            renderApp(data.folders);
-        } else {
-            showError(data.error || 'Error desconocido');
-        }
-    } catch (error) {
-        console.error('Error detallado:', error);
-        showError('No se pudieron cargar los archivos. Error: ' + error.message);
-    }
-}
+
         function showError(message) {
             const app = document.getElementById('app');
             app.innerHTML = `
                 <div class="error">
                     <h3>⚠️ Error</h3>
                     <p>${message}</p>
-                    <button onclick="location.reload()" class="btn btn-view" style="margin-top: 20px;">Reintentar</button>
+                    <button onclick="refreshFiles()" class="btn btn-view" style="margin-top: 20px;">Reintentar</button>
                 </div>
             `;
         }
@@ -373,19 +426,33 @@ async function loadFiles() {
                     <div class="error">
                         <h3>📁 No hay carpetas disponibles</h3>
                         <p>No se encontraron carpetas para mostrar.</p>
+                        <p>Asegúrate de tener carpetas en el directorio /public</p>
                     </div>
                 `;
                 return;
             }
 
+            // Calcular estadísticas totales
+            const totalFiles = folders.reduce((sum, folder) => sum + (folder.files?.length || 0), 0);
+            
             const app = document.getElementById('app');
+            
+            // Crear stats bar
+            const statsHtml = `
+                <div class="stats-bar">
+                    <span>📁 ${folders.length} carpetas</span>
+                    <span>📄 ${totalFiles} archivos</span>
+                    <span>🔄 Actualizado: ${new Date().toLocaleTimeString()}</span>
+                </div>
+            `;
             
             // Crear tabs
             const tabsHtml = `
+                ${statsHtml}
                 <div class="tabs" id="tabs">
                     ${folders.map((folder, index) => `
                         <button class="tab-button ${index === 0 ? 'active' : ''}" data-tab="${index}">
-                            ${folder.name.toUpperCase()}
+                            ${folder.name.toUpperCase()} ${folder.fileCount ? `(${folder.fileCount})` : ''}
                         </button>
                     `).join('')}
                 </div>
@@ -417,13 +484,11 @@ async function loadFiles() {
         }
 
         function switchTab(tabIndex) {
-            // Actualizar botones
             document.querySelectorAll('.tab-button').forEach(btn => {
                 btn.classList.remove('active');
             });
             document.querySelector(`.tab-button[data-tab="${tabIndex}"]`).classList.add('active');
             
-            // Actualizar contenidos
             document.querySelectorAll('.tab-content').forEach(content => {
                 content.classList.remove('active');
             });
@@ -431,6 +496,14 @@ async function loadFiles() {
         }
 
         function renderFolderContent(folder) {
+            if (!folder.files || folder.files.length === 0) {
+                return `
+                    <div class="empty-folder">
+                        📂 Esta carpeta está vacía
+                    </div>
+                `;
+            }
+            
             // Agrupar archivos por tipo
             const filesByType = {};
             folder.files.forEach(file => {
@@ -442,14 +515,6 @@ async function loadFiles() {
             
             // Ordenar tipos alfabéticamente
             const sortedTypes = Object.keys(filesByType).sort();
-            
-            if (sortedTypes.length === 0) {
-                return `
-                    <div class="error">
-                        <p>📂 No hay archivos en esta carpeta</p>
-                    </div>
-                `;
-            }
             
             return sortedTypes.map(type => {
                 const files = filesByType[type];
@@ -472,21 +537,21 @@ async function loadFiles() {
 
         function renderFileItem(file) {
             const isHtml = file.type === 'html';
-            const actionUrl = isHtml ? file.url : `${file.url}`;
             const actionText = isHtml ? 'Ver' : 'Descargar';
             const actionClass = isHtml ? 'btn-view' : 'btn-download';
             
-            // Icono según tipo
             let icon = '📄';
             if (file.type === 'pdf') icon = '📑';
-            else if (file.type === 'jpg' || file.type === 'png' || file.type === 'gif' || file.type === 'jpeg') icon = '🖼️';
-            else if (file.type === 'mp4' || file.type === 'mov') icon = '🎥';
-            else if (file.type === 'mp3' || file.type === 'wav') icon = '🎵';
+            else if (['jpg', 'png', 'gif', 'jpeg', 'webp'].includes(file.type)) icon = '🖼️';
+            else if (['mp4', 'mov', 'avi', 'mkv'].includes(file.type)) icon = '🎥';
+            else if (['mp3', 'wav', 'ogg'].includes(file.type)) icon = '🎵';
             else if (file.type === 'html') icon = '🌐';
             else if (file.type === 'css') icon = '🎨';
             else if (file.type === 'js') icon = '⚡';
             else if (file.type === 'json') icon = '🔧';
             else if (file.type === 'txt') icon = '📝';
+            else if (file.type === 'doc' || file.type === 'docx') icon = '📘';
+            else if (file.type === 'xls' || file.type === 'xlsx') icon = '📊';
             
             return `
                 <div class="file-item">
@@ -496,7 +561,7 @@ async function loadFiles() {
                         <span class="file-type">.${file.type}</span>
                     </div>
                     <div class="file-actions">
-                        <a href="${actionUrl}" class="btn ${actionClass}" ${!isHtml ? 'download' : ''}>
+                        <a href="${file.url}" class="btn ${actionClass}" ${!isHtml ? 'download' : ''} target="${isHtml ? '_blank' : ''}">
                             ${actionText}
                         </a>
                     </div>

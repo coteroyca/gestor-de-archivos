@@ -70,16 +70,18 @@
   </div>
 
   <script>
-    // Procesa el árbol JSON plano de la API y lo agrupa por carpetas y extensiones
+   // Procesa el árbol JSON de la carpeta public y lo agrupa limpiamente
     function procesarDatos(nodo, carpetas = {}, rutaActual = '') {
       if (nodo.type === 'folder') {
-        const nuevaRuta = rutaActual ? `${rutaActual}/${nodo.name}` : nodo.name;
+        // Si es la carpeta raíz técnica "public" (renombrada a Raíz), no la sumamos a la ruta web
+        const esRaiz = nodo.name === 'Raíz' || nodo.name === 'public';
+        const nuevaRuta = esRaiz ? '' : (rutaActual ? `${rutaActual}/${nodo.name}` : nodo.name);
         
         if (nodo.children && nodo.children.length > 0) {
           nodo.children.forEach(hijo => {
             if (hijo.type === 'file') {
-              // Inicializar la carpeta en nuestro objeto si no existe
-              const nombreCarpeta = nuevaRuta || 'Raíz';
+              // Nombre visual de la carpeta contenedora
+              const nombreCarpeta = esRaiz ? 'Archivos Sueltos' : nodo.name;
               if (!carpetas[nombreCarpeta]) carpetas[nombreCarpeta] = {};
 
               // Extraer extensión del archivo
@@ -88,7 +90,7 @@
 
               if (!carpetas[nombreCarpeta][ext]) carpetas[nombreCarpeta][ext] = [];
 
-              // Guardar archivo junto con su ruta de acceso relativa para los links
+              // Guardar archivo con su URL directa para el navegador
               carpetas[nombreCarpeta][ext].push({
                 name: hijo.name,
                 ext: ext,

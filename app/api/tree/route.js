@@ -10,8 +10,11 @@ function conseguirArbol(rutaActual) {
 
   if (stats.isDirectory()) {
     info.type = 'folder';
-    // Ignoramos carpetas ocultas de sistemas y dependencias para no ensuciar el árbol
-    const ignorar = ['.vercel', 'node_modules', '.git', '.next','app,'public','package.json','package-lock.json','next.config.js','next.config.mjs','jsconfig.json'];
+    // LISTA ACTUALIZADA: Ignoramos carpetas del sistema e interfaz visual
+    const ignorar = [
+      '.vercel', 'node_modules', '.git', '.next', 'app', 
+      'logos', 'index.html', 'favicon.ico'
+    ];
     
     info.children = fs.readdirSync(rutaActual)
       .filter(hijo => !ignorar.includes(hijo))
@@ -24,9 +27,14 @@ function conseguirArbol(rutaActual) {
 
 export async function GET() {
   try {
-    // process.cwd() apunta a la raíz exacta del despliegue congelado en Vercel
-    const rutaRaiz = process.cwd();
-    const arbolCompleto = conseguirArbol(rutaRaiz);
+    // Apuntamos directamente a la carpeta public que es donde moviste todo
+    const rutaPublic = path.join(process.cwd(), 'public');
+    
+    // Leemos el contenido de la carpeta public
+    const arbolCompleto = conseguirArbol(rutaPublic);
+    
+    // Modificamos el nombre raíz para la interfaz
+    arbolCompleto.name = "Raíz";
     
     return NextResponse.json(arbolCompleto);
   } catch (error) {

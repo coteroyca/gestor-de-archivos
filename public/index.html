@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestor de Archivos - RetailMind</title>
+  <style>
+    /* Estilos Generales */
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background-color: #f8f9fa; color: #212529; padding-bottom: 50px; }
+
+    /* Hero Section */
+    .hero { background: #ffffff; padding: 40px 20px; text-align: center; border-bottom: 1px solid #e0e0e0; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+    .hero img { max-height: 80px; width: auto; margin-bottom: 15px; display: inline-block; }
+    .hero h1 { font-size: 2.2rem; color: #001220; font-weight: 700; }
+
+    /* Contenedor Principal */
+    .container { max-width: 1000px; margin: 30px auto; padding: 0 20px; }
+
+    /* Sistema de Pestañas (Tabs) */
+    .tabs-nav { display: flex; flex-wrap: wrap; border-bottom: 2px solid #dee2e6; margin-bottom: 20px; gap: 5px; }
+    .tab-button { background: none; border: none; padding: 12px 20px; font-size: 1rem; font-weight: 600; color: #6c757d; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.2s; }
+    .tab-button:hover { color: #fe5a00; }
+    .tab-button.active { color: #fe5a00; border-bottom: 2px solid #fe5a00; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* Desplegables (Accordions) */
+    .accordion-item { background: #ffffff; border: 1px solid #e0e0e0; border-radius: 6px; margin-bottom: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .accordion-header { background: #ffffff; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none; font-weight: 600; color: #001220; transition: background 0.2s; }
+    .accordion-header:hover { background: #fdfdfd; }
+    .accordion-header .type-title { font-size: 1.1rem; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+    .accordion-header .badge { background: #fe5a00; color: #ffffff; padding: 3px 10px; border-radius: 20px; font-size: 0.85rem; }
+    .accordion-body { display: none; padding: 0 20px; background: #fafafa; border-top: 1px solid #eee; }
+    .accordion-item.open .accordion-body { display: block; }
+
+    /* Lista de Archivos */
+    .file-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #f1f1f1; }
+    .file-row:last-child { border-bottom: none; }
+    .file-info { display: flex; flex-direction: column; gap: 2px; }
+    .file-name { font-size: 0.95rem; color: #212529; font-weight: 500; word-break: break-all; }
+    .file-ext { font-size: 0.8rem; color: #868e96; text-transform: uppercase; }
+    
+    /* Botones de Acción */
+    .action-btn { display: inline-flex; align-items: center; gap: 5px; padding: 6px 14px; border-radius: 4px; font-size: 0.85rem; font-weight: 600; text-decoration: none; transition: background 0.2s; }
+    .btn-run { background-color: #001220; color: #ffffff; }
+    .btn-run:hover { background-color: #0a253a; }
+    .btn-download { background-color: #e9ecef; color: #495057; }
+    .btn-download:hover { background-color: #dee2e6; }
+
+    /* Estados de Carga/Error */
+    .loading, .error-msg { text-align: center; padding: 40px; font-size: 1.1rem; color: #6c757d; }
+  </style>
+</head>
+<body>
+
+  <!-- Hero Section -->
+  <div class="hero">
+    <img src="https://gestor-de-archivos.vercel.app/logos/logo-RetailMind-R-cuadrada.png" alt="RetailMind Logo">
+    <h1>Gestor de Archivos</h1>
+  </div>
+
+  <!-- Contenedor Principal -->
+  <div class="container">
+    <div id="loading" class="loading">Buscando y organizando archivos...</div>
+    <div id="app" style="display: none;">
+      <div id="tabs-nav" class="tabs-nav"></div>
+      <div id="tabs-container"></div>
+    </div>
+  </div>
+
+  <script>
+    // Procesa el árbol JSON plano de la API y lo agrupa por carpetas y extensiones
+    function procesarDatos(nodo, carpetas = {}, rutaActual = '') {
+      if (nodo.type === 'folder') {
+        const nuevaRuta = rutaActual ? `${rutaActual}/${nodo.name}` : nodo.name;
+        
+        if (nodo.children && nodo.children.length > 0) {
+          nodo.children.forEach(hijo => {
+            if (hijo.type === 'file') {
+              // Inicializar la carpeta en nuestro objeto si no existe
+              const nombreCarpeta = nuevaRuta || 'Raíz';
+              if (!carpetas[nombreCarpeta]) carpetas[nombreCarpeta] = {};
+
+              // Extraer extensión del archivo
+              const partes = hijo.name.split('.');
+              const ext = partes.length > 1 ? partes.pop().toLowerCase() : 'sin-extension';
+
+              if (!carpetas[nombreCarpeta][ext]) carpetas[nombreCarpeta][ext] = [];
+
+              // Guardar archivo junto con su ruta de acceso relativa para los links
+              carpetas[nombreCarpeta][ext].push({
+                name: hijo.name,
+                ext: ext,
+                url: `/${nuevaRuta ? nuevaRuta + '/' : ''}${hijo.name}`
+              });
+            } else {
+              procesarDatos(hijo, carpetas, nuevaRuta);
+            }
+          });
+        }
+      }
+      return carpetas;
+    }
+
+    // Renderiza la interfaz en base a los datos agrupados
+    function renderizarInterfaz(carpetas) {
+      const navContainer = document.getElementById('tabs-nav');
+      const contentContainer = document.getElementById('tabs-container');
+      
+      let esPrimeraCarpeta = true;
+
+      for (const [nombreCarpeta, extensiones] of Object.entries(carpetas)) {
+        const idTab = 'tab-' + nombreCarpeta.replace(/[^a-zA-Z0-9]/g, '-');
+
+        // 1. Crear el botón de la pestaña
+        const btn = document.createElement('button');
+        btn.className = `tab-button ${esPrimeraCarpeta ? 'active' : ''}`;
+        btn.textContent = `📁 ${nombreCarpeta}`;
+        btn.onclick = () => cambiarPestaña(idTab, btn);
+        navContainer.appendChild(btn);
+
+        // 2. Crear el contenedor de contenido de la pestaña
+        const tabContent = document.createElement('div');
+        tabContent.id = idTab;
+        tabContent.className = `tab-content ${esPrimeraCarpeta ? 'active' : ''}`;
+
+        // 3. Crear los acordeones por tipo de archivo dentro de esta pestaña
+        for (const [ext, archivos] of Object.entries(extensiones)) {
+          const accordionItem = document.createElement('div');
+          accordionItem.className = 'accordion-item';
+
+          // Cabecera del desplegable (Tipo en mayúscula y contador)
+          const header = document.createElement('div');
+          header.className = 'accordion-header';
+          header.innerHTML = `
+            <span class="type-title">📦 Archivos .${ext.toUpperCase()}</span>
+            <span class="badge">${archivos.length}</span>
+          `;
+          header.onclick = () => accordionItem.classList.toggle('open');
+
+          // Cuerpo del desplegable
+          const body = document.createElement('div');
+          body.className = 'accordion-body';
+
+          // Insertar cada archivo en el cuerpo
+          archivos.forEach(archivo => {
+            const row = document.createElement('div');
+            row.className = 'file-row';
+
+            // Determinar si es ejecutable (.html) o descargable
+            const esHtml = archivo.ext === 'html';
+            const accionTexto = esHtml ? 'Ejecutar 🚀' : 'Descargar 📥';
+            const accionClase = esHtml ? 'btn-run' : 'btn-download';
+            // Si es descargable, añadimos el atributo 'download' nativo del navegador
+            const atributoDescarga = esHtml ? '' : 'download';
+
+            row.innerHTML = `
+              <div class="file-info">
+                <span class="file-name">${archivo.name}</span>
+                <span class="file-ext">Tipo: .${archivo.ext}</span>
+              </div>
+              <a href="${archivo.url}" class="action-btn ${accionClase}" ${atributoDescarga} target="_blank">
+                ${accionTexto}
+              </a>
+            `;
+            body.appendChild(row);
+          });
+
+          accordionItem.appendChild(header);
+          accordionItem.appendChild(body);
+          tabContent.appendChild(accordionItem);
+        }
+
+        contentContainer.appendChild(tabContent);
+        esPrimeraCarpeta = false;
+      }
+
+      // Mostrar la app y ocultar loader
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('app').style.display = 'block';
+    }
+
+    // Lógica para alternar entre pestañas de carpetas
+    function cambiarPestaña(idTab, botonSeleccionado) {
+      document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+      document.querySelectorAll('.tab-button').forEach(tb => tb.classList.remove('active'));
+      
+      document.getElementById(idTab).classList.add('active');
+      botonSeleccionado.classList.add('active');
+    }
+
+    // Consumir el endpoint interno de Next.js que hicimos en el paso anterior
+    fetch('/api/tree')
+      .then(res => {
+        if (!res.ok) throw new Error('Error al obtener el árbol');
+        return res.json();
+      })
+      .then(datos => {
+        const datosAgrupados = procesarDatos(datos);
+        
+        if (Object.keys(datosAgrupados).length === 0) {
+          document.getElementById('loading').textContent = 'No se encontraron archivos en este despliegue.';
+          return;
+        }
+        
+        renderizarInterfaz(datosAgrupados);
+      })
+      .catch(err => {
+        document.getElementById('loading').className = 'error-msg';
+        document.getElementById('loading').textContent = 'Error crítico al intentar mapear los directorios.';
+        console.error(err);
+      });
+  </script>
+</body>
+</html>

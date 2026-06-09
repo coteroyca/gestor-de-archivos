@@ -323,23 +323,39 @@
     <script>
         let currentData = null;
 
-        async function loadFiles() {
-            try {
-                const response = await fetch('/api/tree');
-                const data = await response.json();
-                
-                if (data.success) {
-                    currentData = data.folders;
-                    renderApp(data.folders);
-                } else {
-                    showError(data.error);
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                showError('No se pudieron cargar los archivos. Por favor, intenta de nuevo.');
-            }
+async function loadFiles() {
+    try {
+        // Cambiar la URL de la API
+        const response = await fetch('/api/tree.js');
+        
+        console.log('Response status:', response.status);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
         }
-
+        
+        const text = await response.text();
+        console.log('Respuesta recibida:', text.substring(0, 200)); // Primeros 200 caracteres
+        
+        let data;
+        try {
+            data = JSON.parse(text);
+        } catch (e) {
+            console.error('Error parsing JSON:', e);
+            throw new Error('La respuesta no es JSON válido');
+        }
+        
+        if (data.success) {
+            currentData = data.folders;
+            renderApp(data.folders);
+        } else {
+            showError(data.error || 'Error desconocido');
+        }
+    } catch (error) {
+        console.error('Error detallado:', error);
+        showError('No se pudieron cargar los archivos. Error: ' + error.message);
+    }
+}
         function showError(message) {
             const app = document.getElementById('app');
             app.innerHTML = `

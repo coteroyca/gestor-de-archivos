@@ -511,6 +511,15 @@
                 align-items: flex-start;
             }
         }
+/* Estilo especial para la pestaña Raíz */
+.tab-button[data-tab] {
+    position: relative;
+}
+
+/* Puedes agregar un ícono especial si la pestaña contiene "Raíz" */
+.tab-button:contains("📁 Raíz")::before {
+    content: "🏠 ";
+}
     </style>
 </head>
 <body>
@@ -603,86 +612,88 @@
             closeMenu(); // Cerrar menu después de seleccionar
         }
 
-        function renderSubfolders(mainFolderName) {
-            const mainFolder = fullData.find(f => f.name === mainFolderName);
-            
-            if (!mainFolder) {
-                document.getElementById('app').innerHTML = `
-                    <div class="error">
-                        <h3>⚠️ Error</h3>
-                        <p>Carpeta no encontrada</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            const subfolders = mainFolder.subfolders || [];
-            
-            if (subfolders.length === 0) {
-                document.getElementById('app').innerHTML = `
-                    <div class="stats-bar">
-                        <span>📁 Carpeta actual: <span class="current-folder">${mainFolderName}</span></span>
-                        <span>📄 Sin subcarpetas</span>
-                    </div>
-                    <div class="no-subfolders">
-                        📂 No hay subcarpetas en ${mainFolderName}
-                        <p style="font-size: 0.9rem; margin-top: 10px;">Agrega carpetas dentro de /public/${mainFolderName} para ver contenido</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            // Calcular estadísticas
-            const totalFiles = subfolders.reduce((sum, sub) => sum + (sub.files?.length || 0), 0);
-            
-            const app = document.getElementById('app');
-            
-            const statsHtml = `
-                <div class="stats-bar">
-                    <span>📁 Carpeta actual: <span class="current-folder">${mainFolderName}</span></span>
-                    <span>📂 ${subfolders.length} subcarpetas</span>
-                    <span>📄 ${totalFiles} archivos totales</span>
-                    <span>🔄 Actualizado: ${new Date().toLocaleTimeString()}</span>
+function renderSubfolders(mainFolderName) {
+    const mainFolder = fullData.find(f => f.name === mainFolderName);
+    
+    if (!mainFolder) {
+        document.getElementById('app').innerHTML = `
+            <div class="error">
+                <h3>⚠️ Error</h3>
+                <p>Carpeta no encontrada</p>
+            </div>
+        `;
+        return;
+    }
+    
+    const subfolders = mainFolder.subfolders || [];
+    
+    if (subfolders.length === 0) {
+        document.getElementById('app').innerHTML = `
+            <div class="stats-bar">
+                <span>📁 Carpeta actual: <span class="current-folder">${mainFolderName}</span></span>
+                <span>📄 Sin contenido</span>
+            </div>
+            <div class="no-subfolders">
+                📂 No hay archivos o subcarpetas en ${mainFolderName}
+                <p style="font-size: 0.9rem; margin-top: 10px;">Agrega archivos en /public/${mainFolderName} o crea subcarpetas</p>
+            </div>
+        `;
+        return;
+    }
+    
+    // Calcular estadísticas
+    const totalFiles = subfolders.reduce((sum, sub) => sum + (sub.files?.length || 0), 0);
+    const rootFilesCount = mainFolder.rootFilesCount || 0;
+    
+    const app = document.getElementById('app');
+    
+    const statsHtml = `
+        <div class="stats-bar">
+            <span>📁 Carpeta actual: <span class="current-folder">${mainFolderName}</span></span>
+            <span>📂 ${subfolders.length} seccion${subfolders.length !== 1 ? 'es' : ''}</span>
+            <span>📄 ${totalFiles} archivo${totalFiles !== 1 ? 's' : ''}</span>
+            ${rootFilesCount > 0 ? `<span>📌 ${rootFilesCount} en raíz</span>` : ''}
+            <span>🔄 Actualizado: ${new Date().toLocaleTimeString()}</span>
+        </div>
+    `;
+    
+    // Crear tabs para las subcarpetas
+    const tabsHtml = `
+        ${statsHtml}
+        <div class="tabs" id="tabs">
+            ${subfolders.map((subfolder, index) => `
+                <button class="tab-button ${index === 0 ? 'active' : ''}" data-tab="${index}">
+                    ${subfolder.name} ${subfolder.fileCount ? `(${subfolder.fileCount})` : ''}
+                </button>
+            `).join('')}
+        </div>
+        <div id="tab-contents">
+            ${subfolders.map((subfolder, index) => `
+                <div class="tab-content ${index === 0 ? 'active' : ''}" data-tab-content="${index}">
+                    ${renderFolderContent(subfolder)}
                 </div>
-            `;
-            
-            // Crear tabs para las subcarpetas
-            const tabsHtml = `
-                ${statsHtml}
-                <div class="tabs" id="tabs">
-                    ${subfolders.map((subfolder, index) => `
-                        <button class="tab-button ${index === 0 ? 'active' : ''}" data-tab="${index}">
-                            ${subfolder.name.toUpperCase()} ${subfolder.fileCount ? `(${subfolder.fileCount})` : ''}
-                        </button>
-                    `).join('')}
-                </div>
-                <div id="tab-contents">
-                    ${subfolders.map((subfolder, index) => `
-                        <div class="tab-content ${index === 0 ? 'active' : ''}" data-tab-content="${index}">
-                            ${renderFolderContent(subfolder)}
-                        </div>
-                    `).join('')}
-                </div>
-            `;
-            
-            app.innerHTML = tabsHtml;
-            
-            // Agregar event listeners para las tabs
-            document.querySelectorAll('.tab-button').forEach(button => {
-                button.addEventListener('click', () => {
-                    const tabIndex = button.dataset.tab;
-                    switchTab(tabIndex);
-                });
-            });
-            
-            // Agregar event listeners para los desplegables
-            document.querySelectorAll('.group-header').forEach(header => {
-                header.addEventListener('click', () => {
-                    header.classList.toggle('collapsed');
-                });
-            });
-        }
-
+            `).join('')}
+        </div>
+    `;
+    
+    app.innerHTML = tabsHtml;
+    
+    // Agregar event listeners para las tabs
+    document.querySelectorAll('.tab-button').forEach(button => {
+        button.addEventListener('click', () => {
+            const tabIndex = button.dataset.tab;
+            switchTab(tabIndex);
+        });
+    });
+    
+    // Agregar event listeners para los desplegables
+    document.querySelectorAll('.group-header').forEach(header => {
+        header.addEventListener('click', () => {
+            header.classList.toggle('collapsed');
+        });
+    });
+}
+        
         function switchTab(tabIndex) {
             document.querySelectorAll('.tab-button').forEach(btn => {
                 btn.classList.remove('active');
@@ -695,46 +706,45 @@
             document.querySelector(`.tab-content[data-tab-content="${tabIndex}"]`).classList.add('active');
         }
 
-        function renderFolderContent(folder) {
-            if (!folder.files || folder.files.length === 0) {
-                return `
-                    <div class="empty-folder">
-                        📂 Esta carpeta está vacía
-                    </div>
-                `;
-            }
-            
-            // Agrupar archivos por tipo
-            const filesByType = {};
-            folder.files.forEach(file => {
-                if (!filesByType[file.type]) {
-                    filesByType[file.type] = [];
-                }
-                filesByType[file.type].push(file);
-            });
-            
-            // Ordenar tipos alfabéticamente
-            const sortedTypes = Object.keys(filesByType).sort();
-            
-            return sortedTypes.map(type => {
-                const files = filesByType[type];
-                return `
-                    <div class="file-group">
-                        <div class="group-header">
-                            <div>
-                                <span class="group-title">📄 ${type.toUpperCase()}</span>
-                                <span class="group-count">${files.length} archivo${files.length !== 1 ? 's' : ''}</span>
-                            </div>
-                            <div class="toggle-icon">▼</div>
-                        </div>
-                        <div class="file-list">
-                            ${files.map(file => renderFileItem(file)).join('')}
-                        </div>
-                    </div>
-                `;
-            }).join('');
+function renderFolderContent(folder) {
+    if (!folder.files || folder.files.length === 0) {
+        return `
+            <div class="empty-folder">
+                📂 Esta carpeta está vacía
+            </div>
+        `;
+    }
+    
+    // Agrupar archivos por tipo
+    const filesByType = {};
+    folder.files.forEach(file => {
+        if (!filesByType[file.type]) {
+            filesByType[file.type] = [];
         }
-
+        filesByType[file.type].push(file);
+    });
+    
+    // Ordenar tipos alfabéticamente
+    const sortedTypes = Object.keys(filesByType).sort();
+    
+    return sortedTypes.map(type => {
+        const files = filesByType[type];
+        return `
+            <div class="file-group">
+                <div class="group-header">
+                    <div>
+                        <span class="group-title">📄 ${type.toUpperCase()}</span>
+                        <span class="group-count">${files.length} archivo${files.length !== 1 ? 's' : ''}</span>
+                    </div>
+                    <div class="toggle-icon">▼</div>
+                </div>
+                <div class="file-list">
+                    ${files.map(file => renderFileItem(file)).join('')}
+                </div>
+            </div>
+        `;
+    }).join('');
+}
         function renderFileItem(file) {
             const isHtml = file.type === 'html';
             const actionText = isHtml ? 'Ver' : 'Descargar';

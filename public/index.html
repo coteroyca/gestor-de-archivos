@@ -1,218 +1,495 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gestor de Archivos - RetailMind</title>
-  <style>
-    /* Estilos Generales */
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    body { background-color: #f8f9fa; color: #212529; padding-bottom: 50px; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de Archivos - RetailMind</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    /* Hero Section */
-    .hero { background: #ffffff; padding: 40px 20px; text-align: center; border-bottom: 1px solid #e0e0e0; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-    .hero img { max-height: 80px; width: auto; margin-bottom: 15px; display: inline-block; }
-    .hero h1 { font-size: 2.2rem; color: #001220; font-weight: 700; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
 
-    /* Contenedor Principal */
-    .container { max-width: 1000px; margin: 30px auto; padding: 0 20px; }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
 
-    /* Sistema de Pestañas (Tabs) */
-    .tabs-nav { display: flex; flex-wrap: wrap; border-bottom: 2px solid #dee2e6; margin-bottom: 20px; gap: 5px; }
-    .tab-button { background: none; border: none; padding: 12px 20px; font-size: 1rem; font-weight: 600; color: #6c757d; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.2s; }
-    .tab-button:hover { color: #fe5a00; }
-    .tab-button.active { color: #fe5a00; border-bottom: 2px solid #fe5a00; }
-    .tab-content { display: none; }
-    .tab-content.active { display: block; }
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #2d1b4e 0%, #1a0f2e 100%);
+            padding: 50px 30px;
+            text-align: center;
+            color: white;
+        }
 
-    /* Desplegables (Accordions) */
-    .accordion-item { background: #ffffff; border: 1px solid #e0e0e0; border-radius: 6px; margin-bottom: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-    .accordion-header { background: #ffffff; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none; font-weight: 600; color: #001220; transition: background 0.2s; }
-    .accordion-header:hover { background: #fdfdfd; }
-    .accordion-header .type-title { font-size: 1.1rem; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
-    .accordion-header .badge { background: #fe5a00; color: #ffffff; padding: 3px 10px; border-radius: 20px; font-size: 0.85rem; }
-    .accordion-body { display: none; padding: 0 20px; background: #fafafa; border-top: 1px solid #eee; }
-    .accordion-item.open .accordion-body { display: block; }
+        .hero-logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: contain;
+            background: white;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
 
-    /* Lista de Archivos */
-    .file-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #f1f1f1; }
-    .file-row:last-child { border-bottom: none; }
-    .file-info { display: flex; flex-direction: column; gap: 2px; }
-    .file-name { font-size: 0.95rem; color: #212529; font-weight: 500; word-break: break-all; }
-    .file-ext { font-size: 0.8rem; color: #868e96; text-transform: uppercase; }
-    
-    /* Botones de Acción */
-    .action-btn { display: inline-flex; align-items: center; gap: 5px; padding: 6px 14px; border-radius: 4px; font-size: 0.85rem; font-weight: 600; text-decoration: none; transition: background 0.2s; }
-    .btn-run { background-color: #001220; color: #ffffff; }
-    .btn-run:hover { background-color: #0a253a; }
-    .btn-download { background-color: #e9ecef; color: #495057; }
-    .btn-download:hover { background-color: #dee2e6; }
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff 0%, #e0d4ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
 
-    /* Estados de Carga/Error */
-    .loading, .error-msg { text-align: center; padding: 40px; font-size: 1.1rem; color: #6c757d; }
-  </style>
+        .hero p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e0e0e0;
+            padding: 0 20px;
+        }
+
+        .tab-button {
+            padding: 15px 25px;
+            background: none;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #666;
+            position: relative;
+        }
+
+        .tab-button:hover {
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .tab-button.active {
+            color: #667eea;
+        }
+
+        .tab-button.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #667eea;
+        }
+
+        /* Content */
+        .tab-content {
+            padding: 30px;
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* File Groups */
+        .file-group {
+            margin-bottom: 30px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .group-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .group-header:hover {
+            opacity: 0.95;
+        }
+
+        .group-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .group-count {
+            background: rgba(255,255,255,0.2);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .toggle-icon {
+            font-size: 1.2rem;
+            transition: transform 0.3s;
+        }
+
+        .group-header.collapsed .toggle-icon {
+            transform: rotate(-90deg);
+        }
+
+        .file-list {
+            padding: 20px;
+            display: grid;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+
+        .group-header.collapsed + .file-list {
+            display: none;
+        }
+
+        .file-item {
+            background: white;
+            padding: 12px 15px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #e0e0e0;
+            transition: all 0.2s;
+        }
+
+        .file-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-color: #667eea;
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .file-icon {
+            font-size: 1.3rem;
+        }
+
+        .file-name {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .file-type {
+            color: #999;
+            font-size: 0.85rem;
+            margin-left: 10px;
+        }
+
+        .file-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 6px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-view {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-view:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+        }
+
+        .btn-download {
+            background: #48bb78;
+            color: white;
+        }
+
+        .btn-download:hover {
+            background: #38a169;
+            transform: translateY(-2px);
+        }
+
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Error State */
+        .error {
+            text-align: center;
+            padding: 50px;
+            color: #e53e3e;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .tab-button {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .tab-content {
+                padding: 20px;
+            }
+            
+            .file-item {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+            
+            .file-actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
+        }
+    </style>
 </head>
 <body>
-
-  <!-- Hero Section -->
-  <div class="hero">
-    <img src="https://gestor-de-archivos.vercel.app/logos/logo-RetailMind-R-cuadrada.png" alt="RetailMind Logo">
-    <h1>Gestor de Archivos</h1>
-  </div>
-
-  <!-- Contenedor Principal -->
-  <div class="container">
-    <div id="loading" class="loading">Buscando y organizando archivos...</div>
-    <div id="app" style="display: none;">
-      <div id="tabs-nav" class="tabs-nav"></div>
-      <div id="tabs-container"></div>
+    <div class="container">
+        <div class="hero">
+            <img src="/logos/logo-RetailMind-R-cuadrada.png" alt="RetailMind Logo" class="hero-logo">
+            <h1>Gestor de Archivos</h1>
+            <p>Administra y organiza todos tus documentos de manera eficiente</p>
+        </div>
+        
+        <div id="app">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Cargando archivos...</p>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <script>
-   // Procesa el árbol JSON de la carpeta public y lo agrupa limpiamente
-    function procesarDatos(nodo, carpetas = {}, rutaActual = '') {
-      if (nodo.type === 'folder') {
-        // Si es la carpeta raíz técnica "public" (renombrada a Raíz), no la sumamos a la ruta web
-        const esRaiz = nodo.name === 'Raíz' || nodo.name === 'public';
-        const nuevaRuta = esRaiz ? '' : (rutaActual ? `${rutaActual}/${nodo.name}` : nodo.name);
-        
-        if (nodo.children && nodo.children.length > 0) {
-          nodo.children.forEach(hijo => {
-            if (hijo.type === 'file') {
-              // Nombre visual de la carpeta contenedora
-              const nombreCarpeta = esRaiz ? 'Archivos Sueltos' : nodo.name;
-              if (!carpetas[nombreCarpeta]) carpetas[nombreCarpeta] = {};
+    <script>
+        let currentData = null;
 
-              // Extraer extensión del archivo
-              const partes = hijo.name.split('.');
-              const ext = partes.length > 1 ? partes.pop().toLowerCase() : 'sin-extension';
-
-              if (!carpetas[nombreCarpeta][ext]) carpetas[nombreCarpeta][ext] = [];
-
-              // Guardar archivo con su URL directa para el navegador
-              carpetas[nombreCarpeta][ext].push({
-                name: hijo.name,
-                ext: ext,
-                url: `/${nuevaRuta ? nuevaRuta + '/' : ''}${hijo.name}`
-              });
-            } else {
-              procesarDatos(hijo, carpetas, nuevaRuta);
+        async function loadFiles() {
+            try {
+                const response = await fetch('/api/tree');
+                const data = await response.json();
+                
+                if (data.success) {
+                    currentData = data.folders;
+                    renderApp(data.folders);
+                } else {
+                    showError(data.error);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showError('No se pudieron cargar los archivos. Por favor, intenta de nuevo.');
             }
-          });
         }
-      }
-      return carpetas;
-    }
 
-    // Renderiza la interfaz en base a los datos agrupados
-    function renderizarInterfaz(carpetas) {
-      const navContainer = document.getElementById('tabs-nav');
-      const contentContainer = document.getElementById('tabs-container');
-      
-      let esPrimeraCarpeta = true;
-
-      for (const [nombreCarpeta, extensiones] of Object.entries(carpetas)) {
-        const idTab = 'tab-' + nombreCarpeta.replace(/[^a-zA-Z0-9]/g, '-');
-
-        // 1. Crear el botón de la pestaña
-        const btn = document.createElement('button');
-        btn.className = `tab-button ${esPrimeraCarpeta ? 'active' : ''}`;
-        btn.textContent = `📁 ${nombreCarpeta}`;
-        btn.onclick = () => cambiarPestaña(idTab, btn);
-        navContainer.appendChild(btn);
-
-        // 2. Crear el contenedor de contenido de la pestaña
-        const tabContent = document.createElement('div');
-        tabContent.id = idTab;
-        tabContent.className = `tab-content ${esPrimeraCarpeta ? 'active' : ''}`;
-
-        // 3. Crear los acordeones por tipo de archivo dentro de esta pestaña
-        for (const [ext, archivos] of Object.entries(extensiones)) {
-          const accordionItem = document.createElement('div');
-          accordionItem.className = 'accordion-item';
-
-          // Cabecera del desplegable (Tipo en mayúscula y contador)
-          const header = document.createElement('div');
-          header.className = 'accordion-header';
-          header.innerHTML = `
-            <span class="type-title">📦 Archivos .${ext.toUpperCase()}</span>
-            <span class="badge">${archivos.length}</span>
-          `;
-          header.onclick = () => accordionItem.classList.toggle('open');
-
-          // Cuerpo del desplegable
-          const body = document.createElement('div');
-          body.className = 'accordion-body';
-
-          // Insertar cada archivo en el cuerpo
-          archivos.forEach(archivo => {
-            const row = document.createElement('div');
-            row.className = 'file-row';
-
-            // Determinar si es ejecutable (.html) o descargable
-            const esHtml = archivo.ext === 'html';
-            const accionTexto = esHtml ? 'Ejecutar 🚀' : 'Descargar 📥';
-            const accionClase = esHtml ? 'btn-run' : 'btn-download';
-            // Si es descargable, añadimos el atributo 'download' nativo del navegador
-            const atributoDescarga = esHtml ? '' : 'download';
-
-            row.innerHTML = `
-              <div class="file-info">
-                <span class="file-name">${archivo.name}</span>
-                <span class="file-ext">Tipo: .${archivo.ext}</span>
-              </div>
-              <a href="${archivo.url}" class="action-btn ${accionClase}" ${atributoDescarga} target="_blank">
-                ${accionTexto}
-              </a>
+        function showError(message) {
+            const app = document.getElementById('app');
+            app.innerHTML = `
+                <div class="error">
+                    <h3>⚠️ Error</h3>
+                    <p>${message}</p>
+                    <button onclick="location.reload()" class="btn btn-view" style="margin-top: 20px;">Reintentar</button>
+                </div>
             `;
-            body.appendChild(row);
-          });
-
-          accordionItem.appendChild(header);
-          accordionItem.appendChild(body);
-          tabContent.appendChild(accordionItem);
         }
 
-        contentContainer.appendChild(tabContent);
-        esPrimeraCarpeta = false;
-      }
+        function renderApp(folders) {
+            if (!folders || folders.length === 0) {
+                document.getElementById('app').innerHTML = `
+                    <div class="error">
+                        <h3>📁 No hay carpetas disponibles</h3>
+                        <p>No se encontraron carpetas para mostrar.</p>
+                    </div>
+                `;
+                return;
+            }
 
-      // Mostrar la app y ocultar loader
-      document.getElementById('loading').style.display = 'none';
-      document.getElementById('app').style.display = 'block';
-    }
-
-    // Lógica para alternar entre pestañas de carpetas
-    function cambiarPestaña(idTab, botonSeleccionado) {
-      document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
-      document.querySelectorAll('.tab-button').forEach(tb => tb.classList.remove('active'));
-      
-      document.getElementById(idTab).classList.add('active');
-      botonSeleccionado.classList.add('active');
-    }
-
-    // Consumir el endpoint interno de Next.js que hicimos en el paso anterior
-    fetch('/api/tree')
-      .then(res => {
-        if (!res.ok) throw new Error('Error al obtener el árbol');
-        return res.json();
-      })
-      .then(datos => {
-        const datosAgrupados = procesarDatos(datos);
-        
-        if (Object.keys(datosAgrupados).length === 0) {
-          document.getElementById('loading').textContent = 'No se encontraron archivos en este despliegue.';
-          return;
+            const app = document.getElementById('app');
+            
+            // Crear tabs
+            const tabsHtml = `
+                <div class="tabs" id="tabs">
+                    ${folders.map((folder, index) => `
+                        <button class="tab-button ${index === 0 ? 'active' : ''}" data-tab="${index}">
+                            ${folder.name.toUpperCase()}
+                        </button>
+                    `).join('')}
+                </div>
+                <div id="tab-contents">
+                    ${folders.map((folder, index) => `
+                        <div class="tab-content ${index === 0 ? 'active' : ''}" data-tab-content="${index}">
+                            ${renderFolderContent(folder)}
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            
+            app.innerHTML = tabsHtml;
+            
+            // Agregar event listeners para las tabs
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.addEventListener('click', () => {
+                    const tabIndex = button.dataset.tab;
+                    switchTab(tabIndex);
+                });
+            });
+            
+            // Agregar event listeners para los desplegables
+            document.querySelectorAll('.group-header').forEach(header => {
+                header.addEventListener('click', () => {
+                    header.classList.toggle('collapsed');
+                });
+            });
         }
-        
-        renderizarInterfaz(datosAgrupados);
-      })
-      .catch(err => {
-        document.getElementById('loading').className = 'error-msg';
-        document.getElementById('loading').textContent = 'Error crítico al intentar mapear los directorios.';
-        console.error(err);
-      });
-  </script>
+
+        function switchTab(tabIndex) {
+            // Actualizar botones
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`.tab-button[data-tab="${tabIndex}"]`).classList.add('active');
+            
+            // Actualizar contenidos
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.querySelector(`.tab-content[data-tab-content="${tabIndex}"]`).classList.add('active');
+        }
+
+        function renderFolderContent(folder) {
+            // Agrupar archivos por tipo
+            const filesByType = {};
+            folder.files.forEach(file => {
+                if (!filesByType[file.type]) {
+                    filesByType[file.type] = [];
+                }
+                filesByType[file.type].push(file);
+            });
+            
+            // Ordenar tipos alfabéticamente
+            const sortedTypes = Object.keys(filesByType).sort();
+            
+            if (sortedTypes.length === 0) {
+                return `
+                    <div class="error">
+                        <p>📂 No hay archivos en esta carpeta</p>
+                    </div>
+                `;
+            }
+            
+            return sortedTypes.map(type => {
+                const files = filesByType[type];
+                return `
+                    <div class="file-group">
+                        <div class="group-header">
+                            <div>
+                                <span class="group-title">📄 ${type.toUpperCase()}</span>
+                                <span class="group-count">${files.length} archivo${files.length !== 1 ? 's' : ''}</span>
+                            </div>
+                            <div class="toggle-icon">▼</div>
+                        </div>
+                        <div class="file-list">
+                            ${files.map(file => renderFileItem(file)).join('')}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderFileItem(file) {
+            const isHtml = file.type === 'html';
+            const actionUrl = isHtml ? file.url : `${file.url}`;
+            const actionText = isHtml ? 'Ver' : 'Descargar';
+            const actionClass = isHtml ? 'btn-view' : 'btn-download';
+            
+            // Icono según tipo
+            let icon = '📄';
+            if (file.type === 'pdf') icon = '📑';
+            else if (file.type === 'jpg' || file.type === 'png' || file.type === 'gif' || file.type === 'jpeg') icon = '🖼️';
+            else if (file.type === 'mp4' || file.type === 'mov') icon = '🎥';
+            else if (file.type === 'mp3' || file.type === 'wav') icon = '🎵';
+            else if (file.type === 'html') icon = '🌐';
+            else if (file.type === 'css') icon = '🎨';
+            else if (file.type === 'js') icon = '⚡';
+            else if (file.type === 'json') icon = '🔧';
+            else if (file.type === 'txt') icon = '📝';
+            
+            return `
+                <div class="file-item">
+                    <div class="file-info">
+                        <span class="file-icon">${icon}</span>
+                        <span class="file-name">${file.name}</span>
+                        <span class="file-type">.${file.type}</span>
+                    </div>
+                    <div class="file-actions">
+                        <a href="${actionUrl}" class="btn ${actionClass}" ${!isHtml ? 'download' : ''}>
+                            ${actionText}
+                        </a>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Inicializar
+        loadFiles();
+    </script>
 </body>
 </html>

@@ -25,30 +25,170 @@
             border-radius: 20px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             overflow: hidden;
+            position: relative;
         }
 
         /* Hero Section */
         .hero {
             background: linear-gradient(135deg, #2d1b4e 0%, #1a0f2e 100%);
-            padding: 50px 30px;
+            padding: 40px 30px;
             text-align: center;
             color: white;
             position: relative;
         }
 
+        /* Botón Hamburguesa */
+        .menu-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s;
+            z-index: 100;
+        }
+
+        .menu-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.05);
+        }
+
+        .menu-btn span {
+            width: 22px;
+            height: 2px;
+            background: white;
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+
+        /* Menú Lateral */
+        .side-menu {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 300px;
+            height: 100vh;
+            background: linear-gradient(135deg, #2d1b4e 0%, #1a0f2e 100%);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+            transition: left 0.3s ease;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .side-menu.open {
+            left: 0;
+        }
+
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 999;
+        }
+
+        .menu-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .menu-header {
+            padding: 30px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            text-align: center;
+        }
+
+        .menu-header img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: white;
+            padding: 10px;
+            margin-bottom: 15px;
+        }
+
+        .menu-header h3 {
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .menu-items {
+            padding: 20px;
+        }
+
+        .menu-item {
+            padding: 12px 15px;
+            margin: 5px 0;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            width: 100%;
+            text-align: left;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .menu-item:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateX(5px);
+        }
+
+        .menu-item.active {
+            background: rgba(102, 126, 234, 0.8);
+            border-left: 3px solid white;
+        }
+
+        .menu-item-count {
+            background: rgba(255,255,255,0.2);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+        }
+
+        .close-menu {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 5px;
+        }
+
         .hero-logo {
-            width: 120px;
-            height: 120px;
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
             object-fit: contain;
             background: white;
-            padding: 15px;
+            padding: 12px;
             margin-bottom: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
         .hero h1 {
-            font-size: 2.5rem;
+            font-size: 2rem;
             margin-bottom: 10px;
             font-weight: 700;
             background: linear-gradient(135deg, #fff 0%, #e0d4ff 100%);
@@ -58,21 +198,21 @@
         }
 
         .hero p {
-            font-size: 1.1rem;
+            font-size: 1rem;
             opacity: 0.9;
         }
 
         .refresh-btn {
             position: absolute;
             top: 20px;
-            right: 30px;
+            right: 20px;
             background: rgba(255,255,255,0.2);
             border: none;
             color: white;
-            padding: 10px 20px;
-            border-radius: 25px;
+            padding: 8px 16px;
+            border-radius: 20px;
             cursor: pointer;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             transition: all 0.3s;
         }
 
@@ -81,7 +221,7 @@
             transform: scale(1.05);
         }
 
-        /* Tabs */
+        /* Tabs (Subcarpetas) */
         .tabs {
             display: flex;
             flex-wrap: wrap;
@@ -148,6 +288,13 @@
             font-size: 0.9rem;
             color: #666;
             border-bottom: 1px solid #e0e0e0;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .current-folder {
+            font-weight: 600;
+            color: #667eea;
         }
 
         /* File Groups */
@@ -282,7 +429,7 @@
             transform: translateY(-2px);
         }
 
-        .empty-folder {
+        .empty-folder, .no-subfolders {
             text-align: center;
             padding: 50px;
             color: #999;
@@ -321,12 +468,16 @@
         /* Responsive */
         @media (max-width: 768px) {
             .hero h1 {
-                font-size: 1.8rem;
+                font-size: 1.5rem;
+            }
+            
+            .hero p {
+                font-size: 0.9rem;
             }
             
             .tab-button {
                 padding: 10px 15px;
-                font-size: 0.9rem;
+                font-size: 0.85rem;
             }
             
             .tab-content {
@@ -349,12 +500,40 @@
                 margin-top: 15px;
                 display: inline-block;
             }
+            
+            .side-menu {
+                width: 85%;
+                left: -85%;
+            }
+            
+            .stats-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Menú Hamburguesa -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+    <div class="side-menu" id="sideMenu">
+        <button class="close-menu" onclick="closeMenu()">✕</button>
+        <div class="menu-header">
+            <img src="/logos/logo-RetailMind-R-cuadrada.png" alt="RetailMind Logo">
+            <h3>Gestor de Archivos</h3>
+        </div>
+        <div class="menu-items" id="menuItems">
+            <div class="loading">Cargando carpetas...</div>
+        </div>
+    </div>
+
     <div class="container">
         <div class="hero">
+            <button class="menu-btn" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
             <img src="/logos/logo-RetailMind-R-cuadrada.png" alt="RetailMind Logo" class="hero-logo">
             <h1>Gestor de Archivos</h1>
             <p>Administra y organiza todos tus documentos de manera eficiente</p>
@@ -370,11 +549,11 @@
     </div>
 
     <script>
-        let currentData = null;
+        let fullData = null; // Datos completos de todas las carpetas
+        let currentMainFolder = null; // Carpeta principal seleccionada
 
         async function loadFiles() {
             try {
-                // Añadir timestamp para evitar caché
                 const response = await fetch(`/api/tree.js?t=${Date.now()}`);
                 
                 if (!response.ok) {
@@ -384,11 +563,14 @@
                 const data = await response.json();
                 
                 if (data.success) {
-                    currentData = data.folders;
-                    renderApp(data.folders);
+                    fullData = data.folders;
+                    buildMenu(fullData);
                     
-                    // Mostrar mensaje de éxito con info
-                    console.log(`✅ Cargadas ${data.totalFolders} carpetas dinámicamente`);
+                    // Seleccionar la primera carpeta por defecto
+                    if (fullData.length > 0 && !currentMainFolder) {
+                        currentMainFolder = fullData[0].name;
+                        renderSubfolders(currentMainFolder);
+                    }
                 } else {
                     showError(data.error || 'Error desconocido');
                 }
@@ -398,68 +580,86 @@
             }
         }
 
-        function refreshFiles() {
-            const app = document.getElementById('app');
-            app.innerHTML = `
-                <div class="loading">
-                    <div class="spinner"></div>
-                    <p>Refrescando archivos...</p>
-                </div>
-            `;
-            loadFiles();
-        }
-
-        function showError(message) {
-            const app = document.getElementById('app');
-            app.innerHTML = `
-                <div class="error">
-                    <h3>⚠️ Error</h3>
-                    <p>${message}</p>
-                    <button onclick="refreshFiles()" class="btn btn-view" style="margin-top: 20px;">Reintentar</button>
-                </div>
-            `;
-        }
-
-        function renderApp(folders) {
+        function buildMenu(folders) {
+            const menuItems = document.getElementById('menuItems');
+            
             if (!folders || folders.length === 0) {
+                menuItems.innerHTML = '<div class="empty-folder" style="color:white;">No hay carpetas disponibles</div>';
+                return;
+            }
+            
+            menuItems.innerHTML = folders.map(folder => `
+                <button class="menu-item ${currentMainFolder === folder.name ? 'active' : ''}" onclick="selectMainFolder('${folder.name}')">
+                    <span>📁 ${folder.name}</span>
+                    <span class="menu-item-count">${folder.subfolders?.length || 0}</span>
+                </button>
+            `).join('');
+        }
+
+        function selectMainFolder(folderName) {
+            currentMainFolder = folderName;
+            buildMenu(fullData); // Refrescar menu para mostrar active
+            renderSubfolders(folderName);
+            closeMenu(); // Cerrar menu después de seleccionar
+        }
+
+        function renderSubfolders(mainFolderName) {
+            const mainFolder = fullData.find(f => f.name === mainFolderName);
+            
+            if (!mainFolder) {
                 document.getElementById('app').innerHTML = `
                     <div class="error">
-                        <h3>📁 No hay carpetas disponibles</h3>
-                        <p>No se encontraron carpetas para mostrar.</p>
-                        <p>Asegúrate de tener carpetas en el directorio /public</p>
+                        <h3>⚠️ Error</h3>
+                        <p>Carpeta no encontrada</p>
                     </div>
                 `;
                 return;
             }
-
-            // Calcular estadísticas totales
-            const totalFiles = folders.reduce((sum, folder) => sum + (folder.files?.length || 0), 0);
+            
+            const subfolders = mainFolder.subfolders || [];
+            
+            if (subfolders.length === 0) {
+                document.getElementById('app').innerHTML = `
+                    <div class="stats-bar">
+                        <span>📁 Carpeta actual: <span class="current-folder">${mainFolderName}</span></span>
+                        <span>📄 Sin subcarpetas</span>
+                    </div>
+                    <div class="no-subfolders">
+                        📂 No hay subcarpetas en ${mainFolderName}
+                        <p style="font-size: 0.9rem; margin-top: 10px;">Agrega carpetas dentro de /public/${mainFolderName} para ver contenido</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Calcular estadísticas
+            const totalFiles = subfolders.reduce((sum, sub) => sum + (sub.files?.length || 0), 0);
             
             const app = document.getElementById('app');
             
-            // Crear stats bar
             const statsHtml = `
                 <div class="stats-bar">
-                    <span>📁 ${folders.length} carpetas</span>
-                    <span>📄 ${totalFiles} archivos</span>
+                    <span>📁 Carpeta actual: <span class="current-folder">${mainFolderName}</span></span>
+                    <span>📂 ${subfolders.length} subcarpetas</span>
+                    <span>📄 ${totalFiles} archivos totales</span>
                     <span>🔄 Actualizado: ${new Date().toLocaleTimeString()}</span>
                 </div>
             `;
             
-            // Crear tabs
+            // Crear tabs para las subcarpetas
             const tabsHtml = `
                 ${statsHtml}
                 <div class="tabs" id="tabs">
-                    ${folders.map((folder, index) => `
+                    ${subfolders.map((subfolder, index) => `
                         <button class="tab-button ${index === 0 ? 'active' : ''}" data-tab="${index}">
-                            ${folder.name.toUpperCase()} ${folder.fileCount ? `(${folder.fileCount})` : ''}
+                            ${subfolder.name.toUpperCase()} ${subfolder.fileCount ? `(${subfolder.fileCount})` : ''}
                         </button>
                     `).join('')}
                 </div>
                 <div id="tab-contents">
-                    ${folders.map((folder, index) => `
+                    ${subfolders.map((subfolder, index) => `
                         <div class="tab-content ${index === 0 ? 'active' : ''}" data-tab-content="${index}">
-                            ${renderFolderContent(folder)}
+                            ${renderFolderContent(subfolder)}
                         </div>
                     `).join('')}
                 </div>
@@ -568,6 +768,46 @@
                 </div>
             `;
         }
+
+        function refreshFiles() {
+            const app = document.getElementById('app');
+            app.innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Refrescando archivos...</p>
+                </div>
+            `;
+            loadFiles();
+        }
+
+        function showError(message) {
+            const app = document.getElementById('app');
+            app.innerHTML = `
+                <div class="error">
+                    <h3>⚠️ Error</h3>
+                    <p>${message}</p>
+                    <button onclick="refreshFiles()" class="btn btn-view" style="margin-top: 20px;">Reintentar</button>
+                </div>
+            `;
+        }
+
+        // Funciones del menú
+        function toggleMenu() {
+            const menu = document.getElementById('sideMenu');
+            const overlay = document.getElementById('menuOverlay');
+            menu.classList.toggle('open');
+            overlay.classList.toggle('open');
+        }
+
+        function closeMenu() {
+            const menu = document.getElementById('sideMenu');
+            const overlay = document.getElementById('menuOverlay');
+            menu.classList.remove('open');
+            overlay.classList.remove('open');
+        }
+
+        // Cerrar menú al hacer clic en overlay
+        document.getElementById('menuOverlay').addEventListener('click', closeMenu);
 
         // Inicializar
         loadFiles();

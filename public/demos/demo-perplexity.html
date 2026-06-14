@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RetailMind | Grafo de Estados Operacionales</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#f3f6fb;
+      --panel:#ffffff;
+      --ink:#152238;
+      --muted:#66748a;
+      --line:#d9e2ef;
+      --blue:#1f4e79;
+      --blue2:#3d6ea8;
+      --green:#5aaf45;
+      --green2:#dff3d9;
+      --yellow:#f0b33b;
+      --orange:#f28c28;
+      --red:#d95b5b;
+      --purple:#8c64d8;
+      --soft:#edf3fb;
+      --shadow:0 12px 30px rgba(17,32,61,.08);
+      --radius:18px;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(90,175,69,.08), transparent 25%),
+        radial-gradient(circle at top right, rgba(31,78,121,.08), transparent 28%),
+        var(--bg);
+      color:var(--ink);
+    }
+
+    .wrap{
+      width:min(1600px, 96vw);
+      margin:20px auto 32px;
+      display:grid;
+      gap:18px;
+    }
+
+    .header{
+      background:linear-gradient(135deg, #ffffff, #f7faff);
+      border:1px solid #e6edf7;
+      border-radius:24px;
+      box-shadow:var(--shadow);
+      padding:22px 24px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+      flex-wrap:wrap;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:18px;
+      min-width:280px;
+    }
+
+    .brand img{
+      height:56px;
+      width:auto;
+      object-fit:contain;
+      background:#0a0a0a;
+      padding:10px 14px;
+      border-radius:14px;
+    }
+
+    .title h1{
+      margin:0;
+      font-size:28px;
+      letter-spacing:.2px;
+      line-height:1.1;
+    }
+
+    .title p{
+      margin:6px 0 0;
+      color:var(--muted);
+      font-size:14px;
+      max-width:920px;
+    }
+
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      justify-content:flex-end;
+    }
+
+    .chip{
+      padding:10px 14px;
+      border-radius:999px;
+      background:#eef4fb;
+      border:1px solid #dce7f4;
+      font-size:13px;
+      color:#35516f;
+      font-weight:600;
+    }
+
+    .layout{
+      display:grid;
+      grid-template-columns: 270px 1fr 270px;
+      gap:18px;
+      align-items:start;
+    }
+
+    .card{
+      background:var(--panel);
+      border:1px solid #e5edf7;
+      border-radius:22px;
+      box-shadow:var(--shadow);
+    }
+
+    .side{
+      padding:18px;
+      position:sticky;
+      top:16px;
+    }
+
+    .side h3{
+      margin:0 0 14px;
+      font-size:16px;
+      color:#24364d;
+    }
+
+    .legend-item{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin:11px 0;
+      font-size:13px;
+      color:#41546b;
+    }
+
+    .dot{
+      width:12px;
+      height:12px;
+      border-radius:50%;
+      flex:0 0 12px;
+      box-shadow:0 0 0 4px rgba(0,0,0,.03) inset;
+    }
+
+    .main{
+      padding:20px;
+    }
+
+    .graph-title{
+      text-align:center;
+      margin-bottom:18px;
+    }
+
+    .graph-title h2{
+      margin:0;
+      font-size:22px;
+      letter-spacing:.2px;
+    }
+
+    .graph-title p{
+      margin:8px auto 0;
+      max-width:900px;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.55;
+    }
+
+    .graph{
+      position:relative;
+      min-height:980px;
+      border-radius:24px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.7), rgba(249,252,255,.95)),
+        radial-gradient(circle at center, rgba(31,78,121,.06), transparent 58%);
+      border:1px dashed #dce6f2;
+      overflow:hidden;
+      padding:18px;
+    }
+
+    .center-node{
+      position:absolute;
+      left:50%;
+      top:34%;
+      transform:translate(-50%,-50%);
+      width:260px;
+      height:260px;
+      border-radius:50%;
+      background:radial-gradient(circle at 35% 30%, #2d5f93, #173f66 70%);
+      color:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:26px;
+      box-shadow:0 18px 40px rgba(23,63,102,.28);
+      border:8px solid rgba(255,255,255,.5);
+    }
+
+    .center-node h3{
+      margin:0 0 10px;
+      font-size:20px;
+      text-transform:uppercase;
+      letter-spacing:1px;
+    }
+
+    .center-node .status{
+      font-size:18px;
+      font-weight:800;
+      line-height:1.2;
+      margin-bottom:8px;
+    }
+
+    .center-node .meta{
+      font-size:13px;
+      opacity:.92;
+      line-height:1.5;
+    }
+
+    .box{
+      position:absolute;
+      width:240px;
+      min-height:135px;
+      background:#fff;
+      border:1px solid #dfe8f3;
+      border-radius:18px;
+      box-shadow:0 10px 24px rgba(25,42,70,.08);
+      padding:16px 16px 14px;
+    }
+
+    .box h4{
+      margin:0 0 10px;
+      font-size:14px;
+      color:#2d4a67;
+      text-transform:uppercase;
+      letter-spacing:.9px;
+    }
+
+    .mini-pill{
+      display:inline-block;
+      margin:4px 6px 0 0;
+      padding:7px 10px;
+      border-radius:12px;
+      font-size:12px;
+      font-weight:700;
+      color:#4c5d73;
+      background:#f1f5fa;
+      border:1px solid #dbe5f2;
+    }
+
+    .mini-pill.green{background:#e7f6e3;color:#2f6b1d;border-color:#cde9c4;}
+    .mini-pill.yellow{background:#fff2d8;color:#8b5a00;border-color:#f3deab;}
+    .mini-pill.orange{background:#ffe7d2;color:#9f4f00;border-color:#ffd4aa;}
+    .mini-pill.purple{background:#f0e8ff;color:#6240a8;border-color:#dccff7;}
+
+    .box small{
+      display:block;
+      color:var(--muted);
+      line-height:1.45;
+      margin-top:4px;
+    }
+
+    .box .count{
+      margin-top:10px;
+      font-size:13px;
+      font-weight:700;
+      color:#28415d;
+    }
+
+    .top-left{left:60px; top:92px;}
+    .top-mid{left:50%; top:38px; transform:translateX(-50%);}
+    .top-right{right:60px; top:92px;}
+
+    .mid-left{left:40px; top:360px;}
+    .mid-right{right:40px; top:360px;}
+
+    .bottom-left{left:110px; bottom:70px;}
+    .bottom-mid-left{left:360px; bottom:78px;}
+    .bottom-mid-right{right:360px; bottom:78px;}
+    .bottom-right{right:110px; bottom:70px;}
+
+    .flow{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+    }
+
+    .flow line, .flow path{
+      stroke:#94a8c1;
+      stroke-width:2.2;
+      stroke-dasharray:6 7;
+      fill:none;
+      opacity:.82;
+    }
+
+    .flow .solid{
+      stroke-dasharray:none;
+      stroke-width:3.2;
+      opacity:.9;
+    }
+
+    .flow .green{stroke:#7bc96f}
+    .flow .blue{stroke:#4a78b2}
+    .flow .purple{stroke:#9a78df}
+    .flow .orange{stroke:#f0a34c}
+    .flow .gray{stroke:#9aa8b9}
+
+    .flow-label{
+      position:absolute;
+      background:#fff;
+      border:1px solid #dfe8f3;
+      border-radius:12px;
+      padding:8px 10px;
+      font-size:12px;
+      color:#43566f;
+      box-shadow:0 8px 18px rgba(25,42,70,.08);
+      font-weight:600;
+    }
+
+    .footer{
+      display:grid;
+      grid-template-columns: 1.35fr .85fr;
+      gap:18px;
+    }
+
+    .footer .panel{
+      padding:18px;
+    }
+
+    .panel h3{
+      margin:0 0 12px;
+      font-size:16px;
+      color:#24364d;
+    }
+
+    .nav-grid{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0,1fr));
+      gap:12px;
+    }
+
+    .nav-item{
+      background:#f8fbff;
+      border:1px solid #dfe8f3;
+      border-radius:16px;
+      padding:12px 14px;
+    }
+
+    .nav-item b{
+      display:block;
+      margin-bottom:5px;
+      color:#224160;
+    }
+
+    .nav-item span{
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.45;
+    }
+
+    .roles{
+      display:grid;
+      gap:12px;
+    }
+
+    .role{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      background:#f8fbff;
+      border:1px solid #dfe8f3;
+      border-radius:16px;
+      padding:12px;
+    }
+
+    .role .num{
+      width:28px;
+      height:28px;
+      border-radius:50%;
+      background:var(--blue);
+      color:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:800;
+      flex:0 0 28px;
+    }
+
+    .role p{
+      margin:0;
+      font-size:13px;
+      color:#50657f;
+      line-height:1.45;
+    }
+
+    .subnote{
+      margin-top:14px;
+      padding:14px 16px;
+      border-left:4px solid var(--green);
+      background:#f4fbf1;
+      border-radius:14px;
+      color:#38533a;
+      font-size:13px;
+      line-height:1.55;
+    }
+
+    @media (max-width: 1280px){
+      .layout{grid-template-columns:1fr}
+      .side{position:relative; top:auto}
+      .footer{grid-template-columns:1fr}
+      .graph{min-height:1120px}
+    }
+
+    @media (max-width: 920px){
+      .graph{min-height:1320px}
+      .box, .center-node{position:relative; left:auto; right:auto; top:auto; bottom:auto; transform:none; margin:12px auto;}
+      .flow{display:none}
+      .graph{display:flex; flex-direction:column; align-items:stretch; gap:14px}
+      .center-node{order:3}
+      .top-mid,.top-left,.top-right,.mid-left,.mid-right,.bottom-left,.bottom-mid-left,.bottom-mid-right,.bottom-right{width:auto}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="header">
+      <div class="brand">
+        <img src="https://gestor-de-archivos.vercel.app/assets/logos/logo-RetailMind-fondo-negro-1447x352.png" alt="RetailMind" />
+        <div class="title">
+          <h1>Grafo de Estados Operacionales</h1>
+          <p>Una interfaz conceptual para navegar el negocio desde el estado operacional hacia clientes, productos, sucursales, tiempo y métricas, con lógica de microestructura aplicada al retail.</p>
+        </div>
+      </div>
+      <div class="chips">
+        <span class="chip">RFM</span>
+        <span class="chip">ABC</span>
+        <span class="chip">Estados</span>
+        <span class="chip">Tendencias</span>
+        <span class="chip">Rentabilidad</span>
+      </div>
+    </header>
+
+    <section class="layout">
+      <aside class="card side">
+        <h3>Leyenda de nodos</h3>
+        <div class="legend-item"><span class="dot" style="background:#1f4e79"></span> Estado operacional</div>
+        <div class="legend-item"><span class="dot" style="background:#5aaf45"></span> Dimensión principal</div>
+        <div class="legend-item"><span class="dot" style="background:#8c64d8"></span> Dimensión relacionada</div>
+        <div class="legend-item"><span class="dot" style="background:#f0b33b"></span> Estados / alertas</div>
+        <div class="legend-item"><span class="dot" style="background:#f28c28"></span> Señales asociadas</div>
+        <div class="legend-item"><span class="dot" style="background:#c6ceda"></span> Métricas / KPIs</div>
+
+        <div style="height:18px"></div>
+        <h3>Nivel de navegación</h3>
+        <div class="legend-item"><span class="dot" style="background:#1f4e79"></span> Estado Operacional</div>
+        <div class="legend-item"><span class="dot" style="background:#5aaf45"></span> Dimensión Relacionada</div>
+        <div class="legend-item"><span class="dot" style="background:#8c64d8"></span> Dimensión Asociada</div>
+        <div class="legend-item"><span class="dot" style="background:#f0b33b"></span> Estados / Riesgos</div>
+        <div class="legend-item"><span class="dot" style="background:#f28c28"></span> Señales y Métricas</div>
+      </aside>
+
+      <main class="card main">
+        <div class="graph-title">
+          <h2>Estado Operacional del Negocio</h2>
+          <p>La idea es mostrar primero el estado del sistema y luego permitir un recorrido por capas: corporativo, comercial, operativo y financiero. Así el usuario puede ir de arriba hacia abajo o del detalle hacia la causa, sin perder contexto.</p>
+        </div>
+
+        <div class="graph">
+          <svg class="flow" viewBox="0 0 1200 980" preserveAspectRatio="none">
+            <line x1="600" y1="270" x2="300" y2="165" class="blue" />
+            <line x1="600" y1="270" x2="600" y2="80" class="green" />
+            <line x1="600" y1="270" x2="900" y2="165" class="purple" />
+            <line x1="600" y1="270" x2="220" y2="430" class="green" />
+            <line x1="600" y1="270" x2="980" y2="430" class="blue" />
+            <line x1="600" y1="270" x2="270" y2="820" class="orange" />
+            <line x1="600" y1="270" x2="430" y2="820" class="gray" />
+            <line x1="600" y1="270" x2="770" y2="820" class="gray" />
+            <line x1="600" y1="270" x2="930" y2="820" class="orange" />
+          </svg>
+
+          <div class="box top-left">
+            <h4>Productos (ABC)</h4>
+            <small>Clasificación por contribución, rotación y comportamiento.</small>
+            <div class="count">18 productos en alta volatilidad</div>
+            <div>
+              <span class="mini-pill green">ABC A</span>
+              <span class="mini-pill yellow">ABC B</span>
+              <span class="mini-pill orange">ABC C</span>
+            </div>
+          </div>
+
+          <div class="box top-mid">
+            <h4>Estado Operacional</h4>
+            <small>Vista principal del negocio para navegación por estados.</small>
+            <div class="count">Estado: Alta Volatilidad</div>
+            <div>
+              <span class="mini-pill purple">Confianza 92%</span>
+              <span class="mini-pill green">Impacto alto</span>
+            </div>
+          </div>
+
+          <div class="box top-right">
+            <h4>Segmentos (RFM)</h4>
+            <small>Grupos de comportamiento comercial y riesgo de abandono.</small>
+            <div class="count">2 segmentos en aceleración</div>
+            <div>
+              <span class="mini-pill green">Champions</span>
+              <span class="mini-pill yellow">Loyal</span>
+            </div>
+          </div>
+
+          <div class="box mid-left">
+            <h4>Sucursales</h4>
+            <small>Mapa territorial y control por tienda o región.</small>
+            <div class="count">3 sucursales con desaceleración</div>
+            <div>
+              <span class="mini-pill orange">Tienda A</span>
+              <span class="mini-pill orange">Tienda B</span>
+            </div>
+          </div>
+
+          <div class="box mid-right">
+            <h4>Tiempo</h4>
+            <small>Lectura por hora, día, semana o periodo de análisis.</small>
+            <div class="count">Patrón temporal: rebote</div>
+            <div>
+              <span class="mini-pill green">Hora</span>
+              <span class="mini-pill purple">Semana</span>
+              <span class="mini-pill yellow">Mes</span>
+            </div>
+          </div>
+
+          <div class="box bottom-left">
+            <h4>Señales Asociadas</h4>
+            <small>Eventos que explican el estado operativo.</small>
+            <div class="count">Abandono + fricción + quiebre</div>
+            <div>
+              <span class="mini-pill orange">Out of stock</span>
+              <span class="mini-pill yellow">Backorder</span>
+            </div>
+          </div>
+
+          <div class="box bottom-mid-left">
+            <h4>Cat. Afectadas</h4>
+            <small>Categorías con impacto directo o indirecto.</small>
+            <div class="count">4 categorías sensibles</div>
+            <div>
+              <span class="mini-pill purple">Fresco</span>
+              <span class="mini-pill purple">Lácteos</span>
+              <span class="mini-pill purple">Perecederos</span>
+            </div>
+          </div>
+
+          <div class="box bottom-mid-right">
+            <h4>Métricas Clave</h4>
+            <small>Indicadores operativos y financieros.</small>
+            <div class="count">Fill rate, margen, ticket y rotación</div>
+            <div>
+              <span class="mini-pill green">Ventas</span>
+              <span class="mini-pill yellow">Margen</span>
+              <span class="mini-pill orange">Abandono</span>
+              <span class="mini-pill purple">RFM</span>
+            </div>
+          </div>
+
+          <div class="box bottom-right">
+            <h4>Consignación</h4>
+            <small>Stock visible pero con menor presión financiera directa.</small>
+            <div class="count">Prioridad diferenciada</div>
+            <div>
+              <span class="mini-pill gray">Estante</span>
+              <span class="mini-pill gray">Cobertura</span>
+            </div>
+          </div>
+
+          <div class="center-node">
+            <div>
+              <h3>Estado Operacional</h3>
+              <div class="status">Alta Volatilidad</div>
+              <div class="meta">
+                Confianza: 92%<br>
+                Impacto estimado: Alto<br>
+                Lectura: día / hora / sucursal
+              </div>
+            </div>
+          </div>
+
+          <div class="flow-label" style="left:50%; top:9%; transform:translateX(-50%);">Navegación principal</div>
+          <div class="flow-label" style="left:9%; top:32%;">Dimensión principal</div>
+          <div class="flow-label" style="right:9%; top:32%;">Dimensión relacionada</div>
+          <div class="flow-label" style="left:16%; bottom:8%;">Señales y causas</div>
+          <div class="flow-label" style="right:15%; bottom:8%;">Métricas y rentabilidad</div>
+        </div>
+      </main>
+
+      <aside class="card side">
+        <h3>Cómo leerlo</h3>
+        <div class="legend-item"><span class="dot" style="background:#1f4e79"></span> 1. Primero ves el estado del negocio.</div>
+        <div class="legend-item"><span class="dot" style="background:#5aaf45"></span> 2. Luego entras a la dimensión más relevante.</div>
+        <div class="legend-item"><span class="dot" style="background:#f0b33b"></span> 3. El sistema muestra entidades afectadas.</div>
+        <div class="legend-item"><span class="dot" style="background:#f28c28"></span> 4. Las señales explican el cambio de estado.</div>
+        <div class="legend-item"><span class="dot" style="background:#c6ceda"></span> 5. Las métricas cuantifican el impacto.</div>
+
+        <div style="height:18px"></div>
+        <h3>Casos por rol</h3>
+        <div class="roles">
+          <div class="role">
+            <div class="num">1</div>
+            <p><b>Corporativo:</b> primero sucursales, luego categorías, y después productos o clientes.</p>
+          </div>
+          <div class="role">
+            <div class="num">2</div>
+            <p><b>Operativo:</b> primero abandonos, fricción, fill rate y causas probables.</p>
+          </div>
+          <div class="role">
+            <div class="num">3</div>
+            <p><b>Financiero:</b> primero rentabilidad, luego mix de productos y segmentos de clientes.</p>
+          </div>
+        </div>
+
+        <div class="subnote">
+          La propuesta clave es usar estados operacionales como capa de entrada y dejar que cada rol navegue hacia el nivel que necesita: arriba hacia abajo, o desde el detalle hacia el patrón.
+        </div>
+      </aside>
+    </section>
+
+    <section class="card footer">
+      <div class="panel">
+        <h3>Arquitectura de navegación</h3>
+        <div class="nav-grid">
+          <div class="nav-item">
+            <b>Corporativo</b>
+            <span>Holding → sucursales → categorías → productos → clientes.</span>
+          </div>
+          <div class="nav-item">
+            <b>Comercial</b>
+            <span>Categorías → SKUs → RFM → cliente individual, si aplica.</span>
+          </div>
+          <div class="nav-item">
+            <b>Operativo</b>
+            <span>Abandonos → checkout → fill rate → causa raíz.</span>
+          </div>
+          <div class="nav-item">
+            <b>Financiero</b>
+            <span>Margen → rentabilidad → mix → segmentos.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>Idea de negocio</h3>
+        <p style="margin:0;color:#50657f;line-height:1.65;font-size:13px;">
+          Convierte el retail en un mercado cuantitativo: cada ticket es un tick, cada producto un activo, y cada cliente un estado que puede acelerarse, consolidarse o caer en riesgo.
+        </p>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

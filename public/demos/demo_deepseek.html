@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>RetailMind · Estados Operacionales & Velas Japonesas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0f1c;
+            font-family: 'Inter', sans-serif;
+            color: #eef2ff;
+            padding: 2rem 2rem 4rem 2rem;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* header */
+        .header {
+            margin-bottom: 2.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            padding-bottom: 1.5rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff 0%, #ff6b35 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.02em;
+        }
+
+        .sub {
+            color: #8a92b0;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(255,107,53,0.12);
+            color: #ff8c5a;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            border: 1px solid rgba(255,107,53,0.25);
+            font-family: monospace;
+        }
+
+        /* grid estado operacional */
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin: 2rem 0 1rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-title i {
+            font-size: 1.4rem;
+        }
+
+        .state-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .state-card {
+            background: rgba(255,255,255,0.03);
+            border-radius: 1.2rem;
+            border: 1px solid rgba(255,255,255,0.06);
+            padding: 1.2rem 1.4rem;
+            transition: all 0.2s;
+        }
+
+        .state-card:hover {
+            background: rgba(255,255,255,0.05);
+            transform: translateY(-2px);
+        }
+
+        .state-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+        }
+
+        .state-name {
+            font-weight: 700;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .state-emoji {
+            font-size: 1.6rem;
+        }
+
+        .state-detail {
+            display: flex;
+            justify-content: space-between;
+            margin: 0.8rem 0;
+            font-size: 0.8rem;
+            color: #b0b8d0;
+        }
+
+        .trend-up { color: #2ed15e; }
+        .trend-down { color: #ff5c5c; }
+        .trend-steady { color: #ffb347; }
+
+        /* candle table */
+        .candle-preview {
+            background: #0d1222;
+            border-radius: 1rem;
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 1.2rem;
+            margin: 1rem 0 1.5rem 0;
+        }
+
+        .candle-row {
+            display: flex;
+            align-items: flex-end;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .candle-item {
+            background: #12172a;
+            border-radius: 0.8rem;
+            padding: 0.8rem;
+            min-width: 100px;
+            text-align: center;
+        }
+
+        .candle-symbol {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: #ff6b35;
+        }
+
+        .ohlc {
+            font-size: 0.7rem;
+            color: #a0a8c0;
+            margin-top: 0.3rem;
+        }
+
+        .martillo-badge {
+            background: #2a1e2a;
+            color: #d2a8ff;
+            border-radius: 16px;
+            padding: 0.2rem 0.6rem;
+            font-size: 0.65rem;
+            font-weight: 600;
+        }
+
+        /* roles navigation */
+        .roles-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1.5rem 0 1rem 0;
+        }
+
+        .role-btn {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.15);
+            padding: 0.5rem 1.2rem;
+            border-radius: 2rem;
+            font-weight: 500;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: 0.2s;
+            color: #cbd5ff;
+        }
+
+        .role-btn.active {
+            background: #ff6b35;
+            border-color: #ff6b35;
+            color: white;
+        }
+
+        .role-panel {
+            background: rgba(255,255,255,0.02);
+            border-radius: 1.2rem;
+            padding: 1.5rem;
+            margin-bottom: 1.8rem;
+            border-left: 3px solid #ff6b35;
+        }
+
+        /* event table */
+        .event-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+        }
+
+        .event-table th, .event-table td {
+            text-align: left;
+            padding: 0.7rem 0.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .event-table th {
+            color: #ff9a6e;
+            font-weight: 600;
+        }
+
+        .index-box {
+            background: linear-gradient(145deg, #0f1424, #0a0f1c);
+            border-radius: 1rem;
+            padding: 1rem;
+            border: 1px solid rgba(255,107,53,0.3);
+            margin: 1rem 0;
+        }
+
+        .footnote {
+            font-size: 0.7rem;
+            color: #6a7290;
+            text-align: center;
+            margin-top: 2.5rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding-top: 1.5rem;
+        }
+
+        @media (max-width: 700px) {
+            body { padding: 1rem; }
+            .candle-row { flex-direction: column; align-items: stretch; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="logo">
+			<img width="300px" src="https://gestor-de-archivos.vercel.app/assets/logos/logo-RetailMind-fondo-negro-1447x352.png">
+		</div>
+        <div class="sub">Inteligencia operacional · Microestructura de retail · Velas de intención</div>
+        <div style="margin-top: 0.8rem;"><span class="badge">Framework Retailding</span> <span class="badge">Eventos inmutables</span> <span class="badge">IPO</span></div>
+    </div>
+
+    <!-- 1º capa: ESTADO OPERACIONAL (navegación primaria) -->
+    <div class="section-title">
+        <i>📊</i> <span>Estado Operacional del negocio</span>
+        <span style="font-size:0.7rem; font-weight: normal; margin-left: auto;">⬅️ primera capa de navegación</span>
+    </div>
+    <div class="state-grid">
+        <div class="state-card">
+            <div class="state-header"><span class="state-name">CLIENTES · RFM</span><span class="state-emoji">🟢</span></div>
+            <div><strong>Aceleración</strong> <span style="float:right;">3 segmentos</span></div>
+            <div class="state-detail"><span>Champions, Leales</span><span class="trend-up">▲ +12% ticket</span></div>
+            <div class="state-detail"><span>Consolidación</span><span>2 segmentos →</span><span class="trend-steady">estable</span></div>
+            <div class="state-detail"><span>🔴 Riesgo abandono</span><span>1 segmento</span><span class="trend-down">▼ -8% frecuencia</span></div>
+        </div>
+        <div class="state-card">
+            <div class="state-header"><span class="state-name">PRODUCTOS · ABC</span><span class="state-emoji">🔥</span></div>
+            <div><strong>Alta volatilidad</strong> <span style="float:right;">18 SKUs</span></div>
+            <div class="state-detail">Frescos + lácteos · picos de demanda</div>
+            <div><strong>📈 Recuperación</strong> <span style="float:right;">42 SKUs</span></div>
+            <div class="state-detail">Abarrotes, limpieza · tendencia alcista</div>
+            <div><strong>❄️ Estancamiento</strong> <span style="float:right;">95 SKUs</span></div>
+        </div>
+        <div class="state-card">
+            <div class="state-header"><span class="state-name">SUCURSALES</span><span class="state-emoji">⚠️</span></div>
+            <div><strong>Desaceleración</strong> <span style="float:right;">3 tiendas</span></div>
+            <div class="state-detail">Zona Este, Centro · caída fill rate</div>
+            <div><strong>🚀 Expansión</strong> <span style="float:right;">7 tiendas</span></div>
+            <div class="state-detail">Norte, Oeste · +22% ticket vs mes anterior</div>
+        </div>
+    </div>
+
+    <!-- EJEMPLO DE VELAS JAPONESAS (detección algorítmica) -->
+    <div class="section-title"><i>🕯️</i> <span>Velas Japonesas · Intención de compra (Fill rate OHLC)</span></div>
+    <div class="candle-preview">
+        <div style="font-size:0.75rem; color:#ffaa88; margin-bottom: 0.5rem;">🔍 Patrones detectados sin graficar: martillo (rechazo de precio) + vela verde de aceptación</div>
+        <div class="candle-row">
+            <div class="candle-item"><span class="candle-symbol">🕯️ MARTILLO</span><div class="ohlc">O:68% H:72% L:42% C:70%</div><div class="martillo-badge">rechazo en caja · mejora posterior</div></div>
+            <div class="candle-item"><span class="candle-symbol">🟢 GREEN ENGINE</span><div class="ohlc">O:71% H:89% L:70% C:88%</div><div class="martillo-badge">aceptación orgánica · sin fricción</div></div>
+            <div class="candle-item"><span class="candle-symbol">🔴 SHOOTING STAR</span><div class="ohlc">O:82% H:95% L:74% C:75%</div><div class="martillo-badge">promoción fallida · alta intención → abandono</div></div>
+        </div>
+        <div style="margin-top: 1rem; font-size: 0.75rem; background: #00000030; padding: 0.5rem; border-radius: 12px;">
+            ⚙️ <strong>Lógica algorítmica:</strong> comparación de mecha inferior ≥ 2× cuerpo, máximo relativo, cierre vs apertura. Se aplica a fill rate conductual por producto / intervalo de 2h.
+        </div>
+    </div>
+
+    <!-- NAVEGACIÓN POR ROLES (multinivel) -->
+    <div class="section-title"><i>🧭</i> <span>Navegación por rol profesional</span></div>
+    <div class="roles-tabs" id="roleTabs">
+        <button class="role-btn active" data-role="corp">🏢 Corporativo</button>
+        <button class="role-btn" data-role="comercial">📦 Comercial</button>
+        <button class="role-btn" data-role="operativo">⚙️ Operativo</button>
+        <button class="role-btn" data-role="financiero">💰 Financiero</button>
+    </div>
+    <div id="rolePanel" class="role-panel">
+        <!-- contenido dinámico con JS -->
+        Estrategia de navegación: holding → sucursales → categorías → productos → clientes.<br>
+        <strong>Vista actual:</strong> 9 sucursales, 2 regiones en expansión, riesgo de abandono en sucursal Centro.
+    </div>
+
+    <!-- EVENTOS DE MICROESTRUCTURA (ADD_TO_CART, REMOVE, RETURN, ETC) -->
+    <div class="section-title"><i>📡</i> <span>Eventos de intención & fricción (Order Flow)</span></div>
+    <div style="overflow-x: auto;">
+        <table class="event-table">
+            <thead><tr><th>Evento</th><th>Momento</th><th>Dominio</th><th>Ejemplo / señal</th></tr></thead>
+            <tbody>
+                <tr><td>➕ add_to_cart</td><td>Antes de comprar</td><td>Intención</td><td>cliente agrega yogur premium</td></tr>
+                <tr><td>❌ remove_from_cart</td><td>Antes de comprar</td><td>Fricción</td><td>rechazo por precio final / comisión</td></tr>
+                <tr><td>🔄 substitute</td><td>En pasillo</td><td>Elasticidad</td><td>cambia a marca blanca por ahorro 15%</td></tr>
+                <tr><td>🔍 scan (precio)</td><td>Indecisión</td><td>Desconfianza</td><td>3 escaneos sin checkout → CHI alto</td></tr>
+                <tr><td>💳 checkout</td><td>Ejecución</td><td>Transacción exitosa</td><td>venta cerrada, margen registrado</td></tr>
+                <tr><td>🧾 customer_return</td><td>Postventa</td><td>Satisfacción</td><td>devolución por garantía / error</td></tr>
+                <tr><td>🚚 supplier_return</td><td>Abastecimiento</td><td>Supply chain</td><td>devolución lote vencido a proveedor</td></tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="index-box">
+        <strong>📐 Retail Imbalance (ejemplo)</strong> = (Compras ejecutadas - Abandonos) / Intenciones totales<br>
+        Categoría Lácteos → imbalance = -0.28 → <span style="color:#ff8c5a;">fricción activa, revisar precio en caja</span>.
+    </div>
+
+    <!-- ÍNDICE DE PRIORIDAD OPERACIONAL + CONSIGNACIÓN -->
+    <div class="section-title"><i>⚡</i> <span>Índice de Prioridad Operacional (IPO) · Consignación</span></div>
+    <div class="state-grid">
+        <div class="state-card">
+            <div class="state-header"><span>SKU 4512 · Arroz 1kg (propio)</span><span class="trend-down">⚠️ riesgo alto</span></div>
+            <div>Margen: 9% | Capital inmovilizado: Alto | Rotación: ▼22%</div>
+            <div><span class="badge">Alerta crítica</span> desaceleración + inversión comprometida</div>
+        </div>
+        <div class="state-card">
+            <div class="state-header"><span>SKU 7883 · Refresco importado (consignación)</span><span class="trend-steady">monitoreo</span></div>
+            <div>Margen: 18% | Capital: CERO (consignación) | Rotación: ▼15%</div>
+            <div><span class="badge">IPO Bajo</span> sin riesgo financiero directo para el supermercado</div>
+        </div>
+        <div class="state-card">
+            <div class="state-header"><span>🏆 IPO = (Valor inventario × margen × volatilidad) / rotación</span></div>
+            <div style="font-size:0.7rem;">Prioriza intervención en productos con alto riesgo y consignación=false</div>
+        </div>
+    </div>
+
+    <!-- GRAFO DE ESTADOS (conexiones conceptuales) -->
+    <div class="section-title"><i>🌐</i> <span>Grafo de Estados Operacionales (motor de navegación único)</span></div>
+    <div class="candle-preview" style="background: #0a0f1c;">
+        <div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between;">
+            <div><span class="badge">🔥 Alta Volatilidad</span><br>→ 18 productos (frescos)<br>→ Champions + Leales<br>→ Sucursal Norte, viernes/sábado<br>→ confianza 0.89</div>
+            <div><span class="badge">📉 Riesgo Abandono</span><br>→ segmento ocasional<br>→ fila de caja +20% tiempo<br>→ impacto económico estimado: $8.2k/semana</div>
+            <div><span class="badge">🚀 Aceleración</span><br>→ 3 segmentos RFM<br>→ ticket promedio +17%<br>→ narrativa: "clientes premium adoptan nueva categoría"</div>
+        </div>
+        <div style="margin-top:1rem; font-size:0.7rem; color:#8ea0c0;">🔄 Desde cualquier dimensión (sucursal/RFM/ABC) se llega al mismo Estado → consistencia analítica.</div>
+    </div>
+
+    <!-- MÉTRICAS PREDICTIVAS (mini demo ARIMA/LSTM) -->
+    <div class="section-title"><i>📈</i> <span>Predicción de tendencias (cliente/producto como activo)</span></div>
+    <div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between;">
+        <div style="background: #0b1020; border-radius: 1rem; padding: 1rem; flex:1;">
+            <div><strong>Producto: FruVer bandeja</strong> <span class="trend-up">▲ probable rebote +14% próxima semana</span></div>
+            <div style="font-family: monospace;">LSTM: prob 0.73 | SARIMAX: +0.68</div>
+            <div class="martillo-badge" style="margin-top:0.3rem;">patrón de martillo en fill rate → soporte detectado</div>
+        </div>
+        <div style="background: #0b1020; border-radius: 1rem; padding: 1rem; flex:1;">
+            <div><strong>Segmento Champions → tendencia bajista</strong> <span class="trend-down">-6% frecuencia proyectada</span></div>
+            <div>señal: menor absorción de promociones premium. Riesgo de "estado oso".</div>
+        </div>
+    </div>
+
+    <div class="footnote">
+        🧠 Microestructura retail → cada ticket es un tick · cada cliente un activo · derivadas de intención.<br>
+        Velas japonesas, Retail Imbalance, Panic Signal, CHI, IAV, RSI Retail · Framework Retailding 2026
+    </div>
+</div>
+
+<script>
+    // Contenido para cada rol (navegación multinivel)
+    const roleContent = {
+        corp: `<strong>🎯 ESTRATÉGICO (CORPORATIVO)</strong><br>
+        ➕ Primero la red completa → Holding → Sucursales → Categorías → Productos → Clientes.<br>
+        📍 ¿Qué sucursales están creciendo? Sucursal Norte +23% YoY · Sucursal Centro en riesgo.<br>
+        📍 Desempeño por región: Occidente aceleración, Oriente consolidación.<br>
+        <span class="badge">Acción recomendada: revisar mix de inversión en Centro</span>`,
+        comercial: `<strong>📊 COMERCIAL (CATEGORÍAS Y PRODUCTOS)</strong><br>
+        ➕ Categorías → Productos → Segmentos RFM → Clientes individuales.<br>
+        🔥 Alta volatilidad en Frutas y Lácteos (martillo detectado en fill rate).<br>
+        📈 Recuperación: Abarrotes secos +7% volumen · SKUs en tendencia alcista.<br>
+        <span class="badge">Potenciar promociones en lácteos estabilizando precio.</span>`,
+        operativo: `<strong>⚙️ OPERATIVO (EVENTOS Y FRICCIÓN)</strong><br>
+        ➕ Abandonos → Checkout → Fill rate → Causas probables.<br>
+        🔎 31% de abandonos por demora en autorización de pago digital (sucursal Centro).<br>
+        📉 remove_from_cart +22% en categoría congelados (problema de cadena de frío?).<br>
+        <span class="badge">Meta: reducir fricción en caja rápida y monitorear escaneos repetidos.</span>`,
+        financiero: `<strong>💰 FINANCIERO (RENTABILIDAD Y MARGEN)</strong><br>
+        ➕ Margen global → Rentabilidad por producto → Mix categorías → Segmentos clientes.<br>
+        🧾 Productos en consignación no afectan capital de trabajo, pero pueden canibalizar ventas.<br>
+        💡 Índice de Prioridad Operacional: SKU propio con alta rotación y margen >12% → prioridad #1.<br>
+        <span class="badge">Monitorear erosión de margen en promociones '2x1' en categoría A.</span>`
+    };
+
+    function setRole(role) {
+        const panel = document.getElementById('rolePanel');
+        if (panel && roleContent[role]) {
+            panel.innerHTML = roleContent[role];
+        }
+        // actualizar clases activas
+        document.querySelectorAll('.role-btn').forEach(btn => {
+            if (btn.dataset.role === role) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+    }
+
+    // eventos de los botones
+    const buttons = document.querySelectorAll('.role-btn');
+    buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const role = btn.dataset.role;
+            if (role) setRole(role);
+        });
+    });
+    // inicializar con corporativo
+    setRole('corp');
+</script>
+</body>
+</html>

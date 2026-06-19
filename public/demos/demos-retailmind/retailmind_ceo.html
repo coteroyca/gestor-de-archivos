@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RetailMind · CEO · Estados Operacionales</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#080d1a;
+  --bg2:#0d1528;
+  --bg3:#111c33;
+  --border:rgba(255,255,255,0.07);
+  --border2:rgba(255,255,255,0.12);
+  --text:#e8eeff;
+  --muted:#8a96b8;
+  --accent:#ff6b35;
+  --accent2:#ff8c5a;
+  --green:#2ed88a;
+  --red:#ff5c5c;
+  --yellow:#ffb347;
+  --blue:#5b9cf6;
+  --purple:#a78bfa;
+}
+body{background:var(--bg);font-family:'Inter',sans-serif;color:var(--text);min-height:100vh;font-size:13px}
+.shell{display:grid;grid-template-rows:56px 1fr;grid-template-columns:220px 1fr;height:100vh;overflow:hidden}
+
+/* TOPBAR */
+.topbar{grid-column:1/-1;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 1.5rem;gap:1rem;position:relative;z-index:10}
+.topbar img{height:28px}
+.topbar-divider{width:1px;height:24px;background:var(--border2);margin:0 0.5rem}
+.topbar-date{font-size:11px;color:var(--muted)}
+.topbar-badge{background:rgba(255,107,53,0.12);color:var(--accent2);padding:2px 10px;border-radius:20px;font-size:10px;font-weight:600;border:1px solid rgba(255,107,53,0.2);margin-left:auto}
+.topbar-user{display:flex;align-items:center;gap:8px;margin-left:1rem}
+.avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#ff6b35,#a855f7);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff}
+
+/* SIDEBAR */
+.sidebar{background:var(--bg2);border-right:1px solid var(--border);padding:1rem 0;overflow-y:auto}
+.sidebar-section{padding:0.5rem 1rem;font-size:10px;font-weight:600;color:var(--muted);letter-spacing:0.8px;text-transform:uppercase;margin-top:0.5rem}
+.nav-item{display:flex;align-items:center;gap:10px;padding:8px 1rem;cursor:pointer;color:var(--muted);font-size:12px;transition:all 0.15s;border-left:3px solid transparent}
+.nav-item:hover{color:var(--text);background:rgba(255,255,255,0.03)}
+.nav-item.active{color:var(--accent);border-left-color:var(--accent);background:rgba(255,107,53,0.06)}
+.nav-icon{font-size:14px;width:18px;text-align:center}
+.nav-badge{margin-left:auto;background:rgba(255,92,92,0.15);color:var(--red);border-radius:10px;padding:1px 7px;font-size:10px;font-weight:600}
+.nav-badge.green{background:rgba(46,216,138,0.15);color:var(--green)}
+
+/* MAIN */
+.main{overflow-y:auto;padding:1.5rem;display:flex;flex-direction:column;gap:1.2rem}
+
+/* BREADCRUMB */
+.breadcrumb{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted)}
+.breadcrumb span{cursor:pointer;transition:color 0.15s}
+.breadcrumb span:hover{color:var(--text)}
+.breadcrumb .active-crumb{color:var(--text);font-weight:500}
+.breadcrumb .sep{color:var(--border2)}
+
+/* DRILL TABS */
+.drill-tabs{display:flex;gap:6px}
+.drill-tab{padding:5px 14px;border-radius:20px;font-size:11px;font-weight:500;cursor:pointer;transition:all 0.15s;border:1px solid var(--border2);color:var(--muted);background:transparent}
+.drill-tab:hover{color:var(--text);border-color:var(--border2)}
+.drill-tab.active{background:var(--accent);border-color:var(--accent);color:#fff}
+
+/* KPI ROW */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.kpi{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1rem 1.1rem}
+.kpi-label{font-size:10px;color:var(--muted);font-weight:500;letter-spacing:0.3px;text-transform:uppercase}
+.kpi-value{font-size:22px;font-weight:700;margin:4px 0 2px;letter-spacing:-0.5px}
+.kpi-delta{font-size:11px;font-weight:500}
+.up{color:var(--green)}.down{color:var(--red)}.flat{color:var(--yellow)}
+
+/* STATE GRID */
+.state-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.state-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1.1rem 1.2rem;cursor:pointer;transition:all 0.2s}
+.state-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.state-card.selected{border-color:var(--accent);background:rgba(255,107,53,0.05)}
+.sc-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.sc-domain{font-size:9px;font-weight:600;color:var(--muted);letter-spacing:0.8px;text-transform:uppercase}
+.sc-status{font-size:9px;padding:2px 8px;border-radius:10px;font-weight:600}
+.s-green{background:rgba(46,216,138,0.12);color:var(--green)}
+.s-red{background:rgba(255,92,92,0.12);color:var(--red)}
+.s-yellow{background:rgba(255,179,71,0.12);color:var(--yellow)}
+.s-blue{background:rgba(91,156,246,0.12);color:var(--blue)}
+.s-purple{background:rgba(167,139,250,0.12);color:var(--purple)}
+.sc-state{font-size:15px;font-weight:700;margin-bottom:6px}
+.sc-row{display:flex;justify-content:space-between;align-items:center;margin:3px 0;font-size:11px;color:var(--muted)}
+.sc-row strong{color:var(--text);font-weight:500}
+.sc-conf{font-size:10px;color:var(--muted);margin-top:8px;padding-top:8px;border-top:1px solid var(--border);display:flex;justify-content:space-between}
+.conf-bar{height:4px;border-radius:2px;background:var(--border2);overflow:hidden;flex:1;margin:0 8px;align-self:center}
+.conf-fill{height:100%;border-radius:2px}
+
+/* TWO COL */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.panel{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1.1rem 1.2rem}
+.panel-title{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:12px}
+
+/* HIERARCHY LIST */
+.hier-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:all 0.15s}
+.hier-item:last-child{border-bottom:none}
+.hier-item:hover .hi-name{color:var(--accent)}
+.hi-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.hi-name{font-size:12px;font-weight:500;flex:1}
+.hi-state{font-size:10px;padding:1px 7px;border-radius:8px;font-weight:600}
+.hi-delta{font-size:11px;font-weight:600;min-width:50px;text-align:right}
+.hi-arrow{color:var(--muted);font-size:14px}
+
+/* ALERTS */
+.alert-item{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)}
+.alert-item:last-child{border-bottom:none}
+.alert-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.alert-body{flex:1}
+.alert-title{font-size:12px;font-weight:500;margin-bottom:2px}
+.alert-sub{font-size:10px;color:var(--muted)}
+.alert-time{font-size:10px;color:var(--muted);flex-shrink:0}
+
+/* AI NARRATIVE */
+.narrative-box{background:rgba(255,107,53,0.04);border:1px solid rgba(255,107,53,0.2);border-radius:14px;padding:1.1rem 1.2rem}
+.narr-header{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.narr-icon{font-size:14px}
+.narr-title{font-size:11px;font-weight:600;color:var(--accent);letter-spacing:0.3px;text-transform:uppercase}
+.narr-text{font-size:12px;color:var(--muted);line-height:1.7}
+.narr-text strong{color:var(--text);font-weight:500}
+
+/* CHART WRAP */
+.chart-wrap{position:relative;height:180px;margin-top:8px}
+
+/* IPO TABLE */
+.ipo-row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border)}
+.ipo-row:last-child{border-bottom:none}
+.ipo-sku{font-size:10px;color:var(--muted);font-family:monospace}
+.ipo-name{font-size:12px;font-weight:500;flex:1}
+.ipo-ipo{font-size:11px;font-weight:700;min-width:32px;text-align:right}
+.ipo-bar-wrap{width:60px;height:5px;background:var(--border2);border-radius:3px;overflow:hidden}
+.ipo-bar-fill{height:100%;border-radius:3px}
+
+/* LEGEND */
+.legend{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:8px}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted)}
+.legend-dot{width:8px;height:8px;border-radius:2px}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <img src="https://gestor-de-archivos.vercel.app/assets/logos/logo-RetailMind-fondo-negro-1447x352.png" alt="RetailMind">
+  <div class="topbar-divider"></div>
+  <span style="font-size:11px;color:var(--muted)">Centro de Estados Operacionales</span>
+  <span class="topbar-badge">CEO · Vista Holding</span>
+  <div class="topbar-divider"></div>
+  <span class="topbar-date" id="dateLabel"></span>
+  <div class="topbar-user" style="margin-left:auto">
+    <span style="font-size:11px;color:var(--muted)">Director General</span>
+    <div class="avatar">DG</div>
+  </div>
+</div>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="sidebar-section">Navegación</div>
+  <div class="nav-item active" onclick="setLevel('holding')"><span class="nav-icon">🏢</span> Holding</div>
+  <div class="nav-item" onclick="setLevel('sucursal')" id="nav-suc"><span class="nav-icon">🏪</span> Sucursales <span class="nav-badge green">10</span></div>
+  <div class="nav-item" onclick="setLevel('categoria')" id="nav-cat"><span class="nav-icon">📦</span> Categorías</div>
+  <div class="nav-item" onclick="setLevel('producto')" id="nav-prod"><span class="nav-icon">🏷️</span> Productos</div>
+  <div class="nav-item" onclick="setLevel('cliente')" id="nav-cli"><span class="nav-icon">👥</span> Clientes / RFM</div>
+
+  <div class="sidebar-section">Inteligencia</div>
+  <div class="nav-item"><span class="nav-icon">🧠</span> Narrativa IA</div>
+  <div class="nav-item"><span class="nav-icon">📡</span> Order Flow</div>
+  <div class="nav-item"><span class="nav-icon">📈</span> Predicciones</div>
+
+  <div class="sidebar-section">Alertas</div>
+  <div class="nav-item"><span class="nav-icon">⚡</span> Críticas <span class="nav-badge">3</span></div>
+  <div class="nav-item"><span class="nav-icon">🔔</span> Monitoreo <span class="nav-badge">7</span></div>
+
+  <div class="sidebar-section" style="margin-top:auto">Sistema</div>
+  <div class="nav-item"><span class="nav-icon">⚙️</span> Configuración</div>
+</div>
+
+<!-- MAIN -->
+<div class="main" id="mainContent">
+  <!-- dynamic content injected by JS -->
+</div>
+
+</div>
+
+<script>
+document.getElementById('dateLabel').textContent = new Date().toLocaleDateString('es-MX',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+
+const levels = ['holding','sucursal','categoria','producto','cliente'];
+const levelLabels = {'holding':'Holding','sucursal':'Sucursales','categoria':'Categorías','producto':'Productos','cliente':'Clientes / RFM'};
+
+const data = {
+  holding: {
+    kpis:[
+      {label:'Ventas MTD',value:'$14.8M',delta:'+11.4%',dir:'up'},
+      {label:'Margen bruto',value:'18.2%',delta:'+0.8pp',dir:'up'},
+      {label:'Fill Rate',value:'93.4%',delta:'-1.1pp',dir:'down'},
+      {label:'Ticket promedio',value:'$348',delta:'+6.7%',dir:'up'},
+    ],
+    states:[
+      {domain:'Clientes · RFM',icon:'👥',state:'Aceleración sostenida',status:'s-green',badge:'Expansión',conf:0.92,rows:[['Champions','▲ +17% ticket'],['Leales','▲ +9% frecuencia']],color:'var(--green)'},
+      {domain:'Clientes · RFM',icon:'🔴',state:'Riesgo de abandono',status:'s-red',badge:'Alerta',conf:0.87,rows:[['Ocasionales','▼ −8% frecuencia'],['Hibernando','▼ −22% recencia']],color:'var(--red)'},
+      {domain:'Productos · ABC',icon:'🔥',state:'Alta volatilidad',status:'s-yellow',badge:'Vigilancia',conf:0.89,rows:[['18 SKUs frescos','Picos Vie–Sáb'],['Lácteos cat. A','Martillo fill rate']],color:'var(--yellow)'},
+      {domain:'Productos · ABC',icon:'📈',state:'Recuperación',status:'s-blue',badge:'Positivo',conf:0.81,rows:[['42 SKUs abarrotes','▲ +14% vol. 7d'],['Limpieza','▲ +7% rotación']],color:'var(--blue)'},
+      {domain:'Sucursales',icon:'🚀',state:'Expansión',status:'s-green',badge:'7 tiendas',conf:0.94,rows:[['Norte / Oeste','▲ +22% ticket'],['Apertura Q2','Sobre meta']],color:'var(--green)'},
+      {domain:'Sucursales',icon:'⚠️',state:'Desaceleración',status:'s-red',badge:'3 tiendas',conf:0.88,rows:[['Zona Centro','▼ Fill rate 81%'],['Zona Este','▼ Tráfico −14%']],color:'var(--red)'},
+    ],
+    narrative:`El <strong>holding registra una aceleración sólida</strong> impulsada por sucursales de la zona Norte y Oeste, donde el ticket promedio creció un 22% respecto al mes anterior. Los clientes <strong>Champions y Leales muestran mayor gasto por visita</strong>, aunque la frecuencia de los segmentos ocasionales cayó, generando una señal temprana de abandono que requiere atención. Los productos en categoría A de frescos presentan <strong>alta volatilidad</strong> concentrada en cierre de semana; el motor de señales detectó patrones de martillo en fill rate que sugieren recuperación inminente. Las sucursales Centro y Este necesitan revisión operativa urgente.`,
+  },
+  sucursal: {
+    kpis:[
+      {label:'Total sucursales',value:'10',delta:'+1 Q2',dir:'up'},
+      {label:'En expansión',value:'7',delta:'+2 vs Q1',dir:'up'},
+      {label:'En desaceleración',value:'3',delta:'−1 vs Q1',dir:'up'},
+      {label:'Fill Rate red',value:'93.4%',delta:'-1.1pp',dir:'down'},
+    ],
+    states:[
+      {domain:'Sucursal Norte',icon:'🚀',state:'Expansión',status:'s-green',badge:'Sobre meta',conf:0.95,rows:[['Ventas','$2.1M MTD ▲+24%'],['Ticket','$412 promedio']],color:'var(--green)'},
+      {domain:'Sucursal Oeste',icon:'🚀',state:'Expansión',status:'s-green',badge:'Sobre meta',conf:0.91,rows:[['Ventas','$1.8M MTD ▲+19%'],['Champions','+31% share']],color:'var(--green)'},
+      {domain:'Sucursal Centro',icon:'⚠️',state:'Desaceleración',status:'s-red',badge:'Alerta',conf:0.88,rows:[['Fill Rate','81% ▼ −9pp'],['Tráfico','−14% vs semana ant']],color:'var(--red)'},
+      {domain:'Sucursal Este',icon:'⚠️',state:'Desaceleración',status:'s-yellow',badge:'Monitoreo',conf:0.77,rows:[['Ventas','$0.9M ▼ −8%'],['Abandonos caja','+22%']],color:'var(--yellow)'},
+      {domain:'Sucursal Sur A',icon:'📊',state:'Consolidación',status:'s-blue',badge:'Estable',conf:0.83,rows:[['Ventas','$1.2M →'],['Margen','19.1% →']],color:'var(--blue)'},
+      {domain:'Sucursal Sur B',icon:'📊',state:'Consolidación',status:'s-blue',badge:'Estable',conf:0.80,rows:[['Ventas','$1.0M →'],['Fill Rate','94.2%']],color:'var(--blue)'},
+    ],
+    narrative:`La <strong>red de 10 sucursales</strong> presenta un comportamiento polarizado: las zonas Norte y Oeste lideran la expansión con crecimientos superiores al 19% en ventas. Sin embargo, las sucursales <strong>Centro y Este requieren intervención</strong>: Centro muestra un fill rate de solo 81% y caída de tráfico, mientras que Este registra un aumento del 22% en abandonos en caja. Las 4 sucursales restantes operan en consolidación con márgenes saludables.`,
+  },
+  categoria: {
+    kpis:[
+      {label:'Categorías activas',value:'24',delta:'Sin cambio',dir:'flat'},
+      {label:'En recuperación',value:'8',delta:'+3 vs Q1',dir:'up'},
+      {label:'Alta volatilidad',value:'5',delta:'+2 vs Q1',dir:'down'},
+      {label:'Margen promedio',value:'18.2%',delta:'+0.8pp',dir:'up'},
+    ],
+    states:[
+      {domain:'Frescos · Cat. A',icon:'🔥',state:'Alta volatilidad',status:'s-yellow',badge:'Vigilancia',conf:0.89,rows:[['SKUs afectados','18 frescos'],['Patrón','Martillo Vie–Sáb']],color:'var(--yellow)'},
+      {domain:'Abarrotes · Cat. B',icon:'📈',state:'Recuperación',status:'s-blue',badge:'Positivo',conf:0.82,rows:[['Volumen','▲ +14% 7d'],['Clientes','Champions +11%']],color:'var(--blue)'},
+      {domain:'Lácteos · Cat. A',icon:'⚠️',state:'Fricción activa',status:'s-red',badge:'Alerta',conf:0.85,rows:[['Imbalance','−0.28 (abandonos)'],['Remove cart','▲ +18%']],color:'var(--red)'},
+      {domain:'Limpieza · Cat. B',icon:'📈',state:'Recuperación',status:'s-green',badge:'Positivo',conf:0.78,rows:[['Rotación','▲ +7%'],['Fill Rate','96.1%']],color:'var(--green)'},
+      {domain:'Bebidas · Cat. A',icon:'📊',state:'Consolidación',status:'s-blue',badge:'Estable',conf:0.84,rows:[['Ventas','$1.4M →'],['Margen','22.3% →']],color:'var(--blue)'},
+      {domain:'Congelados · Cat. C',icon:'❄️',state:'Estancamiento',status:'s-purple',badge:'Sin cambio',conf:0.71,rows:[['Rotación','Sin variación 30d'],['Remove cart','▲ +22%']],color:'var(--purple)'},
+    ],
+    narrative:`Las categorías de <strong>frescos y lácteos concentran el mayor riesgo operacional</strong>. Lácteos presenta un índice de imbalance de −0.28, señal de fricción activa por precio en caja. Frescos muestra alta volatilidad con patrones de martillo detectados en fill rate para el cierre de semana, lo que puede anticipar un rebote. <strong>Abarrotes y Limpieza están en recuperación sostenida</strong>, impulsadas por clientes Champions. Congelados preocupa por el aumento del 22% en removals del carrito.`,
+  },
+  producto: {
+    kpis:[
+      {label:'SKUs totales',value:'1,284',delta:'Sin cambio',dir:'flat'},
+      {label:'Alta volatilidad',value:'18',delta:'▲ +5',dir:'down'},
+      {label:'En recuperación',value:'42',delta:'▲ +12',dir:'up'},
+      {label:'IPO crítico',value:'7',delta:'▲ +2',dir:'down'},
+    ],
+    states:[
+      {domain:'SKU 4512 · Arroz 1kg',icon:'⚡',state:'Riesgo financiero alto',status:'s-red',badge:'IPO Crítico',conf:0.91,rows:[['Margen','9% | Capital: Alto'],['Rotación','▼ −22% mensual']],color:'var(--red)'},
+      {domain:'SKU 2341 · FruVer bandeja',icon:'📈',state:'Recuperación – rebote',status:'s-green',badge:'IPO Medio',conf:0.73,rows:[['LSTM','prob. rebote +14% 7d'],['Fill rate','Martillo confirmado']],color:'var(--green)'},
+      {domain:'SKU 7883 · Refresco imp.',icon:'📊',state:'Consolidación',status:'s-blue',badge:'Consignación',conf:0.80,rows:[['Capital','Cero (consignación)'],['Riesgo fin.','Bajo – solo monitoreo']],color:'var(--blue)'},
+      {domain:'SKU 0891 · Leche entera',icon:'🔥',state:'Alta volatilidad',status:'s-yellow',badge:'Vigilancia',conf:0.86,rows:[['Shooting star','Promoción fallida'],['CHI','3 escaneos sin checkout']],color:'var(--yellow)'},
+      {domain:'SKU 3302 · Detergente A',icon:'📈',state:'Recuperación',status:'s-green',badge:'Positivo',conf:0.79,rows:[['Rotación','▲ +9% semanal'],['Fill Rate','97.2%']],color:'var(--green)'},
+      {domain:'SKU 5590 · Congelado B',icon:'❄️',state:'Estancamiento',status:'s-purple',badge:'Sin cambio',conf:0.68,rows:[['Remove cart','▲ +22%'],['Rotación','Sin cambio 30d']],color:'var(--purple)'},
+    ],
+    narrative:`El motor de señales detectó <strong>7 SKUs con IPO crítico</strong>, priorizando aquellos con capital propio inmovilizado y desaceleración simultánea. El SKU 4512 (Arroz) requiere revisión inmediata: caída del 22% en rotación con margen del 9%. En contraste, <strong>FruVer muestra un patrón de martillo confirmado</strong> en fill rate, con probabilidad del 73% de rebote la próxima semana según el modelo LSTM. Los productos en consignación se tratan con prioridad operacional reducida al no comprometer capital.`,
+  },
+  cliente: {
+    kpis:[
+      {label:'Clientes activos',value:'48.2K',delta:'+3.1K MTD',dir:'up'},
+      {label:'Champions',value:'12.4%',delta:'+0.9pp',dir:'up'},
+      {label:'En riesgo abandono',value:'8.7%',delta:'+1.2pp',dir:'down'},
+      {label:'Ticket Champions',value:'$612',delta:'+17%',dir:'up'},
+    ],
+    states:[
+      {domain:'RFM · Champions',icon:'🏆',state:'Aceleración sostenida',status:'s-green',badge:'Expansión',conf:0.94,rows:[['Ticket','$612 ▲ +17%'],['Frecuencia','▲ +9% mensual']],color:'var(--green)'},
+      {domain:'RFM · Leales',icon:'💚',state:'Aceleración',status:'s-green',badge:'Positivo',conf:0.87,rows:[['Frecuencia','▲ +6%'],['Mix premium','▲ +11%']],color:'var(--green)'},
+      {domain:'RFM · En riesgo',icon:'🔴',state:'Riesgo de abandono',status:'s-red',badge:'Alerta',conf:0.88,rows:[['Recencia','▼ −22% visitas'],['Promociones','Sin respuesta']],color:'var(--red)'},
+      {domain:'RFM · Prometedores',icon:'📈',state:'Recuperación',status:'s-blue',badge:'Positivo',conf:0.76,rows:[['Frecuencia','▲ Tendencia alcista'],['Categorías','Nuevas adopciones']],color:'var(--blue)'},
+      {domain:'RFM · Ocasionales',icon:'⚠️',state:'Consolidación baja',status:'s-yellow',badge:'Monitoreo',conf:0.72,rows:[['Ticket','$148 → sin cambio'],['Frecuencia','1.2 visitas/mes']],color:'var(--yellow)'},
+      {domain:'RFM · Hibernando',icon:'❄️',state:'Abandono potencial',status:'s-red',badge:'Crítico',conf:0.83,rows:[['Recencia','> 90 días sin compra'],['Reactivación','Tasa <12%']],color:'var(--red)'},
+    ],
+    narrative:`Los segmentos <strong>Champions y Leales muestran aceleración sostenida</strong>, con tickets promedio en máximos históricos. Sin embargo, el segmento <strong>Hibernando supera los 90 días de inactividad</strong> con una tasa de reactivación inferior al 12%, lo que representa una pérdida estimada de $8.2K semanales. Los clientes Prometedores muestran señales positivas al adoptar nuevas categorías. Se recomienda una campaña de reactivación dirigida al segmento en riesgo antes del cierre de quincena.`,
+  },
+};
+
+let currentLevel = 'holding';
+let chartInstance = null;
+
+function setLevel(level) {
+  currentLevel = level;
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+  const navMap = {holding:0,sucursal:1,categoria:2,producto:3,cliente:4};
+  document.querySelectorAll('.nav-item')[navMap[level]].classList.add('active');
+  render();
+}
+
+function render() {
+  const d = data[currentLevel];
+  const crumbLevels = levels.slice(0, levels.indexOf(currentLevel)+1);
+  const main = document.getElementById('mainContent');
+
+  if(chartInstance){chartInstance.destroy();chartInstance=null;}
+
+  main.innerHTML = `
+    <h2 class="sr-only">Centro de Estados Operacionales RetailMind – vista ${levelLabels[currentLevel]}</h2>
+
+    <!-- BREADCRUMB + TABS -->
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+      <div class="breadcrumb">
+        ${crumbLevels.map((l,i)=>`
+          <span class="${i===crumbLevels.length-1?'active-crumb':''}" onclick="setLevel('${l}')">${levelLabels[l]}</span>
+          ${i<crumbLevels.length-1?'<span class="sep">›</span>':''}
+        `).join('')}
+      </div>
+      <div class="drill-tabs">
+        ${levels.map(l=>`<div class="drill-tab ${l===currentLevel?'active':''}" onclick="setLevel('${l}')">${levelLabels[l]}</div>`).join('')}
+      </div>
+    </div>
+
+    <!-- KPIs -->
+    <div class="kpi-row">
+      ${d.kpis.map(k=>`
+        <div class="kpi">
+          <div class="kpi-label">${k.label}</div>
+          <div class="kpi-value">${k.value}</div>
+          <div class="kpi-delta ${k.dir}">${k.dir==='up'?'▲':k.dir==='down'?'▼':'→'} ${k.delta}</div>
+        </div>
+      `).join('')}
+    </div>
+
+    <!-- NARRATIVE -->
+    <div class="narrative-box">
+      <div class="narr-header">
+        <span class="narr-icon">🧠</span>
+        <span class="narr-title">Narrativa IA · ${levelLabels[currentLevel]}</span>
+        <span style="margin-left:auto;font-size:10px;color:var(--muted)">Motor analítico + LLM</span>
+      </div>
+      <div class="narr-text">${d.narrative}</div>
+    </div>
+
+    <!-- STATE CARDS -->
+    <div style="font-size:10px;font-weight:600;color:var(--muted);letter-spacing:0.8px;text-transform:uppercase;margin-bottom:4px">Estados Operacionales · ${levelLabels[currentLevel]}</div>
+    <div class="state-grid">
+      ${d.states.map(s=>`
+        <div class="state-card" onclick="this.classList.toggle('selected')">
+          <div class="sc-header">
+            <span class="sc-domain">${s.domain}</span>
+            <span class="sc-status ${s.status}">${s.badge}</span>
+          </div>
+          <div class="sc-state">${s.icon} ${s.state}</div>
+          ${s.rows.map(r=>`<div class="sc-row"><span>${r[0]}</span><strong>${r[1]}</strong></div>`).join('')}
+          <div class="sc-conf">
+            <span>Confianza</span>
+            <div class="conf-bar"><div class="conf-fill" style="width:${s.conf*100}%;background:${s.color}"></div></div>
+            <span style="color:${s.color};font-weight:600">${Math.round(s.conf*100)}%</span>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+
+    <!-- BOTTOM ROW -->
+    <div class="two-col">
+      <!-- HIERARCHY DRILL -->
+      <div class="panel">
+        <div class="panel-title">${getHierTitle()} · Detalle</div>
+        ${getHierItems()}
+      </div>
+      <!-- ALERTS -->
+      <div class="panel">
+        <div class="panel-title">Señales de prioridad</div>
+        ${getAlerts()}
+      </div>
+    </div>
+
+    <!-- CHART -->
+    <div class="panel">
+      <div class="panel-title">Tendencia 30 días · ${levelLabels[currentLevel]}</div>
+      <div class="legend" id="legendArea"></div>
+      <div class="chart-wrap"><canvas id="trendChart" role="img" aria-label="Gráfico de tendencia 30 días para ${levelLabels[currentLevel]}">Tendencia de ventas y margen de los últimos 30 días.</canvas></div>
+    </div>
+  `;
+
+  renderChart();
+}
+
+function getHierTitle() {
+  const map = {holding:'Sucursales top',sucursal:'Sucursales',categoria:'Categorías',producto:'SKUs críticos (IPO)',cliente:'Segmentos RFM'};
+  return map[currentLevel];
+}
+
+function getHierItems() {
+  const items = {
+    holding:[
+      {name:'Sucursal Norte',state:'Expansión',sc:'s-green',delta:'+24%',color:'var(--green)'},
+      {name:'Sucursal Oeste',state:'Expansión',sc:'s-green',delta:'+19%',color:'var(--green)'},
+      {name:'Sucursal Sur A',state:'Consolidación',sc:'s-blue',delta:'→ 0%',color:'var(--blue)'},
+      {name:'Sucursal Centro',state:'Desaceleración',sc:'s-red',delta:'−8%',color:'var(--red)'},
+      {name:'Sucursal Este',state:'Desaceleración',sc:'s-yellow',delta:'−14%',color:'var(--yellow)'},
+    ],
+    sucursal:[
+      {name:'Norte',state:'Expansión',sc:'s-green',delta:'+24%',color:'var(--green)'},
+      {name:'Oeste',state:'Expansión',sc:'s-green',delta:'+19%',color:'var(--green)'},
+      {name:'Sur A',state:'Consolidación',sc:'s-blue',delta:'→ 0%',color:'var(--blue)'},
+      {name:'Sur B',state:'Consolidación',sc:'s-blue',delta:'→ +2%',color:'var(--blue)'},
+      {name:'Centro',state:'Desaceleración',sc:'s-red',delta:'−8%',color:'var(--red)'},
+    ],
+    categoria:[
+      {name:'Abarrotes',state:'Recuperación',sc:'s-green',delta:'+14%',color:'var(--green)'},
+      {name:'Bebidas',state:'Consolidación',sc:'s-blue',delta:'→ 0%',color:'var(--blue)'},
+      {name:'Frescos',state:'Alta volatilidad',sc:'s-yellow',delta:'±18%',color:'var(--yellow)'},
+      {name:'Lácteos',state:'Fricción activa',sc:'s-red',delta:'−6%',color:'var(--red)'},
+      {name:'Congelados',state:'Estancamiento',sc:'s-purple',delta:'→ 0%',color:'var(--purple)'},
+    ],
+    producto:[
+      {name:'SKU 2341 FruVer',state:'Rebote probable',sc:'s-green',delta:'+14%',color:'var(--green)'},
+      {name:'SKU 3302 Deterg.',state:'Recuperación',sc:'s-green',delta:'+9%',color:'var(--green)'},
+      {name:'SKU 0891 Leche',state:'Alta volatilidad',sc:'s-yellow',delta:'±12%',color:'var(--yellow)'},
+      {name:'SKU 4512 Arroz',state:'IPO Crítico',sc:'s-red',delta:'−22%',color:'var(--red)'},
+      {name:'SKU 5590 Cong.',state:'Estancamiento',sc:'s-purple',delta:'→ 0%',color:'var(--purple)'},
+    ],
+    cliente:[
+      {name:'Champions',state:'Aceleración',sc:'s-green',delta:'+17%',color:'var(--green)'},
+      {name:'Leales',state:'Aceleración',sc:'s-green',delta:'+6%',color:'var(--green)'},
+      {name:'Prometedores',state:'Recuperación',sc:'s-blue',delta:'+4%',color:'var(--blue)'},
+      {name:'Ocasionales',state:'Consolidación baja',sc:'s-yellow',delta:'→ 0%',color:'var(--yellow)'},
+      {name:'Hibernando',state:'Abandono potencial',sc:'s-red',delta:'−22%',color:'var(--red)'},
+    ],
+  };
+  return (items[currentLevel]||[]).map(it=>`
+    <div class="hier-item" onclick="drillDown('${it.name}')">
+      <div class="hi-dot" style="background:${it.color}"></div>
+      <span class="hi-name">${it.name}</span>
+      <span class="hi-state ${it.sc}">${it.state}</span>
+      <span class="hi-delta ${it.color.includes('green')?'up':it.color.includes('red')?'down':it.color.includes('yellow')?'flat':''}">${it.delta}</span>
+      <span class="hi-arrow">›</span>
+    </div>
+  `).join('');
+}
+
+function getAlerts() {
+  const alerts = {
+    holding:[
+      {color:'var(--red)',title:'Fill Rate crítico – Sucursal Centro',sub:'81% fill rate · tráfico −14%',time:'hace 2h'},
+      {color:'var(--red)',title:'Riesgo abandono – Segmento Hibernando',sub:'>90 días sin compra · 8.7% de base',time:'hace 4h'},
+      {color:'var(--yellow)',title:'Alta volatilidad frescos – Vie/Sáb',sub:'18 SKUs con picos de demanda detectados',time:'hace 6h'},
+      {color:'var(--blue)',title:'Rebote probable – SKU 2341 FruVer',sub:'Martillo confirmado · LSTM prob. 73%',time:'hace 8h'},
+    ],
+    sucursal:[
+      {color:'var(--red)',title:'Centro: Fill Rate 81%',sub:'Caída de 9pp vs semana anterior',time:'hace 2h'},
+      {color:'var(--yellow)',title:'Este: Abandonos en caja +22%',sub:'Fricción detectada en checkout digital',time:'hace 3h'},
+      {color:'var(--green)',title:'Norte: Meta superada +24%',sub:'Ticket promedio en máximo histórico',time:'hace 5h'},
+    ],
+    categoria:[
+      {color:'var(--red)',title:'Lácteos: Imbalance −0.28',sub:'Precio en caja genera fricción alta',time:'hace 1h'},
+      {color:'var(--yellow)',title:'Frescos: Volatilidad Vie–Sáb',sub:'Patrón estacional confirmado',time:'hace 3h'},
+      {color:'var(--green)',title:'Abarrotes en recuperación',sub:'+14% volumen últimos 7 días',time:'hace 6h'},
+    ],
+    producto:[
+      {color:'var(--red)',title:'SKU 4512 IPO Crítico',sub:'Capital inmovilizado alto + −22% rotación',time:'hace 1h'},
+      {color:'var(--yellow)',title:'SKU 0891 Shooting Star',sub:'Promoción fallida · 3 escaneos sin checkout',time:'hace 2h'},
+      {color:'var(--green)',title:'SKU 2341 Rebote inminente',sub:'Martillo en fill rate · prob. 73%',time:'hace 4h'},
+    ],
+    cliente:[
+      {color:'var(--red)',title:'Hibernando >90 días',sub:'Tasa reactivación <12% · $8.2K/sem',time:'hace 2h'},
+      {color:'var(--red)',title:'Ocasionales: baja respuesta promo',sub:'Campañas premium sin absorción',time:'hace 4h'},
+      {color:'var(--green)',title:'Champions en máximo histórico',sub:'Ticket $612 · frecuencia +9%',time:'hace 6h'},
+    ],
+  };
+  return (alerts[currentLevel]||[]).map(a=>`
+    <div class="alert-item">
+      <div class="alert-dot" style="background:${a.color}"></div>
+      <div class="alert-body">
+        <div class="alert-title">${a.title}</div>
+        <div class="alert-sub">${a.sub}</div>
+      </div>
+      <span class="alert-time">${a.time}</span>
+    </div>
+  `).join('');
+}
+
+function drillDown(name) {
+  const next = levels[levels.indexOf(currentLevel)+1];
+  if(next) setLevel(next);
+}
+
+function renderChart() {
+  const ctx = document.getElementById('trendChart');
+  if(!ctx) return;
+
+  const labels = Array.from({length:30},(_,i)=>{
+    const d = new Date(); d.setDate(d.getDate()-29+i);
+    return d.toLocaleDateString('es-MX',{month:'short',day:'numeric'});
+  }).filter((_,i)=>i%4===0||i===29);
+  const idxs = Array.from({length:30},(_,i)=>i).filter(i=>i%4===0||i===29);
+
+  const ventas = [88,91,87,93,95,89,92,96,94,97,91,88,90,93,98,95,99,97,101,98,102,99,104,101,105,103,107,105,109,108];
+  const margen = [17.1,17.4,17.2,17.8,18.0,17.6,17.9,18.2,18.0,18.3,17.8,17.5,17.7,18.0,18.4,18.1,18.5,18.3,18.7,18.4,18.8,18.5,18.9,18.6,19.0,18.8,19.1,18.9,19.2,18.2];
+
+  const filtV = idxs.map(i=>ventas[i]);
+  const filtM = idxs.map(i=>parseFloat(margen[i].toFixed(1)));
+  const filtL = idxs.map(i=>labels[idxs.indexOf(i)]);
+
+  const leg = document.getElementById('legendArea');
+  if(leg) leg.innerHTML = `
+    <div class="legend-item"><div class="legend-dot" style="background:#ff6b35"></div>Ventas (índice base 100)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#5b9cf6;border-radius:2px;border:2px dashed #5b9cf6;background:transparent"></div>Margen bruto %</div>
+  `;
+
+  chartInstance = new Chart(ctx, {
+    type:'line',
+    data:{
+      labels: idxs.map(i=>{
+        const d2=new Date();d2.setDate(d2.getDate()-29+i);
+        return d2.toLocaleDateString('es-MX',{month:'short',day:'numeric'});
+      }),
+      datasets:[
+        {label:'Ventas',data:filtV,borderColor:'#ff6b35',backgroundColor:'rgba(255,107,53,0.08)',fill:true,tension:0.4,pointRadius:3,pointBackgroundColor:'#ff6b35',yAxisID:'y'},
+        {label:'Margen %',data:filtM,borderColor:'#5b9cf6',borderDash:[5,3],backgroundColor:'transparent',fill:false,tension:0.4,pointRadius:3,pointBackgroundColor:'#5b9cf6',yAxisID:'y1'},
+      ]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false,backgroundColor:'#0d1528',borderColor:'rgba(255,255,255,0.1)',borderWidth:1,titleColor:'#e8eeff',bodyColor:'#8a96b8'}},
+      scales:{
+        x:{ticks:{color:'#8a96b8',font:{size:10}},grid:{color:'rgba(255,255,255,0.04)'}},
+        y:{position:'left',ticks:{color:'#8a96b8',font:{size:10}},grid:{color:'rgba(255,255,255,0.04)'}},
+        y1:{position:'right',ticks:{color:'#5b9cf6',font:{size:10}},grid:{display:false}},
+      }
+    }
+  });
+}
+
+render();
+</script>
+</body>
+</html>

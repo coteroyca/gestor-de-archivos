@@ -1,0 +1,72 @@
+{
+  "nivel": "sucursal",
+  "fecha_corte": "2026-06-17",
+  "kpis": [
+    { "label": "Total sucursales", "valor": 10, "formato": "number", "delta_texto": "+1 Q2", "direccion": "up" },
+    { "label": "En expansión", "valor": 7, "formato": "number", "delta_texto": "+2 vs Q1", "direccion": "up" },
+    { "label": "En desaceleración", "valor": 3, "formato": "number", "delta_texto": "−1 vs Q1", "direccion": "up" },
+    { "label": "Fill Rate red", "valor": 93.4, "formato": "percent", "delta_pp": -1.1, "direccion": "down" }
+  ],
+  "estados": [
+    {
+      "entidad_id": "SUC-01", "entidad_nombre": "Sucursal Norte", "icono": "🚀",
+      "estado": "Expansión saludable", "severidad": "positivo", "badge": "Sobre meta", "confianza": 0.95,
+      "filas": [{ "label": "Ventas", "valor": "$2.1M MTD ▲+24%" }, { "label": "Ticket", "valor": "$412 promedio" }]
+    },
+    {
+      "entidad_id": "SUC-02", "entidad_nombre": "Sucursal Oeste", "icono": "🚀",
+      "estado": "Expansión saludable", "severidad": "positivo", "badge": "Sobre meta", "confianza": 0.91,
+      "filas": [{ "label": "Ventas", "valor": "$1.8M MTD ▲+19%" }, { "label": "Champions", "valor": "+31% share" }]
+    },
+    {
+      "entidad_id": "SUC-03", "entidad_nombre": "Sucursal Centro", "icono": "⚠️",
+      "estado": "Desaceleración", "severidad": "critico", "badge": "Alerta", "confianza": 0.88,
+      "filas": [{ "label": "Fill Rate", "valor": "81% ▼ −9pp" }, { "label": "Tráfico", "valor": "−14% vs semana ant" }]
+    },
+    {
+      "entidad_id": "SUC-04", "entidad_nombre": "Sucursal Este", "icono": "⚠️",
+      "estado": "Desaceleración", "severidad": "alerta", "badge": "Monitoreo", "confianza": 0.77,
+      "filas": [{ "label": "Ventas", "valor": "$0.9M ▼ −8%" }, { "label": "Abandonos caja", "valor": "+22%" }]
+    },
+    {
+      "entidad_id": "SUC-05", "entidad_nombre": "Sucursal Sur A", "icono": "📊",
+      "estado": "Consolidación", "severidad": "neutral", "badge": "Estable", "confianza": 0.83,
+      "filas": [{ "label": "Ventas", "valor": "$1.2M →" }, { "label": "Margen", "valor": "19.1% →" }]
+    },
+    {
+      "entidad_id": "SUC-06", "entidad_nombre": "Sucursal Sur B", "icono": "📊",
+      "estado": "Consolidación", "severidad": "neutral", "badge": "Estable", "confianza": 0.80,
+      "filas": [{ "label": "Ventas", "valor": "$1.0M →" }, { "label": "Fill Rate", "valor": "94.2%" }]
+    },
+    {
+      "entidad_id": "SUC-07", "entidad_nombre": "Sucursal Litoral", "icono": "📈",
+      "estado": "Recuperación", "severidad": "positivo", "badge": "Positivo", "confianza": 0.74,
+      "filas": [{ "label": "Ventas", "valor": "$0.7M ▲ +6%" }, { "label": "Tráfico", "valor": "▲ +4%" }]
+    },
+    {
+      "entidad_id": "SUC-08", "entidad_nombre": "Sucursal Valle", "icono": "❄️",
+      "estado": "Estancamiento", "severidad": "neutral", "badge": "Sin cambio", "confianza": 0.69,
+      "filas": [{ "label": "Ventas", "valor": "$0.6M →" }, { "label": "Margen", "valor": "16.8% →" }]
+    },
+    {
+      "entidad_id": "SUC-09", "entidad_nombre": "Sucursal Industrial", "icono": "🚀",
+      "estado": "Expansión saludable", "severidad": "positivo", "badge": "Sobre meta", "confianza": 0.86,
+      "filas": [{ "label": "Ventas", "valor": "$1.1M ▲ +13%" }, { "label": "Fill Rate", "valor": "95.0%" }]
+    },
+    {
+      "entidad_id": "SUC-10", "entidad_nombre": "Sucursal Express Mall", "icono": "🔥",
+      "estado": "Alta volatilidad", "severidad": "alerta", "badge": "Vigilancia", "confianza": 0.71,
+      "filas": [{ "label": "Ticket", "valor": "Picos fin de semana" }, { "label": "Tráfico", "valor": "±18% diario" }]
+    }
+  ],
+  "narrativa": "La red de 10 sucursales presenta un comportamiento polarizado: las zonas Norte y Oeste lideran la expansión con crecimientos superiores al 19% en ventas. Sin embargo, las sucursales Centro y Este requieren intervención: Centro muestra un fill rate de solo 81% y caída de tráfico, mientras que Este registra un aumento del 22% en abandonos en caja. Las sucursales restantes operan en consolidación o recuperación con márgenes saludables.",
+  "alertas": [
+    { "severidad": "critico", "titulo": "Centro: Fill Rate 81%", "detalle": "Caída de 9pp vs semana anterior", "entidad_id": "SUC-03", "horas_atras": 2 },
+    { "severidad": "alerta", "titulo": "Este: Abandonos en caja +22%", "detalle": "Fricción detectada en checkout digital", "entidad_id": "SUC-04", "horas_atras": 3 },
+    { "severidad": "positivo", "titulo": "Norte: Meta superada +24%", "detalle": "Ticket promedio en máximo histórico", "entidad_id": "SUC-01", "horas_atras": 5 }
+  ],
+  "tendencia_30d": {
+    "ventas_indice": [88,91,87,93,95,89,92,96,94,97,91,88,90,93,98,95,99,97,101,98,102,99,104,101,105,103,107,105,109,108],
+    "margen_pct": [17.1,17.4,17.2,17.8,18.0,17.6,17.9,18.2,18.0,18.3,17.8,17.5,17.7,18.0,18.4,18.1,18.5,18.3,18.7,18.4,18.8,18.5,18.9,18.6,19.0,18.8,19.1,18.9,19.2,18.2]
+  }
+}

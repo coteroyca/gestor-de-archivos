@@ -1,0 +1,273 @@
+/* ==========================================================
+RetailMind Components
+========================================================== */
+
+/* Cards */
+
+.rm-card{
+
+    background:var(--rm-bg-card);
+
+    border:1px solid var(--rm-border);
+
+    border-radius:var(--rm-radius-lg);
+
+    padding:24px;
+
+    box-shadow:var(--rm-shadow-soft);
+
+    transition:var(--rm-transition);
+
+}
+
+.rm-card:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:var(--rm-shadow-card);
+
+}
+
+/* Button */
+
+.rm-button{
+
+    border:none;
+
+    cursor:pointer;
+
+    padding:12px 24px;
+
+    border-radius:10px;
+
+    background:var(--rm-brand);
+
+    color:white;
+
+    font-weight:600;
+
+    transition:var(--rm-transition);
+
+}
+
+.rm-button:hover{
+
+    background:var(--rm-brand-hover);
+
+}
+
+/* Badges */
+
+.rm-badge{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    padding:6px 12px;
+
+    border-radius:100px;
+
+    font-size:12px;
+
+    font-weight:600;
+
+}
+
+.rm-badge-success{
+
+    background:rgba(34,197,94,.15);
+
+    color:var(--rm-success);
+
+}
+
+.rm-badge-warning{
+
+    background:rgba(245,158,11,.15);
+
+    color:var(--rm-warning);
+
+}
+
+.rm-badge-danger{
+
+    background:rgba(239,68,68,.15);
+
+    color:var(--rm-danger);
+
+}
+
+/* Status Dot */
+
+.rm-dot{
+
+    width:10px;
+
+    height:10px;
+
+    border-radius:50%;
+
+}
+
+.rm-dot-success{
+
+    background:var(--rm-success);
+
+}
+
+.rm-dot-warning{
+
+    background:var(--rm-warning);
+
+}
+
+.rm-dot-danger{
+
+    background:var(--rm-danger);
+
+}
+
+/* Panel */
+
+.rm-panel{
+
+    background:var(--rm-bg-panel);
+
+    border-radius:var(--rm-radius-lg);
+
+    border:1px solid var(--rm-border);
+
+    padding:20px;
+
+}
+
+/* Tables */
+
+.rm-table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+}
+
+.rm-table th{
+
+    text-align:left;
+
+    padding:12px;
+
+    color:var(--rm-text-muted);
+
+    font-size:12px;
+
+    text-transform:uppercase;
+
+}
+
+.rm-table td{
+
+    padding:14px 12px;
+
+    border-top:1px solid var(--rm-border);
+
+}
+
+/* Inputs */
+
+.rm-input{
+
+    width:100%;
+
+    padding:12px;
+
+    border-radius:10px;
+
+    border:1px solid var(--rm-border);
+
+    background:var(--rm-bg-card);
+
+    color:var(--rm-text-primary);
+
+}
+
+/* Scroll */
+
+::-webkit-scrollbar{
+
+    width:10px;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:var(--rm-border-strong);
+
+    border-radius:20px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:transparent;
+
+}
+
+/* Glass */
+
+.rm-glass{
+
+    backdrop-filter:var(--rm-blur);
+
+    background:var(--rm-glass);
+
+}
+
+/* Logo */
+
+.rm-logo{
+
+    width:220px;
+
+    height:54px;
+
+    background-image:var(--rm-logo);
+
+    background-repeat:no-repeat;
+
+    background-position:left center;
+
+    background-size:contain;
+
+}
+
+/* Animaciones */
+
+.rm-fade{
+
+    animation:fade .4s ease;
+
+}
+
+@keyframes fade{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(10px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}

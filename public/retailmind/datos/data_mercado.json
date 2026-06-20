@@ -1,0 +1,102 @@
+{
+  "fecha_corte": "2026-06-17",
+  "estado_mercado_holding": {
+    "estado_actual": "stress",
+    "nombre_display": "Stress",
+    "descripcion": "Aumento de abandonos, sustitución por marcas blancas",
+    "accion_recomendada": "Revisar precios KVI",
+    "confianza": 0.81,
+    "desde": "2026-06-14"
+  },
+  "estado_mercado_por_dimension": [
+    { "tipo": "sucursal", "entidad_id": "SUC-01", "entidad_nombre": "Sucursal Norte", "estado": "euphoria_like", "confianza": 0.84 },
+    { "tipo": "sucursal", "entidad_id": "SUC-03", "entidad_nombre": "Sucursal Centro", "estado": "stress", "confianza": 0.88 },
+    { "tipo": "sucursal", "entidad_id": "SUC-04", "entidad_nombre": "Sucursal Este", "estado": "stress", "confianza": 0.79 },
+    { "tipo": "categoria", "entidad_id": "CAT-FRES", "entidad_nombre": "Frescos", "estado": "stress", "confianza": 0.82 },
+    { "tipo": "categoria", "entidad_id": "CAT-LACT", "entidad_nombre": "Lácteos", "estado": "panic_like", "confianza": 0.71 },
+    { "tipo": "categoria", "entidad_id": "CAT-ABAR", "entidad_nombre": "Abarrotes", "estado": "calm", "confianza": 0.90 },
+    { "tipo": "segmento_rfm", "entidad_id": "RFM-CHAMP", "entidad_nombre": "Champions", "estado": "euphoria_like", "confianza": 0.86 },
+    { "tipo": "segmento_rfm", "entidad_id": "RFM-HIBER", "entidad_nombre": "Hibernando", "estado": "panic_like", "confianza": 0.68 }
+  ],
+
+  "indices_propietarios": {
+    "panic_signal": {
+      "nombre": "Panic Signal",
+      "formula": "(Consumo actual - Media histórica) / Desviación estándar",
+      "alerta_umbral": 3.0,
+      "alerta_texto": "> +3.0: acaparamiento especulativo",
+      "valor_holding": 1.4,
+      "top_skus": [
+        { "entidad_id": "SKU-9012", "entidad_nombre": "Arroz 5kg", "valor": 3.4, "estado": "Acaparamiento" },
+        { "entidad_id": "SKU-3344", "entidad_nombre": "Aceite 1L", "valor": 2.8, "estado": "Vigilancia" },
+        { "entidad_id": "SKU-0891", "entidad_nombre": "Leche entera", "valor": 1.1, "estado": "Normal" }
+      ]
+    },
+    "chi": {
+      "nombre": "Consumer Hesitation Index (CHI)",
+      "formula": "Tiempo en carrito + tasa de sustitución + frecuencia de escaneo sin compra",
+      "alerta_texto": "Alto: parálisis por incertidumbre",
+      "valor_holding": 58,
+      "escala": [0, 100],
+      "top_categorias": [
+        { "entidad_id": "CAT-LACT", "entidad_nombre": "Lácteos", "valor": 74, "estado": "Alto" },
+        { "entidad_id": "CAT-FRES", "entidad_nombre": "Frescos", "valor": 61, "estado": "Medio-alto" },
+        { "entidad_id": "CAT-LIMP", "entidad_nombre": "Limpieza", "valor": 32, "estado": "Bajo" }
+      ]
+    },
+    "iav": {
+      "nombre": "Inventory Absorption Velocity (IAV)",
+      "formula": "Velocidad de consumo de inventario en góndola",
+      "alerta_texto": "Alto: riesgo de quiebre de stock",
+      "valor_holding": 0.67,
+      "escala": [0, 1],
+      "top_skus": [
+        { "entidad_id": "SKU-2341", "entidad_nombre": "FruVer bandeja", "valor": 0.91, "estado": "Riesgo quiebre" },
+        { "entidad_id": "SKU-4512", "entidad_nombre": "Arroz 1kg", "valor": 0.42, "estado": "Normal" },
+        { "entidad_id": "SKU-5590", "entidad_nombre": "Congelado B", "valor": 0.18, "estado": "Sobrestock" }
+      ]
+    },
+    "rsi_retail": {
+      "nombre": "RSI Retail",
+      "formula": "Índice de sentimiento (0-100), versión retail del Fear & Greed Index",
+      "alerta_texto": ">70 euforia, <30 pánico",
+      "valor_holding": 64,
+      "escala": [0, 100],
+      "interpretacion": "Zona neutral-alta, cercana a euforia",
+      "historico_7d": [55, 58, 57, 60, 62, 63, 64]
+    },
+    "liquidity_friction_retail": {
+      "nombre": "Liquidity Friction Retail",
+      "formula": "Diferencia entre alta intención y baja ejecución (rechazo al precio en caja)",
+      "valor_holding": 0.19,
+      "escala": [0, 1],
+      "top_categorias": [
+        { "entidad_id": "CAT-LACT", "entidad_nombre": "Lácteos", "valor": 0.28, "estado": "Fricción alta" },
+        { "entidad_id": "CAT-FRES", "entidad_nombre": "Frescos", "valor": 0.21, "estado": "Fricción media" },
+        { "entidad_id": "CAT-ABAR", "entidad_nombre": "Abarrotes", "valor": 0.06, "estado": "Fricción baja" }
+      ]
+    },
+    "retail_imbalance": {
+      "nombre": "Retail Imbalance",
+      "formula": "(Compras ejecutadas - Abandonos) / Intenciones totales",
+      "valor_holding": -0.09,
+      "por_categoria": [
+        { "entidad_id": "CAT-LACT", "entidad_nombre": "Lácteos", "valor": -0.28 },
+        { "entidad_id": "CAT-FRES", "entidad_nombre": "Frescos", "valor": -0.12 },
+        { "entidad_id": "CAT-ABAR", "entidad_nombre": "Abarrotes", "valor": 0.18 },
+        { "entidad_id": "CAT-LIMP", "entidad_nombre": "Limpieza", "valor": 0.22 }
+      ]
+    },
+    "fill_rate_conductual": {
+      "nombre": "Fill Rate Conductual",
+      "formula": "Valor monetario ejecutado / Valor monetario intencionado",
+      "valor_holding": 0.934,
+      "por_categoria": [
+        { "entidad_id": "CAT-LACT", "entidad_nombre": "Lácteos", "valor": 0.83 },
+        { "entidad_id": "CAT-FRES", "entidad_nombre": "Frescos", "valor": 0.88 },
+        { "entidad_id": "CAT-LIMP", "entidad_nombre": "Limpieza", "valor": 0.96 },
+        { "entidad_id": "CAT-ABAR", "entidad_nombre": "Abarrotes", "valor": 0.97 }
+      ]
+    }
+  }
+}

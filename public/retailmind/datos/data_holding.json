@@ -1,0 +1,101 @@
+{
+  "nivel": "holding",
+  "fecha_corte": "2026-06-17",
+  "kpis": [
+    { "label": "Ventas MTD", "valor": 14800000, "formato": "currency", "delta_pct": 11.4, "direccion": "up" },
+    { "label": "Margen bruto", "valor": 18.2, "formato": "percent", "delta_pp": 0.8, "direccion": "up" },
+    { "label": "Fill Rate", "valor": 93.4, "formato": "percent", "delta_pp": -1.1, "direccion": "down" },
+    { "label": "Ticket promedio", "valor": 348, "formato": "currency", "delta_pct": 6.7, "direccion": "up" }
+  ],
+  "estados": [
+    {
+      "dominio": "Clientes · RFM",
+      "icono": "👥",
+      "estado": "Aceleración sostenida",
+      "severidad": "positivo",
+      "badge": "Expansión",
+      "confianza": 0.92,
+      "entidades_afectadas": ["RFM-CHAMP", "RFM-LEAL"],
+      "filas": [
+        { "label": "Champions", "valor": "▲ +17% ticket" },
+        { "label": "Leales", "valor": "▲ +9% frecuencia" }
+      ]
+    },
+    {
+      "dominio": "Clientes · RFM",
+      "icono": "🔴",
+      "estado": "Riesgo de abandono",
+      "severidad": "critico",
+      "badge": "Alerta",
+      "confianza": 0.87,
+      "entidades_afectadas": ["RFM-OCAS", "RFM-HIBER"],
+      "filas": [
+        { "label": "Ocasionales", "valor": "▼ −8% frecuencia" },
+        { "label": "Hibernando", "valor": "▼ −22% recencia" }
+      ]
+    },
+    {
+      "dominio": "Productos · ABC",
+      "icono": "🔥",
+      "estado": "Alta volatilidad",
+      "severidad": "alerta",
+      "badge": "Vigilancia",
+      "confianza": 0.89,
+      "entidades_afectadas": ["CAT-FRES", "CAT-LACT"],
+      "filas": [
+        { "label": "18 SKUs frescos", "valor": "Picos Vie–Sáb" },
+        { "label": "Lácteos cat. A", "valor": "Martillo fill rate" }
+      ]
+    },
+    {
+      "dominio": "Productos · ABC",
+      "icono": "📈",
+      "estado": "Recuperación",
+      "severidad": "positivo",
+      "badge": "Positivo",
+      "confianza": 0.81,
+      "entidades_afectadas": ["CAT-ABAR", "CAT-LIMP"],
+      "filas": [
+        { "label": "42 SKUs abarrotes", "valor": "▲ +14% vol. 7d" },
+        { "label": "Limpieza", "valor": "▲ +7% rotación" }
+      ]
+    },
+    {
+      "dominio": "Sucursales",
+      "icono": "🚀",
+      "estado": "Expansión saludable",
+      "severidad": "positivo",
+      "badge": "7 tiendas",
+      "confianza": 0.94,
+      "entidades_afectadas": ["SUC-01", "SUC-02"],
+      "filas": [
+        { "label": "Norte / Oeste", "valor": "▲ +22% ticket" },
+        { "label": "Apertura Q2", "valor": "Sobre meta" }
+      ]
+    },
+    {
+      "dominio": "Sucursales",
+      "icono": "⚠️",
+      "estado": "Desaceleración",
+      "severidad": "critico",
+      "badge": "3 tiendas",
+      "confianza": 0.88,
+      "entidades_afectadas": ["SUC-03", "SUC-04"],
+      "filas": [
+        { "label": "Zona Centro", "valor": "▼ Fill rate 81%" },
+        { "label": "Zona Este", "valor": "▼ Tráfico −14%" }
+      ]
+    }
+  ],
+  "narrativa": "El holding registra una aceleración sólida impulsada por sucursales de la zona Norte y Oeste, donde el ticket promedio creció un 22% respecto al mes anterior. Los clientes Champions y Leales muestran mayor gasto por visita, aunque la frecuencia de los segmentos ocasionales cayó, generando una señal temprana de abandono que requiere atención. Los productos en categoría A de frescos presentan alta volatilidad concentrada en cierre de semana; el motor de señales detectó patrones de martillo en fill rate que sugieren recuperación inminente. Las sucursales Centro y Este necesitan revisión operativa urgente.",
+  "alertas": [
+    { "severidad": "critico", "titulo": "Fill Rate crítico – Sucursal Centro", "detalle": "81% fill rate · tráfico −14%", "entidad_id": "SUC-03", "horas_atras": 2 },
+    { "severidad": "critico", "titulo": "Riesgo abandono – Segmento Hibernando", "detalle": ">90 días sin compra · 8.7% de base", "entidad_id": "RFM-HIBER", "horas_atras": 4 },
+    { "severidad": "alerta", "titulo": "Alta volatilidad frescos – Vie/Sáb", "detalle": "18 SKUs con picos de demanda detectados", "entidad_id": "CAT-FRES", "horas_atras": 6 },
+    { "severidad": "info", "titulo": "Rebote probable – SKU 2341 FruVer", "detalle": "Martillo confirmado · LSTM prob. 73%", "entidad_id": "SKU-2341", "horas_atras": 8 }
+  ],
+  "tendencia_30d": {
+    "ventas_indice": [88,91,87,93,95,89,92,96,94,97,91,88,90,93,98,95,99,97,101,98,102,99,104,101,105,103,107,105,109,108],
+    "margen_pct": [17.1,17.4,17.2,17.8,18.0,17.6,17.9,18.2,18.0,18.3,17.8,17.5,17.7,18.0,18.4,18.1,18.5,18.3,18.7,18.4,18.8,18.5,18.9,18.6,19.0,18.8,19.1,18.9,19.2,18.2]
+  }
+}

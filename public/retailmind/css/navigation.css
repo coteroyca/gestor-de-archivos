@@ -1,0 +1,196 @@
+/* ==========================================================
+   RetailMind UI Framework
+   Navigation
+========================================================== */
+
+/*==============================
+HEADER
+==============================*/
+
+.rm-header{
+
+    height:var(--rm-header-height);
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:0 30px;
+
+    background:var(--rm-bg-panel);
+
+    border-bottom:1px solid var(--rm-border);
+
+    position:sticky;
+
+    top:0;
+
+    z-index:1000;
+
+}
+
+.rm-header-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:20px;
+
+}
+
+.rm-header-right{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+}
+
+/*==============================
+LOGO
+==============================*/
+
+.rm-logo{
+
+    width:230px;
+
+    height:55px;
+
+    background-image:var(--rm-logo);
+
+    background-repeat:no-repeat;
+
+    background-size:contain;
+
+    background-position:left center;
+
+}
+
+/*==============================
+USER
+==============================*/
+
+.rm-user{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+}
+
+.rm-avatar{
+
+    width:42px;
+
+    height:42px;
+
+    border-radius:50%;
+
+    background:var(--rm-brand);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    color:#fff;
+
+    font-weight:bold;
+
+}
+
+/*==============================
+SIDEBAR
+==============================*/
+
+.rm-sidebar{
+
+    background:var(--rm-bg-secondary);
+
+    border-right:1px solid var(--rm-border);
+
+    overflow:auto;
+
+    padding:20px;
+
+}
+
+.rm-menu{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:8px;
+
+}
+
+.rm-menu-item{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+    padding:14px;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+.rm-menu-item:hover{
+
+    background:var(--rm-bg-hover);
+
+}
+
+.rm-menu-item.active{
+
+    background:var(--rm-brand);
+
+    color:white;
+
+}
+
+/*==============================
+BREADCRUMB
+==============================*/
+
+.rm-breadcrumb{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    font-size:.9rem;
+
+    color:var(--rm-text-secondary);
+
+}
+
+.rm-breadcrumb span{
+
+    color:var(--rm-text-primary);
+
+}
+
+.rm-breadcrumb-divider{
+
+    opacity:.4;
+
+}

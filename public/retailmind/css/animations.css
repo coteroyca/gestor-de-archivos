@@ -1,0 +1,193 @@
+/* ==========================================================
+RetailMind Motion System
+==========================================================*/
+
+@keyframes rmFade{
+
+    from{
+
+        opacity:0;
+
+    }
+
+    to{
+
+        opacity:1;
+
+    }
+
+}
+
+.rm-fade{
+
+    animation:rmFade .35s ease;
+
+}
+
+@keyframes rmSlideUp{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(20px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+.rm-slide-up{
+
+    animation:rmSlideUp .35s ease;
+
+}
+
+@keyframes rmSlideLeft{
+
+    from{
+
+        opacity:0;
+
+        transform:translateX(25px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateX(0);
+
+    }
+
+}
+
+.rm-slide-left{
+
+    animation:rmSlideLeft .35s ease;
+
+}
+
+@keyframes rmPulse{
+
+    0%{
+
+        transform:scale(1);
+
+    }
+
+    50%{
+
+        transform:scale(1.05);
+
+    }
+
+    100%{
+
+        transform:scale(1);
+
+    }
+
+}
+
+.rm-pulse{
+
+    animation:rmPulse 2s infinite;
+
+}
+
+@keyframes rmBlink{
+
+    50%{
+
+        opacity:.35;
+
+    }
+
+}
+
+.rm-blink{
+
+    animation:rmBlink 1.5s infinite;
+
+}
+
+@keyframes rmRotate{
+
+    from{
+
+        transform:rotate(0deg);
+
+    }
+
+    to{
+
+        transform:rotate(360deg);
+
+    }
+
+}
+
+.rm-spin{
+
+    animation:rmRotate 1s linear infinite;
+
+}
+
+.rm-hover{
+
+    transition:.25s;
+
+}
+
+.rm-hover:hover{
+
+    transform:translateY(-3px);
+
+}
+
+.rm-scale{
+
+    transition:.25s;
+
+}
+
+.rm-scale:hover{
+
+    transform:scale(1.03);
+
+}
+
+.rm-click{
+
+    transition:.15s;
+
+}
+
+.rm-click:active{
+
+    transform:scale(.97);
+
+}
+
+/* Preferencias del usuario */
+
+@media (prefers-reduced-motion: reduce){
+
+    *{
+
+        animation:none !important;
+
+        transition:none !important;
+
+    }
+
+}

@@ -1,0 +1,142 @@
+{
+  "fecha_corte": "2026-06-17",
+  "modo": "actual",
+  "nota_modo": "Esta vista refleja el estado ACTUAL/REAL de la cadena. El modo Forecast/Sandbox (carga de supuestos propios para simular escenarios) está planificado para una versión futura.",
+
+  "marco_metodologico": {
+    "nombre": "Matriz de Doble Escenario",
+    "pregunta_central": "¿Cuáles sucursales son defendibles ante un Entrante Global, cuáles son vulnerables, y cuáles podrían convertirse en candidatas a cierre o desinversión?",
+    "escenarios": [
+      { "id": "crecimiento", "nombre": "Escenario A · Crecimiento", "descripcion": "Apertura económica exitosa, estabilización cambiaria, aumento del consumo, llegada de Entrantes Globales" },
+      { "id": "depresion", "nombre": "Escenario B · Depresión", "descripcion": "Devaluación acelerada, caída del consumo, retorno a comportamiento Retailding (arbitraje, cobertura, scalping)" }
+    ],
+    "dimensiones": [
+      { "id": "salud_financiera", "nombre": "Salud Financiera", "pregunta": "¿Está sana hoy?", "variables": ["Margen bruto", "Ventas/m²", "Rotación"] },
+      { "id": "resiliencia_defensiva", "nombre": "Resiliencia Defensiva", "pregunta": "¿Aguanta una crisis profunda?", "variables": ["Mix categorías esenciales", "Concentración de clientes (Champions)", "Costo operativo/venta"] },
+      { "id": "potencial_ofensivo", "nombre": "Potencial Ofensivo", "pregunta": "¿Puede capturar crecimiento?", "variables": ["Ubicación demográfica", "Capacidad física ociosa", "Penetración de mercado local"] },
+      { "id": "exposicion_competitiva", "nombre": "Exposición Competitiva", "pregunta": "¿Es defendible ante un Entrante Global?", "variables": ["Distancia a competidores actuales", "Atractivo para entrantes globales", "Diferenciación local"] }
+    ],
+    "cuadrantes": [
+      { "id": "estrella", "nombre": "Estrella", "descripcion": "Buena en ambos escenarios", "estrategia": "Invertir agresivamente. Defendible ante el Entrante Global y resiliente ante crisis.", "color": "var(--green)" },
+      { "id": "ofensiva", "nombre": "Ofensiva", "descripcion": "Buena solo en crecimiento", "estrategia": "Invertir condicionalmente. Si se materializa el crecimiento, expandir. Si no, contener.", "color": "var(--blue)" },
+      { "id": "defensiva", "nombre": "Defensiva", "descripcion": "Buena solo en depresión", "estrategia": "Mantener operación mínima. No invertir. Aguanta pero no gana.", "color": "var(--yellow)" },
+      { "id": "descarte", "nombre": "Descarte", "descripcion": "Mala en ambos escenarios", "estrategia": "Evaluar cierre o venta. No sobrevive a una crisis ni a la competencia de precios.", "color": "var(--red)" }
+    ]
+  },
+
+  "indice_estres_macro": {
+    "valor": 1.34,
+    "formula": "(Tasa Paralela / Tasa Oficial) × Inflación Alimentos",
+    "interpretacion": "Estrés moderado-alto",
+    "tendencia_8sem": [1.05, 1.08, 1.11, 1.15, 1.19, 1.22, 1.28, 1.34]
+  },
+
+  "sucursales": [
+    {
+      "entidad_id": "SUC-01", "entidad_nombre": "Sucursal Norte",
+      "salud_financiera": { "score": 0.88, "margen_bruto": 21.4, "ventas_m2": 412, "rotacion": 9.2 },
+      "resiliencia_defensiva": { "score": 0.61, "mix_esencial_pct": 52, "concentracion_champions_pct": 18, "costo_operativo_venta_pct": 14.2 },
+      "potencial_ofensivo": { "score": 0.92, "ubicacion_demografica": "Alta densidad NSE B/C+", "capacidad_ociosa_pct": 22, "penetracion_mercado_pct": 31 },
+      "exposicion_competitiva": { "score": 0.81, "distancia_competidor_km": 1.2, "atractivo_entrante": "Alto", "diferenciacion_local": "Media" },
+      "entrante_global_flag": { "senal_detectada": true, "tipo_señal": "Registro de marca comercial cercano", "confianza": 0.62 },
+      "cuadrante": "estrella",
+      "narrativa": "Norte combina alta salud financiera y fuerte potencial ofensivo, pero su exposición competitiva es igual de alta: está exactamente donde un Entrante Global buscaría posicionarse. Es prioritaria para inversión defensiva inmediata."
+    },
+    {
+      "entidad_id": "SUC-02", "entidad_nombre": "Sucursal Oeste",
+      "salud_financiera": { "score": 0.84, "margen_bruto": 20.1, "ventas_m2": 389, "rotacion": 8.7 },
+      "resiliencia_defensiva": { "score": 0.58, "mix_esencial_pct": 49, "concentracion_champions_pct": 24, "costo_operativo_venta_pct": 15.0 },
+      "potencial_ofensivo": { "score": 0.85, "ubicacion_demografica": "Alta densidad NSE B", "capacidad_ociosa_pct": 18, "penetracion_mercado_pct": 27 },
+      "exposicion_competitiva": { "score": 0.74, "distancia_competidor_km": 2.1, "atractivo_entrante": "Alto", "diferenciacion_local": "Media" },
+      "entrante_global_flag": { "senal_detectada": false, "tipo_señal": null, "confianza": 0.15 },
+      "cuadrante": "estrella",
+      "narrativa": "Oeste sostiene buen desempeño financiero y capacidad de captura de mercado. Sin señales directas de interés de un Entrante Global todavía, pero su atractivo demográfico la mantiene en zona de vigilancia."
+    },
+    {
+      "entidad_id": "SUC-03", "entidad_nombre": "Sucursal Centro",
+      "salud_financiera": { "score": 0.41, "margen_bruto": 14.8, "ventas_m2": 261, "rotacion": 6.1 },
+      "resiliencia_defensiva": { "score": 0.39, "mix_esencial_pct": 38, "concentracion_champions_pct": 35, "costo_operativo_venta_pct": 19.8 },
+      "potencial_ofensivo": { "score": 0.33, "ubicacion_demografica": "Densidad media, saturada", "capacidad_ociosa_pct": 4, "penetracion_mercado_pct": 12 },
+      "exposicion_competitiva": { "score": 0.88, "distancia_competidor_km": 0.8, "atractivo_entrante": "Muy alto", "diferenciacion_local": "Baja" },
+      "entrante_global_flag": { "senal_detectada": true, "tipo_señal": "Compra de terreno adyacente reportada", "confianza": 0.71 },
+      "cuadrante": "descarte",
+      "narrativa": "Centro combina baja salud financiera, baja resiliencia y la mayor exposición competitiva de la red. Es la sucursal de mayor riesgo: candidata a revisión profunda de cierre o venta antes de que el Entrante Global se posicione."
+    },
+    {
+      "entidad_id": "SUC-04", "entidad_nombre": "Sucursal Este",
+      "salud_financiera": { "score": 0.52, "margen_bruto": 16.2, "ventas_m2": 298, "rotacion": 6.8 },
+      "resiliencia_defensiva": { "score": 0.66, "mix_esencial_pct": 61, "concentracion_champions_pct": 15, "costo_operativo_venta_pct": 12.9 },
+      "potencial_ofensivo": { "score": 0.29, "ubicacion_demografica": "Densidad media, residencial", "capacidad_ociosa_pct": 6, "penetracion_mercado_pct": 19 },
+      "exposicion_competitiva": { "score": 0.35, "distancia_competidor_km": 4.6, "atractivo_entrante": "Bajo", "diferenciacion_local": "Alta" },
+      "entrante_global_flag": { "senal_detectada": false, "tipo_señal": null, "confianza": 0.08 },
+      "cuadrante": "defensiva",
+      "narrativa": "Este tiene buen mix de categorías esenciales y baja exposición al Entrante Global, pero poco potencial de crecimiento. Es una tienda que aguanta una crisis con solvencia, sin ser motor de expansión."
+    },
+    {
+      "entidad_id": "SUC-05", "entidad_nombre": "Sucursal Sur A",
+      "salud_financiera": { "score": 0.69, "margen_bruto": 19.1, "ventas_m2": 340, "rotacion": 7.9 },
+      "resiliencia_defensiva": { "score": 0.71, "mix_esencial_pct": 64, "concentracion_champions_pct": 14, "costo_operativo_venta_pct": 11.8 },
+      "potencial_ofensivo": { "score": 0.44, "ubicacion_demografica": "Densidad media-alta", "capacidad_ociosa_pct": 9, "penetracion_mercado_pct": 22 },
+      "exposicion_competitiva": { "score": 0.41, "distancia_competidor_km": 3.4, "atractivo_entrante": "Medio", "diferenciacion_local": "Alta" },
+      "entrante_global_flag": { "senal_detectada": false, "tipo_señal": null, "confianza": 0.12 },
+      "cuadrante": "defensiva",
+      "narrativa": "Sur A combina buena resiliencia defensiva con baja exposición competitiva. No es prioridad de inversión ofensiva, pero es una de las tiendas más sólidas para resistir una contracción del consumo."
+    },
+    {
+      "entidad_id": "SUC-06", "entidad_nombre": "Sucursal Sur B",
+      "salud_financiera": { "score": 0.63, "margen_bruto": 18.0, "ventas_m2": 312, "rotacion": 7.4 },
+      "resiliencia_defensiva": { "score": 0.68, "mix_esencial_pct": 60, "concentracion_champions_pct": 16, "costo_operativo_venta_pct": 12.4 },
+      "potencial_ofensivo": { "score": 0.38, "ubicacion_demografica": "Densidad media", "capacidad_ociosa_pct": 7, "penetracion_mercado_pct": 18 },
+      "exposicion_competitiva": { "score": 0.37, "distancia_competidor_km": 3.9, "atractivo_entrante": "Medio-bajo", "diferenciacion_local": "Alta" },
+      "entrante_global_flag": { "senal_detectada": false, "tipo_señal": null, "confianza": 0.10 },
+      "cuadrante": "defensiva",
+      "narrativa": "Sur B replica el perfil de Sur A: solvente para aguantar crisis, sin urgencia competitiva. Franquicia estable, candidata a mantenerse sin cambios estratégicos mayores."
+    },
+    {
+      "entidad_id": "SUC-07", "entidad_nombre": "Sucursal Litoral",
+      "salud_financiera": { "score": 0.55, "margen_bruto": 17.3, "ventas_m2": 287, "rotacion": 7.1 },
+      "resiliencia_defensiva": { "score": 0.47, "mix_esencial_pct": 45, "concentracion_champions_pct": 21, "costo_operativo_venta_pct": 16.1 },
+      "potencial_ofensivo": { "score": 0.58, "ubicacion_demografica": "Turística, estacional", "capacidad_ociosa_pct": 14, "penetracion_mercado_pct": 24 },
+      "exposicion_competitiva": { "score": 0.52, "distancia_competidor_km": 2.8, "atractivo_entrante": "Medio", "diferenciacion_local": "Media" },
+      "entrante_global_flag": { "senal_detectada": false, "tipo_señal": null, "confianza": 0.18 },
+      "cuadrante": "ofensiva",
+      "narrativa": "Litoral tiene perfil mixto: buen potencial de captura de mercado (zona turística) pero resiliencia defensiva limitada. Atractiva en escenario de crecimiento, vulnerable si se profundiza una crisis."
+    },
+    {
+      "entidad_id": "SUC-08", "entidad_nombre": "Sucursal Valle",
+      "salud_financiera": { "score": 0.37, "margen_bruto": 13.9, "ventas_m2": 244, "rotacion": 5.6 },
+      "resiliencia_defensiva": { "score": 0.34, "mix_esencial_pct": 41, "concentracion_champions_pct": 29, "costo_operativo_venta_pct": 18.7 },
+      "potencial_ofensivo": { "score": 0.27, "ubicacion_demografica": "Densidad baja", "capacidad_ociosa_pct": 5, "penetracion_mercado_pct": 9 },
+      "exposicion_competitiva": { "score": 0.29, "distancia_competidor_km": 6.2, "atractivo_entrante": "Bajo", "diferenciacion_local": "Media" },
+      "entrante_global_flag": { "senal_detectada": false, "tipo_señal": null, "confianza": 0.06 },
+      "cuadrante": "descarte",
+      "narrativa": "Valle muestra baja salud financiera y bajo potencial en ambos escenarios. Aunque la exposición a un Entrante Global es baja, eso no la salva: simplemente no genera retorno suficiente para sostenerse a largo plazo."
+    },
+    {
+      "entidad_id": "SUC-09", "entidad_nombre": "Sucursal Industrial",
+      "salud_financiera": { "score": 0.74, "margen_bruto": 19.8, "ventas_m2": 356, "rotacion": 8.3 },
+      "resiliencia_defensiva": { "score": 0.59, "mix_esencial_pct": 54, "concentracion_champions_pct": 17, "costo_operativo_venta_pct": 13.5 },
+      "potencial_ofensivo": { "score": 0.71, "ubicacion_demografica": "Corredor logístico en expansión", "capacidad_ociosa_pct": 16, "penetracion_mercado_pct": 21 },
+      "exposicion_competitiva": { "score": 0.48, "distancia_competidor_km": 3.1, "atractivo_entrante": "Medio", "diferenciacion_local": "Media-alta" },
+      "entrante_global_flag": { "senal_detectada": false, "tipo_señal": null, "confianza": 0.21 },
+      "cuadrante": "ofensiva",
+      "narrativa": "Industrial combina buena salud financiera con potencial ofensivo creciente, gracias a la expansión del corredor logístico. Candidata sólida para inversión condicional si el escenario de crecimiento se confirma."
+    },
+    {
+      "entidad_id": "SUC-10", "entidad_nombre": "Sucursal Express Mall",
+      "salud_financiera": { "score": 0.58, "margen_bruto": 17.0, "ventas_m2": 301, "rotacion": 7.6 },
+      "resiliencia_defensiva": { "score": 0.31, "mix_esencial_pct": 33, "concentracion_champions_pct": 27, "costo_operativo_venta_pct": 17.9 },
+      "potencial_ofensivo": { "score": 0.67, "ubicacion_demografica": "Mall de alto tráfico", "capacidad_ociosa_pct": 11, "penetracion_mercado_pct": 26 },
+      "exposicion_competitiva": { "score": 0.69, "distancia_competidor_km": 1.6, "atractivo_entrante": "Alto", "diferenciacion_local": "Baja" },
+      "entrante_global_flag": { "senal_detectada": true, "tipo_señal": "Apertura de oficina local reportada en la misma plaza comercial", "confianza": 0.54 },
+      "cuadrante": "ofensiva",
+      "narrativa": "Express Mall vive de tráfico e impulso, no de resiliencia: su mix esencial es bajo y su exposición competitiva alta. Buen desempeño en crecimiento, pero quedaría muy expuesta si el escenario se revierte."
+    }
+  ],
+
+  "resumen_holding": {
+    "distribucion_cuadrantes": { "estrella": 2, "ofensiva": 3, "defensiva": 3, "descarte": 2 },
+    "sucursales_con_senal_entrante": 3,
+    "narrativa_ejecutiva": "De las 10 sucursales, 2 son Estrella (defendibles en ambos escenarios y prioritarias para inversión inmediata: Norte y Oeste), 3 son Ofensivas (capturan crecimiento pero son vulnerables en crisis: Litoral, Industrial, Express Mall), 3 son Defensivas (aguantan una contracción pero no lideran expansión: Este, Sur A, Sur B) y 2 son Descarte (Centro y Valle), candidatas a revisión de cierre o venta. Se detectaron señales de Entrante Global en 3 sucursales — Norte, Centro y Express Mall — todas ellas con alta exposición competitiva, lo que sugiere que el avance del competidor se concentraría primero en las zonas de mayor tráfico y densidad demográfica."
+  }
+}

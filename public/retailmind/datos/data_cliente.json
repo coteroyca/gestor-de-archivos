@@ -1,0 +1,52 @@
+{
+  "nivel": "cliente",
+  "fecha_corte": "2026-06-17",
+  "kpis": [
+    { "label": "Clientes activos", "valor": 48200, "formato": "number_k", "delta_texto": "+3.1K MTD", "direccion": "up" },
+    { "label": "Champions", "valor": 12.4, "formato": "percent", "delta_pp": 0.9, "direccion": "up" },
+    { "label": "En riesgo abandono", "valor": 8.7, "formato": "percent", "delta_pp": 1.2, "direccion": "down" },
+    { "label": "Ticket Champions", "valor": 612, "formato": "currency", "delta_pct": 17, "direccion": "up" }
+  ],
+  "estados": [
+    {
+      "entidad_id": "RFM-CHAMP", "entidad_nombre": "RFM · Champions", "icono": "🏆",
+      "estado": "Aceleración sostenida", "severidad": "positivo", "badge": "Expansión", "confianza": 0.94,
+      "filas": [{ "label": "Ticket", "valor": "$612 ▲ +17%" }, { "label": "Frecuencia", "valor": "▲ +9% mensual" }]
+    },
+    {
+      "entidad_id": "RFM-LEAL", "entidad_nombre": "RFM · Leales", "icono": "💚",
+      "estado": "Aceleración sostenida", "severidad": "positivo", "badge": "Positivo", "confianza": 0.87,
+      "filas": [{ "label": "Frecuencia", "valor": "▲ +6%" }, { "label": "Mix premium", "valor": "▲ +11%" }]
+    },
+    {
+      "entidad_id": "RFM-RIESGO", "entidad_nombre": "RFM · En riesgo", "icono": "🔴",
+      "estado": "Riesgo de abandono", "severidad": "critico", "badge": "Alerta", "confianza": 0.88,
+      "filas": [{ "label": "Recencia", "valor": "▼ −22% visitas" }, { "label": "Promociones", "valor": "Sin respuesta" }]
+    },
+    {
+      "entidad_id": "RFM-PROM", "entidad_nombre": "RFM · Prometedores", "icono": "📈",
+      "estado": "Recuperación", "severidad": "positivo", "badge": "Positivo", "confianza": 0.76,
+      "filas": [{ "label": "Frecuencia", "valor": "▲ Tendencia alcista" }, { "label": "Categorías", "valor": "Nuevas adopciones" }]
+    },
+    {
+      "entidad_id": "RFM-OCAS", "entidad_nombre": "RFM · Ocasionales", "icono": "⚠️",
+      "estado": "Consolidación baja", "severidad": "alerta", "badge": "Monitoreo", "confianza": 0.72,
+      "filas": [{ "label": "Ticket", "valor": "$148 → sin cambio" }, { "label": "Frecuencia", "valor": "1.2 visitas/mes" }]
+    },
+    {
+      "entidad_id": "RFM-HIBER", "entidad_nombre": "RFM · Hibernando", "icono": "❄️",
+      "estado": "Agotamiento de demanda", "severidad": "critico", "badge": "Crítico", "confianza": 0.83,
+      "filas": [{ "label": "Recencia", "valor": "> 90 días sin compra" }, { "label": "Reactivación", "valor": "Tasa <12%" }]
+    }
+  ],
+  "narrativa": "Los segmentos Champions y Leales muestran aceleración sostenida, con tickets promedio en máximos históricos. Sin embargo, el segmento Hibernando supera los 90 días de inactividad con una tasa de reactivación inferior al 12%, lo que representa una pérdida estimada de $8.2K semanales. Los clientes Prometedores muestran señales positivas al adoptar nuevas categorías. Se recomienda una campaña de reactivación dirigida al segmento en riesgo antes del cierre de quincena.",
+  "alertas": [
+    { "severidad": "critico", "titulo": "Hibernando >90 días", "detalle": "Tasa reactivación <12% · $8.2K/sem", "entidad_id": "RFM-HIBER", "horas_atras": 2 },
+    { "severidad": "critico", "titulo": "Ocasionales: baja respuesta promo", "detalle": "Campañas premium sin absorción", "entidad_id": "RFM-OCAS", "horas_atras": 4 },
+    { "severidad": "positivo", "titulo": "Champions en máximo histórico", "detalle": "Ticket $612 · frecuencia +9%", "entidad_id": "RFM-CHAMP", "horas_atras": 6 }
+  ],
+  "tendencia_30d": {
+    "ventas_indice": [87,90,86,92,94,88,91,95,93,96,90,87,89,92,97,94,98,96,100,97,101,98,103,100,104,102,106,104,108,107],
+    "margen_pct": [17.0,17.3,17.1,17.6,17.9,17.5,17.8,18.1,17.9,18.2,17.7,17.4,17.6,17.9,18.3,18.0,18.4,18.2,18.6,18.3,18.7,18.4,18.8,18.5,18.9,18.7,19.0,18.8,19.1,18.2]
+  }
+}

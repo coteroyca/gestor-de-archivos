@@ -1,0 +1,165 @@
+/* ==========================================================
+Operational State Cards
+==========================================================*/
+
+.rm-state-card{
+
+    background:var(--rm-bg-card);
+
+    border-radius:18px;
+
+    padding:22px;
+
+    border:1px solid var(--rm-border);
+
+    transition:.25s;
+
+    cursor:pointer;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+}
+
+.rm-state-card:hover{
+
+    transform:translateY(-4px);
+
+    box-shadow:var(--rm-shadow-card);
+
+}
+
+.rm-state-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+.rm-state-title{
+
+    font-size:20px;
+
+    font-weight:700;
+
+}
+
+.rm-state-domain{
+
+    color:var(--rm-text-secondary);
+
+    font-size:14px;
+
+}
+
+.rm-state-value{
+
+    font-size:48px;
+
+    font-weight:700;
+
+}
+
+.rm-state-footer{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+/*==========================
+STATE COLORS
+==========================*/
+
+.rm-state-acceleration{
+
+    border-left:6px solid var(--rm-state-acceleration);
+
+}
+
+.rm-state-recovery{
+
+    border-left:6px solid var(--rm-state-recovery);
+
+}
+
+.rm-state-consolidation{
+
+    border-left:6px solid var(--rm-state-consolidation);
+
+}
+
+.rm-state-volatility{
+
+    border-left:6px solid var(--rm-state-volatility);
+
+}
+
+.rm-state-deceleration{
+
+    border-left:6px solid var(--rm-state-deceleration);
+
+}
+
+.rm-state-risk{
+
+    border-left:6px solid var(--rm-state-risk);
+
+}
+
+.rm-state-exhaustion{
+
+    border-left:6px solid var(--rm-state-exhaustion);
+
+}
+
+/* KPI */
+
+.rm-kpi{
+
+    font-size:32px;
+
+    font-weight:700;
+
+}
+
+.rm-kpi-label{
+
+    color:var(--rm-text-muted);
+
+    font-size:13px;
+
+}
+
+.rm-progress{
+
+    width:100%;
+
+    height:8px;
+
+    background:var(--rm-border);
+
+    border-radius:30px;
+
+    overflow:hidden;
+
+}
+
+.rm-progress-bar{
+
+    height:100%;
+
+    border-radius:30px;
+
+    background:var(--rm-brand);
+
+}

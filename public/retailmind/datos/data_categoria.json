@@ -1,0 +1,62 @@
+{
+  "nivel": "categoria",
+  "fecha_corte": "2026-06-17",
+  "kpis": [
+    { "label": "Categorías activas", "valor": 24, "formato": "number", "delta_texto": "Sin cambio", "direccion": "flat" },
+    { "label": "En recuperación", "valor": 8, "formato": "number", "delta_texto": "+3 vs Q1", "direccion": "up" },
+    { "label": "Alta volatilidad", "valor": 5, "formato": "number", "delta_texto": "+2 vs Q1", "direccion": "down" },
+    { "label": "Margen promedio", "valor": 18.2, "formato": "percent", "delta_pp": 0.8, "direccion": "up" }
+  ],
+  "estados": [
+    {
+      "entidad_id": "CAT-FRES", "entidad_nombre": "Frescos · Cat. A", "icono": "🔥",
+      "estado": "Alta volatilidad", "severidad": "alerta", "badge": "Vigilancia", "confianza": 0.89,
+      "filas": [{ "label": "SKUs afectados", "valor": "18 frescos" }, { "label": "Patrón", "valor": "Martillo Vie–Sáb" }]
+    },
+    {
+      "entidad_id": "CAT-ABAR", "entidad_nombre": "Abarrotes · Cat. B", "icono": "📈",
+      "estado": "Recuperación", "severidad": "positivo", "badge": "Positivo", "confianza": 0.82,
+      "filas": [{ "label": "Volumen", "valor": "▲ +14% 7d" }, { "label": "Clientes", "valor": "Champions +11%" }]
+    },
+    {
+      "entidad_id": "CAT-LACT", "entidad_nombre": "Lácteos · Cat. A", "icono": "⚠️",
+      "estado": "Fricción activa", "severidad": "critico", "badge": "Alerta", "confianza": 0.85,
+      "filas": [{ "label": "Imbalance", "valor": "−0.28 (abandonos)" }, { "label": "Remove cart", "valor": "▲ +18%" }]
+    },
+    {
+      "entidad_id": "CAT-LIMP", "entidad_nombre": "Limpieza · Cat. B", "icono": "📈",
+      "estado": "Recuperación", "severidad": "positivo", "badge": "Positivo", "confianza": 0.78,
+      "filas": [{ "label": "Rotación", "valor": "▲ +7%" }, { "label": "Fill Rate", "valor": "96.1%" }]
+    },
+    {
+      "entidad_id": "CAT-BEB", "entidad_nombre": "Bebidas · Cat. A", "icono": "📊",
+      "estado": "Consolidación", "severidad": "neutral", "badge": "Estable", "confianza": 0.84,
+      "filas": [{ "label": "Ventas", "valor": "$1.4M →" }, { "label": "Margen", "valor": "22.3% →" }]
+    },
+    {
+      "entidad_id": "CAT-CONG", "entidad_nombre": "Congelados · Cat. C", "icono": "❄️",
+      "estado": "Estancamiento", "severidad": "neutral", "badge": "Sin cambio", "confianza": 0.71,
+      "filas": [{ "label": "Rotación", "valor": "Sin variación 30d" }, { "label": "Remove cart", "valor": "▲ +22%" }]
+    },
+    {
+      "entidad_id": "CAT-CUID", "entidad_nombre": "Cuidado personal · Cat. B", "icono": "📈",
+      "estado": "Recuperación", "severidad": "positivo", "badge": "Positivo", "confianza": 0.75,
+      "filas": [{ "label": "Ventas", "valor": "▲ +5%" }, { "label": "Mix premium", "valor": "▲ +9%" }]
+    },
+    {
+      "entidad_id": "CAT-PANAD", "entidad_nombre": "Panadería · Cat. A", "icono": "🔥",
+      "estado": "Alta volatilidad", "severidad": "alerta", "badge": "Vigilancia", "confianza": 0.79,
+      "filas": [{ "label": "Picos", "valor": "Horario mañana" }, { "label": "Fill Rate", "valor": "88% ▼" }]
+    }
+  ],
+  "narrativa": "Las categorías de frescos y lácteos concentran el mayor riesgo operacional. Lácteos presenta un índice de imbalance de −0.28, señal de fricción activa por precio en caja. Frescos muestra alta volatilidad con patrones de martillo detectados en fill rate para el cierre de semana, lo que puede anticipar un rebote. Abarrotes y Limpieza están en recuperación sostenida, impulsadas por clientes Champions. Congelados preocupa por el aumento del 22% en removals del carrito.",
+  "alertas": [
+    { "severidad": "critico", "titulo": "Lácteos: Imbalance −0.28", "detalle": "Precio en caja genera fricción alta", "entidad_id": "CAT-LACT", "horas_atras": 1 },
+    { "severidad": "alerta", "titulo": "Frescos: Volatilidad Vie–Sáb", "detalle": "Patrón estacional confirmado", "entidad_id": "CAT-FRES", "horas_atras": 3 },
+    { "severidad": "positivo", "titulo": "Abarrotes en recuperación", "detalle": "+14% volumen últimos 7 días", "entidad_id": "CAT-ABAR", "horas_atras": 6 }
+  ],
+  "tendencia_30d": {
+    "ventas_indice": [85,88,84,90,92,87,89,93,91,94,89,86,88,91,95,93,96,94,98,96,99,97,101,99,103,101,105,103,107,106],
+    "margen_pct": [17.0,17.3,17.1,17.6,17.9,17.5,17.8,18.1,17.9,18.2,17.7,17.4,17.6,17.9,18.3,18.0,18.4,18.2,18.6,18.3,18.7,18.4,18.8,18.5,18.9,18.7,19.0,18.8,19.1,18.2]
+  }
+}

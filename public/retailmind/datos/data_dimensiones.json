@@ -1,0 +1,59 @@
+{
+  "sucursales": [
+    { "id": "SUC-01", "nombre": "Sucursal Norte", "zona": "Norte", "region": "Metropolitana", "tipo": "Propia" },
+    { "id": "SUC-02", "nombre": "Sucursal Oeste", "zona": "Oeste", "region": "Metropolitana", "tipo": "Propia" },
+    { "id": "SUC-03", "nombre": "Sucursal Centro", "zona": "Centro", "region": "Metropolitana", "tipo": "Propia" },
+    { "id": "SUC-04", "nombre": "Sucursal Este", "zona": "Este", "region": "Metropolitana", "tipo": "Propia" },
+    { "id": "SUC-05", "nombre": "Sucursal Sur A", "zona": "Sur", "region": "Metropolitana", "tipo": "Propia" },
+    { "id": "SUC-06", "nombre": "Sucursal Sur B", "zona": "Sur", "region": "Metropolitana", "tipo": "Franquicia" },
+    { "id": "SUC-07", "nombre": "Sucursal Litoral", "zona": "Litoral", "region": "Costa", "tipo": "Propia" },
+    { "id": "SUC-08", "nombre": "Sucursal Valle", "zona": "Valle", "region": "Andina", "tipo": "Franquicia" },
+    { "id": "SUC-09", "nombre": "Sucursal Industrial", "zona": "Industrial", "region": "Metropolitana", "tipo": "Propia" },
+    { "id": "SUC-10", "nombre": "Sucursal Express Mall", "zona": "Centro", "region": "Metropolitana", "tipo": "Franquicia" }
+  ],
+
+  "categorias_abc": [
+    { "id": "CAT-FRES", "nombre": "Frescos", "clase_abc": "A" },
+    { "id": "CAT-LACT", "nombre": "Lácteos", "clase_abc": "A" },
+    { "id": "CAT-BEB",  "nombre": "Bebidas", "clase_abc": "A" },
+    { "id": "CAT-ABAR", "nombre": "Abarrotes", "clase_abc": "B" },
+    { "id": "CAT-LIMP", "nombre": "Limpieza", "clase_abc": "B" },
+    { "id": "CAT-CONG", "nombre": "Congelados", "clase_abc": "C" },
+    { "id": "CAT-CUID", "nombre": "Cuidado personal", "clase_abc": "B" },
+    { "id": "CAT-PANAD","nombre": "Panadería", "clase_abc": "A" }
+  ],
+
+  "segmentos_rfm": [
+    { "id": "RFM-CHAMP", "nombre": "Champions", "descripcion": "Alta recencia, frecuencia y monto" },
+    { "id": "RFM-LEAL",  "nombre": "Leales", "descripcion": "Frecuencia alta, monto medio" },
+    { "id": "RFM-PROM",  "nombre": "Prometedores", "descripcion": "Recencia alta, frecuencia y monto bajos-medios" },
+    { "id": "RFM-OCAS",  "nombre": "Ocasionales", "descripcion": "Compra esporádica" },
+    { "id": "RFM-RIESGO","nombre": "En riesgo", "descripcion": "Frecuencia/recencia en caída" },
+    { "id": "RFM-HIBER", "nombre": "Hibernando", "descripcion": "Sin compras recientes (>90 días)" }
+  ],
+
+  "eventos_intencion": [
+    { "id": "add_to_cart", "nombre": "Agregar al carrito", "momento": "Antes de comprar", "dominio": "Intención" },
+    { "id": "remove_from_cart", "nombre": "Quitar del carrito", "momento": "Antes de comprar", "dominio": "Fricción" },
+    { "id": "substitute", "nombre": "Sustitución", "momento": "En pasillo", "dominio": "Elasticidad" },
+    { "id": "scan", "nombre": "Escaneo de precio", "momento": "Indecisión", "dominio": "Desconfianza" },
+    { "id": "checkout", "nombre": "Checkout", "momento": "Ejecución", "dominio": "Transacción exitosa" },
+    { "id": "abandon", "nombre": "Abandono", "momento": "Antes de pagar", "dominio": "Fricción" },
+    { "id": "customer_return", "nombre": "Devolución cliente", "momento": "Postventa", "dominio": "Satisfacción" },
+    { "id": "supplier_return", "nombre": "Devolución proveedor", "momento": "Abastecimiento", "dominio": "Supply chain" }
+  ],
+
+  "estados_operacionales_catalogo": [
+    "Aceleración sostenida", "Desaceleración", "Recuperación", "Consolidación",
+    "Alta volatilidad", "Migración hacia sustitutos", "Agotamiento de demanda",
+    "Riesgo de abandono", "Expansión saludable", "Compresión de demanda",
+    "Fricción activa", "Estancamiento"
+  ],
+
+  "estados_mercado_catalogo": [
+    { "id": "calm", "nombre": "Calm", "descripcion": "Baja volatilidad, tickets estables", "accion": "Operación normal" },
+    { "id": "stress", "nombre": "Stress", "descripcion": "Aumento de abandonos, sustitución por marcas blancas", "accion": "Revisar precios KVI" },
+    { "id": "panic_like", "nombre": "Panic-like", "descripcion": "Acumulación defensiva, inelasticidad total", "accion": "Activar alertas de abastecimiento" },
+    { "id": "euphoria_like", "nombre": "Euphoria-like", "descripcion": "Ticket alto, caída de sensibilidad de precio", "accion": "Mantener márgenes, no descontar" }
+  ]
+}

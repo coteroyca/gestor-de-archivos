@@ -1,0 +1,48 @@
+/* ==========================================================
+   RetailMind UI Framework
+   Variables Globales
+========================================================== */
+
+*,
+*::before,
+*::after{
+    box-sizing:border-box;
+}
+
+html{
+    font-size:16px;
+    scroll-behavior:smooth;
+}
+
+body{
+    margin:0;
+    padding:0;
+
+    background:var(--rm-bg-main);
+    color:var(--rm-text-primary);
+
+    font-family:var(--rm-font);
+
+    transition:var(--rm-transition);
+
+    overflow:hidden;
+}
+
+/* Layout */
+
+:root{
+
+    --rm-header-height:72px;
+
+    --rm-sidebar-width:340px;
+
+    --rm-content-padding:24px;
+
+    --rm-gap-xs:4px;
+    --rm-gap-sm:8px;
+    --rm-gap-md:16px;
+    --rm-gap-lg:24px;
+    --rm-gap-xl:32px;
+    --rm-gap-xxl:48px;
+
+}

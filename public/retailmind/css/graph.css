@@ -1,0 +1,110 @@
+/* ==========================================================
+RetailMind
+Graph Engine
+==========================================================*/
+
+.rm-graph{
+
+    width:100%;
+
+    height:100%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+.rm-graph svg{
+
+    width:100%;
+
+    height:100%;
+
+}
+
+.rm-node{
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+.rm-node:hover{
+
+    transform:scale(1.08);
+
+}
+
+.rm-node circle{
+
+    stroke:white;
+
+    stroke-width:2;
+
+}
+
+.rm-node text{
+
+    fill:var(--rm-text-primary);
+
+    font-size:14px;
+
+    font-weight:600;
+
+}
+
+.rm-edge{
+
+    stroke:var(--rm-border-strong);
+
+    stroke-width:2;
+
+}
+
+.rm-node-central circle{
+
+    fill:var(--rm-brand);
+
+}
+
+.rm-node-success circle{
+
+    fill:var(--rm-state-acceleration);
+
+}
+
+.rm-node-warning circle{
+
+    fill:var(--rm-state-volatility);
+
+}
+
+.rm-node-danger circle{
+
+    fill:var(--rm-state-risk);
+
+}
+
+.rm-node-info circle{
+
+    fill:var(--rm-state-consolidation);
+
+}
+
+.rm-node-muted circle{
+
+    fill:var(--rm-state-exhaustion);
+
+}
+
+/* Glow */
+
+.rm-node:hover circle{
+
+    filter:drop-shadow(0 0 12px rgba(255,255,255,.45));
+
+}

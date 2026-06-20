@@ -1,0 +1,211 @@
+/* ==========================================================
+   RetailMind UI Framework
+   Utilities
+   Mobile First
+==========================================================*/
+
+/* ========= DISPLAY ========= */
+
+.rm-hidden{display:none!important;}
+.rm-block{display:block!important;}
+.rm-inline{display:inline!important;}
+.rm-inline-block{display:inline-block!important;}
+.rm-flex{display:flex!important;}
+.rm-grid{display:grid!important;}
+
+/* ========= FLEX ========= */
+
+.rm-row{flex-direction:row!important;}
+.rm-column{flex-direction:column!important;}
+
+.rm-center{
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+.rm-between{
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.rm-around{
+display:flex;
+justify-content:space-around;
+align-items:center;
+}
+
+.rm-evenly{
+display:flex;
+justify-content:space-evenly;
+align-items:center;
+}
+
+.rm-wrap{
+flex-wrap:wrap;
+}
+
+/* ========= WIDTH ========= */
+
+.rm-w-25{width:25%;}
+.rm-w-33{width:33.333%;}
+.rm-w-50{width:50%;}
+.rm-w-75{width:75%;}
+.rm-w-100{width:100%;}
+
+/* ========= HEIGHT ========= */
+
+.rm-h-100{height:100%;}
+
+.rm-vh-100{
+height:100vh;
+}
+
+/* ========= TEXT ========= */
+
+.rm-text-left{text-align:left;}
+.rm-text-center{text-align:center;}
+.rm-text-right{text-align:right;}
+
+.rm-bold{
+font-weight:700;
+}
+
+.rm-uppercase{
+text-transform:uppercase;
+}
+
+.rm-nowrap{
+white-space:nowrap;
+}
+
+/* ========= SPACING ========= */
+
+.rm-m-0{margin:0;}
+.rm-m-1{margin:4px;}
+.rm-m-2{margin:8px;}
+.rm-m-3{margin:16px;}
+.rm-m-4{margin:24px;}
+.rm-m-5{margin:32px;}
+
+.rm-mt-1{margin-top:4px;}
+.rm-mt-2{margin-top:8px;}
+.rm-mt-3{margin-top:16px;}
+.rm-mt-4{margin-top:24px;}
+.rm-mt-5{margin-top:32px;}
+
+.rm-mb-1{margin-bottom:4px;}
+.rm-mb-2{margin-bottom:8px;}
+.rm-mb-3{margin-bottom:16px;}
+.rm-mb-4{margin-bottom:24px;}
+.rm-mb-5{margin-bottom:32px;}
+
+.rm-p-0{padding:0;}
+.rm-p-1{padding:4px;}
+.rm-p-2{padding:8px;}
+.rm-p-3{padding:16px;}
+.rm-p-4{padding:24px;}
+.rm-p-5{padding:32px;}
+
+/* ========= BORDER ========= */
+
+.rm-rounded{
+border-radius:var(--rm-radius-md);
+}
+
+.rm-circle{
+border-radius:50%;
+}
+
+/* ========= SHADOW ========= */
+
+.rm-shadow{
+box-shadow:var(--rm-shadow-soft);
+}
+
+.rm-shadow-lg{
+box-shadow:var(--rm-shadow-card);
+}
+
+/* ========= CURSOR ========= */
+
+.rm-pointer{
+cursor:pointer;
+}
+
+/* ========= OVERFLOW ========= */
+
+.rm-scroll-y{
+overflow-y:auto;
+}
+
+.rm-scroll-x{
+overflow-x:auto;
+}
+
+/* ========= POSITION ========= */
+
+.rm-relative{
+position:relative;
+}
+
+.rm-absolute{
+position:absolute;
+}
+
+.rm-fixed{
+position:fixed;
+}
+
+/* ========= RESPONSIVE ========= */
+
+/* Tablet */
+
+@media (min-width:768px){
+
+.rm-tablet-hidden{
+display:none!important;
+}
+
+.rm-tablet-flex{
+display:flex!important;
+}
+
+.rm-tablet-grid{
+display:grid!important;
+}
+
+}
+
+/* Desktop */
+
+@media (min-width:1200px){
+
+.rm-desktop-hidden{
+display:none!important;
+}
+
+.rm-desktop-flex{
+display:flex!important;
+}
+
+.rm-desktop-grid{
+display:grid!important;
+}
+
+}
+
+/* Mobile */
+
+@media (max-width:767px){
+
+.rm-mobile-hidden{
+display:none!important;
+}
+
+.rm-mobile-only{
+display:block!important;
+}
+
+}

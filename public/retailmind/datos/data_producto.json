@@ -1,0 +1,63 @@
+{
+  "nivel": "producto",
+  "fecha_corte": "2026-06-17",
+  "kpis": [
+    { "label": "SKUs totales", "valor": 1284, "formato": "number", "delta_texto": "Sin cambio", "direccion": "flat" },
+    { "label": "Alta volatilidad", "valor": 18, "formato": "number", "delta_texto": "▲ +5", "direccion": "down" },
+    { "label": "En recuperación", "valor": 42, "formato": "number", "delta_texto": "▲ +12", "direccion": "up" },
+    { "label": "IPO crítico", "valor": 7, "formato": "number", "delta_texto": "▲ +2", "direccion": "down" }
+  ],
+  "estados": [
+    {
+      "entidad_id": "SKU-4512", "entidad_nombre": "SKU 4512 · Arroz 1kg", "icono": "⚡",
+      "estado": "Riesgo financiero alto", "severidad": "critico", "badge": "IPO Crítico", "confianza": 0.91,
+      "consignacion": false, "ipo": 0.88,
+      "filas": [{ "label": "Margen", "valor": "9% | Capital: Alto" }, { "label": "Rotación", "valor": "▼ −22% mensual" }]
+    },
+    {
+      "entidad_id": "SKU-2341", "entidad_nombre": "SKU 2341 · FruVer bandeja", "icono": "📈",
+      "estado": "Recuperación – rebote", "severidad": "positivo", "badge": "IPO Medio", "confianza": 0.73,
+      "consignacion": false, "ipo": 0.52,
+      "filas": [{ "label": "LSTM", "valor": "prob. rebote +14% 7d" }, { "label": "Fill rate", "valor": "Martillo confirmado" }]
+    },
+    {
+      "entidad_id": "SKU-7883", "entidad_nombre": "SKU 7883 · Refresco importado", "icono": "📊",
+      "estado": "Consolidación", "severidad": "neutral", "badge": "Consignación", "confianza": 0.80,
+      "consignacion": true, "ipo": 0.21,
+      "filas": [{ "label": "Capital", "valor": "Cero (consignación)" }, { "label": "Riesgo fin.", "valor": "Bajo – solo monitoreo" }]
+    },
+    {
+      "entidad_id": "SKU-0891", "entidad_nombre": "SKU 0891 · Leche entera", "icono": "🔥",
+      "estado": "Alta volatilidad", "severidad": "alerta", "badge": "Vigilancia", "confianza": 0.86,
+      "consignacion": false, "ipo": 0.64,
+      "filas": [{ "label": "Shooting star", "valor": "Promoción fallida" }, { "label": "CHI", "valor": "3 escaneos sin checkout" }]
+    },
+    {
+      "entidad_id": "SKU-3302", "entidad_nombre": "SKU 3302 · Detergente A", "icono": "📈",
+      "estado": "Recuperación", "severidad": "positivo", "badge": "Positivo", "confianza": 0.79,
+      "consignacion": false, "ipo": 0.45,
+      "filas": [{ "label": "Rotación", "valor": "▲ +9% semanal" }, { "label": "Fill Rate", "valor": "97.2%" }]
+    },
+    {
+      "entidad_id": "SKU-5590", "entidad_nombre": "SKU 5590 · Congelado B", "icono": "❄️",
+      "estado": "Estancamiento", "severidad": "neutral", "badge": "Sin cambio", "confianza": 0.68,
+      "consignacion": true, "ipo": 0.18,
+      "filas": [{ "label": "Remove cart", "valor": "▲ +22%" }, { "label": "Rotación", "valor": "Sin cambio 30d" }]
+    }
+  ],
+  "narrativa": "El motor de señales detectó 7 SKUs con IPO crítico, priorizando aquellos con capital propio inmovilizado y desaceleración simultánea. El SKU 4512 (Arroz) requiere revisión inmediata: caída del 22% en rotación con margen del 9%. En contraste, FruVer muestra un patrón de martillo confirmado en fill rate, con probabilidad del 73% de rebote la próxima semana según el modelo LSTM. Los productos en consignación se tratan con prioridad operacional reducida al no comprometer capital.",
+  "alertas": [
+    { "severidad": "critico", "titulo": "SKU 4512 IPO Crítico", "detalle": "Capital inmovilizado alto + −22% rotación", "entidad_id": "SKU-4512", "horas_atras": 1 },
+    { "severidad": "alerta", "titulo": "SKU 0891 Shooting Star", "detalle": "Promoción fallida · 3 escaneos sin checkout", "entidad_id": "SKU-0891", "horas_atras": 2 },
+    { "severidad": "positivo", "titulo": "SKU 2341 Rebote inminente", "detalle": "Martillo en fill rate · prob. 73%", "entidad_id": "SKU-2341", "horas_atras": 4 }
+  ],
+  "predicciones": [
+    { "entidad_id": "SKU-2341", "entidad_nombre": "FruVer bandeja", "modelo": "LSTM", "horizonte_dias": 7, "probabilidad": 0.73, "direccion": "up", "magnitud_pct": 14, "señal_soporte": "Martillo en fill rate" },
+    { "entidad_id": "SKU-2341", "entidad_nombre": "FruVer bandeja", "modelo": "SARIMAX", "horizonte_dias": 7, "probabilidad": 0.68, "direccion": "up", "magnitud_pct": 11, "señal_soporte": "Tendencia estacional" },
+    { "entidad_id": "RFM-CHAMP", "entidad_nombre": "Segmento Champions", "modelo": "ARIMA", "horizonte_dias": 7, "probabilidad": 0.61, "direccion": "down", "magnitud_pct": -6, "señal_soporte": "Menor absorción de promociones premium" }
+  ],
+  "tendencia_30d": {
+    "ventas_indice": [90,93,89,95,97,91,94,98,96,99,93,90,92,95,100,97,101,99,103,100,104,101,106,103,107,105,109,107,111,110],
+    "margen_pct": [16.8,17.1,16.9,17.4,17.7,17.3,17.6,17.9,17.7,18.0,17.5,17.2,17.4,17.7,18.1,17.8,18.2,18.0,18.4,18.1,18.5,18.2,18.6,18.3,18.7,18.5,18.8,18.6,18.9,18.2]
+  }
+}

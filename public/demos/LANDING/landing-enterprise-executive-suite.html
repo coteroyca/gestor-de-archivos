@@ -1,0 +1,309 @@
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RetailMind 360° | Plataforma de Analítica Corporativa para Supermercados</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome para Iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#0f172a',    /* Azul Profundo Corporativo */
+                            primary: '#1e3a8a', /* Azul Eléctrico */
+                            accent: '#10b981',  /* Verde Esmeralda Exito/Ventas */
+                            light: '#f8fafc'    /* Fondo Claro */
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-brand-light text-slate-800 font-sans antialiased">
+
+    <!-- NAV BAR -->
+    <nav class="sticky top-0 z-50 bg-white border-b border-slate-200 backdrop-blur-md bg-opacity-95">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <div class="flex-shrink-0 flex items-center">
+                    <!-- Logotipo Oficial del Proyecto -->
+                    <img src="https://gestor-de-archivos.vercel.app/assets/logos/logo-RetailMind-fondo-negro-1447x352.png" alt="RetailMind 360° Logo" class="h-10 w-auto object-contain filter invert-0">
+                </div>
+                <div class="hidden md:flex space-x-8 text-sm font-semibold text-slate-600">
+                    <a href="#plataforma" class="hover:text-brand-primary transition">Plataforma</a>
+                    <a href="#entornos" class="hover:text-brand-primary transition">Paneles y Vistas</a>
+                    <a href="#ia" class="hover:text-brand-primary transition">Inteligencia Artificial</a>
+                </div>
+                <div>
+                    <a href="#contacto" class="bg-brand-primary text-white px-5 py-2.5 rounded-lg text-sm font-bold shadow-md hover:bg-brand-dark transition-all duration-300">
+                        Agendar Demo
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="relative bg-brand-dark text-white overflow-hidden py-20 lg:py-32">
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#1e3a8a_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6 text-center lg:text-left">
+                    <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-brand-primary text-blue-200 border border-blue-800">
+                        <i class="fa-solid fa-bolt text-brand-accent"></i> Analítica en la Nube & IA para Retail
+                    </span>
+                    <h1 class="text-4xl sm:text-5xl font-black tracking-tight leading-tight">
+                        Control total de su cadena de supermercados desde una sola pantalla
+                    </h1>
+                    <p class="text-lg text-slate-300 max-w-xl mx-auto lg:mx-0">
+                        Conecte la estrategia de la junta directiva con la realidad del piso de venta. Tome decisiones en tiempo real, proteja sus márgenes y elimine quiebres de stock a nivel nacional.
+                    </p>
+                    <div class="flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
+                        <a href="#contacto" class="bg-brand-accent text-brand-dark px-8 py-4 rounded-xl font-bold text-center shadow-lg hover:scale-105 transition-all duration-300">
+                            Probar RetailMind 360°
+                        </a>
+                        <a href="#entornos" class="border border-slate-600 hover:border-slate-400 px-8 py-4 rounded-xl font-bold text-center transition">
+                            Ver Módulos
+                        </a>
+                    </div>
+                </div>
+                <!-- Mockup Visual del Infográfico de Alcance de Navegación -->
+                <div class="relative mx-auto lg:ml-auto max-w-2xl lg:max-w-none w-full">
+                    <div class="bg-white border border-slate-200 rounded-2xl shadow-2xl p-2 overflow-hidden group">
+                        <img src="https://gestor-de-archivos.vercel.app/assets/imagenes/Plataforma-Unificada-en-la-Nube.png" alt="Plataforma unificada en la nube con analítica predictiva e IA - Alcance de navegación" class="w-full h-auto object-cover rounded-xl transition duration-500 group-hover:scale-[1.01]">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SOBRE LA PLATAFORMA -->
+    <section id="plataforma" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+            <h2 class="text-3xl font-black tracking-tight text-brand-dark sm:text-4xl">La infraestructura analítica definitiva para Retail</h2>
+            <p class="mt-4 text-lg text-slate-600">
+                Olvídese de reportes en PDF atrasados y hojas de cálculo fragmentadas. <strong>RetailMind 360°</strong> opera de forma nativa en la nube, procesando millones de datos transaccionales para convertirlos en acciones rentables.
+            </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition">
+                <div class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-brand-primary text-xl mb-6">
+                    <i class="fa-solid fa-cloud"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Arquitectura en la Nube</h3>
+                <p class="text-slate-600 text-sm leading-relaxed">Infraestructura escalable y segura que centraliza los sistemas de cajas (POS) e inventarios de todas sus tiendas a nivel nacional.</p>
+            </div>
+            <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition">
+                <div class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center text-brand-accent text-xl mb-6">
+                    <i class="fa-solid fa-brain"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Inteligencia Artificial</h3>
+                <p class="text-slate-600 text-sm leading-relaxed">Algoritmos predictivos que anticipan la demanda, alertan sobre mermas críticas y optimizan de forma automática los horarios del personal.</p>
+            </div>
+            <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition">
+                <div class="w-12 h-12 rounded-xl bg-purple-50 flex items-center justify-center text-purple-600 text-xl mb-6">
+                    <i class="fa-solid fa-mobile-screen-button"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Diseño Mobile-First</h3>
+                <p class="text-slate-600 text-sm leading-relaxed">Vistas optimizadas para tabletas y terminales móviles (PDAs) destinadas al personal que opera directamente en los pasillos de venta.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ENTORNOS -->
+    <section id="entornos" class="bg-white py-20 border-y border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-3xl font-black tracking-tight text-brand-dark sm:text-4xl">Un panel diseñado para cada nivel de responsabilidad</h2>
+                <p class="mt-4 text-lg text-slate-600">Un ecosistema integrado de información donde los roles estratégicos y operativos hablan el mismo idioma.</p>
+            </div>
+
+            <!-- Estructura de Entornos -->
+            <div class="space-y-12">
+                <!-- Nivel 1: C-Level -->
+                <div class="bg-brand-light rounded-2xl p-6 lg:p-10 border border-slate-200">
+                    <div class="flex items-center gap-3 mb-6">
+                        <span class="px-3 py-1 bg-brand-primary text-white text-xs font-bold rounded-md">ESTRATÉGICO</span>
+                        <h3 class="text-2xl font-black text-brand-dark">Módulo Corporativo (Alta Dirección)</h3>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-2xs">
+                            <h4 class="font-bold text-lg text-brand-primary mb-2"><i class="fa-solid fa-user-tie mr-2"></i>Vista del CEO</h4>
+                            <p class="text-slate-600 text-xs mb-3">Visión macro consolidada del desempeño nacional, EBITDA corporativo y comparativa por regiones.</p>
+                            <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">KPI: Margen Neto Global</span>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-2xs">
+                            <h4 class="font-bold text-lg text-brand-primary mb-2"><i class="fa-solid fa-coins mr-2"></i>Vista del CFO</h4>
+                            <p class="text-slate-600 text-xs mb-3">Flujo de caja en tiempo real, control riguroso de OPEX/CAPEX y días de cuentas por pagar (DPO).</p>
+                            <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">KPI: Free Cash Flow</span>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-2xs">
+                            <h4 class="font-bold text-lg text-brand-primary mb-2"><i class="fa-solid fa-truck-ramp-box mr-2"></i>Vista del COO</h4>
+                            <p class="text-slate-600 text-xs mb-3">Eficiencia logística global, estatus del Centro de Distribución (CEDI) y porcentaje de merma país.</p>
+                            <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">KPI: Fill Rate CEDI</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-brand-light rounded-2xl p-6 lg:p-10 border border-slate-200">
+                    <div class="flex items-center gap-3 mb-6">
+                        <span class="px-3 py-1 bg-slate-700 text-white text-xs font-bold rounded-md">TÁCTICO</span>
+                        <h3 class="text-2xl font-black text-brand-dark">Módulo de Sucursales y Categorías</h3>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-2xs">
+                            <h4 class="font-bold text-lg text-slate-800 mb-2"><i class="fa-solid fa-shop mr-2"></i>Gerente de Tienda</h4>
+                            <p class="text-slate-600 text-xs mb-3">Cumplimiento de metas diarias de la sucursal, ticket promedio (AOV) y tráfico peatonal en piso.</p>
+                            <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">KPI: Venta vs Meta Local</span>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-2xs">
+                            <h4 class="font-bold text-lg text-slate-800 mb-2"><i class="fa-solid fa-tags mr-2"></i>Gerente de Categorías</h4>
+                            <p class="text-slate-600 text-xs mb-3">Rentabilidad y rotación de productos por SKU, gestión de planogramas y márgenes de liquidación.</p>
+                            <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">KPI: Venta por Metro Lineal</span>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-2xs">
+                            <h4 class="font-bold text-lg text-slate-800 mb-2"><i class="fa-solid fa-shield-halved mr-2"></i>Prevención de Pérdidas</h4>
+                            <p class="text-slate-600 text-xs mb-3">Auditorías automatizadas de devoluciones sospechosas, alertas de hurto hormiga y descuadres.</p>
+                            <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">KPI: Variación de Inventario</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-brand-light rounded-2xl p-6 lg:p-10 border border-slate-200">
+                    <div class="flex items-center gap-3 mb-6">
+                        <span class="px-3 py-1 bg-brand-accent text-brand-dark text-xs font-bold rounded-md">TIEMPO REAL</span>
+                        <h3 class="text-2xl font-black text-brand-dark">Módulo de Piso de Venta (Operaciones de Campo)</h3>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-2xs flex flex-col justify-between">
+                            <div>
+                                <h4 class="font-bold text-lg text-brand-accent mb-2"><i class="fa-solid fa-cash-register mr-2"></i>Panel de Supervisión de Cajas</h4>
+                                <p class="text-slate-600 text-xs mb-4">Radar predictivo de embotellamientos en el front-end. Mide el tiempo medio de atención y emite alertas automáticas para la apertura de nuevas cajas si la fila supera los límites.</p>
+                            </div>
+                            <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">KPI: Artículos por Minuto (IPM)</span>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-2xs flex flex-col justify-between">
+                            <div>
+                                <h4 class="font-bold text-lg text-brand-accent mb-2"><i class="fa-solid fa-layer-group mr-2"></i>Panel de Control de Pasillos</h4>
+                                <p class="text-slate-600 text-xs mb-4">Herramienta móvil que cruza ventas relámpago con stock. Alerta instantáneamente al reponedor cuando un artículo se agota en la góndola pero hay existencias en el almacén trasero.</p>
+                            </div>
+                            <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">KPI: Alerta de Góndola Vacía (OOS)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="ia" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-gradient-to-br from-brand-dark to-brand-primary rounded-3xl text-white p-8 lg:p-16 relative overflow-hidden shadow-xl">
+            <div class="absolute right-0 bottom-0 opacity-10 translate-x-12 translate-y-12">
+                <i class="fa-solid fa-brain text-[300px]"></i>
+            </div>
+            <div class="max-w-2xl space-y-6 relative z-10">
+                <span class="bg-brand-accent/20 text-brand-accent px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wider">Flujo Inteligente Escalable</span>
+                <h2 class="text-3xl lg:text-4xl font-black tracking-tight">De los pasillos a la junta directiva de forma automatizada</h2>
+                <p class="text-slate-300 text-base leading-relaxed">
+                    <strong>RetailMind 360°</strong> cuenta con un sistema inteligente de escalabilidad de flujos. Si una alerta crítica en la línea de cajas o en una góndola no es resuelta por el personal operativo en un lapso de 7 minutos, la plataforma notifica automáticamente al Gerente de la Sucursal. Si el problema persiste por más de 30 minutos comprometiendo la meta del día, el incidente se consolida inmediatamente en la Vista Corporativa del COO en la casa matriz. 
+                </p>
+                <div class="pt-4 flex items-center gap-4 text-xs font-semibold text-brand-accent">
+                    <span><i class="fa-solid fa-check-double"></i> Cero datos perdidos</span>
+                    <span><i class="fa-solid fa-check-double"></i> Alertas push automatizadas</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contacto" class="bg-slate-100 py-20 border-t border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+                
+                <div class="space-y-6">
+                    <h2 class="text-3xl font-black text-brand-dark sm:text-4xl">¿Listo para transformar los datos de sus supermercados?</h2>
+                    <p class="text-slate-600 text-base leading-relaxed">
+                        Agende una demostración personalizada de <strong>RetailMind 360°</strong> con nuestros consultores expertos en retail. Descubra cómo podemos integrar sus sistemas actuales y comenzar a optimizar su rentabilidad corporativa en pocas semanas.
+                    </p>
+                    <div class="space-y-4 pt-4">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-lg bg-white shadow-xs border border-slate-200 flex items-center justify-center text-brand-primary font-bold">
+                                <i class="fa-solid fa-envelope"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-slate-500 font-medium uppercase">Escríbanos corporativamente</p>
+                                <p class="text-sm font-bold text-slate-800">contacto@retailmind360.com</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-lg bg-white shadow-xs border border-slate-200 flex items-center justify-center text-brand-primary font-bold">
+                                <i class="fa-solid fa-globe"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-slate-500 font-medium uppercase">Cobertura regional</p>
+                                <p class="text-sm font-bold text-slate-800">Disponible para Latinoamérica & Venezuela</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formulario -->
+                <div class="bg-white p-8 rounded-2xl shadow-xl border border-slate-200/60 w-full">
+                    <h3 class="text-xl font-black text-brand-dark mb-6">Solicitar Demostración Comercial</h3>
+                    <form action="#" method="POST" class="space-y-5" onsubmit="event.preventDefault(); alert('¡Gracias por su interés! El equipo comercial de RetailMind 360° se comunicará con usted en las próximas 24 horas.');">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label for="nombre" class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Nombre Completo</label>
+                                <input type="text" id="nombre" name="nombre" required class="w-full px-4 py-3 rounded-lg border border-slate-200 text-sm focus:outline-none focus:border-brand-primary bg-brand-light/50" placeholder="Ej. Carlos Mendoza">
+                            </div>
+                            <div>
+                                <label for="cargo" class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Cargo / Puesto</label>
+                                <input type="text" id="cargo" name="cargo" required class="w-full px-4 py-3 rounded-lg border border-slate-200 text-sm focus:outline-none focus:border-brand-primary bg-brand-light/50" placeholder="Ej. Director de TI / CFO">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="empresa" class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Nombre de la Cadena de Supermercados</label>
+                            <input type="text" id="empresa" name="empresa" required class="w-full px-4 py-3 rounded-lg border border-slate-200 text-sm focus:outline-none focus:border-brand-primary bg-brand-light/50" placeholder="Ej. Supermercados del Centro">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Correo Electrónico Corporativo</label>
+                            <input type="email" id="email" name="email" required class="w-full px-4 py-3 rounded-lg border border-slate-200 text-sm focus:outline-none focus:border-brand-primary bg-brand-light/50" placeholder="carlos.mendoza@empresa.com">
+                        </div>
+                        <div>
+                            <label for="sucursales" class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Número de Sucursales a Nivel Nacional</label>
+                            <select id="sucursales" name="sucursales" class="w-full px-4 py-3 rounded-lg border border-slate-200 text-sm focus:outline-none focus:border-brand-primary bg-brand-light/50 text-slate-600">
+                                <option value="1-5">De 1 a 5 tiendas</option>
+                                <option value="6-20">De 6 a 20 tiendas</option>
+                                <option value="21-50">De 21 a 50 tiendas</option>
+                                <option value="51+">Más de 51 tiendas</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="w-full bg-brand-primary text-white py-4 rounded-xl font-bold shadow-md hover:bg-brand-dark transition-all duration-300 uppercase tracking-wider text-xs">
+                            Enviar Solicitud
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-brand-dark text-slate-400 text-xs py-8 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div>
+                <p>&copy; 2026 <strong>RetailMind 360°</strong>. Todos los derechos reservados.</p>
+            </div>
+            <div class="flex gap-6">
+                <span class="hover:text-white transition cursor-pointer">Términos de Servicio</span>
+                <span class="hover:text-white transition cursor-pointer">Política de Privacidad</span>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #f0f2f5; display: flex; justify-content: center; align-items: center; min-height: 100vh; font-family: 'Segoe UI', Arial, sans-serif; padding: 40px; }
+.container { max-width: 1000px; background: white; border-radius: 24px; box-shadow: 0 20px 35px -10px rgba(0,0,0,0.1); padding: 30px; }
+.paraguas { border: 2px solid #1a3a5f; border-radius: 20px; background: #f8fafc; }
+.titulo { background: #1a3a5f; color: white; padding: 12px 20px; font-size: 1.5rem; font-weight: bold; text-align: center; border-radius: 16px 16px 0 0; letter-spacing: 1px; }
+.dos-columnas { display: flex; gap: 20px; padding: 25px; }
+.col { flex: 1; border-radius: 16px; padding: 18px; background: white; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border-top: 4px solid; }
+.col:first-child { border-top-color: #2c7da0; }
+.col:last-child { border-top-color: #e76f51; }
+.col h2 { font-size: 1.4rem; margin-bottom: 15px; }
+.col ul { list-style: none; }
+.col li { margin-bottom: 12px; padding-left: 24px; position: relative; font-size: 0.9rem; line-height: 1.4; }
+.col li:before { content: "•"; position: absolute; left: 6px; color: inherit; font-weight: bold; font-size: 1.2rem; }
+.col:first-child li:before { color: #2c7da0; }
+.col:last-child li:before { color: #e76f51; }
+.flecha { text-align: center; font-size: 2rem; color: #1a3a5f; margin: -10px 0; }
+.tecnico { background: #eef2f5; border-radius: 16px; margin: 0 25px 25px 25px; padding: 18px; border: 1px dashed #5f7f9e; }
+.tecnico p { font-weight: bold; color: #2c3e50; margin-bottom: 12px; text-align: center; font-size: 0.85rem; letter-spacing: 1px; }
+.tecnico-items { display: flex; justify-content: center; gap: 25px; flex-wrap: wrap; }
+.tecnico-items span { background: white; padding: 6px 14px; border-radius: 40px; font-size: 0.8rem; color: #1e4663; border: 1px solid #cbdbe0; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="paraguas">
+    <div class="titulo">🏢 RETAILMIND (MARCA PARAGUAS)</div>
+    <div class="dos-columnas">
+      <div class="col">
+        <h2>📦 RETAILMIND DATA<br><span style="font-size:0.7rem; font-weight:normal;">(Producto 1)</span></h2>
+        <ul>
+          <li>Transforma datos crudos del cliente en información procesada</li>
+          <li>Segmentaciones (RFM, jerarquías producto, geosucursales)</li>
+          <li>Datamarts listos para Power BI / Cognos</li>
+        </ul>
+      </div>
+      <div class="col">
+        <h2>🧠 GENIX<br><span style="font-size:0.7rem; font-weight:normal;">(Producto 2)</span></h2>
+        <ul>
+          <li>Dashboards · Alertas predictivas</li>
+          <li>Mensajería operativa · Tareas asignables</li>
+          <li>Flujos: Gerente ↔ Cliente ↔ Operario ↔ Corporación</li>
+        </ul>
+      </div>
+    </div>
+    <div class="flecha">▲</div>
+    <div class="tecnico">
+      <p>⚙️ ACTIVO TÉCNICO (no comercial)</p>
+      <div class="tecnico-items">
+        <span>🔄 ETL con Medallion</span>
+        <span>💾 Data Lake</span>
+        <span>☁️ Infraestructura escalable</span>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

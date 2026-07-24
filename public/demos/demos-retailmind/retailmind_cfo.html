@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RetailMind · CFO · Centro de Control Financiero</title>
+    <!-- Fuentes Luxury: Cinzel para números/títulos ejecutivos y Outfit para lectura -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* === PALETA ROLEX HULK EXCLUSIVE CON BORDES GOLD === */
+            --hulk: #008744;
+            --hulk-vibrant: #00E676;
+            --hulk-dark: #002B15;
+            --hulk-glow: rgba(0, 230, 118, 0.25);
+            
+            /* FONDOS PROFUNDOS OYSTER/ACERO */
+            --abyssal: #050B08;
+            --surface: #0B1612;
+            --surface-card: #0F1F1A;
+            --border-deep: rgba(212, 175, 55, 0.25); /* Bordes Gold Elegantes */
+            --border-glow: rgba(212, 175, 55, 0.4);
+            
+            /* ORO / ACERO 904L */
+            --rolex-gold: #D4AF37;
+            --rolex-gold-light: #F3E5AB;
+            --steel-light: #F1F5F9;
+            --steel-muted: #7E998F;
+            --steel-silver: #CBD5E1;
+            
+            /* SEMÁNTICOS */
+            --red: #FF4D4D;
+            --gold: #D4AF37;
+            --blue-accent: #29B6F6;
+            --purple: #AB47BC;
+        }
+
+        body {
+            background: var(--abyssal);
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(0, 135, 68, 0.15) 0%, transparent 75%),
+                radial-gradient(circle at 85% 30%, rgba(212, 175, 55, 0.05) 0%, transparent 50%);
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--steel-light);
+            min-height: 100vh;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        /* SCROLL PERSONALIZADO */
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: var(--abyssal); }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--hulk), var(--rolex-gold));
+            border-radius: 20px;
+        }
+
+        .shell {
+            display: grid;
+            grid-template-rows: 56px 1fr;
+            grid-template-columns: 230px 1fr;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* TOPBAR ROLEX LUXURY */
+        .topbar {
+            grid-column: 1/-1;
+            background: rgba(11, 22, 18, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-deep);
+            display: flex;
+            align-items: center;
+            padding: 0 1.5rem;
+            gap: 1rem;
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+        .topbar img { height: 28px; filter: drop-shadow(0 0 8px rgba(0,230,118,0.3)); }
+        .topbar-divider {
+            width: 1px;
+            height: 24px;
+            background: linear-gradient(180deg, transparent, var(--rolex-gold), transparent);
+            margin: 0 0.5rem;
+            opacity: 0.5;
+        }
+        .topbar-date { font-size: 11px; color: var(--steel-muted); letter-spacing: 0.5px; }
+        .topbar-badge {
+            background: linear-gradient(135deg, rgba(0, 135, 68, 0.3), rgba(212, 175, 55, 0.15));
+            color: var(--rolex-gold-light);
+            padding: 3px 14px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+            border: 1px solid var(--rolex-gold);
+            margin-left: auto;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+        }
+        .topbar-user { display: flex; align-items: center; gap: 8px; margin-left: 1rem; }
+        .avatar {
+            width: 30px; height: 30px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--rolex-gold), var(--hulk));
+            display: flex; align-items: center; justify-content: center;
+            font-size: 11px; font-weight: 800; color: #000;
+            border: 1px solid var(--rolex-gold-light);
+            box-shadow: 0 0 8px var(--hulk-glow);
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            background: var(--surface);
+            border-right: 1px solid var(--border-deep);
+            padding: 1rem 0;
+            overflow-y: auto;
+        }
+        .sidebar-section {
+            padding: 0.5rem 1.2rem;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--rolex-gold);
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            margin-top: 0.5rem;
+            font-family: 'Cinzel', serif;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 1.2rem;
+            cursor: pointer;
+            color: var(--steel-muted);
+            font-size: 12px;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+        .nav-item:hover {
+            color: var(--steel-light);
+            background: rgba(0, 230, 118, 0.05);
+            border-left-color: var(--rolex-gold);
+        }
+        .nav-item.active {
+            color: #fff;
+            border-left-color: var(--rolex-gold);
+            background: linear-gradient(90deg, rgba(0, 135, 68, 0.25) 0%, transparent 100%);
+            font-weight: 600;
+        }
+        .nav-icon { font-size: 14px; width: 18px; text-align: center; }
+        .nav-badge {
+            margin-left: auto;
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--red);
+            border-radius: 10px;
+            padding: 1px 7px;
+            font-size: 10px;
+            font-weight: 700;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+        .nav-badge.green { background: rgba(0, 230, 118, 0.15); color: var(--hulk-vibrant); border: 1px solid var(--hulk); }
+        .nav-badge.gold { background: rgba(212, 175, 55, 0.15); color: var(--rolex-gold); border: 1px solid var(--rolex-gold); }
+
+        .menu-toggle {
+            display: none; width: 36px; height: 36px;
+            border: 1px solid var(--border-deep); border-radius: 10px;
+            background: transparent; color: var(--steel-light); font-size: 18px;
+            align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0;
+        }
+        .menu-toggle:hover { background: rgba(255, 255, 255, 0.05); }
+        .sidebar-overlay {
+            display: none; position: fixed; inset: 56px 0 0 0;
+            background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(4px);
+            z-index: 19; opacity: 0; transition: opacity 0.2s ease; pointer-events: none;
+        }
+
+        @media (max-width: 720px) {
+            .shell { grid-template-columns: 1fr; grid-template-rows: 56px 1fr; }
+            .topbar { padding: 0 0.75rem; gap: 0.6rem; }
+            .topbar img { height: 22px; max-width: 130px; object-fit: contain; }
+            .topbar-badge, .topbar-user, .topbar-date { display: none; }
+            .menu-toggle { display: flex; }
+            .sidebar {
+                position: fixed; top: 56px; bottom: 0; left: 0; width: 260px;
+                z-index: 20; transform: translateX(-105%); transition: transform 0.22s ease;
+                box-shadow: 18px 0 40px rgba(0, 0, 0, 0.8);
+            }
+            body.mobile-menu-open .sidebar { transform: translateX(0); }
+            body.mobile-menu-open .sidebar-overlay { display: block; opacity: 1; pointer-events: auto; }
+            .main { grid-column: 1; padding: 1rem; gap: 1rem; }
+            .kpi-row { grid-template-columns: repeat(2, 1fr); }
+            .state-grid, .two-col, .candle-grid, .cashflow-grid { grid-template-columns: 1fr; }
+            .drill-tabs { overflow-x: auto; width: 100%; padding-bottom: 2px; }
+        }
+
+        .main {
+            overflow-y: auto;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            background: transparent;
+        }
+
+        /* BREADCRUMB */
+        .breadcrumb { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--steel-muted); }
+        .breadcrumb span { cursor: pointer; transition: color 0.15s; }
+        .breadcrumb span:hover { color: var(--rolex-gold); }
+        .breadcrumb .active-crumb { color: var(--steel-light); font-weight: 600; }
+        .breadcrumb .sep { color: var(--rolex-gold); opacity: 0.5; }
+
+        /* DRILL TABS */
+        .drill-tabs { display: flex; gap: 6px; }
+        .drill-tab {
+            padding: 6px 16px; border-radius: 20px; font-size: 11px; font-weight: 600;
+            cursor: pointer; transition: all 0.2s ease; border: 1px solid var(--border-deep);
+            color: var(--steel-muted); background: rgba(15, 31, 26, 0.6);
+        }
+        .drill-tab:hover { color: var(--steel-light); border-color: var(--hulk); background: rgba(0, 135, 68, 0.15); }
+        .drill-tab.active {
+            background: linear-gradient(135deg, var(--hulk), var(--hulk-dark));
+            border-color: var(--rolex-gold); color: #fff; box-shadow: 0 0 12px var(--hulk-glow);
+        }
+
+        /* KPI CARD LUXURY */
+        .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+        .kpi {
+            background: linear-gradient(145deg, var(--surface-card), var(--surface));
+            border: 1px solid var(--border-deep);
+            border-radius: 12px;
+            padding: 1.1rem 1.2rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .kpi::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--rolex-gold), transparent);
+            opacity: 0.5;
+        }
+        .kpi:hover {
+            border-color: var(--rolex-gold);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.15);
+        }
+        .kpi-label {
+            font-size: 10px; color: var(--steel-muted); font-weight: 700;
+            letter-spacing: 1px; text-transform: uppercase; font-family: 'Cinzel', serif;
+        }
+        .kpi-value {
+            font-size: 26px; font-weight: 700; margin: 6px 0 2px;
+            color: #fff; font-family: 'Cinzel', serif; text-shadow: 0 0 10px rgba(255,255,255,0.1);
+        }
+        .kpi-delta { font-size: 11px; font-weight: 600; }
+        .up { color: var(--hulk-vibrant); text-shadow: 0 0 6px rgba(0, 230, 118, 0.3); }
+        .down { color: var(--red); }
+        .flat { color: var(--rolex-gold); }
+
+        /* STATE GRID LUXURY */
+        .state-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .state-card {
+            background: linear-gradient(145deg, var(--surface-card), var(--surface));
+            border: 1px solid var(--border-deep);
+            border-radius: 14px; padding: 1.2rem; cursor: pointer; transition: all 0.25s ease;
+        }
+        .state-card:hover {
+            border-color: var(--rolex-gold); transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 15px rgba(212, 175, 55, 0.2);
+        }
+        .state-card.selected {
+            border-color: var(--rolex-gold);
+            background: linear-gradient(145deg, rgba(0, 135, 68, 0.15), var(--surface));
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+        }
+        .sc-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+        .sc-domain {
+            font-size: 10px; font-weight: 700; color: var(--rolex-gold);
+            letter-spacing: 1px; text-transform: uppercase; font-family: 'Cinzel', serif;
+        }
+        .sc-status { font-size: 9px; padding: 2px 10px; border-radius: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .s-green { background: rgba(0, 230, 118, 0.12); color: var(--hulk-vibrant); border: 1px solid rgba(0, 230, 118, 0.3); }
+        .s-red { background: rgba(239, 68, 68, 0.12); color: var(--red); border: 1px solid rgba(239, 68, 68, 0.3); }
+        .s-yellow { background: rgba(212, 175, 55, 0.12); color: var(--rolex-gold); border: 1px solid rgba(212, 175, 55, 0.3); }
+        .s-blue { background: rgba(41, 182, 246, 0.12); color: var(--blue-accent); border: 1px solid rgba(41, 182, 246, 0.3); }
+        .s-purple { background: rgba(171, 71, 188, 0.12); color: var(--purple); border: 1px solid rgba(171, 71, 188, 0.3); }
+        .sc-state { font-size: 15px; font-weight: 700; margin-bottom: 8px; color: #fff; }
+        .sc-row { display: flex; justify-content: space-between; align-items: center; margin: 4px 0; font-size: 11px; color: var(--steel-muted); }
+        .sc-row strong { color: var(--steel-light); font-weight: 600; }
+        .sc-conf {
+            font-size: 10px; color: var(--steel-muted); margin-top: 10px; padding-top: 8px;
+            border-top: 1px solid var(--border-deep); display: flex; justify-content: space-between; align-items: center;
+        }
+        .conf-bar { height: 4px; border-radius: 2px; background: rgba(255,255,255,0.05); overflow: hidden; flex: 1; margin: 0 8px; }
+        .conf-fill { height: 100%; border-radius: 2px; box-shadow: 0 0 8px currentColor; }
+
+        /* PANELS */
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .panel {
+            background: linear-gradient(145deg, var(--surface-card), var(--surface));
+            border: 1px solid var(--border-deep); border-radius: 14px; padding: 1.2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        .panel-title {
+            font-size: 11px; font-weight: 700; color: var(--rolex-gold);
+            letter-spacing: 1px; text-transform: uppercase; margin-bottom: 14px; font-family: 'Cinzel', serif;
+        }
+
+        /* HIERARCHY LIST */
+        .hier-item {
+            display: flex; align-items: center; gap: 10px; padding: 10px 0;
+            border-bottom: 1px solid var(--border-deep); cursor: pointer; transition: all 0.2s ease;
+        }
+        .hier-item:last-child { border-bottom: none; }
+        .hier-item:hover { padding-left: 6px; }
+        .hier-item:hover .hi-name { color: var(--hulk-vibrant); }
+        .hi-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; box-shadow: 0 0 6px currentColor; }
+        .hi-name { font-size: 12px; font-weight: 500; flex: 1; color: var(--steel-light); }
+        .hi-state { font-size: 10px; padding: 2px 8px; border-radius: 8px; font-weight: 700; }
+        .hi-delta { font-size: 11px; font-weight: 600; min-width: 50px; text-align: right; }
+        .hi-arrow { color: var(--rolex-gold); font-size: 14px; }
+
+        /* ALERTS */
+        .alert-item { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border-deep); }
+        .alert-item:last-child { border-bottom: none; }
+        .alert-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; box-shadow: 0 0 6px currentColor; }
+        .alert-body { flex: 1; }
+        .alert-title { font-size: 12px; font-weight: 600; color: var(--steel-light); margin-bottom: 2px; }
+        .alert-sub { font-size: 11px; color: var(--steel-muted); }
+        .alert-time { font-size: 10px; color: var(--steel-muted); flex-shrink: 0; }
+
+        /* AI NARRATIVE ROLEX STYLE */
+        .narrative-box {
+            background: linear-gradient(135deg, rgba(0, 135, 68, 0.12) 0%, rgba(15, 31, 26, 0.8) 100%);
+            border: 1px solid var(--border-glow);
+            border-left: 4px solid var(--rolex-gold);
+            border-radius: 14px; padding: 1.2rem;
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.4);
+        }
+        .narr-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+        .narr-icon { font-size: 16px; }
+        .narr-title {
+            font-size: 11px; font-weight: 700; color: var(--rolex-gold);
+            letter-spacing: 1px; text-transform: uppercase; font-family: 'Cinzel', serif;
+        }
+        .narr-text { font-size: 12px; color: var(--steel-silver); line-height: 1.7; }
+        .narr-text strong { color: #fff; font-weight: 600; }
+
+        /* CHART WRAP */
+        .chart-wrap { position: relative; height: 190px; margin-top: 8px; }
+
+        /* CANDLESTICK */
+        .candle-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .candle-panel {
+            background: linear-gradient(145deg, var(--surface-card), var(--surface));
+            border: 1px solid var(--border-deep); border-radius: 14px; padding: 1.2rem;
+        }
+        .candle-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+        .candle-title {
+            font-size: 11px; font-weight: 700; color: var(--rolex-gold);
+            letter-spacing: 1px; text-transform: uppercase; font-family: 'Cinzel', serif;
+        }
+        .candle-note { font-size: 10px; color: var(--steel-muted); line-height: 1.4; text-align: right; max-width: 210px; }
+        .candle-wrap { height: 180px; position: relative; margin-top: 8px; }
+        .candle-wrap canvas { width: 100% !important; height: 100% !important; display: block; }
+        .candle-summary { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; font-size: 10px; color: var(--steel-muted); }
+        .candle-pill { border: 1px solid var(--border-deep); border-radius: 999px; padding: 3px 10px; background: rgba(255, 255, 255, 0.02); color: var(--steel-silver); }
+
+        /* CASHFLOW ROLEX EXCLUSIVE */
+        .cashflow-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 10px; }
+        .cashflow-item {
+            background: var(--abyssal); border-radius: 10px; padding: 1rem;
+            border: 1px solid var(--border-deep); text-align: center; position: relative;
+        }
+        .cashflow-item .label {
+            font-size: 9px; text-transform: uppercase; letter-spacing: 1px;
+            color: var(--rolex-gold); font-family: 'Cinzel', serif; font-weight: 700;
+        }
+        .cashflow-item .value { font-size: 20px; font-weight: 700; margin-top: 4px; color: #fff; font-family: 'Cinzel', serif; }
+        .cashflow-item .trend { font-size: 10px; margin-top: 2px; font-weight: 600; }
+        .cashflow-item .trend.up { color: var(--hulk-vibrant); }
+        .cashflow-item .trend.down { color: var(--red); }
+
+        /* ESTILOS ESPECIALES CFO */
+        .cfo-badge {
+            background: linear-gradient(135deg, var(--rolex-gold), var(--hulk));
+            color: #000; padding: 3px 10px; border-radius: 12px; font-size: 9px;
+            font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px;
+            box-shadow: 0 0 8px rgba(212, 175, 55, 0.3);
+        }
+
+        .legend { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 8px; }
+        .legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--steel-muted); }
+        .legend-dot { width: 8px; height: 8px; border-radius: 2px; }
+
+        .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+    </style>
+</head>
+<body>
+    <div class="shell">
+
+        <!-- TOPBAR -->
+        <div class="topbar">
+            <button class="menu-toggle" type="button" aria-label="Abrir menú" aria-expanded="false" onclick="toggleMobileMenu()">☰</button>
+            <img src="https://gestor-de-archivos.vercel.app/assets/logos/logo-retailmind-hulk-transparente.png" alt="RetailMind">
+            <div class="topbar-divider"></div>
+            <span style="font-size:11px;color:var(--steel-muted);letter-spacing:0.5px;">Centro de Control Financiero</span>
+            <span class="topbar-badge">CFO · Vista Corporativa</span>
+            <div class="topbar-divider"></div>
+            <span class="topbar-date" id="dateLabel">jueves, 23 de julio de 2026</span>
+            <div class="topbar-user" style="margin-left:auto">
+                <span style="font-size:11px;color:var(--steel-muted)">Director Financiero</span>
+                <div class="avatar">CF</div>
+            </div>
+        </div>
+
+        <div class="sidebar-overlay" onclick="closeMobileMenu()"></div>
+
+        <!-- SIDEBAR -->
+        <div class="sidebar" id="sidebarMenu">
+            <div class="sidebar-section">Navegación</div>
+            <div class="nav-item active" onclick="setLevel('holding')"><span class="nav-icon">🏢</span> Holding</div>
+            <div class="nav-item" onclick="setLevel('sucursal')" id="nav-suc"><span class="nav-icon">🏪</span> Sucursales <span class="nav-badge green">10</span></div>
+            <div class="nav-item" onclick="setLevel('categoria')" id="nav-cat"><span class="nav-icon">📦</span> Categorías</div>
+            <div class="nav-item" onclick="setLevel('producto')" id="nav-prod"><span class="nav-icon">🏷️</span> Productos</div>
+            <div class="nav-item" onclick="setLevel('cliente')" id="nav-cli"><span class="nav-icon">👥</span> Clientes / RFM</div>
+
+            <div class="sidebar-section">Inteligencia</div>
+            <div class="nav-item"><span class="nav-icon">🧠</span> Narrativa IA</div>
+            <div class="nav-item"><span class="nav-icon">📡</span> Order Flow</div>
+            <div class="nav-item"><span class="nav-icon">📈</span> Predicciones</div>
+
+            <div class="sidebar-section">Alertas</div>
+            <div class="nav-item"><span class="nav-icon">⚡</span> Críticas <span class="nav-badge">2</span></div>
+            <div class="nav-item"><span class="nav-icon">🔔</span> Monitoreo <span class="nav-badge gold">5</span></div>
+
+            <div class="sidebar-section" style="margin-top:auto">Sistema</div>
+            <div class="nav-item" onclick="toggleThemeSettings()"><span class="nav-icon">⚙️</span> Configuración</div>
+            <div class="theme-settings" id="themeSettings" style="display:none;margin:8px 1rem 0;padding:10px;border:1px solid var(--border-deep);border-radius:12px;background:var(--surface-card);">
+                <div style="font-size:10px;font-weight:700;color:var(--rolex-gold);letter-spacing:0.7px;text-transform:uppercase;margin-bottom:8px;font-family:'Cinzel';">Apariencia</div>
+                <label style="display:flex;align-items:center;gap:8px;padding:4px 0;font-size:12px;color:var(--steel-light);cursor:pointer;">
+                    <input type="radio" name="rm-theme" value="executive" checked onchange="setTheme('executive')"> Rolex HULK (Executive)
+                </label>
+                <label style="display:flex;align-items:center;gap:8px;padding:4px 0;font-size:12px;color:var(--steel-light);cursor:pointer;">
+                    <input type="radio" name="rm-theme" value="office" onchange="setTheme('office')"> Light Office
+                </label>
+            </div>
+        </div>
+
+        <!-- MAIN -->
+        <div class="main" id="mainContent">
+            <!-- Renderizado dinámico -->
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('dateLabel').textContent = new Date().toLocaleDateString('es-MX', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+        function setTheme(theme) {
+            const isOffice = theme === 'office';
+            document.body.style.setProperty('--abyssal', isOffice ? '#f4f6fb' : '#050B08');
+            document.body.style.setProperty('--surface', isOffice ? '#ffffff' : '#0B1612');
+            document.body.style.setProperty('--surface-card', isOffice ? '#ffffff' : '#0F1F1A');
+            document.body.style.setProperty('--border-deep', isOffice ? 'rgba(15,23,42,0.12)' : 'rgba(212, 175, 55, 0.25)');
+            document.body.style.setProperty('--steel-light', isOffice ? '#172033' : '#F1F5F9');
+            document.body.style.setProperty('--steel-muted', isOffice ? '#64748b' : '#7E998F');
+            document.body.style.setProperty('--steel-silver', isOffice ? '#475569' : '#CBD5E1');
+            localStorage.setItem('rm-theme', theme);
+            document.querySelectorAll('input[name="rm-theme"]').forEach(input => {
+                input.checked = input.value === theme;
+            });
+        }
+
+        function initTheme() {
+            setTheme(localStorage.getItem('rm-theme') || 'executive');
+        }
+
+        function toggleThemeSettings() {
+            const el = document.getElementById('themeSettings');
+            el.style.display = el.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function toggleMobileMenu() {
+            const isOpen = document.body.classList.toggle('mobile-menu-open');
+            document.querySelector('.menu-toggle')?.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        }
+
+        function closeMobileMenu() {
+            document.body.classList.remove('mobile-menu-open');
+            document.querySelector('.menu-toggle')?.setAttribute('aria-expanded', 'false');
+        }
+
+        const levels = ['holding', 'sucursal', 'categoria', 'producto', 'cliente'];
+        const levelLabels = { 'holding': 'Holding', 'sucursal': 'Sucursales', 'categoria': 'Categorías', 'producto': 'Productos', 'cliente': 'Clientes / RFM' };
+
+        // Datos CFO
+        const data = {
+            holding: {
+                kpis: [
+                    { label: 'Free Cash Flow', value: '$4.2M', delta: '+18.7%', dir: 'up' },
+                    { label: 'Margen EBITDA', value: '22.4%', delta: '+1.2pp', dir: 'up' },
+                    { label: 'DPO (Días Pago)', value: '38.2', delta: '+2.1 días', dir: 'up' },
+                    { label: 'ROIC', value: '14.6%', delta: '+1.8pp', dir: 'up' },
+                ],
+                states: [
+                    { domain: 'Flujo de Caja', icon: '💰', state: 'Generación positiva', status: 's-green', badge: 'Fuerte', conf: 0.92, rows: [['FCF', '$4.2M ▲ +18.7%'], ['Cash Conversion', '32.4 días']], color: 'var(--hulk-vibrant)' },
+                    { domain: 'Margen EBITDA', icon: '📈', state: 'Recuperación sostenida', status: 's-green', badge: 'Expansión', conf: 0.89, rows: [['EBITDA', '$6.8M'], ['Margen', '22.4% ▲ +1.2pp']], color: 'var(--hulk-vibrant)' },
+                    { domain: 'Capital de Trabajo', icon: '⚖️', state: 'Estable con señales', status: 's-yellow', badge: 'Monitoreo', conf: 0.85, rows: [['DIO', '28.4 días ▼ −12%'], ['DPO', '38.2 días ▲ +2.1']], color: 'var(--rolex-gold)' },
+                    { domain: 'ROIC', icon: '📊', state: 'Rendimiento creciente', status: 's-green', badge: 'Positivo', conf: 0.88, rows: [['ROIC', '14.6% ▲ +1.8pp'], ['WACC', '8.2%']], color: 'var(--hulk-vibrant)' },
+                    { domain: 'Riesgo Financiero', icon: '🛡️', state: 'Controlado', status: 's-yellow', badge: 'Moderado', conf: 0.82, rows: [['Deuda/EBITDA', '1.8x →'], ['Cobertura Intereses', '4.2x ▲']], color: 'var(--rolex-gold)' },
+                    { domain: 'Sucursal Centro', icon: '⚠️', state: 'Deterioro FCF', status: 's-red', badge: 'Alerta', conf: 0.78, rows: [['FCF', '$0.2M ▼ −34%'], ['Margen', '14.1% ▼ −2.3pp']], color: 'var(--red)' },
+                ],
+                narrative: `El <strong>Free Cash Flow del holding muestra una recuperación sólida</strong>, impulsado por una mejora en la gestión de inventarios y una reducción del 12% en los días de inventario (DIO). El <strong>margen EBITDA alcanza 22.4%</strong>, su nivel más alto en el año, gracias a la optimización de costos operativos y renegociación de contratos con proveedores clave. El <strong>DPO se extiende a 38.2 días</strong>, reflejando mejores condiciones de pago. Sin embargo, la <strong>sucursal Centro presenta un deterioro en su flujo de caja operativo</strong> que requiere atención inmediata. Se recomienda revisar la política de crédito en la zona Este.`,
+            },
+            sucursal: {
+                kpis: [
+                    { label: 'FCF Total Sucursales', value: '$2.8M', delta: '+9.2%', dir: 'up' },
+                    { label: 'Margen EBITDA Prom.', value: '18.7%', delta: '+0.6pp', dir: 'up' },
+                    { label: 'Sucursales con Riesgo', value: '2', delta: '+1 vs Q1', dir: 'down' },
+                    { label: 'DPO Promedio', value: '36.5', delta: '+1.8 días', dir: 'up' },
+                ],
+                states: [
+                    { domain: 'Sucursal Norte', icon: '🚀', state: 'FCF sólido', status: 's-green', badge: 'Sobre meta', conf: 0.94, rows: [['FCF', '$0.9M ▲ +24%'], ['Margen', '21.3%']], color: 'var(--hulk-vibrant)' },
+                    { domain: 'Sucursal Oeste', icon: '🚀', state: 'FCF positivo', status: 's-green', badge: 'Sobre meta', conf: 0.91, rows: [['FCF', '$0.7M ▲ +19%'], ['Margen', '20.8%']], color: 'var(--hulk-vibrant)' },
+                    { domain: 'Sucursal Centro', icon: '⚠️', state: 'Deterioro FCF', status: 's-red', badge: 'Alerta', conf: 0.78, rows: [['FCF', '$0.2M ▼ −34%'], ['Margen', '14.1%']], color: 'var(--red)' },
+                    { domain: 'Sucursal Este', icon: '⚠️', state: 'FCF en descenso', status: 's-yellow', badge: 'Monitoreo', conf: 0.81, rows: [['FCF', '$0.3M ▼ −8%'], ['Margen', '16.4%']], color: 'var(--rolex-gold)' },
+                    { domain: 'Sucursal Sur A', icon: '📊', state: 'Consolidación', status: 's-blue', badge: 'Estable', conf: 0.83, rows: [['FCF', '$0.4M →'], ['Margen', '18.9%']], color: 'var(--blue-accent)' },
+                    { domain: 'Sucursal Sur B', icon: '📊', state: 'Consolidación', status: 's-blue', badge: 'Estable', conf: 0.80, rows: [['FCF', '$0.3M →'], ['Margen', '18.2%']], color: 'var(--blue-accent)' },
+                ],
+                narrative: `La <strong>red de 10 sucursales</strong> muestra un desempeño financiero polarizado. Norte y Oeste generan el 57% del FCF total con márgenes superiores al 20%. Sin embargo, <strong>Centro y Este concentran los riesgos</strong>: Centro muestra una caída del 34% en FCF y margen de solo 14.1%, mientras que Este presenta un descenso del 8%. Se recomienda una revisión operativa urgente en Centro.`,
+            },
+            categoria: {
+                kpis: [
+                    { label: 'Margen Promedio', value: '19.4%', delta: '+0.7pp', dir: 'up' },
+                    { label: 'Categorías con Riesgo', value: '3', delta: '+1 vs Q1', dir: 'down' },
+                    { label: 'FCF por Categoría', value: '$1.8M', delta: '+12.4%', dir: 'up' },
+                    { label: 'Rotación de Inventario', value: '8.2x', delta: '+0.9x', dir: 'up' },
+                ],
+                states: [
+                    { domain: 'Abarrotes', icon: '📈', state: 'Margen creciente', status: 's-green', badge: 'Positivo', conf: 0.84, rows: [['Margen', '22.1% ▲ +1.8pp'], ['FCF', '$0.6M ▲ +18%']], color: 'var(--hulk-vibrant)' },
+                    { domain: 'Bebidas', icon: '📊', state: 'Consolidación', status: 's-blue', badge: 'Estable', conf: 0.82, rows: [['Margen', '20.3% →'], ['FCF', '$0.4M →']], color: 'var(--blue-accent)' },
+                    { domain: 'Frescos', icon: '🔥', state: 'Alta volatilidad', status: 's-yellow', badge: 'Riesgo', conf: 0.79, rows: [['Margen', '15.8% ▼ −2.1pp'], ['FCF', '$0.2M ▼ −12%']], color: 'var(--rolex-gold)' },
+                    { domain: 'Lácteos', icon: '⚠️', state: 'Margen bajo', status: 's-red', badge: 'Alerta', conf: 0.76, rows: [['Margen', '14.2% ▼ −3.4pp'], ['FCF', '$0.1M ▼ −22%']], color: 'var(--red)' },
+                    { domain: 'Limpieza', icon: '📈', state: 'Recuperación', status: 's-green', badge: 'Positivo', conf: 0.81, rows: [['Margen', '19.7% ▲ +1.2pp'], ['FCF', '$0.3M ▲ +14%']], color: 'var(--hulk-vibrant)' },
+                    { domain: 'Congelados', icon: '❄️', state: 'Estancamiento', status: 's-purple', badge: 'Monitoreo', conf: 0.71, rows: [['Margen', '17.8% →'], ['FCF', '$0.2M →']], color: 'var(--purple)' },
+                ],
+                narrative: `Las categorías de <strong>abarrotes y limpieza lideran en rentabilidad</strong>, con márgenes superiores al 19% y crecimiento de FCF. En contraste, <strong>lácteos presenta un margen de solo 14.2%</strong> y una caída del 22% en FCF, requiriendo una revisión de precios y costos. Frescos muestra alta volatilidad con margen en descenso.`,
+            },
+            producto: {
+                kpis: [
+                    { label: 'SKUs con IPO Crítico', value: '4', delta: '+1 vs Q1', dir: 'down' },
+                    { label: 'Capital Inmovilizado', value: '$1.4M', delta: '-8.2%', dir: 'up' },
+                    { label: 'Rotación Promedio', value: '6.8x', delta: '+0.4x', dir: 'up' },
+                    { label: 'Margen Promedio SKU', value: '18.9%', delta: '+0.5pp', dir: 'up' },
+                ],
+                states: [
+                    { domain: 'SKU 4512 Arroz', icon: '⚡', state: 'IPO Crítico', status: 's-red', badge: 'Riesgo Alto', conf: 0.91, rows: [['Margen', '9.0%'], ['Capital', '$180K inmovilizado']], color: 'var(--red)' },
+                    { domain: 'SKU 7883 Refresco', icon: '📊', state: 'Consignación', status: 's-blue', badge: 'Sin Capital', conf: 0.80, rows: [['Margen', '12.4%'], ['Capital', '$0 (consignación)']], color: 'var(--blue-accent)' },
+                    { domain: 'SKU 2341 FruVer', icon: '📈', state: 'Recuperación', status: 's-green', badge: 'Positivo', conf: 0.78, rows: [['Margen', '22.3% ▲ +3.1pp'], ['Rotación', '▲ +14%']], color: 'var(--hulk-vibrant)' },
+                    { domain: 'SKU 0891 Leche', icon: '🔥', state: 'Alta volatilidad', status: 's-yellow', badge: 'Monitoreo', conf: 0.82, rows: [['Margen', '16.8% ▼ −1.2pp'], ['Capital', '$95K']], color: 'var(--rolex-gold)' },
+                    { domain: 'SKU 3302 Detergente', icon: '📈', state: 'Recuperación', status: 's-green', badge: 'Positivo', conf: 0.84, rows: [['Margen', '21.4% ▲ +1.8pp'], ['Rotación', '▲ +9%']], color: 'var(--hulk-vibrant)' },
+                    { domain: 'SKU 5590 Congelado', icon: '❄️', state: 'Estancamiento', status: 's-purple', badge: 'Sin cambio', conf: 0.69, rows: [['Margen', '18.1% →'], ['Capital', '$62K']], color: 'var(--purple)' },
+                ],
+                narrative: `El <strong>SKU 4512 (Arroz) concentra el mayor riesgo financiero</strong> con margen del 9% y capital inmovilizado de $180K. Se recomienda una revisión de precios urgente. En contraste, <strong>FruVer y Detergente muestran recuperación</strong> con márgenes superiores al 21%. Los productos en consignación (Refresco) no comprometen capital y pueden ser tratados con menor prioridad.`,
+            },
+            cliente: {
+                kpis: [
+                    { label: 'Clientes Activos', value: '48.2K', delta: '+3.1K MTD', dir: 'up' },
+                    { label: 'Ticket Promedio', value: '$348', delta: '+6.7%', dir: 'up' },
+                    { label: 'Champions Share', value: '34.2%', delta: '+2.1pp', dir: 'up' },
+                    { label: 'Riesgo de Abandono', value: '8.7%', delta: '+1.2pp', dir: 'down' },
+                ],
+                states: [
+                    { domain: 'Champions', icon: '🏆', state: 'Alto valor', status: 's-green', badge: 'Expansión', conf: 0.92, rows: [['Ticket', '$612 ▲ +17%'], ['Share', '34.2% ▲ +2.1pp']], color: 'var(--hulk-vibrant)' },
+                    { domain: 'Leales', icon: '💚', state: 'Crecimiento', status: 's-green', badge: 'Positivo', conf: 0.88, rows: [['Ticket', '$412 ▲ +9%'], ['Frecuencia', '▲ +6%']], color: 'var(--hulk-vibrant)' },
+                    { domain: 'En Riesgo', icon: '🔴', state: 'Abandono potencial', status: 's-red', badge: 'Alerta', conf: 0.85, rows: [['Recencia', '▼ −22% visitas'], ['Ticket', '$189 ▼ −8%']], color: 'var(--red)' },
+                    { domain: 'Prometedores', icon: '📈', state: 'Recuperación', status: 's-blue', badge: 'Positivo', conf: 0.77, rows: [['Ticket', '$298 ▲ +4%'], ['Frecuencia', '▲ Tendencia']], color: 'var(--blue-accent)' },
+                    { domain: 'Ocasionales', icon: '⚠️', state: 'Baja frecuencia', status: 's-yellow', badge: 'Monitoreo', conf: 0.73, rows: [['Ticket', '$148 →'], ['Frecuencia', '1.2 visitas/mes']], color: 'var(--rolex-gold)' },
+                    { domain: 'Hibernando', icon: '❄️', state: 'Abandono', status: 's-red', badge: 'Crítico', conf: 0.81, rows: [['Recencia', '> 90 días'], ['Reactivación', '<12%']], color: 'var(--red)' },
+                ],
+                narrative: `Los segmentos <strong>Champions y Leales generan el 34.2% del ticket</strong> con crecimientos sostenidos. Sin embargo, el segmento <strong>Hibernando supera los 90 días de inactividad</strong> con una tasa de reactivación inferior al 12%. El riesgo de abandono en clientes ocasionales es una señal temprana que requiere atención. Se recomienda una campaña de reactivación dirigida antes del cierre de quincena.`,
+            },
+        };
+
+        let currentLevel = 'holding';
+        let chartInstance = null;
+
+        function setLevel(level) {
+            currentLevel = level;
+            closeMobileMenu();
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            const navMap = { holding: 0, sucursal: 1, categoria: 2, producto: 3, cliente: 4 };
+            const items = document.querySelectorAll('.nav-item');
+            if (items[navMap[level]]) items[navMap[level]].classList.add('active');
+            render();
+        }
+
+        // DATOS VELAS
+        const candleData = {
+            fcf: [
+                { label: 'Lun', o: 118, h: 132, l: 114, c: 128 },
+                { label: 'Mar', o: 128, h: 141, l: 124, c: 136 },
+                { label: 'Mié', o: 136, h: 148, l: 130, c: 142 },
+                { label: 'Jue', o: 142, h: 155, l: 138, c: 150 },
+                { label: 'Vie', o: 150, h: 162, l: 145, c: 158 },
+                { label: 'Sáb', o: 158, h: 168, l: 152, c: 160 },
+                { label: 'Dom', o: 160, h: 170, l: 153, c: 156 },
+            ],
+            margin: [
+                { label: 'Lun', o: 21.2, h: 21.8, l: 20.8, c: 21.5 },
+                { label: 'Mar', o: 21.5, h: 22.3, l: 21.1, c: 22.0 },
+                { label: 'Mié', o: 22.0, h: 22.6, l: 21.6, c: 22.2 },
+                { label: 'Jue', o: 22.2, h: 23.0, l: 21.9, c: 22.7 },
+                { label: 'Vie', o: 22.7, h: 23.4, l: 22.3, c: 23.1 },
+                { label: 'Sáb', o: 23.1, h: 23.6, l: 22.6, c: 22.9 },
+                { label: 'Dom', o: 22.9, h: 23.2, l: 22.5, c: 22.8 },
+            ]
+        };
+
+        // CANVAS DIBUJO DE VELAS
+        function drawCandles(canvasId, rows, opts) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) { setTimeout(() => drawCandles(canvasId, rows, opts), 100); return; }
+
+            const parent = canvas.parentElement;
+            const rect = parent.getBoundingClientRect();
+            if (rect.width === 0 || rect.height === 0) { setTimeout(() => drawCandles(canvasId, rows, opts), 100); return; }
+
+            const dpr = window.devicePixelRatio || 1;
+            const w = rect.width;
+            const h = rect.height;
+
+            canvas.width = Math.max(1, Math.floor(w * dpr));
+            canvas.height = Math.max(1, Math.floor(h * dpr));
+            canvas.style.width = w + 'px';
+            canvas.style.height = h + 'px';
+
+            const ctx = canvas.getContext('2d');
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+            const pad = { l: 45, r: 12, t: 15, b: 28 };
+            const vals = rows.flatMap(r => [r.h, r.l]);
+            const min = Math.min(...vals);
+            const max = Math.max(...vals);
+            const span = (max - min) || 1;
+
+            const y = v => pad.t + (max - v) / span * (h - pad.t - pad.b);
+
+            const upColor = '#00E676';
+            const downColor = '#FF4D4D';
+            const mutedColor = '#7E998F';
+            const gridColor = 'rgba(212, 175, 55, 0.15)';
+
+            ctx.clearRect(0, 0, w, h);
+
+            // Grid
+            ctx.font = '500 10px Outfit, sans-serif';
+            ctx.strokeStyle = gridColor;
+            ctx.lineWidth = 1;
+            for (let i = 0; i < 4; i++) {
+                const yy = pad.t + i * (h - pad.t - pad.b) / 3;
+                ctx.beginPath(); ctx.moveTo(pad.l, yy); ctx.lineTo(w - pad.r, yy); ctx.stroke();
+                const val = max - i * span / 3;
+                ctx.fillStyle = mutedColor; ctx.textAlign = 'right';
+                if (opts.suffix) { ctx.fillText(val.toFixed(opts.decimals || 1) + opts.suffix, pad.l - 8, yy + 3); }
+                else { ctx.fillText('$' + Math.round(val), pad.l - 8, yy + 3); }
+            }
+
+            const step = (w - pad.l - pad.r) / rows.length;
+            const bodyW = Math.min(20, step * 0.5);
+
+            rows.forEach((r, i) => {
+                const x = pad.l + step * i + step / 2;
+                const isUp = r.c >= r.o;
+                const color = isUp ? upColor : downColor;
+
+                ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = 2;
+
+                // Mecha
+                ctx.beginPath(); ctx.moveTo(x, y(r.h)); ctx.lineTo(x, y(r.l)); ctx.stroke();
+
+                // Cuerpo
+                const top = y(Math.max(r.o, r.c));
+                const bot = y(Math.min(r.o, r.c));
+                const bh = Math.max(3, bot - top);
+                ctx.globalAlpha = 0.95;
+                
+                if (isUp) {
+                    ctx.shadowColor = 'rgba(0, 230, 118, 0.4)';
+                    ctx.shadowBlur = 6;
+                } else {
+                    ctx.shadowBlur = 0;
+                }
+
+                ctx.fillRect(x - bodyW / 2, top, bodyW, bh);
+                ctx.shadowBlur = 0; ctx.globalAlpha = 1;
+
+                ctx.fillStyle = mutedColor; ctx.textAlign = 'center';
+                ctx.fillText(r.label, x, h - 8);
+            });
+        }
+
+        // RENDERIZADO PRINCIPAL
+        function render() {
+            const d = data[currentLevel];
+            const crumbLevels = levels.slice(0, levels.indexOf(currentLevel) + 1);
+            const main = document.getElementById('mainContent');
+
+            if (chartInstance) {
+                chartInstance.destroy();
+                chartInstance = null;
+            }
+
+            main.innerHTML = `
+                <h2 class="sr-only">Centro de Control Financiero – vista ${levelLabels[currentLevel]}</h2>
+
+                <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+                    <div class="breadcrumb">
+                        ${crumbLevels.map((l,i)=>`
+                            <span class="${i===crumbLevels.length-1?'active-crumb':''}" onclick="setLevel('${l}')">${levelLabels[l]}</span>
+                            ${i<crumbLevels.length-1?'<span class="sep">›</span>':''}
+                        `).join('')}
+                    </div>
+                    <div class="drill-tabs">
+                        ${levels.map(l=>`<div class="drill-tab ${l===currentLevel?'active':''}" onclick="setLevel('${l}')">${levelLabels[l]}</div>`).join('')}
+                    </div>
+                </div>
+
+                <div class="kpi-row">
+                    ${d.kpis.map(k=>`
+                        <div class="kpi">
+                            <div class="kpi-label">${k.label}</div>
+                            <div class="kpi-value">${k.value}</div>
+                            <div class="kpi-delta ${k.dir}">${k.dir==='up'?'▲':k.dir==='down'?'▼':'→'} ${k.delta}</div>
+                        </div>
+                    `).join('')}
+                </div>
+
+                <div class="narrative-box">
+                    <div class="narr-header">
+                        <span class="narr-icon">🧠</span>
+                        <span class="narr-title">Narrativa IA · CFO Executive</span>
+                        <span style="margin-left:auto;font-size:10px;color:var(--steel-muted);font-weight:600">Motor Analítico + LLM</span>
+                    </div>
+                    <div class="narr-text">${d.narrative}</div>
+                </div>
+
+                <div style="font-size:10px;font-weight:700;color:var(--rolex-gold);letter-spacing:1px;text-transform:uppercase;margin-bottom:2px;font-family:'Cinzel';">Estados Financieros · ${levelLabels[currentLevel]}</div>
+                <div class="state-grid">
+                    ${d.states.map(s=>`
+                        <div class="state-card" onclick="this.classList.toggle('selected')">
+                            <div class="sc-header">
+                                <span class="sc-domain">${s.domain}</span>
+                                <span class="sc-status ${s.status}">${s.badge}</span>
+                            </div>
+                            <div class="sc-state">${s.icon} ${s.state}</div>
+                            ${s.rows.map(r=>`<div class="sc-row"><span>${r[0]}</span><strong>${r[1]}</strong></div>`).join('')}
+                            <div class="sc-conf">
+                                <span>Confianza</span>
+                                <div class="conf-bar"><div class="conf-fill" style="width:${s.conf*100}%;background:${s.color}"></div></div>
+                                <span style="color:${s.color};font-weight:700">${Math.round(s.conf*100)}%</span>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+
+                <div class="two-col">
+                    <div class="panel">
+                        <div class="panel-title">Sucursales · Rendimiento Financiero</div>
+                        ${getHierItems()}
+                    </div>
+                    <div class="panel">
+                        <div class="panel-title">Alertas Financieras</div>
+                        ${getAlerts()}
+                    </div>
+                </div>
+
+                <div class="panel" style="border-left: 4px solid var(--rolex-gold); background: linear-gradient(145deg, rgba(0,135,68,0.1) 0%, var(--surface-card) 100%);">
+                    <div class="panel-title" style="display:flex;justify-content:space-between;align-items:center;">
+                        <span style="color:var(--steel-light)">Flujo de Caja Consolidado · 12 Meses</span>
+                        <span class="cfo-badge">Actualizado</span>
+                    </div>
+                    <div class="cashflow-grid">
+                        <div class="cashflow-item">
+                            <div class="label">Flujo Operativo</div>
+                            <div class="value">$8.4M</div>
+                            <div class="trend up">▲ +16.3%</div>
+                        </div>
+                        <div class="cashflow-item">
+                            <div class="label">Flujo de Inversión</div>
+                            <div class="value">-$2.1M</div>
+                            <div class="trend down">▼ -8.2%</div>
+                        </div>
+                        <div class="cashflow-item">
+                            <div class="label">Flujo de Financiamiento</div>
+                            <div class="value">-$2.1M</div>
+                            <div class="trend flat">→ -2.1%</div>
+                        </div>
+                    </div>
+                    <div style="margin-top:14px;display:flex;justify-content:space-between;font-size:11px;color:var(--steel-muted);border-top:1px solid var(--border-deep);padding-top:12px;">
+                        <span><strong style="color:var(--steel-light)">Free Cash Flow (FCF):</strong> $4.2M</span>
+                        <span><strong style="color:var(--steel-light)">FCF Yield:</strong> 8.7%</span>
+                        <span><strong style="color:var(--steel-light)">Cash Conversion Cycle:</strong> 32.4 días</span>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-title">Tendencia 30 días · FCF & EBITDA</div>
+                    <div class="legend">
+                        <div class="legend-item"><div class="legend-dot" style="background:var(--hulk-vibrant);box-shadow:0 0 6px var(--hulk-vibrant)"></div>Free Cash Flow (USD K)</div>
+                        <div class="legend-item"><div class="legend-dot" style="background:var(--blue-accent);box-shadow:0 0 6px var(--blue-accent)"></div>EBITDA (USD K)</div>
+                    </div>
+                    <div class="chart-wrap"><canvas id="trendChart"></canvas></div>
+                </div>
+
+                <div class="candle-grid">
+                    <div class="candle-panel">
+                        <div class="candle-head">
+                            <div class="candle-title">Velas Japonesas · FCF Diario (USD K)</div>
+                            <div class="candle-note">Evolución diaria del FCF.</div>
+                        </div>
+                        <div class="candle-wrap"><canvas id="fcfCandleChart"></canvas></div>
+                        <div class="candle-summary" id="fcfCandleSummary"></div>
+                    </div>
+                    <div class="candle-panel">
+                        <div class="candle-head">
+                            <div class="candle-title">Velas Japonesas · Margen EBITDA (%)</div>
+                            <div class="candle-note">Variación intradía del margen.</div>
+                        </div>
+                        <div class="candle-wrap"><canvas id="marginCandleChart"></canvas></div>
+                        <div class="candle-summary" id="marginCandleSummary"></div>
+                    </div>
+                </div>
+            `;
+
+            setTimeout(() => {
+                renderChart();
+                renderCandlesticks();
+            }, 50);
+        }
+
+        function getHierItems() {
+            const items = {
+                holding: [
+                    { name: 'Sucursal Norte', state: 'Sólido', sc: 's-green', delta: '+22%', color: 'var(--hulk-vibrant)' },
+                    { name: 'Sucursal Oeste', state: 'Sólido', sc: 's-green', delta: '+17%', color: 'var(--hulk-vibrant)' },
+                    { name: 'Sucursal Sur A', state: 'Estable', sc: 's-blue', delta: '→ 0%', color: 'var(--blue-accent)' },
+                    { name: 'Sucursal Centro', state: 'Riesgo', sc: 's-red', delta: '−34%', color: 'var(--red)' },
+                    { name: 'Sucursal Este', state: 'Monitoreo', sc: 's-yellow', delta: '−4%', color: 'var(--rolex-gold)' },
+                ],
+                sucursal: [
+                    { name: 'Norte', state: 'Sólido', sc: 's-green', delta: '+24%', color: 'var(--hulk-vibrant)' },
+                    { name: 'Oeste', state: 'Sólido', sc: 's-green', delta: '+19%', color: 'var(--hulk-vibrant)' },
+                    { name: 'Sur A', state: 'Estable', sc: 's-blue', delta: '→ 0%', color: 'var(--blue-accent)' },
+                    { name: 'Sur B', state: 'Estable', sc: 's-blue', delta: '→ +2%', color: 'var(--blue-accent)' },
+                    { name: 'Centro', state: 'Riesgo', sc: 's-red', delta: '−34%', color: 'var(--red)' },
+                ],
+                categoria: [
+                    { name: 'Abarrotes', state: 'Positivo', sc: 's-green', delta: '+18%', color: 'var(--hulk-vibrant)' },
+                    { name: 'Bebidas', state: 'Estable', sc: 's-blue', delta: '→ 0%', color: 'var(--blue-accent)' },
+                    { name: 'Frescos', state: 'Riesgo', sc: 's-yellow', delta: '−12%', color: 'var(--rolex-gold)' },
+                    { name: 'Lácteos', state: 'Alerta', sc: 's-red', delta: '−22%', color: 'var(--red)' },
+                    { name: 'Limpieza', state: 'Positivo', sc: 's-green', delta: '+14%', color: 'var(--hulk-vibrant)' },
+                ],
+                producto: [
+                    { name: 'SKU 2341 FruVer', state: 'Recuperación', sc: 's-green', delta: '+14%', color: 'var(--hulk-vibrant)' },
+                    { name: 'SKU 3302 Deterg.', state: 'Positivo', sc: 's-green', delta: '+9%', color: 'var(--hulk-vibrant)' },
+                    { name: 'SKU 4512 Arroz', state: 'IPO Crítico', sc: 's-red', delta: '−22%', color: 'var(--red)' },
+                    { name: 'SKU 0891 Leche', state: 'Volátil', sc: 's-yellow', delta: '−12%', color: 'var(--rolex-gold)' },
+                    { name: 'SKU 5590 Cong.', state: 'Estancado', sc: 's-purple', delta: '→ 0%', color: 'var(--purple)' },
+                ],
+                cliente: [
+                    { name: 'Champions', state: 'Expansión', sc: 's-green', delta: '+17%', color: 'var(--hulk-vibrant)' },
+                    { name: 'Leales', state: 'Crecimiento', sc: 's-green', delta: '+9%', color: 'var(--hulk-vibrant)' },
+                    { name: 'Prometedores', state: 'Recuperación', sc: 's-blue', delta: '+4%', color: 'var(--blue-accent)' },
+                    { name: 'Ocasionales', state: 'Bajo rendim.', sc: 's-yellow', delta: '→ 0%', color: 'var(--rolex-gold)' },
+                    { name: 'Hibernando', state: 'Abandono', sc: 's-red', delta: '−22%', color: 'var(--red)' },
+                ],
+            };
+            return (items[currentLevel] || []).map(it => `
+                <div class="hier-item" onclick="drillDown()">
+                    <div class="hi-dot" style="background:${it.color};color:${it.color}"></div>
+                    <span class="hi-name">${it.name}</span>
+                    <span class="hi-state ${it.sc}">${it.state}</span>
+                    <span class="hi-delta ${it.delta.includes('+')?'up':it.delta.includes('−')?'down':'flat'}">${it.delta}</span>
+                    <span class="hi-arrow">›</span>
+                </div>
+            `).join('');
+        }
+
+        function getAlerts() {
+            const alerts = {
+                holding: [
+                    { color: 'var(--red)', title: 'Sucursal Centro: FCF deteriorado', sub: '−34% vs trimestre anterior · Margen 14.1%', time: 'hace 2h' },
+                    { color: 'var(--rolex-gold)', title: 'DPO extendido a 38.2 días', sub: 'Posible presión a proveedores · monitorear', time: 'hace 4h' },
+                    { color: 'var(--hulk-vibrant)', title: 'Mejora en DIO: 28.4 días', sub: 'Reducción del 12% en inventarios', time: 'hace 6h' },
+                    { color: 'var(--blue-accent)', title: 'ROIC supera WACC en 6.4pp', sub: 'Creación de valor positiva', time: 'hace 8h' },
+                ],
+                sucursal: [
+                    { color: 'var(--red)', title: 'Centro: FCF −34%', sub: 'Caída de margen a 14.1%', time: 'hace 2h' },
+                    { color: 'var(--rolex-gold)', title: 'Este: FCF −8%', sub: 'Margen en descenso a 16.4%', time: 'hace 4h' },
+                    { color: 'var(--hulk-vibrant)', title: 'Norte: Sobre meta +24%', sub: 'FCF y margen en máximos', time: 'hace 6h' },
+                ],
+                categoria: [
+                    { color: 'var(--red)', title: 'Lácteos: Margen 14.2%', sub: 'Caída de 3.4pp · FCF −22%', time: 'hace 1h' },
+                    { color: 'var(--rolex-gold)', title: 'Frescos: Volatilidad alta', sub: 'Margen 15.8% · FCF −12%', time: 'hace 3h' },
+                    { color: 'var(--hulk-vibrant)', title: 'Abarrotes en recuperación', sub: '+1.8pp margen · +18% FCF', time: 'hace 5h' },
+                ],
+                producto: [
+                    { color: 'var(--red)', title: 'SKU 4512 IPO Crítico', sub: 'Margen 9% · $180K capital inmovilizado', time: 'hace 1h' },
+                    { color: 'var(--rolex-gold)', title: 'SKU 0891 Leche: Volátil', sub: 'Margen 16.8% en descenso', time: 'hace 3h' },
+                    { color: 'var(--hulk-vibrant)', title: 'SKU 2341 Recuperación', sub: 'Margen 22.3% · rotación +14%', time: 'hace 5h' },
+                ],
+                cliente: [
+                    { color: 'var(--red)', title: 'Hibernando >90 días', sub: 'Tasa reactivación <12%', time: 'hace 2h' },
+                    { color: 'var(--red)', title: 'Ocasionales: Baja respuesta', sub: 'Ticket $148 sin crecimiento', time: 'hace 4h' },
+                    { color: 'var(--hulk-vibrant)', title: 'Champions en máximo', sub: 'Ticket $612 · Share 34.2%', time: 'hace 6h' },
+                ],
+            };
+            return (alerts[currentLevel] || []).map(a => `
+                <div class="alert-item">
+                    <div class="alert-dot" style="background:${a.color};color:${a.color}"></div>
+                    <div class="alert-body">
+                        <div class="alert-title">${a.title}</div>
+                        <div class="alert-sub">${a.sub}</div>
+                    </div>
+                    <span class="alert-time">${a.time}</span>
+                </div>
+            `).join('');
+        }
+
+        function drillDown() {
+            const next = levels[levels.indexOf(currentLevel) + 1];
+            if (next) setLevel(next);
+        }
+
+        function renderChart() {
+            const ctx = document.getElementById('trendChart');
+            if (!ctx) return;
+
+            const labels = Array.from({ length: 30 }, (_, i) => {
+                const d = new Date();
+                d.setDate(d.getDate() - 29 + i);
+                return d.toLocaleDateString('es-MX', { month: 'short', day: 'numeric' });
+            }).filter((_, i) => i % 4 === 0 || i === 29);
+            const idxs = Array.from({ length: 30 }, (_, i) => i).filter(i => i % 4 === 0 || i === 29);
+
+            const fcfData = [112, 118, 115, 122, 128, 124, 130, 136, 132, 138, 142, 140, 145, 148, 152, 150, 155, 158, 160, 157, 162, 165, 168, 164, 170, 172, 175, 178, 180, 176];
+            const ebitdaData = [88, 91, 90, 94, 96, 93, 97, 100, 98, 101, 103, 101, 105, 107, 109, 108, 111, 113, 115, 114, 117, 119, 121, 118, 122, 124, 126, 128, 130, 127];
+
+            const filtFCF = idxs.map(i => fcfData[i]);
+            const filtEBITDA = idxs.map(i => ebitdaData[i]);
+            const filtLabels = idxs.map(i => labels[idxs.indexOf(i)]);
+
+            chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: filtLabels,
+                    datasets: [{
+                        label: 'Free Cash Flow',
+                        data: filtFCF,
+                        borderColor: '#00E676',
+                        backgroundColor: 'rgba(0, 230, 118, 0.12)',
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        pointBackgroundColor: '#00E676',
+                        pointBorderColor: '#0B1612',
+                        pointBorderWidth: 2,
+                        yAxisID: 'y'
+                    }, {
+                        label: 'EBITDA',
+                        data: filtEBITDA,
+                        borderColor: '#29B6F6',
+                        borderDash: [5, 4],
+                        backgroundColor: 'transparent',
+                        fill: false,
+                        tension: 0.4,
+                        pointRadius: 3,
+                        pointBackgroundColor: '#29B6F6',
+                        yAxisID: 'y'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            mode: 'index', intersect: false,
+                            backgroundColor: '#0B1612', borderColor: 'rgba(212, 175, 55, 0.4)', borderWidth: 1,
+                            titleColor: '#F1F5F9', bodyColor: '#7E998F', padding: 10, displayColors: true
+                        }
+                    },
+                    scales: {
+                        x: { ticks: { color: '#7E998F', font: { size: 10 } }, grid: { color: 'rgba(212, 175, 55, 0.08)' } },
+                        y: { position: 'left', ticks: { color: '#7E998F', font: { size: 10 } }, grid: { color: 'rgba(212, 175, 55, 0.08)' } }
+                    }
+                }
+            });
+        }
+
+        function renderCandlesticks() {
+            drawCandles('fcfCandleChart', candleData.fcf, {});
+            drawCandles('marginCandleChart', candleData.margin, { suffix: '%', decimals: 1 });
+
+            const fcfFirst = candleData.fcf[0].o;
+            const fcfLast = candleData.fcf[candleData.fcf.length - 1].c;
+            const fcfDelta = fcfLast - fcfFirst;
+            const fcfPct = (fcfDelta / fcfFirst * 100);
+
+            const marginFirst = candleData.margin[0].o;
+            const marginLast = candleData.margin[candleData.margin.length - 1].c;
+            const marginDelta = marginLast - marginFirst;
+            const marginPct = (marginDelta / marginFirst * 100);
+
+            document.getElementById('fcfCandleSummary').innerHTML = `
+                <span class="candle-pill">Inicio: $${fcfFirst}K</span>
+                <span class="candle-pill">Cierre: $${fcfLast}K</span>
+                <span class="candle-pill ${fcfDelta>=0?'up':'down'}">${fcfDelta>=0?'▲':'▼'} $${Math.abs(fcfDelta)}K (${fcfPct>=0?'+':''}${fcfPct.toFixed(1)}%)</span>
+            `;
+
+            document.getElementById('marginCandleSummary').innerHTML = `
+                <span class="candle-pill">Inicio: ${marginFirst.toFixed(1)}%</span>
+                <span class="candle-pill">Cierre: ${marginLast.toFixed(1)}%</span>
+                <span class="candle-pill ${marginDelta>=0?'up':'down'}">${marginDelta>=0?'▲':'▼'} ${Math.abs(marginDelta).toFixed(1)}% (${marginPct>=0?'+':''}${marginPct.toFixed(1)}%)</span>
+            `;
+        }
+
+        // Inicialización
+        initTheme();
+        render();
+
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                if (document.getElementById('fcfCandleChart')) {
+                    renderCandlesticks();
+                }
+            }, 200);
+        });
+    </script>
+</body>
+</html>

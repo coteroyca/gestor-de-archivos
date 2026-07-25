@@ -424,6 +424,41 @@
 
         <div class="sidebar-overlay" onclick="closeMobileMenu()"></div>
 
+            <!-- BOTÓN FLOTANTE + MENÚ ABANICO (sustituye al antiguo <a>) -->
+    <div class="floating-wrapper" id="floatingWrapper">
+        <!-- Menú desplegable (abanico) -->
+        <div class="fan-menu" id="fanMenu">
+            <!-- Nivel 1: Estratégico -->
+            <span class="group-label"><i class="fas fa-chess-queen mr-1" style="color:#1e3a8a;"></i> Estratégico</span>
+            <a href="https://gestor-de-archivos.vercel.app/demos/demos-retailmind/retailmind_ceo.html" class="strategic"><i class="fas fa-user-tie"></i> Vista del CEO</a>
+            <a href="https://gestor-de-archivos.vercel.app/demos/demos-retailmind/retailmind_cfo.html" class="strategic"><i class="fas fa-coins"></i> Vista del CFO</a>
+            <a href="https://gestor-de-archivos.vercel.app/demos/demos-retailmind/retailmind_coo.html" class="strategic"><i class="fas fa-truck-ramp-box"></i> Vista del COO</a>
+
+            <div class="divider"></div>
+
+            <!-- Nivel 2: Táctico -->
+            <span class="group-label"><i class="fas fa-chess-knight mr-1" style="color:#475569;"></i> Táctico</span>
+            <a href="https://gestor-de-archivos.vercel.app/demos/demos-retailmind/demo-gemini.html" class="tactical"><i class="fas fa-shop"></i> Gerente de Tienda</a>
+            <a href="https://gestor-de-archivos.vercel.app/demos/demos-retailmind/demo_deepseek.html" class="tactical"><i class="fas fa-tags"></i> Gerente de Categorías</a>
+            <a href="https://gestor-de-archivos.vercel.app/demos/demos-retailmind/demo-qwen.html" class="tactical"><i class="fas fa-shield-halved"></i> Prevención de Pérdidas</a>
+
+            <div class="divider"></div>
+
+            <!-- Nivel 3: Tiempo Real -->
+            <span class="group-label"><i class="fas fa-clock mr-1" style="color:#10b981;"></i> Tiempo Real</span>
+            <a href="https://gestor-de-archivos.vercel.app/demos/demos-retailmind/demo-perplexity.html" class="realtime"><i class="fas fa-cash-register"></i> Panel de Supervisión de Cajas</a>
+            <a href="https://gestor-de-archivos.vercel.app/demos/demos-retailmind/demo-chat-gpt.html" class="realtime"><i class="fas fa-layer-group"></i> Panel de Control de Pasillos</a>
+            <a href="https://gestor-de-archivos.vercel.app/demos/demos-retailmind/Controller-Vista-Financiera-Corporativa.html" class="realtime"><i class="fas fa-layer-group"></i> Controller Vista Financiera Corporativa</a>
+        </div>
+
+        <!-- Botón disparador (antes era un <a>, ahora es <button>) -->
+        <button class="floating-btn" id="floatingBtn" title="Ver Módulos">
+            <i class="fas fa-cube" id="btnIcon"></i>
+            <span id="btnText">Ver Módulos</span>
+        </button>
+    </div>
+
+
         <!-- SIDEBAR -->
         <div class="sidebar" id="sidebarMenu">
             <div class="sidebar-section">Navegación</div>

@@ -1261,5 +1261,67 @@
             }, 200);
         });
     </script>
+<script>
+    (function() {
+        const btn = document.getElementById('floatingBtn');
+        const menu = document.getElementById('fanMenu');
+        const btnIcon = document.getElementById('btnIcon');
+        const btnText = document.getElementById('btnText');
+
+        // Estado del menú
+        let isOpen = false;
+
+        function toggleMenu(e) {
+            e.stopPropagation();
+            isOpen = !isOpen;
+            if (isOpen) {
+                menu.classList.add('open');
+                btn.classList.add('active');
+                btnIcon.className = 'fas fa-times'; // icono cerrar
+                btnText.textContent = 'Cerrar';
+            } else {
+                menu.classList.remove('open');
+                btn.classList.remove('active');
+                btnIcon.className = 'fas fa-cube'; // restaurar
+                btnText.textContent = 'Ver Módulos';
+            }
+        }
+
+        // click en el botón
+        btn.addEventListener('click', toggleMenu);
+
+        // Cerrar menú al hacer click en un enlace
+        const links = menu.querySelectorAll('a');
+        links.forEach(link => {
+            link.addEventListener('click', function(e) {
+                // Si el enlace tiene href "#" o es vacío, prevenimos comportamiento por defecto (demo)
+                // pero mantenemos el cierre del menú
+                if (this.getAttribute('href') === '#') {
+                    e.preventDefault();
+                }
+                // Cerramos el menú
+                if (isOpen) {
+                    menu.classList.remove('open');
+                    btn.classList.remove('active');
+                    btnIcon.className = 'fas fa-cube';
+                    btnText.textContent = 'Ver Módulos';
+                    isOpen = false;
+                }
+            });
+        });
+
+        // Cerrar menú si se hace clic fuera del wrapper
+        document.addEventListener('click', function(e) {
+            const wrapper = document.getElementById('floatingWrapper');
+            if (isOpen && !wrapper.contains(e.target)) {
+                menu.classList.remove('open');
+                btn.classList.remove('active');
+                btnIcon.className = 'fas fa-cube';
+                btnText.textContent = 'Ver Módulos';
+                isOpen = false;
+            }
+        });
+    })();
+</script>
 </body>
 </html>

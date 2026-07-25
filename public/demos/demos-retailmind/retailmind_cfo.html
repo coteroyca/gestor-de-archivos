@@ -403,6 +403,181 @@
 
         .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
     </style>
+<style>
+    /* ========================================
+       BOTÓN FLOTANTE + MENÚ ABANICO
+       (Extraído de RetailMind 360°)
+       ======================================== */
+
+    .floating-wrapper {
+        position: fixed;
+        right: 2rem;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 99999;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 0.75rem;
+    }
+
+    .floating-btn {
+        background: white;
+        color: #1e3a8a;
+        padding: 0.75rem 1.5rem;
+        border-radius: 1rem;
+        font-weight: 700;
+        text-align: center;
+        transition: all 0.3s ease;
+        border: 1px solid #cbd5e1;
+        box-shadow: 0 10px 40px rgba(30, 58, 138, 0.2);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        white-space: nowrap;
+        font-size: 1rem;
+        font-family: inherit;
+        line-height: 1.5;
+    }
+
+    .floating-btn:hover {
+        transform: translateX(-8px);
+        box-shadow: 0 15px 50px rgba(30, 58, 138, 0.3);
+    }
+
+    .floating-btn.active {
+        color: #dc2626;
+        border-color: #dc2626;
+    }
+
+    .floating-btn i {
+        font-size: 1.2rem;
+        transition: transform 0.3s ease;
+    }
+
+    .floating-btn.active i {
+        transform: rotate(90deg);
+    }
+
+    /* Menú abanico (desplegable hacia la izquierda) */
+    .fan-menu {
+        position: absolute;
+        right: calc(100% + 1rem);
+        top: 50%;
+        transform: translateY(-50%) scale(0.9);
+        transform-origin: right center;
+        background: white;
+        border-radius: 1.25rem;
+        padding: 1.25rem 1.5rem;
+        min-width: 240px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        border: 1px solid #e2e8f0;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        pointer-events: none;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .fan-menu.open {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(-50%) scale(1);
+        pointer-events: auto;
+    }
+
+    .fan-menu .group-label {
+        font-size: 0.6rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-top: 0.25rem;
+        padding: 0.2rem 0.4rem;
+        border-radius: 0.25rem;
+        display: inline-block;
+        background: #f1f5f9;
+        color: #334155;
+    }
+
+    .fan-menu .group-label:first-of-type {
+        margin-top: 0;
+    }
+
+    .fan-menu a {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.4rem 0.6rem;
+        border-radius: 0.5rem;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #1e293b;
+        transition: background 0.15s, color 0.15s;
+        text-decoration: none;
+        border-left: 3px solid transparent;
+    }
+
+    .fan-menu a:hover {
+        background: #f1f5f9;
+        color: #0f172a;
+    }
+
+    .fan-menu a i {
+        width: 1.2rem;
+        text-align: center;
+        font-size: 0.8rem;
+    }
+
+    /* Colores por nivel (borde izquierdo e icono) */
+    .fan-menu a.strategic { border-left-color: #1e3a8a; }
+    .fan-menu a.strategic i { color: #1e3a8a; }
+
+    .fan-menu a.tactical { border-left-color: #475569; }
+    .fan-menu a.tactical i { color: #475569; }
+
+    .fan-menu a.realtime { border-left-color: #10b981; }
+    .fan-menu a.realtime i { color: #10b981; }
+
+    /* separador entre grupos */
+    .fan-menu .divider {
+        height: 1px;
+        background: #e2e8f0;
+        margin: 0.25rem 0;
+    }
+
+    /* ========================================
+       RESPONSIVE: ocultar texto en móvil,
+       solo mostrar icono
+       ======================================== */
+    @media (max-width: 640px) {
+        .floating-wrapper {
+            right: 1rem;
+        }
+        .floating-btn {
+            padding: 0.75rem 1rem !important;
+            font-size: 0;
+        }
+        .floating-btn span {
+            display: none;
+        }
+        .floating-btn i {
+            margin: 0;
+            font-size: 1.4rem;
+        }
+        .fan-menu {
+            min-width: 200px;
+            right: calc(100% + 0.75rem);
+            padding: 1rem;
+        }
+        .fan-menu a {
+            font-size: 0.7rem;
+            padding: 0.3rem 0.5rem;
+        }
+    }
+</style>
 </head>
 <body>
     <div class="shell">

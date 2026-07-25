@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RetailMind · CEO · Estados Operacionales</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -197,8 +198,217 @@ body.theme-office{
 .legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted)}
 .legend-dot{width:8px;height:8px;border-radius:2px}
 </style>
+<style>
+    /* ========================================
+       BOTÓN FLOTANTE + MENÚ ABANICO
+       (Extraído de RetailMind 360°)
+       ======================================== */
+
+    .floating-wrapper {
+        position: fixed;
+        right: 2rem;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 99999;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 0.75rem;
+    }
+
+    .floating-btn {
+        background: white;
+        color: #1e3a8a;
+        padding: 0.75rem 1.5rem;
+        border-radius: 1rem;
+        font-weight: 700;
+        text-align: center;
+        transition: all 0.3s ease;
+        border: 1px solid #cbd5e1;
+        box-shadow: 0 10px 40px rgba(30, 58, 138, 0.2);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        white-space: nowrap;
+        font-size: 1rem;
+        font-family: inherit;
+        line-height: 1.5;
+    }
+
+    .floating-btn:hover {
+        transform: translateX(-8px);
+        box-shadow: 0 15px 50px rgba(30, 58, 138, 0.3);
+    }
+
+    .floating-btn.active {
+        color: #dc2626;
+        border-color: #dc2626;
+    }
+
+    .floating-btn i {
+        font-size: 1.2rem;
+        transition: transform 0.3s ease;
+    }
+
+    .floating-btn.active i {
+        transform: rotate(90deg);
+    }
+
+    /* Menú abanico (desplegable hacia la izquierda) */
+    .fan-menu {
+        position: absolute;
+        right: calc(100% + 1rem);
+        top: 50%;
+        transform: translateY(-50%) scale(0.9);
+        transform-origin: right center;
+        background: white;
+        border-radius: 1.25rem;
+        padding: 1.25rem 1.5rem;
+        min-width: 240px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        border: 1px solid #e2e8f0;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        pointer-events: none;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .fan-menu.open {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(-50%) scale(1);
+        pointer-events: auto;
+    }
+
+    .fan-menu .group-label {
+        font-size: 0.6rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-top: 0.25rem;
+        padding: 0.2rem 0.4rem;
+        border-radius: 0.25rem;
+        display: inline-block;
+        background: #f1f5f9;
+        color: #334155;
+    }
+
+    .fan-menu .group-label:first-of-type {
+        margin-top: 0;
+    }
+
+    .fan-menu a {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.4rem 0.6rem;
+        border-radius: 0.5rem;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #1e293b;
+        transition: background 0.15s, color 0.15s;
+        text-decoration: none;
+        border-left: 3px solid transparent;
+    }
+
+    .fan-menu a:hover {
+        background: #f1f5f9;
+        color: #0f172a;
+    }
+
+    .fan-menu a i {
+        width: 1.2rem;
+        text-align: center;
+        font-size: 0.8rem;
+    }
+
+    /* Colores por nivel (borde izquierdo e icono) */
+    .fan-menu a.strategic { border-left-color: #1e3a8a; }
+    .fan-menu a.strategic i { color: #1e3a8a; }
+
+    .fan-menu a.tactical { border-left-color: #475569; }
+    .fan-menu a.tactical i { color: #475569; }
+
+    .fan-menu a.realtime { border-left-color: #10b981; }
+    .fan-menu a.realtime i { color: #10b981; }
+
+    /* separador entre grupos */
+    .fan-menu .divider {
+        height: 1px;
+        background: #e2e8f0;
+        margin: 0.25rem 0;
+    }
+
+    /* ========================================
+       RESPONSIVE: ocultar texto en móvil,
+       solo mostrar icono
+       ======================================== */
+    @media (max-width: 640px) {
+        .floating-wrapper {
+            right: 1rem;
+        }
+        .floating-btn {
+            padding: 0.75rem 1rem !important;
+            font-size: 0;
+        }
+        .floating-btn span {
+            display: none;
+        }
+        .floating-btn i {
+            margin: 0;
+            font-size: 1.4rem;
+        }
+        .fan-menu {
+            min-width: 200px;
+            right: calc(100% + 0.75rem);
+            padding: 1rem;
+        }
+        .fan-menu a {
+            font-size: 0.7rem;
+            padding: 0.3rem 0.5rem;
+        }
+    }
+</style>
 </head>
 <body>
+    <!-- BOTÓN FLOTANTE + MENÚ ABANICO (sustituye al antiguo <a>) -->
+    <div class="floating-wrapper" id="floatingWrapper">
+        <!-- Menú desplegable (abanico) -->
+        <div class="fan-menu" id="fanMenu">
+            <!-- Nivel 1: Estratégico -->
+            <span class="group-label"><i class="fas fa-chess-queen mr-1" style="color:#1e3a8a;"></i> Estratégico</span>
+            <a href="https://gestor-de-archivos.vercel.app/demos/demos-retailmind/retailmind_ceo.html" class="strategic"><i class="fas fa-user-tie"></i> Vista del CEO</a>
+            <a href="https://gestor-de-archivos.vercel.app/demos/demos-retailmind/retailmind_cfo.html" class="strategic"><i class="fas fa-coins"></i> Vista del CFO</a>
+            <a href="https://gestor-de-archivos.vercel.app/demos/demos-retailmind/retailmind_coo.html" class="strategic"><i class="fas fa-truck-ramp-box"></i> Vista del COO</a>
+
+            <div class="divider"></div>
+
+            <!-- Nivel 2: Táctico -->
+            <span class="group-label"><i class="fas fa-chess-knight mr-1" style="color:#475569;"></i> Táctico</span>
+            <a href="https://gestor-de-archivos.vercel.app/demos/demos-retailmind/demo-gemini.html" class="tactical"><i class="fas fa-shop"></i> Gerente de Tienda</a>
+            <a href="https://gestor-de-archivos.vercel.app/demos/demos-retailmind/demo_deepseek.html" class="tactical"><i class="fas fa-tags"></i> Gerente de Categorías</a>
+            <a href="https://gestor-de-archivos.vercel.app/demos/demos-retailmind/demo-qwen.html" class="tactical"><i class="fas fa-shield-halved"></i> Prevención de Pérdidas</a>
+
+            <div class="divider"></div>
+
+            <!-- Nivel 3: Tiempo Real -->
+            <span class="group-label"><i class="fas fa-clock mr-1" style="color:#10b981;"></i> Tiempo Real</span>
+            <a href="https://gestor-de-archivos.vercel.app/demos/demos-retailmind/demo-perplexity.html" class="realtime"><i class="fas fa-cash-register"></i> Panel de Supervisión de Cajas</a>
+            <a href="https://gestor-de-archivos.vercel.app/demos/demos-retailmind/demo-chat-gpt.html" class="realtime"><i class="fas fa-layer-group"></i> Panel de Control de Pasillos</a>
+            <a href="https://gestor-de-archivos.vercel.app/demos/demos-retailmind/Controller-Vista-Financiera-Corporativa.html" class="realtime"><i class="fas fa-layer-group"></i> Controller Vista Financiera Corporativa</a>
+        </div>
+
+        <!-- Botón disparador (antes era un <a>, ahora es <button>) -->
+        <button class="floating-btn" id="floatingBtn" title="Ver Módulos">
+            <i class="fas fa-cube" id="btnIcon"></i>
+            <span id="btnText">Ver Otros Demos</span>
+        </button>
+    </div>
+
 <div class="shell">
 
 <!-- TOPBAR -->
@@ -813,6 +1023,68 @@ window.addEventListener('resize', () => {
 
 initTheme();
 render();
+</script>
+<script>
+    (function() {
+        const btn = document.getElementById('floatingBtn');
+        const menu = document.getElementById('fanMenu');
+        const btnIcon = document.getElementById('btnIcon');
+        const btnText = document.getElementById('btnText');
+
+        // Estado del menú
+        let isOpen = false;
+
+        function toggleMenu(e) {
+            e.stopPropagation();
+            isOpen = !isOpen;
+            if (isOpen) {
+                menu.classList.add('open');
+                btn.classList.add('active');
+                btnIcon.className = 'fas fa-times'; // icono cerrar
+                btnText.textContent = 'Cerrar';
+            } else {
+                menu.classList.remove('open');
+                btn.classList.remove('active');
+                btnIcon.className = 'fas fa-cube'; // restaurar
+                btnText.textContent = 'Ver Módulos';
+            }
+        }
+
+        // click en el botón
+        btn.addEventListener('click', toggleMenu);
+
+        // Cerrar menú al hacer click en un enlace
+        const links = menu.querySelectorAll('a');
+        links.forEach(link => {
+            link.addEventListener('click', function(e) {
+                // Si el enlace tiene href "#" o es vacío, prevenimos comportamiento por defecto (demo)
+                // pero mantenemos el cierre del menú
+                if (this.getAttribute('href') === '#') {
+                    e.preventDefault();
+                }
+                // Cerramos el menú
+                if (isOpen) {
+                    menu.classList.remove('open');
+                    btn.classList.remove('active');
+                    btnIcon.className = 'fas fa-cube';
+                    btnText.textContent = 'Ver Módulos';
+                    isOpen = false;
+                }
+            });
+        });
+
+        // Cerrar menú si se hace clic fuera del wrapper
+        document.addEventListener('click', function(e) {
+            const wrapper = document.getElementById('floatingWrapper');
+            if (isOpen && !wrapper.contains(e.target)) {
+                menu.classList.remove('open');
+                btn.classList.remove('active');
+                btnIcon.className = 'fas fa-cube';
+                btnText.textContent = 'Ver Módulos';
+                isOpen = false;
+            }
+        });
+    })();
 </script>
 </body>
 </html>

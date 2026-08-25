@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retailding - Estrategia de Inventario basada en las Velas</title>
+    <style>
+        :root {
+            --bg-color: #f4f7f6; --text-color: #2c3e50; --primary: #2980b9;
+            --bullish: #2ecc71; --bearish: #e74c3c; --neutral: #7f8c8d; --card-bg: #ffffff;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6;
+            color: var(--text-color); background-color: var(--bg-color);
+            max-width: 1000px; margin: 0 auto; padding: 30px 20px;
+        }
+        .header-logo { text-align: center; margin-bottom: 15px; }
+        .header-logo img { max-width: 180px; height: auto; object-fit: contain; }
+        h1 { text-align: center; color: var(--text-color); border-bottom: 3px solid var(--primary); padding-bottom: 15px; margin-bottom: 30px; }
+        h2 { color: var(--primary); margin-top: 40px; border-bottom: 1px solid #ddd; padding-bottom: 8px; }
+        h3 { margin-top: 25px; padding-left: 10px; }
+        .hammer-title { border-left: 4px solid var(--bullish); color: #27ae60; }
+        .shooting-title { border-left: 4px solid var(--bearish); color: #c0392b; }
+        .engine-title { border-left: 4px solid var(--bullish); color: #27ae60; }
+        .doji-title { border-left: 4px solid var(--neutral); color: #7f8c8d; }
+        .intro-box { background-color: #e8f4f8; border-radius: 8px; padding: 20px; border-left: 5px solid var(--primary); margin-bottom: 30px; }
+        ul { padding-left: 20px; margin-bottom: 20px; }
+        li { margin-bottom: 8px; }
+        table { width: 100%; border-collapse: collapse; margin: 25px 0; background: var(--card-bg); border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #e0e0e0; }
+        th { background-color: var(--text-color); color: white; font-weight: 600; }
+        tr:hover { background-color: #f9f9f9; }
+    </style>
+</head>
+<body>
+    <!-- Sección del Logotipo -->
+    <div class="header-logo">
+        <img style="Width:15%" src="https://gestor-de-archivos.vercel.app/assets/logos/logo-velas-arriba-fondo-carrito.png" alt="Logo Velas Arriba Cuadradas">
+    </div>
+
+    <h1>Estrategia de Gestión de Inventario Automática</h1>
+    
+    <div class="intro-box">
+        <p><strong>De la Gráfica al Almacén:</strong> El análisis de patrones de tickets no es solo estadístico; permite automatizar las decisiones de reabastecimiento, asignación de personal en pasillos y preparación de pedidos en tiempo real para optimizar la cadena de suministro.</p>
+    </div>
+
+    <h2>📋 Matriz Operativa de Inventario</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Vela Detectada</th>
+                <th>Acción Inmediata en Almacén</th>
+                <th>Estrategia de Logística de Pasillo</th>
+                <th>Nivel de Riesgo (Quiebre de Stock)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong style="color:var(--bullish);">Martillo</strong></td>
+                <td>Activar reposición de productos de alto volumen (packs familiares, formato ahorro).</td>
+                <td>Reforzar personal en cajas tradicionales para carritos pesados.</td>
+                <td>Moderado - El flujo fuerte entró al final.</td>
+            </tr>
+            <tr>
+                <td><strong style="color:var(--bearish);">Estrella Fugaz</strong></td>
+                <td>Congelar órdenes de productos premium. Retener stock de alta gama en bodega central.</td>
+                <td>Trasladar stock hacia pasillos de compra rápida, snacks y cajas de autoservicio.</td>
+                <td>Bajo - El consumo se está contrayendo hacia lo básico.</td>
+            </tr>
+            <tr>
+                <td><strong style="color:var(--bullish);">Green Engine</strong></td>
+                <td><strong>Alerta Roja de Suministro:</strong> Abrir líneas prioritarias de cross-docking y palés completos a piso.</td>
+                <td>Máximo personal disponible en pasillos de alta rotación para evitar góndolas vacías.</td>
+                <td><strong>Crítico</strong> - Demanda masiva y sostenida durante todo el periodo.</td>
+            </tr>
+            <tr>
+                <td><strong style="color:var(--neutral);">Doji</strong></td>
+                <td>Mantener inventario de seguridad sin modificaciones. Pausar órdenes automáticas.</td>
+                <td>Monitorear qué categorías causaron las mechas (picos de fluctuación) para prever el quiebre.</td>
+                <td>En Transición - Pendiente de confirmación horaria.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>⚙️ Protocolo de Acción según Patrón</h2>
+
+    <h3 class="hammer-title">⚡ Plan Martillo: Preparación de Volumen</h3>
+    <ul>
+        <li><strong>Foco de Inventario:</strong> Al detectar un Martillo, sabemos que el consumo de volumen masivo ha regresado con fuerza al cierre de la hora. Es momento de reabastecer productos básicos del hogar, papel higiénico, detergentes y alimentos no perecederos.</li>
+        <li><strong>Logística:</strong> Preparar las zonas de almacenamiento cercanas a piso de venta para una oleada sostenida de carritos llenos.</li>
+    </ul>
+
+    <h3 class="shooting-title">📉 Plan Estrella Fugaz: Optimización de Micro-vía</h3>
+    <ul>
+        <li><strong>Foco de Inventario:</strong> Los productos costosos o de capricho (gourmet, licores finos, electrónica) pierden tracción rápidamente. Se frena el reabastecimiento de estos artículos para no comprometer el capital de trabajo de la tienda en stock estancado.</li>
+        <li><strong>Logística:</strong> Priorizar la visibilidad de ofertas "Flash" en línea de cajas para dar salida al inventario de menor valor unitario.</li>
+    </ul>
+
+    <h3 class="engine-title">🔥 Plan Green Engine: Operación en Hora Pico Absoluta</h3>
+    <ul>
+        <li><strong>Foco de Inventario:</strong> El "motor verde" devora el inventario general a un ritmo insostenible. El algoritmo de la tienda debe emitir solicitudes de transferencia inmediata desde el centro de distribución principal (CEDIS).</li>
+        <li><strong>Logística:</strong> Habilitar la reposición nocturna o de emergencia en tiempo récord. El objetivo es evitar el pasillo vacío que frustra al comprador de alta velocidad.</li>
+    </ul>
+
+    <h3 class="doji-title">⏳ Plan Doji: Inventario de Cobertura</h3>
+    <ul>
+        <li><strong>Foco de Inventario:</strong> No se toman decisiones drásticas de compra ni de liquidación. Se mantiene el stock de seguridad tal como está diseñado en el manual.</li>
+        <li><strong>Logística:</strong> El equipo logístico aprovecha este periodo de calma transaccional relativa para reordenar pasillos secundarios y procesar mermas, preparándose para la ruptura del rango de equilibrio.</li>
+    </ul>
+
+</body>
+</html>

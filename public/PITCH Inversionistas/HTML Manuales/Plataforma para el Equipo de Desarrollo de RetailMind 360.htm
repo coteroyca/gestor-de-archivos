@@ -1,0 +1,256 @@
+<html lang="es"><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma para el Equipo de Desarrollo de RetailMind 360</title>
+    <style>
+        :root {
+            --primary: #0F172A;
+            --accent: #FF6B00;
+            --text: #334155;
+            --light-bg: #F8FAFC;
+            --border: #E2E8F0;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            color: var(--text);
+            line-height: 1.6;
+            background-color: #F1F5F9;
+            padding: 40px 20px;
+        }
+        .document-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #FFFFFF;
+            padding: 50px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 25px;
+            margin-bottom: 40px;
+        }
+        .logo-area img { max-height: 75px; width: auto; }
+        .title-area { text-align: right; }
+        .title-area h1 { font-size: 22px; color: var(--primary); font-weight: 800; margin-bottom: 5px; }
+        .title-area p { font-size: 13px; color: #64748B; text-transform: uppercase; letter-spacing: 1px; }
+        h2 { font-size: 20px; color: var(--primary); margin-top: 30px; margin-bottom: 15px; padding-bottom: 5px; border-bottom: 1px solid var(--border); }
+        p { margin-bottom: 15px; font-size: 15px; }
+        .component-card {
+            background-color: var(--light-bg);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 0 6px 6px 0;
+        }
+        .component-card h3 { color: var(--primary); font-size: 17px; margin-bottom: 8px; display: flex; justify-content: space-between; }
+        .component-card h3 span { color: var(--accent); font-weight: 700; }
+        table { width: 100%; border-collapse: collapse; margin: 25px 0; font-size: 14px; }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid var(--border); }
+        th { background-color: var(--primary); color: #FFFFFF; font-weight: 600; }
+        tr:nth-child(even) td { background-color: var(--light-bg); }
+        .total-row { font-weight: bold; font-size: 16px; background-color: #E2E8F0 !important; color: var(--primary); }
+        .glosario-item { margin-bottom: 20px; }
+        .glosario-item strong { color: var(--primary); display: block; font-size: 16px; margin-bottom: 4px; }
+        .page-break { page-break-before: always; }
+        .btn-print {
+            display: block; width: fit-content; margin: 0 auto 30px auto; padding: 12px 24px;
+            background-color: var(--accent); color: white; border: none; border-radius: 6px;
+            font-size: 15px; font-weight: bold; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        @media print {
+            body { background-color: #FFFFFF; padding: 0; }
+            .document-container { box-shadow: none; padding: 0; max-width: 100%; }
+            .btn-print { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <button class="btn-print" onclick="window.print()">Imprimir / Guardar en PDF</button>
+
+    <div class="document-container">
+        <header>
+            <div class="logo-area">
+                <img alt="RetailMind Logo" src="Plataforma%20para%20el%20Equipo%20de%20Desarrollo%20de%20RetailMind%20360_files/logo-RetailMind-R-cuadrada.png">
+            </div>
+            <div class="title-area">
+                <h1>RetailMind 360</h1>
+                <p>Plataforma para el Equipo de Desarrollo</p>
+            </div>
+        </header>
+
+        <h2>1. Componentes de la Plataforma (Por qué y Para qué)</h2>
+        <p>Estructura modular optimizada para un equipo de 4 personas (2
+ desarrolladores de planta y 2 programadores independientes/freelance 
+trabajando de forma aislada).</p>
+
+        <div class="component-card">
+            <h3>Vercel Pro <span>$80.00 / mes</span></h3>
+            <p><strong>¿Por qué?:</strong> Aloja la infraestructura 
+principal y aplicaciones modernas (Front-end/Serverless) sin costos de 
+administración de servidores ni complejas tareas de DevOps.</p>
+            <p><strong>¿Para qué?:</strong> Despliegue automático de 
+código, hosting optimizado globalmente en la periferia (Edge) y 
+generación automatizada de entornos de pruebas.</p>
+        </div>
+
+        <div class="component-card">
+            <h3>Claude Pro (4 Licencias Individuales) <span>$80.00 / mes</span></h3>
+            <p><strong>¿Por qué?:</strong> Es la vía más económica para 
+habilitar la suite completa de desarrollo con IA para las 4 personas, 
+esquivando los mínimos de asientos de los planes corporativos.</p>
+            <p><strong>¿Para qué?:</strong> Uso diario del chat web para diseño de arquitectura técnica y uso nativo de <strong>Claude Code</strong> dentro de la terminal para programación automatizada en local.</p>
+        </div>
+
+        <div class="component-card">
+            <h3>GitHub Team (Organización Centralizada) <span>$16.00 / mes</span></h3>
+            <p><strong>¿Por qué?:</strong> Custodia y centraliza la 
+propiedad intelectual bajo el control exclusivo de la empresa, aislando 
+el código y los permisos de las cuentas externas.</p>
+            <p><strong>¿Para qué?:</strong> Configurar reglas de 
+aprobación de código (Ramas Protegidas). Impide que los freelance 
+fusionen código a producción sin la revisión técnica previa de un 
+programador de planta.</p>
+        </div>
+
+        <div class="component-card">
+            <h3>Hosting Compartido (cPanel / Alternativo) <span>$3.00 / mes</span></h3>
+            <p><strong>¿Por qué?:</strong> Provee servicios de 
+infraestructura tradicionales muy estables a bajo costo, liberando al 
+equipo de tener que configurar y parchar un servidor VPS.</p>
+            <p><strong>¿Para qué?:</strong> Operar las cuentas de correo
+ corporativo oficiales del equipo, automatizar tareas rutinarias (Cron 
+jobs base) y desplegar bases de datos de apoyo MySQL o scripts 
+auxiliares en PHP.</p>
+        </div>
+
+        <div class="component-card">
+            <h3>Dominios Corporativos (.com Standard) <span>$3.00 / mes</span></h3>
+            <p><strong>¿Por qué?:</strong> Asegura la identidad e imagen digital de las marcas a largo plazo con tarifas planas y predecibles mediante compras trianuales.</p>
+            <p><strong>¿Para qué?:</strong> Mantener activos e 
+independientes un máximo de 3 dominios corporativos con sus respectivas 
+configuraciones de correo electrónico.</p>
+        </div>
+
+        <div class="component-card">
+            <h3>Cloudflare (Plan Gratuito) <span>$0.00</span></h3>
+            <p><strong>¿Por qué?:</strong> Funciona como un escudo perimetral inteligente de seguridad entre los registradores de dominios y tus servidores web.</p>
+            <p><strong>¿Para qué?:</strong> Bloquear ataques 
+informáticos de saturación (DDoS) para mitigar costos sorpresa en 
+Vercel, proveer certificados SSL automáticos y segmentar el tráfico de 
+red de forma óptima.</p>
+        </div>
+
+        <div class="page-break"></div>
+        <h2>2. Desglose Financiero Planificado</h2>
+        <p>Consolidación de costos mensuales fijos y proyecciones anuales basadas en una estrategia de optimización para 4 desarrolladores:</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Componente Técnico</th>
+                    <th>Detalle de Asientos / Uso</th>
+                    <th>Costo Mensual</th>
+                    <th>Costo Anual</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Vercel Pro</strong></td>
+                    <td>4 asientos base requeridos</td>
+                    <td>$80.00 USD</td>
+                    <td>$960.00 USD</td>
+                </tr>
+                <tr>
+                    <td><strong>Claude Pro</strong></td>
+                    <td>4 cuentas individuales independientes</td>
+                    <td>$80.00 USD</td>
+                    <td>$684.00 USD *</td>
+                </tr>
+                <tr>
+                    <td><strong>GitHub Team</strong></td>
+                    <td>Organización de seguridad activa</td>
+                    <td>$16.00 USD</td>
+                    <td>$192.00 USD</td>
+                </tr>
+                <tr>
+                    <td><strong>Hosting Compartido</strong></td>
+                    <td>Soporte multidominio (ej. Spaceship)</td>
+                    <td>$3.00 USD</td>
+                    <td>$36.00 USD</td>
+                </tr>
+                <tr>
+                    <td><strong>Dominios Corporativos</strong></td>
+                    <td>3 direcciones .com en formato trianual</td>
+                    <td>$3.00 USD</td>
+                    <td>$36.00 USD</td>
+                </tr>
+                <tr>
+                    <td><strong>Cloudflare</strong></td>
+                    <td>Protección perimetral y DNS Gratuito</td>
+                    <td>$0.00 USD</td>
+                    <td>$0.00 USD</td>
+                </tr>
+                <tr class="total-row">
+                    <td colspan="2">TOTAL TOTALORUM CONSOLIDADO</td>
+                    <td>$182.00 USD</td>
+                    <td>$1,908.00 USD</td>
+                </tr>
+            </tbody>
+        </table>
+        <p style="font-size: 12px; color: #64748B; margin-top: -10px; margin-bottom: 25px;">*
+ El cálculo anual de Claude Pro asume la facturación anual con descuento
+ anticipado de Anthropic ($17.00 USD al mes por usuario). Los costos 
+mensuales de infraestructura quedan sujetos a límites estándar de 
+consumo base.</p>
+
+        <h2>3. Anexo: Glosario de Tecnologías Clave</h2>
+        
+        <div class="glosario-item">
+            <strong>Claude Code</strong>
+            <p>Herramienta avanzada de interfaz de líneas de comando 
+(CLI) provista por Anthropic. Permite que el motor de IA acceda 
+directamente al directorio de trabajo local del desarrollador mediante 
+la consola, permitiéndole analizar la arquitectura completa de un 
+sistema, corregir fallos sintácticos complejos y actualizar componentes 
+de manera simultánea sin salir de la terminal.</p>
+        </div>
+
+        <div class="glosario-item">
+            <strong>v0 by Vercel</strong>
+            <p>Herramienta de Inteligencia Artificial especializada en 
+diseño generativo de interfaces (Front-end). Transforma instrucciones 
+descriptivas en lenguaje natural en componentes interactivos limpios 
+estructurados bajo tecnologías líderes como React y Tailwind CSS, 
+ahorrando cientos de horas de maquetación visual.</p>
+        </div>
+
+        <div class="glosario-item">
+            <strong>Ramas Protegidas (Protected Branches)</strong>
+            <p>Directrices restrictivas de seguridad configuradas en 
+GitHub. Bloquean la inyección directa de código a los repositorios de 
+producción por parte de usuarios externos o independientes, garantizando
+ que todo cambio deba ser validado y aprobado manualmente por un 
+ingeniero de planta.</p>
+        </div>
+
+        <div class="glosario-item">
+            <strong>Registros DNS (Domain Name System)</strong>
+            <p>Tablas de traducción de redes informáticas encargadas de 
+direccionar solicitudes en internet. Habilitan la bifurcación operativa 
+para que un mismo dominio web cargue su aplicación principal 
+directamente desde los servidores de Vercel mientras mantiene el flujo y
+ resguardo de sus correos electrónicos corporativos en el hosting 
+compartido.</p>
+        </div>
+    </div>
+
+
+
+</body></html>

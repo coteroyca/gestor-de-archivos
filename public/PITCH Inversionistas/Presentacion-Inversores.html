@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>RetailMind — Pitch para Inversionistas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0f1c;
+            color: #eef2ff;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* Slide container */
+        .slides-container {
+            height: 100vh;
+            width: 100%;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+        }
+
+        .slide {
+            scroll-snap-align: start;
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 4rem;
+            position: relative;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .slide-content {
+            max-width: 1100px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* Navigation dots */
+        .nav-dots {
+            position: fixed;
+            right: 24px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .nav-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .nav-dot.active {
+            background: #ff6b35;
+            transform: scale(1.3);
+        }
+
+        .nav-dot:hover {
+            background: #ff6b35;
+            opacity: 0.7;
+        }
+
+        /* Typography */
+        h1 {
+            font-size: clamp(3rem, 6vw, 5rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #ffffff 0%, #ff6b35 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #ff6b35;
+            padding-left: 1.2rem;
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #ff6b35;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(255,107,53,0.15);
+            color: #ff6b35;
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(255,107,53,0.3);
+        }
+
+        /* Grids & cards */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 1.8rem;
+            transition: all 0.2s;
+        }
+
+        .card:hover {
+            background: rgba(255,255,255,0.06);
+            transform: translateY(-4px);
+        }
+
+        .card-icon {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .card h4 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .card p, .card li {
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: #a0a8c0;
+        }
+
+        .card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .card li {
+            padding-left: 1.2rem;
+            position: relative;
+            margin-bottom: 0.4rem;
+        }
+
+        .card li::before {
+            content: "▹";
+            position: absolute;
+            left: 0;
+            color: #ff6b35;
+        }
+
+        /* Stats */
+        .stat-row {
+            display: flex;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            background: rgba(255,255,255,0.03);
+            border-radius: 16px;
+            padding: 1.2rem 1.8rem;
+            text-align: center;
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .stat-number {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #ff6b35;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #8a92b0;
+            margin-top: 0.3rem;
+        }
+
+        /* Highlight box */
+        .highlight {
+            background: linear-gradient(135deg, rgba(255,107,53,0.08), rgba(255,107,53,0.02));
+            border-left: 4px solid #ff6b35;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1.5rem 0;
+        }
+
+        /* Table */
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 0.8rem;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        th {
+            color: #ff6b35;
+            font-weight: 600;
+        }
+
+        /* Footer note */
+        .slide-number {
+            position: absolute;
+            bottom: 24px;
+            left: 24px;
+            font-size: 0.7rem;
+            color: #4a5070;
+            font-family: monospace;
+        }
+
+        /* Modal / Tooltip Overlay Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(10, 15, 28, 0.85);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .modal-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .dashboard-modal-card {
+            width: 80vw;
+            max-width: 850px;
+            height: 500px;
+            background-image: url('hero-01.png');
+            background-size: 100% 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
+            border-radius: 12px;
+        }
+
+        .modal-text-container {
+            padding: 40px 60px;
+            text-align: left;
+            max-width: 90%;
+        }
+
+        .section-title {
+            font-size: 32px;
+            color: #0F172A;
+            margin-bottom: 20px;
+            font-weight: 800;
+            border-left: none;
+            padding-left: 0;
+        }
+
+        .section-content {
+            font-size: 18px;
+            color: #334155;
+            line-height: 1.6;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .slide {
+                padding: 2rem 1.5rem;
+            }
+            .grid-2, .grid-3 {
+                grid-template-columns: 1fr;
+            }
+            .nav-dots {
+                display: none;
+            }
+            .stat-row {
+                flex-direction: column;
+            }
+            .dashboard-modal-card {
+                width: 90vw;
+                height: 400px;
+            }
+            .modal-text-container {
+                padding: 20px 30px;
+            }
+            .section-title {
+                font-size: 24px;
+            }
+            .section-content {
+                font-size: 14px;
+            }
+        }
+
+        /* Custom scroll */
+        .slides-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        .slides-container::-webkit-scrollbar-track {
+            background: #1a1f2e;
+        }
+        .slides-container::-webkit-scrollbar-thumb {
+            background: #ff6b35;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="nav-dots" id="navDots"></div>
+
+<div class="slides-container" id="slidesContainer">
+    <!-- SLIDE 1: TITLE + PROBLEM -->
+    <div class="slide">
+        <div class="slide-content">
+            <span class="badge">Pitch para inversionistas · Agosto 2026</span>
+            <h1>RetailMind</h1>
+            <p style="font-size: 1.3rem; color: #a0a8c0; margin-bottom: 2rem; max-width: 700px;">
+                Inteligencia operacional para el retail latinoamericano
+            </p>
+            <div class="highlight">
+                <strong style="color: #ff6b35;">El problema:</strong> Los consumidores ya compran como traders<br>
+                (arbitraje, cobertura, scalping), pero los supermercados siguen gestionando con Excel.
+            </div>
+            <div class="stat-row">
+                <div class="stat">
+                    <div class="stat-number">+15-20%</div>
+                    <div class="stat-label">Ticket promedio en clientes Champions</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">↓40%</div>
+                    <div class="stat-label">Campañas más efectivas (segmentación hiperlocal)</div>
+                </div>
+                <div class="stat-number" style="font-size:1.5rem; align-self:center;">⚠️</div>
+                <div class="stat-label">Merma invisible por fricción en caja</div>
+            </div>
+        </div>
+        <div class="slide-number">1 / 8</div>
+    </div>
+
+    <!-- SLIDE 2: EL FENÓMENO RETAILDING -->
+    <div class="slide">
+        <div class="slide-content">
+            <span class="badge">Observación fundacional</span>
+            <h2>El fenómeno <em style="font-style: italic; color:#ff6b35;">Retailding</em></h2>
+            <p style="font-size: 1rem; margin-bottom: 1.5rem;">Los consumidores adoptan comportamientos de trading financiero en su día a día:</p>
+            <div class="grid-3">
+                <div class="card"><div class="card-icon">🔄</div><h4>Arbitraje</h4><p>Compara precios entre cadenas y canales, aprovecha brechas cambiarias.</p></div>
+                <div class="card"><div class="card-icon">🛡️</div><h4>Cobertura (Hedging)</h4><p>Convierte bolívares a bienes físicos ante inflación/devaluación.</p></div>
+                <div class="card"><div class="card-icon">⚡</div><h4>Scalping</h4><p>Compras frecuentes y pequeñas, máxima rotación sin acumulación.</p></div>
+            </div>
+            <div class="highlight">
+                <strong>➡️ El mercado ya cambió. Las herramientas del retail, no.</strong><br>
+                Retailding es el neologismo que nombra esta nueva realidad.
+            </div>
+        </div>
+        <div class="slide-number">2 / 8</div>
+    </div>
+
+    <!-- SLIDE 3: ARQUITECTURA DE NEGOCIO (3 ACTIVOS) -->
+    <div class="slide">
+        <div class="slide-content">
+            <span class="badge">Modelo de negocio</span>
+            <h2>Tres activos, una marca</h2>
+            <div class="grid-2" style="margin-top: 1rem;">
+                <div class="card">
+                    <div class="card-icon">📊</div>
+                    <h4>RetailMind 360°</h4>
+                    <p><strong>Plataforma SaaS</strong> · Suscripción mensual</p>
+                    <ul><li>Data Lake + ETL Medallion</li><li>Datamarts segmentados (RFM, jerarquías, geografía)</li><li>Dashboards Power BI / Cognos</li><li><strong style="color:#ff6b35;">Genix</strong> (alertas, tareas, flujos operacionales)</li></ul>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🎓</div>
+                    <h4>Taller RETAILDING</h4>
+                    <p><strong>Capacitación ejecutiva</strong> · Lead gen para SaaS</p>
+                    <ul><li>Velas Japonesas aplicadas al retail</li><li>Intro (gratis) / Avanzado ($120) / Membresía ($40/mes)</li><li>Certificación Practitioner</li></ul>
+                </div>
+            </div>
+            <div class="card" style="margin-top: 1rem; background: rgba(255,107,53,0.05); border-color: rgba(255,107,53,0.2);">
+                <div class="card-icon">⚙️</div>
+                <h4>Activo de conocimiento interno</h4>
+                <p><strong>Metodología Retailding + Framework analítico</strong> — índices propietarios (Panic Signal, CHI, IAV, RSI Retail), eventos de intención, Retail Imbalance.</p>
+            </div>
+        </div>
+        <div class="slide-number">3 / 8</div>
+    </div>
+
+    <!-- SLIDE 4: GENIX → CABALLO DE TROYA -->
+    <div class="slide">
+        <div class="slide-content">
+            <span class="badge">Estrategia de entrada</span>
+            <h2>Genix: el integrador que abre puertas</h2>
+            <div class="grid-2">
+                <div>
+                    <div class="card" style="height: 100%;">
+                        <div class="card-icon">🏪</div>
+                        <h4>Capa gratuita local</h4>
+                        <p><strong>Sin internet · Datos del supermercado no salen de su red</strong></p>
+                        <ul><li>Sincronización de precios y productos</li><li>Mejora la experiencia del cliente sin costo ni riesgo</li><li>Elimina objeciones de seguridad/regulación</li></ul>
+                        <div style="margin-top: 1rem; background: #ff6b3520; padding: 0.5rem; border-radius: 8px; text-align: center;">🎯 <strong>Caballo de Troya</strong> → Onboarding gratuito → Upsell a RetailMind 360°</div>
+                    </div>
+                </div>
+                <div>
+                    <div class="card" style="height: 100%;">
+                        <div class="card-icon">📱</div>
+                        <h4>Genix premium (dentro de 360°)</h4>
+                        <ul><li>Dashboards operacionales</li><li>Alertas predictivas y tareas asignables</li><li>Flujos: Cliente ↔ Operario ↔ Gerente ↔ Corporación</li><li>IA conversacional ("¿Por qué bajó el margen en frutas?")</li></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slide-number">4 / 8</div>
+    </div>
+
+    <!-- SLIDE 5: METODOLOGÍA DIFERENCIADORA (VELAS JAPONESAS + ÍNDICES) -->
+    <div class="slide">
+        <div class="slide-content">
+            <span class="badge">Ventaja competitiva · IP propia</span>
+            <h2>Velas Japonesas + Índices Retailding</h2>
+            <p>Aplicamos análisis técnico de mercados financieros a los tickets de venta.</p>
+            <div class="grid-2" style="margin-top: 1rem;">
+                <div class="card">
+                    <h4>📈 Velas Japonesas (público)</h4>
+                    <p>Visualización OHLC de ticket promedio, fill rate o margen. Detecta <strong>pánico, euforia o fricción</strong> en minutos.</p>
+                    <div style="background:#00000030; padding:0.5rem; border-radius:8px; font-family: monospace; font-size:0.7rem;">[🕯️] Mecha superior = rechazo de precio en caja</div>
+                </div>
+                <div class="card">
+                    <h4>⚡ Índices propietarios</h4>
+                    <ul><li><strong>Panic Signal</strong> (>+3σ → acaparamiento)</li><li><strong>CHI</strong> (Consumer Hesitation Index)</li><li><strong>IAV</strong> (Inventory Absorption Velocity)</li><li><strong>RSI Retail</strong> (Fear & Greed para supermercados)</li><li><strong>Retail Imbalance</strong> = (compras - abandonos)/intenciones</li></ul>
+                </div>
+            </div>
+            <div class="highlight">
+                🔒 <strong>Moat técnico:</strong> Eventos de intención (ADD_TO_CART, REMOVE, SUBSTITUTE, SCAN, CHECKOUT, ABANDON) — nadie más los captura así.
+            </div>
+        </div>
+        <div class="slide-number">5 / 8</div>
+    </div>
+
+    <!-- SLIDE 6: MODELO DE INGRESOS + TAM -->
+    <div class="slide">
+        <div class="slide-content">
+            <span class="badge">Unidad económica</span>
+            <h2>Ingresos recurrentes y escalables</h2>
+            <div class="table-wrapper">
+                <table>
+                    <thead><tr><th>Producto</th><th>Modelo</th><th>Precio</th><th>Objetivo</th></tr></thead>
+                    <tbody>
+                        <tr><td>Taller Intro</td><td>Lead magnet</td><td>Gratis</td><td>Adquirir dueños/gerentes</td></tr>
+                        <tr><td>Taller Avanzado</td><td>Evento</td><td>$120</td><td>Conversión, certificación</td></tr>
+                        <tr><td>Membresía RETAILDING</td><td>Suscripción mensual</td><td>$40/mes</td><td>Ingreso recurrente + comunidad</td></tr>
+                        <tr><td>RetailMind 360°</td><td>SaaS por sucursal</td><td>Desde $99/mes</td><td>Core del negocio (alto margen)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="stat-row">
+                <div class="stat"><div class="stat-number">+200</div><div class="stat-label">supermercados objetivo (Venezuela, fase 1)</div></div>
+                <div class="stat"><div class="stat-number">$2.4M</div><div class="stat-label">ARR potencial año 2 (solo SaaS)</div></div>
+                <div class="stat"><div class="stat-number">3-4</div><div class="stat-label">semanas de implementación</div></div>
+            </div>
+        </div>
+        <div class="slide-number">6 / 8</div>
+    </div>
+
+    <!-- SLIDE 7: ROADMAP (FASES) -->
+    <div class="slide">
+        <div class="slide-content">
+            <span class="badge">Plan de ejecución</span>
+            <h2>Fases priorizadas</h2>
+            <div class="grid-2" style="margin-top: 1rem;">
+                <div><div class="card"><h4>🔵 Fase 1 (meses 1-3)</h4><ul><li>Lanzar Taller RETAILDING Intro en 2 ciudades</li><li>Onboarding de primeras 3 cadenas con Genix gratuito local</li><li>Construir caso de éxito</li></ul></div></div>
+                <div><div class="card"><h4>🟠 Fase 2 (meses 4-9)</h4><ul><li>Convertir 1 cadena a RetailMind 360° pago</li><li>Escalar taller a 5 ciudades + versión Avanzada</li><li>Automatizar índices propietarios en dashboards</li></ul></div></div>
+                <div><div class="card"><h4>🟢 Fase 3 (meses 10-18)</h4><ul><li>Expansión regional (Colombia, Perú)</li><li>Genix Consumer B2C (crowdsourcing de precios)</li><li>API para integración con ERPs</li></ul></div></div>
+                <div><div class="card"><h4>🎯 Hito crítico</h4><ul><li><strong>10 cadenas pagando SaaS</strong> → validación de producto/mercado</li><li>Membresía RETAILDING con 100+ miembros recurrentes</li></ul></div></div>
+            </div>
+        </div>
+        <div class="slide-number">7 / 8</div>
+    </div>
+
+    <!-- SLIDE 8: ASK + CIERRE -->
+    <div class="slide">
+        <div class="slide-content" style="text-align: center;">
+            <span class="badge">Oportunidad de inversión</span>
+            <h2 style="border-left: none; text-align: center;">El retail tradicional se acabó.<br><span style="color:#ff6b35;">Nosotros construimos el nuevo sistema operativo.</span></h2>
+            <div class="highlight" style="margin: 2rem 0; text-align: left;">
+                <strong>📢 Buscamos:</strong> $150,000 USD para equipo comercial, desarrollo de Genix y escalamiento del taller.<br>
+                <strong>📈 Uso de fondos:</strong> 40% ventas/marketing, 35% producto, 15% operaciones, 10% reserva.<br>
+                <strong>🏆 Retorno propuesto:</strong> participación accionaria del 12-18% (valoración pre-money $1.2M).<br>
+                <strong>⏱️ Runway:</strong> 18 meses para alcanzar break-even operativo.
+            </div>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <div class="card" style="width: 200px;"><div class="card-icon">📧</div><h4>contacto@retailmind.com</h4><p style="font-size:0.7rem;">Envíanos tu interés</p></div>
+                <div class="card" style="width: 200px;"><div class="card-icon">📄</div><h4>Data room disponible</h4><p style="font-size:0.7rem;">Financiero, técnico, roadmap</p></div>
+            </div>
+            <p style="margin-top: 2rem; font-size: 0.85rem; color: #6a7290;">RetailMind C.A. — Metodología Retailding · Velas Japonesas · Índices propietarios</p>
+        </div>
+        <div class="slide-number">8 / 8</div>
+    </div>
+</div>
+
+<!-- Modal / Tooltip Overlay con el Card -->
+<div id="modal" class="modal-overlay">
+    <div id="card" class="dashboard-modal-card">
+        <div class="modal-text-container">
+            <h2 id="titulo" class="section-title">01. TÍTULO DE LA SECCIÓN</h2>
+            <p id="anotacion" class="section-content">
+                Aquí va el texto grande del abrebocas o el recordatorio clave para el presentador. 
+                Al tener un centro blanco limpio, la legibilidad es del 100% para todo el público.
+            </p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Definición manual de los 8 elementos del card para cada diapositiva
+    const slideData = [
+        {
+            title: "01. PROBLEMA Y OPORTUNIDAD",
+            content: "La asimetria de la informacion de los precios se ha invertido, ahora los clientes ya compran como traders pero los supermercados operan con métodos arcaicos. Destaca la pérdida invisible por fricción en caja."
+        },
+        {
+            title: "02. EL FENÓMENO RETAILDING",
+            content: "Explica el neologismo a la audiencia. Conecta el arbitraje, el hedging (cobertura) y el scalping diario con el comportamiento real del consumidor en los pasillos."
+        },
+        {
+            title: "03. TRES ACTIVOS, UNA MARCA",
+            content: "Muestra la diversificación del modelo: la plataforma SaaS (RetailMind 360), el embudo educativo (Talleres) y el framework analítico propietario."
+        },
+        {
+            title: "04. GENIX: CABALLO DE TROYA",
+            content: "Enfatiza que la capa local gratuita elimina cualquier objeción técnica o de seguridad de los supermercados, facilitando una adopción sin fricciones."
+        },
+        {
+            title: "05. VELAS JAPONESAS E ÍNDICES",
+            content: "Conecta las finanzas tradicionales con el retail. Explica brevemente cómo las velas y los índices propietarios detectan el pánico o la euforia de compra."
+        },
+        {
+            title: "06. INGRESOS Y MERCADO (TAM)",
+            content: "Detalla la escalera de valor (desde talleres gratuitos hasta el SaaS de $99/mes) y el potencial de expansión de 200+ supermercados en la fase inicial."
+        },
+        {
+            title: "07. PLAN DE EJECUCIÓN (ROADMAP)",
+            content: "Describe las fases cronológicas, haciendo hincapié en que la Fase 1 valida el caso de éxito local antes de saltar a la expansión regional."
+        },
+        {
+            title: "08. LLAMADO A LA INVERSIÓN (ASK)",
+            content: "Cierra con fuerza la presentación: muestra el uso claro de los $150k USD requeridos y el runway de 18 meses para alcanzar el break-even operativo."
+        }
+    ];
+
+    const slides = document.querySelectorAll('.slide');
+    const navDots = document.getElementById('navDots');
+    const container = document.getElementById('slidesContainer');
+    const modal = document.getElementById('modal');
+    const titleEl = document.getElementById('titulo');
+    const contentEl = document.getElementById('anotacion');
+
+    let currentSlideIndex = 0;
+
+    // Función para actualizar el contenido del modal según el índice de la diapositiva
+    function updateModalContent(index) {
+        if (slideData[index]) {
+            titleEl.textContent = slideData[index].title;
+            contentEl.textContent = slideData[index].content;
+        }
+    }
+
+    // Generar dots de navegación y asignarles el comportamiento de tooltip
+    slides.forEach((_, index) => {
+        const dot = document.createElement('div');
+        dot.classList.add('nav-dot');
+        dot.dataset.index = index;
+        
+        // Al hacer clic en un botón del menú vertical: se desplaza a la slide y muestra el modal como tooltip
+        dot.addEventListener('click', (e) => {
+            e.stopPropagation();
+            currentSlideIndex = index;
+            updateModalContent(index);
+            slides[index].scrollIntoView({ behavior: 'smooth' });
+            modal.classList.remove('hidden');
+        });
+
+        navDots.appendChild(dot);
+    });
+
+    // Ocultar el modal al hacer clic en cualquier parte de él
+    modal.addEventListener('click', () => {
+        modal.classList.add('hidden');
+    });
+
+    function updateActiveDot() {
+        const scrollPos = container.scrollTop;
+        const slideHeight = slides[0]?.clientHeight || window.innerHeight;
+        const activeIndex = Math.round(scrollPos / slideHeight);
+        
+        currentSlideIndex = activeIndex;
+        updateModalContent(activeIndex);
+
+        document.querySelectorAll('.nav-dot').forEach((dot, i) => {
+            if (i === activeIndex) dot.classList.add('active');
+            else dot.classList.remove('active');
+        });
+    }
+
+    container.addEventListener('scroll', updateActiveDot);
+    window.addEventListener('resize', () => {
+        setTimeout(updateActiveDot, 100);
+    });
+    
+    // Inicializar estado activo y primer contenido
+    updateActiveDot();
+
+    // Teclado: flechas izquierda/derecha o arriba/abajo
+    window.addEventListener('keydown', (e) => {
+        const slideHeight = slides[0].clientHeight;
+        const currentIndex = Math.round(container.scrollTop / slideHeight);
+        
+        if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+            if (currentIndex < slides.length - 1) {
+                slides[currentIndex + 1].scrollIntoView({ behavior: 'smooth' });
+            }
+        } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+            if (currentIndex > 0) {
+                slides[currentIndex - 1].scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Acuerdo de Administración de Capital Semilla - RetailMind</title>
+    <style>
+        /* === RESET Y ESTILOS BASE === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #e6e9ef;
+            display: flex;
+            justify-content: center;
+            padding: 40px 20px;
+            font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.5;
+            color: #1e2a3a;
+        }
+
+        .document {
+            max-width: 1100px;
+            width: 100%;
+            background: #ffffff;
+            padding: 55px 65px 50px 65px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            border-radius: 4px;
+        }
+
+        /* === TIPOGRAFÍA === */
+        h1 {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            color: #0b1a2e;
+            margin-bottom: 4px;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            font-weight: 400;
+            color: #2c3e5c;
+            margin-top: -2px;
+            margin-bottom: 28px;
+            border-bottom: 2px solid #1a4b7a;
+            padding-bottom: 14px;
+        }
+
+        h2 {
+            font-size: 19px;
+            font-weight: 600;
+            color: #0b1a2e;
+            margin-top: 32px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #d0d7e2;
+            padding-bottom: 5px;
+        }
+
+        h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a3a5e;
+            margin-top: 22px;
+            margin-bottom: 6px;
+        }
+
+        p {
+            margin-bottom: 12px;
+            text-align: justify;
+        }
+
+        /* === TABLAS === */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0 20px 0;
+            font-size: 14px;
+        }
+
+        th {
+            background-color: #1a3a5e;
+            color: #ffffff;
+            font-weight: 600;
+            padding: 9px 12px;
+            text-align: left;
+            border: 1px solid #1a3a5e;
+        }
+
+        td {
+            padding: 8px 12px;
+            border: 1px solid #c8d0dc;
+            vertical-align: top;
+            background-color: #ffffff;
+        }
+
+        tr:nth-child(even) td {
+            background-color: #f8faff;
+        }
+
+        .table-highlight {
+            background-color: #e4f0e7 !important;
+            font-weight: 600;
+        }
+
+        .table-highlight td {
+            background-color: #e4f0e7 !important;
+        }
+
+        /* === LISTAS === */
+        ul,
+        ol {
+            margin: 6px 0 14px 22px;
+        }
+
+        li {
+            margin-bottom: 4px;
+            text-align: justify;
+        }
+
+        /* === CITAS / DESTACADOS === */
+        .box-highlight {
+            background: #f2f6fc;
+            border-left: 5px solid #1a4b7a;
+            padding: 16px 22px;
+            margin: 18px 0 20px 0;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .box-success {
+            background: #eaf5eb;
+            border-left: 5px solid #1f7b4b;
+            padding: 16px 22px;
+            margin: 18px 0 20px 0;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .box-success strong {
+            color: #135432;
+        }
+
+        /* === FIRMAS === */
+        .signature-area {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 30px;
+            margin-top: 40px;
+            padding-top: 25px;
+            border-top: 2px solid #d0d7e2;
+        }
+
+        .signature-block {
+            flex: 1 1 200px;
+            min-width: 180px;
+        }
+
+        .signature-block .line {
+            border-bottom: 1px solid #1e2a3a;
+            margin: 28px 0 4px 0;
+            width: 100%;
+        }
+
+        .signature-block .label {
+            font-size: 13px;
+            color: #3e546c;
+        }
+
+        /* === FOOTER === */
+        .footer-note {
+            margin-top: 35px;
+            font-size: 13px;
+            color: #4a617c;
+            border-top: 1px solid #dce3ec;
+            padding-top: 18px;
+            text-align: center;
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 700px) {
+            .document {
+                padding: 28px 20px 30px 20px;
+            }
+
+            .signature-area {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            table {
+                font-size: 13px;
+            }
+
+            th,
+            td {
+                padding: 6px 8px;
+            }
+        }
+
+        @media print {
+            body {
+                background: #ffffff;
+                padding: 0;
+            }
+            .document {
+                box-shadow: none;
+                border-radius: 0;
+                padding: 40px 50px 40px 50px;
+                max-width: 100%;
+            }
+            .box-highlight,
+            .box-success {
+                break-inside: avoid;
+            }
+            table {
+                break-inside: auto;
+            }
+            tr {
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="document">
+
+        <!-- ============================================ -->
+        <!-- TÍTULO PRINCIPAL                               -->
+        <!-- ============================================ -->
+        <h1>ACUERDO DE ADMINISTRACIÓN DE CAPITAL SEMILLA</h1>
+        <div class="subtitle">RetailMind &bull; Primer Año Operativo (Prorrogable)</div>
+
+        <!-- ============================================ -->
+        <!-- 1. OBJETO                                     -->
+        <!-- ============================================ -->
+        <h2>1. Objeto del Documento</h2>
+
+        <p>El presente acuerdo tiene como propósito establecer la metodología y los lineamientos para la administración del capital semilla de <strong>RetailMind</strong>, correspondiente a <strong>USD $130,000 (ciento treinta mil dólares americanos)</strong>, durante su primer año de operaciones, con opción a prórroga anual.</p>
+
+        <p>Este documento formaliza la decisión del equipo de gestión respecto a la estrategia financiera más eficiente, segura y ágil para la ejecución del presupuesto operativo, en sustitución de la figura tradicional de fideicomiso bancario de administración.</p>
+
+        <!-- ============================================ -->
+        <!-- 2. ESTRUCTURA DE ADMINISTRACIÓN               -->
+        <!-- ============================================ -->
+        <h2>2. Estructura de Administración Propuesta</h2>
+
+        <p>Se acuerda la administración directa de los fondos a través de una <strong>Cuenta de Custodia Corporativa en USD</strong> y una <strong>Cuenta Corriente en Bolívares</strong>, ambas en la misma institución bancaria venezolana, con capacidad para realizar operaciones cambiarias y pagos locales e internacionales.</p>
+
+        <h3>2.1. Distribución del Capital</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Concepto</th>
+                    <th>Monto</th>
+                    <th>Moneda</th>
+                    <th>Destino</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Fondo operativo en USD</strong></td>
+                    <td><strong>$91,000</strong></td>
+                    <td>USD (70%)</td>
+                    <td>Gastos en dólares (dietas internacionales, alquileres, suscripciones, legales, adiestramiento, contingente)</td>
+                </tr>
+                <tr>
+                    <td><strong>Fondo operativo en Bs.</strong></td>
+                    <td><strong>$39,000</strong></td>
+                    <td>Bs. equivalentes (30%)</td>
+                    <td>Gastos en bolívares (servicios, Fospuca, condominio, caja chica, registros, mercadeo, parte de dietas)</td>
+                </tr>
+                <tr style="font-weight: 700; background-color: #eef4fa;">
+                    <td><strong>Capital total</strong></td>
+                    <td><strong>$130,000</strong></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>2.2. Mecanismo de Ejecución</h3>
+
+        <ul>
+            <li>Los pagos en <strong>USD</strong> se realizarán mediante transferencias electrónicas desde la cuenta de custodia.</li>
+            <li>Los pagos en <strong>Bs.</strong> se realizarán desde la cuenta corriente en bolívares.</li>
+            <li>El cambio de divisas para cubrir los gastos en moneda local se efectuará a través de la mesa de cambio del banco o del mecanismo de intervención cambiaria oficial, según la tasa vigente.</li>
+            <li>Se designará a un <strong>responsable financiero</strong> con facultades para ejecutar pagos, con mecanismos de control de doble firma para operaciones superiores a los <strong>$2,500 USD</strong> o su equivalente en Bs.</li>
+        </ul>
+
+        <!-- ============================================ -->
+        <!-- 3. MECANISMO DE DEPÓSITO Y LIBERACIÓN        -->
+        <!-- ============================================ -->
+        <h2>3. Mecanismo de Depósito y Liberación del Capital</h2>
+
+        <p>El capital semilla total de <strong>$130,000 USD</strong> será depositado íntegramente por el inversionista en una <strong>Cuenta de Depósito en Garantía (Escrow)</strong> a nombre de RetailMind, en el momento de la firma del presente acuerdo. Dicha cuenta tendrá carácter de <strong>custodia bloqueada</strong>, sin capacidad de efectuar pagos directos a terceros.</p>
+
+        <p>La liberación de los fondos hacia la cuenta operativa de RetailMind se realizará en los siguientes tramos, según el cronograma y condiciones detalladas a continuación:</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Tramo</th>
+                    <th>Monto</th>
+                    <th>%</th>
+                    <th>Condición de Liberación</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Tramo 1</strong></td>
+                    <td><strong>$52,000</strong></td>
+                    <td>40%</td>
+                    <td>Apertura de cuentas operativas y presentación del plan de ejecución del primer trimestre.</td>
+                </tr>
+                <tr>
+                    <td><strong>Tramo 2</strong></td>
+                    <td><strong>$39,000</strong></td>
+                    <td>30%</td>
+                    <td>Cumplimiento del hito A: <em>[definir, ej. MVP funcional y primeros 10 usuarios en prueba]</em>.</td>
+                </tr>
+                <tr>
+                    <td><strong>Tramo 3</strong></td>
+                    <td><strong>$39,000</strong></td>
+                    <td>30%</td>
+                    <td>Cumplimiento del hito B: <em>[definir, ej. facturación mínima de $5,000 o 20 clientes activos]</em>.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>3.1. Procedimiento de Liberación</h3>
+
+        <ul>
+            <li>Cada tramo se liberará automáticamente a la cuenta operativa de RetailMind dentro de los <strong>5 días hábiles</strong> siguientes a la fecha de cumplimiento del hito correspondiente, salvo que el inversionista objete por escrito y con causa justificada dicha liberación.</li>
+            <li>En caso de objeción, las partes designarán un <strong>perito independiente</strong> (de común acuerdo) para resolver la controversia en un plazo no mayor a 10 días hábiles. El costo de dicho perito será asumido por la parte que resulte vencida en la controversia.</li>
+            <li>Si el inversionista no formula objeción dentro del plazo establecido, se entenderá que el hito ha sido cumplido y la liberación procederá de manera automática.</li>
+        </ul>
+
+        <h3>3.2. Protección ante Incumplimiento del Inversionista</h3>
+
+        <div class="box-highlight">
+            <p><strong>Cláusula de Protección:</strong> En caso de que el inversionista incumpla injustificadamente con el depósito total del capital en la cuenta de garantía dentro de los 10 días hábiles siguientes a la firma del acuerdo, RetailMind podrá dar por terminado el presente acuerdo sin responsabilidad alguna, quedando el inversionista sin derecho a participación accionaria.</p>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- 4. VENTAJA COMPARATIVA                        -->
+        <!-- ============================================ -->
+        <h2>4. Ventaja Comparativa: Cuenta de Custodia vs. Fideicomiso Bancario</h2>
+
+        <p>La siguiente tabla resume el <strong>ahorro significativo</strong> que representa la metodología propuesta frente a la opción de fideicomiso de administración bancaria, considerando una nómina base de 6 personas y una ejecución operativa mensual estimada.</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Concepto de Costo</th>
+                    <th>Fideicomiso Bancario (anual)</th>
+                    <th>Cuenta de Custodia (anual)</th>
+                    <th>Diferencia</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Comisión de administración</td>
+                    <td>$3,250</td>
+                    <td><strong>$0</strong></td>
+                    <td style="color: #1a7a3a; font-weight: 700;">Ahorro: $3,250</td>
+                </tr>
+                <tr>
+                    <td>Comisión de constitución</td>
+                    <td>$800</td>
+                    <td><strong>$0</strong></td>
+                    <td style="color: #1a7a3a; font-weight: 700;">Ahorro: $800</td>
+                </tr>
+                <tr>
+                    <td>Costos de custodia y transferencias</td>
+                    <td>$778</td>
+                    <td><strong>$249</strong></td>
+                    <td style="color: #1a7a3a; font-weight: 700;">Ahorro: $529</td>
+                </tr>
+                <tr>
+                    <td>IGTF y gastos operativos</td>
+                    <td>$1,728</td>
+                    <td>$1,923 <span style="font-size:12px; color:#4a617c;">(*)</span></td>
+                    <td style="color: #b33c3c;">Diferencia marginal</td>
+                </tr>
+                <tr style="font-weight: 700; background-color: #e4f0e7;">
+                    <td><strong>Total estimado anual</strong></td>
+                    <td><strong>$6,556</strong></td>
+                    <td><strong>$2,172</strong></td>
+                    <td style="color: #0e6b3a; font-weight: 700; background-color: #e4f0e7;">
+                        <strong>Ahorro total: $4,384</strong>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p style="font-size: 14px; color: #4a617c;">(*) En el esquema de cuenta de custodia, el IGTF se paga sobre las mismas transacciones en USD, pero se incluye una comisión por venta de divisas (0.50%) para cubrir gastos en Bs.</p>
+
+        <div class="box-success">
+            <p><strong>Conclusión:</strong> La administración mediante cuenta de custodia representa un <strong>ahorro del 66.9%</strong> en costos financieros directos durante el primer año, equivalente a <strong>$4,384 USD</strong>, que pueden ser reinvertidos en el crecimiento del proyecto.</p>
+        </div>
+
+        <h3>4.1. Costos Ocultos Evitados (No incluidos en el total anual)</h3>
+
+        <ul>
+            <li><strong>Cobro por nómina:</strong> 0.15% por transacción en fideicomiso (eliminado en custodia).</li>
+            <li><strong>Mantenimiento de cuenta fiduciaria:</strong> Cargos mensuales adicionales no siempre detallados.</li>
+            <li><strong>Comisiones por inversión de excedentes:</strong> Algunos bancos cobran por gestionar fondos no utilizados.</li>
+            <li><strong>Gastos legales por modificaciones contractuales:</strong> Cambios en el objeto del fideicomiso generan costos extras.</li>
+        </ul>
+
+        <!-- ============================================ -->
+        <!-- 5. RESPONSABILIDADES Y CONTROLES              -->
+        <!-- ============================================ -->
+        <h2>5. Responsabilidades y Controles</h2>
+
+        <h3>5.1. Responsable Financiero</h3>
+        <p>Se designará a una persona del equipo fundador con facultades de firma y ejecución de pagos, cuyas funciones incluirán:</p>
+        <ul>
+            <li>Autorizar todas las transferencias y pagos.</li>
+            <li>Mantener un registro contable actualizado.</li>
+            <li>Reportar mensualmente al equipo el estado de ejecución del presupuesto.</li>
+        </ul>
+
+        <h3>5.2. Mecanismos de Control</h3>
+        <ul>
+            <li><strong>Doble firma</strong> para pagos superiores a $2,500 USD (o equivalente en Bs.) entre dos fundadores.</li>
+            <li><strong>Conciliación bancaria mensual</strong> con el registro de gastos.</li>
+            <li><strong>Informe trimestral</strong> a todos los stakeholders con ejecución presupuestaria y proyecciones.</li>
+            <li>El inversionista <strong>no tendrá firma en las cuentas operativas</strong>, manteniendo su rol estratégico y de supervisión, no operativo.</li>
+        </ul>
+
+        <h3>5.3. Proveedores y Pagos Programados</h3>
+        <p>Se elaborará un <strong>cronograma de pagos recurrente</strong> para los gastos mensuales fijos (nómina, alquiler, suscripciones, servicios), a fin de garantizar la disponibilidad de fondos en la moneda correspondiente.</p>
+
+        <!-- ============================================ -->
+        <!-- 6. MECANISMOS DE TRANSPARENCIA                -->
+        <!-- ============================================ -->
+        <h2>6. Mecanismos de Transparencia y Alineación con el Inversionista</h2>
+
+        <p>Con el objetivo de generar un vínculo de confianza y alineación de intereses, RetailMind ofrece al inversionista los siguientes mecanismos de supervisión, que no implican injerencia operativa ni generan costos adicionales significativos:</p>
+
+        <h3>6.1. Acceso a Dashboard Financiero en Línea</h3>
+        <p>Se proporcionará al inversionista un usuario de <strong>solo lectura</strong> para visualizar en tiempo real los movimientos y saldos de las cuentas bancarias, sin capacidad de ejecutar transacciones.</p>
+
+        <h3>6.2. Reporte Mensual Ejecutivo</h3>
+        <p>Envío mensual de un resumen de ejecución presupuestaria, comparando gasto real vs. proyectado, con una duración máxima de 15 minutos en reunión de seguimiento (virtual).</p>
+
+        <h3>6.3. Gatillo de Revisión Extraordinaria</h3>
+        <p>Si en <strong>dos (2) meses consecutivos</strong> el gasto operativo mensual supera en más de un <strong>15%</strong> el monto presupuestado, RetailMind se compromete a realizar, por cuenta propia, una revisión contable externa para identificar las causas y presentar un plan correctivo en un plazo no mayor a 10 días hábiles.</p>
+
+        <h3>6.4. Cláusula de Aprobación para Gastos No Presupuestados</h3>
+        <p>Cualquier gasto no contemplado en el presupuesto anual, cuyo monto individual supere los <strong>$1,000 USD</strong> (o su equivalente en Bs.), requerirá la aprobación expresa del responsable financiero y del inversionista (o su representante) antes de su ejecución.</p>
+
+        <div class="box-highlight">
+            <p><strong>Principio rector:</strong> El inversionista tiene <strong>visibilidad y voz</strong>, pero no voto operativo en el día a día. Su participación accionaria del <strong>15%</strong> es desde la firma del acuerdo, con independencia del cronograma de desembolsos.</p>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- 7. ANEXOS                                    -->
+        <!-- ============================================ -->
+        <h2>7. Anexos</h2>
+
+        <ul>
+            <li><strong>Anexo A</strong> – Presupuesto Detallado por Rubros (Mensual y Anual)</li>
+            <li><strong>Anexo B</strong> – Flujo de Caja Proyectado (Primer Año)</li>
+            <li><strong>Anexo C</strong> – Política de Control Interno para Pagos</li>
+            <li><strong>Anexo D</strong> – Cronograma de Hitos y Liberación de Tramos</li>
+        </ul>
+
+        <!-- ============================================ -->
+        <!-- 8. GLOSARIO                                  -->
+        <!-- ============================================ -->
+        <h2>8. Glosario</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 30%;">Término</th>
+                    <th>Definición</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Cuenta de Custodia Corporativa</strong></td>
+                    <td>Cuenta bancaria en moneda extranjera (USD) que permite resguardar y movilizar fondos sin intermediación fiduciaria, con facultades operativas para la empresa.</td>
+                </tr>
+                <tr>
+                    <td><strong>Cuenta de Depósito en Garantía (Escrow)</strong></td>
+                    <td>Cuenta bloqueada donde se deposita el capital total, con liberación programada según hitos acordados. No permite pagos directos a terceros.</td>
+                </tr>
+                <tr>
+                    <td><strong>IGTF</strong></td>
+                    <td>Impuesto a las Grandes Transacciones Financieras. Gravamen del 3% aplicable a pagos en divisas desde cuentas venezolanas.</td>
+                </tr>
+                <tr>
+                    <td><strong>Fideicomiso de Administración</strong></td>
+                    <td>Contrato mediante el cual un banco administra fondos por cuenta de un cliente, realizando pagos y rendiciones de cuenta, con costos de comisión anual y constitución.</td>
+                </tr>
+                <tr>
+                    <td><strong>Mesa de Cambio</strong></td>
+                    <td>Área del banco encargada de realizar operaciones de compra/venta de moneda extranjera al público.</td>
+                </tr>
+                <tr>
+                    <td><strong>Responsable Financiero</strong></td>
+                    <td>Persona designada por el equipo para ejecutar y supervisar los pagos y el control presupuestario.</td>
+                </tr>
+                <tr>
+                    <td><strong>Hito</strong></td>
+                    <td>Meta o entregable predefinido que debe cumplirse para activar la liberación de un tramo de capital.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- ============================================ -->
+        <!-- 9. VIGENCIA                                  -->
+        <!-- ============================================ -->
+        <h2>9. Vigencia y Prórroga</h2>
+
+        <p>El presente acuerdo tendrá una vigencia de <strong>un (1) año</strong>, contado a partir de la fecha de apertura de las cuentas bancarias y el depósito del capital semilla en la cuenta de garantía.</p>
+
+        <p>Podrá ser prorrogado por períodos anuales adicionales, previa evaluación del equipo de stakeholders y siempre que se mantengan las condiciones financieras y operativas que justifiquen esta metodología de administración.</p>
+
+        <!-- ============================================ -->
+        <!-- 10. FIRMAS                                   -->
+        <!-- ============================================ -->
+        <h2>10. Firmas</h2>
+
+        <p style="margin-bottom: 18px;">En señal de conformidad, firman los stakeholders de RetailMind:</p>
+
+        <div class="signature-area">
+
+            <div class="signature-block">
+                <div class="line"></div>
+                <div class="label"><strong>Nombre:</strong> _________________________</div>
+                <div class="label"><strong>Rol:</strong> ______________________________</div>
+                <div class="label"><strong>Firma:</strong> ___________________________</div>
+                <div class="label"><strong>Fecha:</strong> ___________________________</div>
+            </div>
+
+            <div class="signature-block">
+                <div class="line"></div>
+                <div class="label"><strong>Nombre:</strong> _________________________</div>
+                <div class="label"><strong>Rol:</strong> ______________________________</div>
+                <div class="label"><strong>Firma:</strong> ___________________________</div>
+                <div class="label"><strong>Fecha:</strong> ___________________________</div>
+            </div>
+
+            <div class="signature-block">
+                <div class="line"></div>
+                <div class="label"><strong>Nombre:</strong> _________________________</div>
+                <div class="label"><strong>Rol:</strong> ______________________________</div>
+                <div class="label"><strong>Firma:</strong> ___________________________</div>
+                <div class="label"><strong>Fecha:</strong> ___________________________</div>
+            </div>
+
+        </div>
+
+        <!-- ============================================ -->
+        <!-- FOOTER                                       -->
+        <!-- ============================================ -->
+        <div class="footer-note">
+            Caracas, __________ de __________________ de 2026
+            <br />
+            <span style="font-size:12px; color:#6a7f9a;">Documento de Administración de Capital Semilla &bull; RetailMind</span>
+        </div>
+
+    </div>
+    <!-- /document -->
+
+</body>
+</html>

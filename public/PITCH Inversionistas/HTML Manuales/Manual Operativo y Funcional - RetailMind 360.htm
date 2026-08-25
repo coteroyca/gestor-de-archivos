@@ -1,0 +1,274 @@
+<html lang="es"><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual Operativo y Funcional - RetailMind 360</title>
+    <style>
+        :root {
+            --primary: #0F172A;
+            --accent: #FF6B00;
+            --text: #334155;
+            --light-bg: #F8FAFC;
+            --border: #E2E8F0;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            color: var(--text);
+            line-height: 1.5;
+            background-color: #F1F5F9;
+            padding: 40px 20px;
+        }
+        .document-container {
+            max-width: 950px;
+            margin: 0 auto;
+            background: #FFFFFF;
+            padding: 50px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 25px;
+            margin-bottom: 35px;
+        }
+        .logo-area img { max-height: 70px; width: auto; }
+        .title-area { text-align: right; }
+        .title-area h1 { font-size: 22px; color: var(--primary); font-weight: 800; margin-bottom: 5px; }
+        .title-area p { font-size: 12px; color: #64748B; text-transform: uppercase; letter-spacing: 1px; }
+        h2 { font-size: 18px; color: var(--primary); margin-top: 25px; margin-bottom: 12px; padding-bottom: 5px; border-bottom: 2px solid var(--border); }
+        h3 { font-size: 15px; color: var(--primary); margin-top: 15px; margin-bottom: 5px; font-weight: 700; }
+        p, ul { margin-bottom: 12px; font-size: 14.5px; }
+        ul { padding-left: 20px; }
+        li { margin-bottom: 4px; }
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .tech-card {
+            background-color: var(--light-bg);
+            border: 1px solid var(--border);
+            padding: 15px;
+            border-radius: 6px;
+        }
+        .tech-card strong { color: var(--primary); display: block; margin-bottom: 3px; }
+        .role-box {
+            border-left: 4px solid var(--accent);
+            background-color: var(--light-bg);
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 0 6px 6px 0;
+        }
+        .role-box h3 { margin-top: 0; color: var(--primary); font-size: 16px; }
+        .page-break { page-break-before: always; }
+        .btn-print {
+            display: block; width: fit-content; margin: 0 auto 30px auto; padding: 12px 24px;
+            background-color: var(--accent); color: white; border: none; border-radius: 6px;
+            font-size: 14px; font-weight: bold; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        @media print {
+            body { background-color: #FFFFFF; padding: 0; }
+            .document-container { box-shadow: none; padding: 0; max-width: 100%; }
+            .btn-print { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <button class="btn-print" onclick="window.print()">Imprimir / Guardar Manual en PDF</button>
+
+    <div class="document-container">
+        <header>
+            <div class="logo-area">
+                <img alt="RetailMind Logo" src="Manual%20Operativo%20y%20Funcional%20-%20RetailMind%20360_files/logo-RetailMind-R-cuadrada.png">
+            </div>
+            <div class="title-area">
+                <h1>RetailMind 360</h1>
+                <p>Manual Funcional, Operativo y de Recursos del Equipo</p>
+            </div>
+        </header>
+
+        <!-- Sección 1: Organigrama Funcional -->
+        <h2>1. Estructura Organizacional y Roles del Equipo</h2>
+        <p>Estructura operativa jerárquica diseñada para maximizar la 
+velocidad de desarrollo garantizando el control de calidad absoluto y el
+ resguardo del código fuente.</p>
+
+        <div class="role-box">
+            <h3>Jefe de Desarrollo / Lead Developer (1 Puesto)</h3>
+            <p><strong>Responsabilidad:</strong> Líder técnico y 
+administrador principal del ecosistema. Coordina la arquitectura del 
+software, gestiona las políticas de la organización en GitHub, asigna 
+tickets de trabajo, aprueba fusiones críticas de código a producción en 
+Vercel y supervisa la seguridad perimetral.</p>
+        </div>
+
+        <div class="role-box">
+            <h3>Desarrolladores Core / Personal de Planta (2 Puestos)</h3>
+            <p><strong>Responsabilidad:</strong> Ingenieros de software 
+internos encargados del núcleo de la aplicación central a largo plazo. 
+Tienen acceso total de lectura/escritura en los repositorios 
+principales. Su función operativa crítica es actuar como <strong>Revisores Obligatorios</strong> de todo el código enviado por el personal externo.</p>
+        </div>
+
+        <div class="role-box">
+            <h3>Desarrolladores Independientes / Freelancers (2 Puestos)</h3>
+            <p><strong>Responsabilidad:</strong> Programadores externos 
+contratados para resolver tareas puntuales, módulos aislados, landing 
+pages promocionales o mantenimiento específico. Trabajan en ramas de 
+código aisladas (branches) y tienen estrictamente prohibido el acceso 
+directo a los servidores de producción o bases de datos principales.</p>
+        </div>
+
+        <!-- Sección 2: Ecosistema de Herramientas de Desarrollo -->
+        <h2>2. Ecosistema de Software y Tecnologías (Stack de Desarrollo)</h2>
+        <p>Gobernanza de las herramientas de software empleadas para el diseño, maquetación, programación y asistencia del equipo:</p>
+
+        <div class="tech-grid">
+            <div class="tech-card">
+                <strong>Cursor (El Editor de Código)</strong>
+                <p>Entorno de desarrollo integrado (IDE) principal del 
+equipo. Reemplaza al VS Code clásico, permitiendo interactuar de manera 
+nativa con modelos de Inteligencia Artificial directamente sobre los 
+archivos del proyecto.</p>
+            </div>
+            <div class="tech-card">
+                <strong>Claude (Anthropic IA)</strong>
+                <p>Cerebro analítico principal para programación compleja, resolución de algoritmos y depuración. Incluye el uso de <strong>Claude Code</strong> en la terminal para refactorizaciones automáticas locales.</p>
+            </div>
+            <div class="tech-card">
+                <strong>v0 by Vercel</strong>
+                <p>Generador de interfaces Front-end mediante lenguaje 
+natural. Utilizado para maquetar pantallas y prototipos visuales 
+interactivos exportables directamente hacia Cursor.</p>
+            </div>
+            <div class="tech-card">
+                <strong>Gemini (Google IA)</strong>
+                <p>Herramienta secundaria de asistencia técnica. 
+Excelente para procesamiento de grandes volúmenes de documentación 
+técnica externa y análisis veloz de datos adjuntos debido a su ventana 
+de contexto masiva.</p>
+            </div>
+            <div class="tech-card">
+                <strong>Nano Banana</strong>
+                <p>Motor de Inteligencia Artificial especializado en 
+generación de imágenes comerciales y recursos multimedia optimizados. Su
+ uso está orientado al desarrollo visual de catálogos y material 
+promocional.</p>
+            </div>
+            <div class="tech-card">
+                <strong>Tailwind CSS &amp; Bootstrap</strong>
+                <p>Frameworks de diseño responsivo. Tailwind se utiliza 
+como estándar en las aplicaciones modernas conectadas a v0, mientras que
+ Bootstrap se reserva para interfaces tradicionales de rápida 
+maquetación.</p>
+            </div>
+            <div class="tech-card">
+                <strong>Fontawesome &amp; HTML5</strong>
+                <p>Estándar estructural y librería de iconos vectoriales
+ global del proyecto. Garantiza una iconografía ligera, uniforme, 
+escalable y semánticamente limpia en todos los desarrollos web.</p>
+            </div>
+            <div class="tech-card">
+                <strong>PHP &amp; jQuery</strong>
+                <p>Tecnologías del ecosistema secundario. Utilizadas en 
+el hosting compartido para el mantenimiento seguro de sistemas legados, 
+procesamiento de scripts rápidos y manipulación ágil del DOM en módulos 
+simples.</p>
+            </div>
+            <div class="tech-card">
+                <strong>Python</strong>
+                <p>Lenguaje de propósito general incorporado para 
+scripts de automatización de datos, procesamiento de tareas en segundo 
+plano complejas, e integraciones avanzadas con las APIs de Inteligencia 
+Artificial.</p>
+            </div>
+            <div class="tech-card">
+                <strong>MySQL</strong>
+                <p>Motor de bases de datos relacionales. Almacena de 
+forma estructurada los registros de usuarios, configuraciones, sistemas 
+tradicionales y bitácoras operativas dentro del entorno administrado.</p>
+            </div>
+        </div>
+
+        <div class="page-break"></div>
+        <!-- Sección 3: Matriz de Recursos de Infraestructura y Hardware -->
+        <h2>3. Plataformas Cloud y Recursos de Hardware (Estructura de Activos)</h2>
+        <p>Inventario y asignación de todos los recursos físicos y de 
+infraestructura en la nube necesarios para la operación global del 
+proyecto RetailMind 360:</p>
+
+        <h3>A. Recursos de Infraestructura en la Nube (Cloud &amp; DevOps)</h3>
+        <ul>
+            <li><strong>Vercel Pro:</strong> Servidor de despliegue 
+continuo y hosting perimetral global. Procesa las aplicaciones 
+principales y aloja las funciones serverless de la plataforma.</li>
+            <li><strong>GitHub Enterprise/Team:</strong> Plataforma 
+central de control de versiones. Repositorio maestro donde reside el 
+activo intelectual más importante de la empresa (el código fuente).</li>
+            <li><strong>Spaceship (Hosting Compartido):</strong> 
+Servidor de servicios complementarios. Aloja de forma segura el servidor
+ de correos corporativos (IMAP/SMTP), bases de datos MySQL secundarias y
+ automatizaciones Cron.</li>
+            <li><strong>Cloudflare (Security Perimetral):</strong> Capa 
+de protección perimetral contra ataques DDoS, optimización de caché 
+global, gestión centralizada de registros DNS y emisión automatizada de 
+certificados de seguridad SSL.</li>
+            <li><strong>Tailscale (Mesh VPN - Zero Trust):</strong> Red 
+virtual privada del equipo. Conecta de forma segura las computadoras 
+locales de los desarrolladores de planta y servidores de prueba sin 
+exponer puertos a internet.</li>
+            <li><strong>PostgreSQL / Supabase (Omitido Esencial):</strong>
+ Capa de base de datos moderna agregada. Necesaria para soportar las 
+aplicaciones en tiempo real desplegadas en Vercel, ya que el MySQL del 
+hosting compartido no es óptimo para conexiones masivas Serverless.</li>
+        </ul>
+
+        <h3>B. Recursos de Hardware Requeridos (Estaciones de Trabajo y Periféricos)</h3>
+        <ul>
+            <li><strong>Estaciones de Trabajo Core (Desarrolladores de Planta):</strong>
+ Computadoras portátiles de alto rendimiento (Recomendado: Apple MacBook
+ Pro Apple Silicon o laptops Windows Core i7/Ryzen 7 con mínimo 16GB en 
+RAM y discos SSD NVMe). Equipos provistos por la empresa para garantizar
+ la compilación local ágil.</li>
+            <li><strong>Estaciones de Trabajo Externas (Freelancers):</strong>
+ Hardware propio (BYOD - Bring Your Own Device). Deben cumplir con 
+requerimientos mínimos de seguridad impuestos por el Jefe de Desarrollo 
+(sistemas operativos actualizados y cifrado de disco activo).</li>
+            <li><strong>Dispositivos de Autenticación de Doble Factor (2FA):</strong>
+ Teléfonos inteligentes corporativos o llaves de seguridad físicas 
+(Yubikeys) obligatorias para el Jefe de Desarrollo y personal de planta 
+para autorizar accesos a GitHub, Vercel y Cloudflare.</li>
+        </ul>
+
+        <!-- Sección 4: Flujo Operativo de Trabajo (Workflow) -->
+        <h2>4. Flujo Operativo y Políticas de Control (Workflow de Seguridad)</h2>
+        <p>Para evitar fallos en producción y asegurar un rendimiento 
+óptimo, el equipo operará bajo el siguiente flujo estrictamente 
+controlado por el Jefe de Desarrollo:</p>
+        
+        <ol>
+            <li><strong>Diseño y Maquetación:</strong> Los programadores diseñan vistas en <strong>v0 de Vercel</strong>, agilizando el front-end con <strong>Tailwind</strong> y componentes prefabricados.</li>
+            <li><strong>Desarrollo Local Avanzado:</strong> El código se descarga a las computadoras locales y se edita dentro de <strong>Cursor</strong>, utilizando <strong>Claude Code</strong> para estructurar la lógica compleja y conectar las bases de datos de forma inteligente.</li>
+            <li><strong>Aislamiento de Seguridad (VPN):</strong> El acceso a las bases de datos de desarrollo y servidores internos se realiza exclusivamente con la VPN de <strong>Tailscale</strong> activa.</li>
+            <li><strong>Control de Cambios en GitHub:</strong> Los 
+freelancers suben sus tareas únicamente a ramas secundarias. GitHub 
+bloquea la integración automática mediante sus reglas de <strong>Ramas Protegidas</strong>.</li>
+            <li><strong>Revisión de Código (Code Review):</strong> Uno 
+de los programadores de planta o el Jefe de Desarrollo audita 
+manualmente el código del freelancer. Si cumple con los estándares, 
+aprueba el Pull Request.</li>
+            <li><strong>Despliegue Automatizado en Vercel:</strong> Al 
+fusionarse el código aprobado, Vercel detecta el cambio en GitHub y 
+compila la nueva versión hacia producción en segundos, notificando al 
+equipo.</li>
+        </ol>
+    </div>
+
+
+</body></html>

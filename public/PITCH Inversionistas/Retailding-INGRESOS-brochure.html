@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RETAILDING - Taller Ejecutivo</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Playfair+Display:ital,wght@0,700;1,400&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #ff6b35;
+            --primary-dark: #d45428;
+            --secondary: #00d4aa;
+            --dark: #1a2332;
+            --darker: #0d1520;
+            --light: #c5d3e0;
+            --white: #ffffff;
+        }
+        
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            color: var(--white);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 80px;
+            position: relative;
+        }
+        
+        .logo {
+            font-size: 72px;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--primary) 0%, #f7931e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -2px;
+            margin-bottom: 10px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+        
+        .subtitle {
+            font-size: 20px;
+            font-weight: 300;
+            color: var(--light);
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            animation: fadeInUp 0.8s ease-out 0.2s backwards;
+        }
+        
+        .tagline {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 32px;
+            font-style: italic;
+            color: var(--white);
+            margin: 30px 0;
+            opacity: 0.95;
+            animation: fadeIn 1s ease-out 0.4s backwards;
+        }
+        
+        .divider {
+            width: 200px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            margin: 30px auto;
+        }
+        
+        /* Hero section */
+        .hero {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 50px;
+            margin-bottom: 60px;
+            position: relative;
+            overflow: hidden;
+            animation: slideUp 0.8s ease-out 0.6s backwards;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+        }
+        
+        .hero h2 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: var(--white);
+        }
+        
+        .hero p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: var(--light);
+            margin-bottom: 15px;
+        }
+        
+        .highlight {
+            color: var(--secondary);
+            font-weight: 600;
+        }
+        
+        /* Three pillars */
+        .pillars {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin: 60px 0;
+        }
+        
+        .pillar {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            animation: fadeInUp 0.8s ease-out backwards;
+        }
+        
+        .pillar:nth-child(1) { animation-delay: 0.8s; }
+        .pillar:nth-child(2) { animation-delay: 1s; }
+        .pillar:nth-child(3) { animation-delay: 1.2s; }
+        
+        .pillar:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+        
+        .pillar-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        
+        .pillar h3 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .pillar p {
+            font-size: 15px;
+            color: var(--light);
+            line-height: 1.6;
+        }
+        
+        /* Pricing cards */
+        .pricing-section {
+            margin: 60px 0;
+        }
+        
+        .pricing-section h2 {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 50px;
+            color: var(--white);
+        }
+        
+        .pricing-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+        
+        .pricing-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            animation: fadeInUp 0.8s ease-out backwards;
+        }
+        
+        .pricing-card:nth-child(1) { animation-delay: 1.4s; }
+        .pricing-card:nth-child(2) { 
+            animation-delay: 1.6s;
+            border-color: var(--primary);
+            transform: scale(1.05);
+        }
+        .pricing-card:nth-child(3) { animation-delay: 1.8s; }
+        
+        .pricing-card.featured {
+            background: rgba(255, 107, 53, 0.1);
+        }
+        
+        .pricing-card.featured::before {
+            content: 'RECOMENDADO';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            color: var(--white);
+            padding: 5px 20px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        
+        .pricing-card h3 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--white);
+        }
+        
+        .pricing-card .price {
+            font-size: 48px;
+            font-weight: 900;
+            color: var(--primary);
+            margin: 20px 0;
+        }
+        
+        .pricing-card .price.free {
+            color: var(--secondary);
+        }
+        
+        .pricing-card .duration {
+            font-size: 14px;
+            color: var(--light);
+            margin-bottom: 25px;
+        }
+        
+        .pricing-card ul {
+            list-style: none;
+            margin: 25px 0;
+            text-align: left;
+        }
+        
+        .pricing-card li {
+            padding: 10px 0;
+            color: var(--light);
+            font-size: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .pricing-card li::before {
+            content: '✓';
+            color: var(--secondary);
+            font-weight: 700;
+            margin-right: 10px;
+        }
+        
+        /* CTA section */
+        .cta-section {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 20px;
+            padding: 60px 50px;
+            text-align: center;
+            margin: 60px 0;
+            animation: fadeIn 0.8s ease-out 2s backwards;
+        }
+        
+        .cta-section h2 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--white);
+        }
+        
+        .cta-section p {
+            font-size: 20px;
+            margin-bottom: 35px;
+            color: rgba(255, 255, 255, 0.95);
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: var(--white);
+            color: var(--primary);
+            padding: 18px 50px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+        
+        /* Benefits section */
+        .benefits {
+            margin: 60px 0;
+        }
+        
+        .benefits h2 {
+            font-size: 36px;
+            margin-bottom: 40px;
+            text-align: center;
+            color: var(--white);
+        }
+        
+        .benefit-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 4px solid var(--secondary);
+            padding: 25px 30px;
+            margin: 20px 0;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            animation: slideRight 0.8s ease-out backwards;
+        }
+        
+        .benefit-item:nth-child(1) { animation-delay: 1s; }
+        .benefit-item:nth-child(2) { animation-delay: 1.1s; }
+        .benefit-item:nth-child(3) { animation-delay: 1.2s; }
+        .benefit-item:nth-child(4) { animation-delay: 1.3s; }
+        .benefit-item:nth-child(5) { animation-delay: 1.4s; }
+        
+        .benefit-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-left-width: 6px;
+        }
+        
+        .benefit-item h3 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--white);
+        }
+        
+        .benefit-item p {
+            color: var(--light);
+            font-size: 16px;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px 0;
+            margin-top: 80px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--light);
+            font-size: 14px;
+        }
+        
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideRight {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 20px;
+            }
+            
+            .logo {
+                font-size: 48px;
+            }
+            
+            .pillars,
+            .pricing-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .pricing-card:nth-child(2) {
+                transform: scale(1);
+            }
+            
+            .hero {
+                padding: 30px 25px;
+            }
+            
+            .cta-section {
+                padding: 40px 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+			<img src="./logos/logo-retailding.svg" width="100%">
+            <div class="divider"></div>
+<div class="cta-section">
+            <h2>Transforma Datos en Decisiones</h2>
+            <p>Únete a gerentes y dueños de supermercados que ya están tomando mejores decisiones.</p>
+            <a href="#contacto" class="cta-button">Reserva Tu Cupo Ahora</a>
+</div>
+        </div>
+        
+        <!-- Hero -->
+        <div class="hero">
+            <h2>¿Está Tu Supermercado Haciendo Retailding Sin Saberlo?</h2>
+            <p>
+                Descubre cómo <span class="highlight">leer tus números como un trader lee el mercado</span> 
+                y toma mejores decisiones desde el lunes siguiente.
+            </p>
+            <p>
+                En el entorno retail venezolano, la capacidad de tomar decisiones rápidas basadas en datos 
+                es la diferencia entre <span class="highlight">crecer o perder mercado</span>. 
+                Este taller te enseña a aplicar disciplinas probadas del trading financiero a la gestión 
+                diaria de tu supermercado.
+            </p>
+        </div>
+        
+        <!-- Three Pillars -->
+        <div class="pillars">
+            <div class="pillar">
+                <div class="pillar-icon">🎯</div>
+                <h3>Disciplina</h3>
+                <p>Toma decisiones con reglas claras, no por corazonadas. Aprende cuándo cerrar una promoción que no funciona.</p>
+            </div>
+            <div class="pillar">
+                <div class="pillar-icon">📊</div>
+                <h3>Datos</h3>
+                <p>Lee dashboards y gráficos con confianza. Entiende qué te dice realmente tu Ticket Promedio.</p>
+            </div>
+            <div class="pillar">
+                <div class="pillar-icon">🏢</div>
+                <h3>Cultura</h3>
+                <p>Crea el hábito de revisar datos diariamente. Construye una cultura organizacional de análisis.</p>
+            </div>
+        </div>
+        
+        <!-- Benefits -->
+        <div class="benefits">
+            <h2>Lo Que Aprenderás</h2>
+            <div class="benefit-item">
+                <h3>📈 Lectura de Gráficos de Velas Japonesas</h3>
+                <p>Interpreta patrones de demanda, identifica tendencias y anticipa cambios en el comportamiento de compra.</p>
+            </div>
+            <div class="benefit-item">
+                <h3>💡 KPIs que Realmente Importan</h3>
+                <p>Ticket Promedio, Margen, Rotación - aprende a leerlos, interpretarlos y actuar sobre ellos.</p>
+            </div>
+            <div class="benefit-item">
+                <h3>🎲 Gestión de Riesgo Retail</h3>
+                <p>Aplica conceptos como Stop Loss y Take Profit para proteger tu margen y maximizar resultados.</p>
+            </div>
+            <div class="benefit-item">
+                <h3>🔍 Casos Prácticos Reales</h3>
+                <p>Resuelve 3 casos del retail venezolano: promociones, competencia y fluctuaciones de demanda.</p>
+            </div>
+            <div class="benefit-item">
+                <h3>🛠️ Herramientas Aplicables</h3>
+                <p>Templates de dashboards, checklists de decisión y guías de referencia rápida.</p>
+            </div>
+        </div>
+        
+        <!-- Pricing -->
+        <div class="pricing-section">
+            <h2>Elige Tu Camino</h2>
+            <div class="pricing-cards">
+                <div class="pricing-card">
+                    <h3>Intro</h3>
+                    <div class="price free">GRATIS</div>
+                    <div class="duration">3 horas efectivas</div>
+                    <ul>
+                        <li>Fundamentos de Retailding</li>
+                        <li>Lectura básica de gráficos</li>
+                        <li>2 casos prácticos</li>
+                        <li>Materiales digitales</li>
+                    </ul>
+                </div>
+                
+                <div class="pricing-card featured">
+                    <h3>Avanzado</h3>
+                    <div class="price">$120</div>
+                    <div class="duration">8 horas (2 sesiones)</div>
+                    <ul>
+                        <li>Todo lo del taller Intro</li>
+                        <li>5 casos prácticos complejos</li>
+                        <li>Dashboard personalizado</li>
+                        <li>Certificado profesional</li>
+                        <li>2 sesiones de Q&A</li>
+                        <li>Acceso a comunidad</li>
+                    </ul>
+                </div>
+                
+                <div class="pricing-card">
+                    <h3>Membresía</h3>
+                    <div class="price">$40<span style="font-size: 20px;">/mes</span></div>
+                    <div class="duration">2 horas mensuales</div>
+                    <ul>
+                        <li>Sesión mensual nueva</li>
+                        <li>Casos actualizados</li>
+                        <li>Comunidad privada</li>
+                        <li>Dashboards actualizados</li>
+                        <li>Networking entre pares</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- CTA -->
+		<div class="cta-section">
+            <div class="logo">RETAILDING</div>
+            <h2>Taller Ejecutivo</h2><div class="subtitle">Transforma Datos en Decisiones</div>
+            
+            <a href="#contacto" class="cta-button">Reserva Tu Cupo Ahora</a>
+        </div>        
+        <!-- Footer -->
+        <div class="footer">
+            <p>RETAILDING - Decisiones basadas en datos para el retail moderno</p>
+            <p style="margin-top: 10px; opacity: 0.7;">
+                "Gana quien mejor lee el mercado — en retail, como en trading"
+            </p>
+        </div>
+    </div>
+</body>
+</html>

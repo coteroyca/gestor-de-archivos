@@ -73,6 +73,11 @@
       margin: 0 auto;
     }
 
+    .container_retailding {
+ /*     width: min(92%, var(--max-width));    */
+      margin: 0 auto;
+    }
+
     /* =========================================================
        HEADER
        ========================================================= */
@@ -768,9 +773,9 @@
       margin: auto;
     }
 
-    .retailmind-logo {
-      width: 66px;
-      height: 66px;
+    .retailding-banner {
+      width: 100%;
+      height: 100%;
       margin: 0 auto 22px;
     }
 
@@ -794,6 +799,60 @@
     }
 
     .retailmind-note {
+      margin-top: 28px;
+      color: var(--cyan-light) !important;
+      font-weight: 700;
+      font-size: 14px !important;
+    }
+
+    /* =========================================================
+       RETAILDING CONNECTION
+       ========================================================= */
+
+    .retailding {
+      padding: 90px 0;
+      background:
+        linear-gradient(
+          135deg,
+          #071522,
+          #092b3b
+        );
+      border-top: 1px solid rgba(0,217,255,.10);
+      border-bottom: 1px solid rgba(0,217,255,.10);
+    }
+
+    .retailding-inner {
+/*      max-width: 900px;   */
+      text-align: center;
+      margin: auto;
+    }
+
+    .retailding-banner {
+      width: 100%;
+      height: 100%;
+      margin: 0 auto 22px;
+    }
+
+    .retailding h2 {
+      font-size: clamp(31px, 4vw, 48px);
+      letter-spacing: -1.5px;
+      line-height: 1.12;
+      margin-bottom: 20px;
+    }
+
+    .retailding h2 span {
+      color: var(--cyan);
+    }
+
+    .retailding p {
+      color: #b5c8d8;
+      max-width: 730px;
+      margin: auto;
+      font-size: 16px;
+      line-height: 1.75;
+    }
+
+    .retailding-note {
       margin-top: 28px;
       color: var(--cyan-light) !important;
       font-weight: 700;
@@ -1004,7 +1063,12 @@
     <div class="container nav">
 
       <a href="#" class="brand">
-          <img alt="RetailMind" src="https://gestor-de-archivos.vercel.app/logos/logo-RetailMind-fondo-negro-1447x352.png" style="width:100%">
+        <img
+          src="https://gestor-de-archivos.vercel.app/logos/logo-RetailMind-R-cuadrada.png"
+          alt="RetailMind">
+        <div class="brand-name">
+          Retail<span>Mind</span>
+        </div>
       </a>
 
       <nav class="nav-links">
@@ -1175,7 +1239,7 @@
 
         <p class="section-text">
           Evaluamos el comportamiento y las características de las
-          sucursales bajo dos escenarios económicos contrastantes.
+          sucursales bajo 2 escenarios económicos contrastantes.
         </p>
 
       </div>
@@ -1468,17 +1532,17 @@
 
 
   <!-- =======================================================
-       RETAILMIND
+       RETAILDING
        ======================================================== -->
 
   <section class="retailmind">
 
-    <div class="container retailmind-inner">
+    <div class="container_retailding retailding-inner">
 
       <img
-        class="retailmind-logo"
-        src="https://gestor-de-archivos.vercel.app/logos/logo-RetailMind-R-cuadrada.png"
-        alt="RetailMind">
+        class="retailding-banner"
+        src="https://gestor-de-archivos.vercel.app/assets/imagenes/retailding-mesh-000.png"
+        alt="Retailding">
 
       <div class="section-label">
         Metodología RetailMind
@@ -1495,7 +1559,7 @@
         sucursales en contexto útil para la toma de decisiones.
       </p>
 
-      <p class="retailmind-note">
+      <p class="retailding-note">
         El objetivo no es solamente saber qué ocurrió.
         Es entender dónde está parada su red.
       </p>
@@ -1552,11 +1616,17 @@
     <div class="container footer-inner">
 
       <div class="footer-brand">
-        <img alt="RetailMind" src="https://gestor-de-archivos.vercel.app/logos/logo-RetailMind-fondo-negro-1447x352.png" style="width:100%">
+
+        <img
+          src="https://gestor-de-archivos.vercel.app/logos/logo-retailmind-SVG-00.svg"
+          alt="RetailMind">
+
+        <span>RetailMind 360°</span>
+
       </div>
 
       <div class="footer-copy">
-        Inteligencia para el Retail · RetailMind 360°
+        Inteligencia Operacional para el Retail · Latino BI
       </div>
 
     </div>

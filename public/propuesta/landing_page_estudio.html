@@ -1,0 +1,1582 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Mapa de Impacto, Riesgo y Oportunidad de la Red | RetailMind</title>
+
+  <meta name="description"
+        content="Evaluación estratégica de sucursales ante dos escenarios económicos posibles. Descubra dónde invertir y dónde proteger su red.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* =========================================================
+       RETAILMIND
+       MAPA DE IMPACTO, RIESGO Y OPORTUNIDAD
+       ========================================================= */
+
+    :root {
+      --navy: #07111f;
+      --navy-2: #0b1728;
+      --navy-3: #101f34;
+
+      --cyan: #00d9ff;
+      --cyan-light: #66e9ff;
+
+      --white: #ffffff;
+      --text: #eef5fb;
+      --muted: #a9b8c9;
+
+      --green: #38e49b;
+      --orange: #ffb454;
+      --red: #ff6678;
+
+      --border: rgba(255,255,255,.10);
+
+      --max-width: 1180px;
+      --radius: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Inter", Arial, sans-serif;
+      background: var(--navy);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .container {
+      width: min(92%, var(--max-width));
+      margin: 0 auto;
+    }
+
+    /* =========================================================
+       HEADER
+       ========================================================= */
+
+    header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 20;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+
+    .nav {
+      min-height: 82px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 30px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .brand img {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+    }
+
+    .brand-name {
+      font-size: 21px;
+      font-weight: 800;
+      letter-spacing: -.5px;
+    }
+
+    .brand-name span {
+      color: var(--cyan);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      font-size: 13px;
+      color: #d9e4ef;
+    }
+
+    .nav-links a {
+      transition: .2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--cyan);
+    }
+
+    .nav-cta {
+      padding: 11px 18px;
+      border: 1px solid rgba(0,217,255,.5);
+      border-radius: 999px;
+      color: var(--cyan);
+      font-weight: 700;
+    }
+
+    /* =========================================================
+       HERO
+       ========================================================= */
+
+    .hero {
+      min-height: 760px;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+
+      background:
+        linear-gradient(
+          90deg,
+          rgba(5,14,26,.97) 0%,
+          rgba(5,14,26,.91) 38%,
+          rgba(5,14,26,.62) 68%,
+          rgba(5,14,26,.72) 100%
+        ),
+        url("https://gestor-de-archivos.vercel.app/assets/imagenes/woman-pensando-000.png");
+
+        url("https://gestor-de-archivos.vercel.app/assets/imagenes/hero-mesh-00.png");
+
+        url("https://gestor-de-archivos.vercel.app/assets/imagenes/matriz-doble-escenario-01.png");
+
+      background-size: cover;
+      background-position: center;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(
+          circle at 70% 45%,
+          rgba(0,217,255,.14),
+          transparent 35%
+        );
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding-top: 80px;
+      max-width: 790px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 7px 13px;
+      border: 1px solid rgba(0,217,255,.30);
+      border-radius: 999px;
+      color: var(--cyan-light);
+      background: rgba(0,217,255,.06);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.1px;
+      text-transform: uppercase;
+      margin-bottom: 25px;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 12px var(--cyan);
+    }
+
+    .hero h1 {
+      font-size: clamp(40px, 5.2vw, 70px);
+      line-height: 1.03;
+      letter-spacing: -2.8px;
+      font-weight: 900;
+      max-width: 850px;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 span {
+      color: var(--cyan);
+    }
+
+    .hero-subtitle {
+      font-size: clamp(19px, 2vw, 26px);
+      line-height: 1.35;
+      color: #dce8f2;
+      max-width: 720px;
+      margin-bottom: 32px;
+      font-weight: 500;
+    }
+
+    .hero-question {
+      border-left: 3px solid var(--cyan);
+      padding-left: 20px;
+      margin: 28px 0 35px;
+    }
+
+    .hero-question p {
+      font-size: 18px;
+      color: #fff;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .hero-question p:last-child {
+      color: var(--muted);
+      margin-bottom: 0;
+      font-weight: 500;
+    }
+
+    .hero-offer {
+      font-size: 25px;
+      font-weight: 800;
+      margin-bottom: 26px;
+    }
+
+    .hero-offer span {
+      color: var(--green);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 15px 25px;
+      border-radius: 9px;
+      font-size: 14px;
+      font-weight: 800;
+      transition: .25s ease;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      color: #02111a;
+      background: var(--cyan);
+      box-shadow: 0 8px 30px rgba(0,217,255,.20);
+    }
+
+    .btn-primary:hover {
+      background: var(--cyan-light);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 35px rgba(0,217,255,.28);
+    }
+
+    .hero-note {
+      margin-top: 13px;
+      color: #8294a8;
+      font-size: 11px;
+    }
+
+    /* =========================================================
+       INTRO
+       ========================================================= */
+
+    .intro {
+      padding: 95px 0;
+      background: var(--navy-2);
+    }
+
+    .section-label {
+      color: var(--cyan);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1.7px;
+      text-transform: uppercase;
+      margin-bottom: 13px;
+    }
+
+    .section-title {
+      font-size: clamp(30px, 4vw, 47px);
+      line-height: 1.12;
+      letter-spacing: -1.5px;
+      font-weight: 850;
+      max-width: 800px;
+      margin-bottom: 22px;
+    }
+
+    .section-text {
+      color: var(--muted);
+      font-size: 17px;
+      max-width: 800px;
+      line-height: 1.75;
+    }
+
+    .intro-grid {
+      margin-top: 55px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .problem-card {
+      padding: 28px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.025);
+      border-radius: var(--radius);
+    }
+
+    .problem-number {
+      color: var(--cyan);
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 18px;
+    }
+
+    .problem-card h3 {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .problem-card p {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    /* =========================================================
+       QUESTION SECTION
+       ========================================================= */
+
+    .question-section {
+      padding: 105px 0;
+      background:
+        linear-gradient(
+          135deg,
+          #09182a,
+          #0d2035
+        );
+      position: relative;
+      overflow: hidden;
+    }
+
+    .question-section::before {
+      content: "";
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      border: 1px solid rgba(0,217,255,.08);
+      right: -180px;
+      top: -150px;
+    }
+
+    .question-section::after {
+      content: "";
+      position: absolute;
+      width: 340px;
+      height: 340px;
+      border-radius: 50%;
+      border: 1px solid rgba(0,217,255,.06);
+      right: -100px;
+      top: -70px;
+    }
+
+    .question-inner {
+      position: relative;
+      z-index: 2;
+    }
+
+    .big-question {
+      font-size: clamp(35px, 5vw, 64px);
+      line-height: 1.08;
+      letter-spacing: -2px;
+      font-weight: 900;
+      max-width: 850px;
+    }
+
+    .big-question span {
+      color: var(--cyan);
+    }
+
+    .question-description {
+      margin-top: 25px;
+      color: var(--muted);
+      max-width: 750px;
+      font-size: 17px;
+    }
+
+    /* =========================================================
+       TWO SCENARIOS
+       ========================================================= */
+
+    .scenarios {
+      padding: 105px 0;
+      background: var(--navy);
+    }
+
+    .center-heading {
+      text-align: center;
+      max-width: 820px;
+      margin: 0 auto 55px;
+    }
+
+    .center-heading .section-title {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .scenario-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+    }
+
+    .scenario {
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 38px;
+      min-height: 310px;
+      background: linear-gradient(
+        145deg,
+        rgba(255,255,255,.045),
+        rgba(255,255,255,.015)
+      );
+      position: relative;
+      overflow: hidden;
+    }
+
+    .scenario-growth {
+      border-top: 3px solid var(--green);
+    }
+
+    .scenario-contraction {
+      border-top: 3px solid var(--orange);
+    }
+
+    .scenario-tag {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.3px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .growth-tag {
+      color: var(--green);
+    }
+
+    .contraction-tag {
+      color: var(--orange);
+    }
+
+    .scenario h3 {
+      font-size: 29px;
+      margin-bottom: 15px;
+    }
+
+    .scenario p {
+      color: var(--muted);
+      font-size: 15px;
+      margin-bottom: 24px;
+    }
+
+    .scenario-question {
+      font-weight: 800;
+      color: white;
+      font-size: 16px;
+    }
+
+    /* =========================================================
+       MAP
+       ========================================================= */
+
+    .map-section {
+      padding: 105px 0;
+      background: var(--navy-2);
+    }
+
+    .map-grid {
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      gap: 65px;
+      align-items: center;
+    }
+
+    .map-copy .section-title {
+      margin-bottom: 20px;
+    }
+
+    .map-copy p {
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.75;
+      margin-bottom: 20px;
+    }
+
+    .map-visual {
+      position: relative;
+      min-height: 410px;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background:
+        radial-gradient(
+          circle at center,
+          rgba(0,217,255,.08),
+          transparent 58%
+        ),
+        #091625;
+      padding: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .map-box {
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .map-axis {
+      display: grid;
+      grid-template-columns: 55px 1fr;
+      grid-template-rows: 1fr 55px;
+      min-height: 300px;
+    }
+
+    .y-axis {
+      border-right: 1px solid rgba(255,255,255,.16);
+      position: relative;
+    }
+
+    .y-axis span {
+      position: absolute;
+      left: -4px;
+      transform: translateX(-100%);
+      color: #718397;
+      font-size: 10px;
+      white-space: nowrap;
+    }
+
+    .y-axis span:nth-child(1) {
+      top: 0;
+    }
+
+    .y-axis span:nth-child(2) {
+      top: 50%;
+      transform: translate(-100%, -50%);
+    }
+
+    .y-axis span:nth-child(3) {
+      bottom: 0;
+    }
+
+    .chart-area {
+      position: relative;
+      border-bottom: 1px solid rgba(255,255,255,.16);
+      background-image:
+        linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+      background-size: 50px 50px;
+    }
+
+    .point {
+      position: absolute;
+      width: 17px;
+      height: 17px;
+      border-radius: 50%;
+      transform: translate(-50%, 50%);
+      box-shadow: 0 0 20px currentColor;
+    }
+
+    .point span {
+      position: absolute;
+      white-space: nowrap;
+      font-size: 10px;
+      font-weight: 800;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 22px;
+      color: #d9e5ef;
+    }
+
+    .point-star {
+      left: 75%;
+      bottom: 78%;
+      color: var(--green);
+      background: var(--green);
+    }
+
+    .point-defensive {
+      left: 27%;
+      bottom: 70%;
+      color: var(--cyan);
+      background: var(--cyan);
+    }
+
+    .point-risk {
+      left: 70%;
+      bottom: 24%;
+      color: var(--red);
+      background: var(--red);
+    }
+
+    .point-offensive {
+      left: 48%;
+      bottom: 53%;
+      color: var(--orange);
+      background: var(--orange);
+    }
+
+    .x-axis {
+      position: relative;
+    }
+
+    .x-axis span {
+      position: absolute;
+      top: 14px;
+      color: #718397;
+      font-size: 10px;
+    }
+
+    .x-axis span:first-child {
+      left: 5px;
+    }
+
+    .x-axis span:last-child {
+      right: 5px;
+    }
+
+    /* =========================================================
+       WHAT YOU DISCOVER
+       ========================================================= */
+
+    .discover {
+      padding: 105px 0;
+      background: var(--navy);
+    }
+
+    .discover-grid {
+      margin-top: 50px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    .discover-card {
+      padding: 31px;
+      border-radius: 17px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.025);
+    }
+
+    .discover-icon {
+      width: 43px;
+      height: 43px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      background: rgba(0,217,255,.08);
+      color: var(--cyan);
+      font-size: 19px;
+      margin-bottom: 20px;
+    }
+
+    .discover-card h3 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .discover-card p {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    /* =========================================================
+       HOW IT WORKS
+       ========================================================= */
+
+    .how {
+      padding: 105px 0;
+      background: var(--navy-2);
+    }
+
+    .steps {
+      margin-top: 55px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+    }
+
+    .step {
+      position: relative;
+      padding: 25px 22px;
+      border-top: 1px solid var(--border);
+    }
+
+    .step-number {
+      color: var(--cyan);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      margin-bottom: 17px;
+    }
+
+    .step h3 {
+      font-size: 17px;
+      margin-bottom: 9px;
+    }
+
+    .step p {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* =========================================================
+       RETAILMIND CONNECTION
+       ========================================================= */
+
+    .retailmind {
+      padding: 90px 0;
+      background:
+        linear-gradient(
+          135deg,
+          #071522,
+          #092b3b
+        );
+      border-top: 1px solid rgba(0,217,255,.10);
+      border-bottom: 1px solid rgba(0,217,255,.10);
+    }
+
+    .retailmind-inner {
+      max-width: 900px;
+      text-align: center;
+      margin: auto;
+    }
+
+    .retailmind-logo {
+      width: 66px;
+      height: 66px;
+      margin: 0 auto 22px;
+    }
+
+    .retailmind h2 {
+      font-size: clamp(31px, 4vw, 48px);
+      letter-spacing: -1.5px;
+      line-height: 1.12;
+      margin-bottom: 20px;
+    }
+
+    .retailmind h2 span {
+      color: var(--cyan);
+    }
+
+    .retailmind p {
+      color: #b5c8d8;
+      max-width: 730px;
+      margin: auto;
+      font-size: 16px;
+      line-height: 1.75;
+    }
+
+    .retailmind-note {
+      margin-top: 28px;
+      color: var(--cyan-light) !important;
+      font-weight: 700;
+      font-size: 14px !important;
+    }
+
+    /* =========================================================
+       CTA
+       ========================================================= */
+
+    .final-cta {
+      padding: 110px 0;
+      background: var(--navy);
+      text-align: center;
+    }
+
+    .final-cta h2 {
+      font-size: clamp(35px, 5vw, 60px);
+      line-height: 1.08;
+      letter-spacing: -2px;
+      max-width: 850px;
+      margin: 0 auto 22px;
+    }
+
+    .final-cta h2 span {
+      color: var(--cyan);
+    }
+
+    .final-cta p {
+      max-width: 650px;
+      margin: 0 auto 32px;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    /* =========================================================
+       FOOTER
+       ========================================================= */
+
+    footer {
+      padding: 35px 0;
+      border-top: 1px solid var(--border);
+      background: #050d17;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 25px;
+    }
+
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .footer-brand img {
+      width: 34px;
+      height: 34px;
+    }
+
+    .footer-brand span {
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .footer-copy {
+      color: #64778b;
+      font-size: 11px;
+    }
+
+    /* =========================================================
+       MOBILE
+       ========================================================= */
+
+    @media (max-width: 900px) {
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero {
+        min-height: 720px;
+        background-position: 65% center;
+      }
+
+      .hero-content {
+        padding-top: 95px;
+      }
+
+      .intro-grid,
+      .steps {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .map-grid {
+        grid-template-columns: 1fr;
+        gap: 45px;
+      }
+
+      .scenario-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 620px) {
+
+      .container {
+        width: min(90%, 540px);
+      }
+
+      header {
+        position: absolute;
+      }
+
+      .nav {
+        min-height: 70px;
+      }
+
+      .brand-name {
+        font-size: 18px;
+      }
+
+      .brand img {
+        width: 42px;
+        height: 42px;
+      }
+
+      .nav-cta {
+        font-size: 11px;
+        padding: 9px 13px;
+      }
+
+      .hero {
+        min-height: 760px;
+        background:
+          linear-gradient(
+            180deg,
+            rgba(5,14,26,.95) 0%,
+            rgba(5,14,26,.88) 55%,
+            rgba(5,14,26,.94) 100%
+          ),
+          url("https://gestor-de-archivos.vercel.app/landing/home-page/Compite%20como%20los%20gigantes.png");
+
+        background-size: cover;
+        background-position: center;
+      }
+
+      .hero h1 {
+        letter-spacing: -1.7px;
+      }
+
+      .hero-subtitle {
+        font-size: 18px;
+      }
+
+      .hero-question p {
+        font-size: 16px;
+      }
+
+      .hero-offer {
+        font-size: 21px;
+      }
+
+      .intro,
+      .question-section,
+      .scenarios,
+      .map-section,
+      .discover,
+      .how,
+      .retailmind,
+      .final-cta {
+        padding: 75px 0;
+      }
+
+      .intro-grid,
+      .discover-grid,
+      .steps {
+        grid-template-columns: 1fr;
+      }
+
+      .scenario {
+        padding: 28px;
+      }
+
+      .map-visual {
+        padding: 20px 15px 20px 35px;
+        min-height: 350px;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- =======================================================
+       HEADER
+       ======================================================== -->
+
+  <header>
+    <div class="container nav">
+
+      <a href="#" class="brand">
+        <img
+          src="https://gestor-de-archivos.vercel.app/logos/logo-RetailMind-R-cuadrada.png"
+          alt="RetailMind">
+        <div class="brand-name">
+          Retail<span>Mind</span>
+        </div>
+      </a>
+
+      <nav class="nav-links">
+        <a href="#problema">El desafío</a>
+        <a href="#escenarios">Los escenarios</a>
+        <a href="#mapa">El mapa</a>
+        <a href="#como">Cómo funciona</a>
+      </nav>
+
+      <a href="#contacto" class="nav-cta">
+        Solicitar información
+      </a>
+
+    </div>
+  </header>
+
+
+  <!-- =======================================================
+       HERO
+       ======================================================== -->
+
+  <section class="hero">
+
+    <div class="container">
+
+      <div class="hero-content">
+
+        <div class="eyebrow">
+          Inteligencia estratégica para el Retail
+        </div>
+
+        <h1>
+          Mapa de <span>Impacto, Riesgo</span> y Oportunidad de la Red
+        </h1>
+
+        <div class="hero-subtitle">
+          Evaluación de sucursales ante dos escenarios económicos posibles.
+        </div>
+
+        <div class="hero-question">
+          <p>¿Dónde está parada su red?</p>
+          <p>¿Y qué significa estar bien o mal parado?</p>
+        </div>
+
+        <div class="hero-offer">
+          Descubra <span>dónde invertir y dónde proteger.</span>
+        </div>
+
+        <a href="#contacto" class="btn btn-primary">
+          Quiero conocer mi red
+          <span>→</span>
+        </a>
+
+        <div class="hero-note">
+          Una evaluación basada en los datos reales de su cadena.
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =======================================================
+       PROBLEMA
+       ======================================================== -->
+
+  <section class="intro" id="problema">
+
+    <div class="container">
+
+      <div class="section-label">
+        El desafío
+      </div>
+
+      <h2 class="section-title">
+        Conocer cuánto vende una sucursal no significa conocer su valor estratégico.
+      </h2>
+
+      <p class="section-text">
+        Una cadena puede tener excelentes indicadores históricos y,
+        aun así, desconocer cuáles de sus sucursales están realmente
+        preparadas para el futuro.
+      </p>
+
+      <div class="intro-grid">
+
+        <div class="problem-card">
+          <div class="problem-number">01 — INCERTIDUMBRE</div>
+          <h3>El futuro no será necesariamente igual al pasado.</h3>
+          <p>
+            Las condiciones económicas pueden cambiar y afectar
+            de manera muy diferente a cada sucursal.
+          </p>
+        </div>
+
+        <div class="problem-card">
+          <div class="problem-number">02 — INVERSIÓN</div>
+          <h3>No todas las tiendas merecen la misma apuesta.</h3>
+          <p>
+            Invertir sin conocer las fortalezas y vulnerabilidades
+            de cada ubicación puede comprometer recursos valiosos.
+          </p>
+        </div>
+
+        <div class="problem-card">
+          <div class="problem-number">03 — RIESGO</div>
+          <h3>El riesgo puede estar escondido dentro de la red.</h3>
+          <p>
+            Una sucursal puede parecer saludable hoy y ser vulnerable
+            ante un escenario económico diferente.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =======================================================
+       PREGUNTA CENTRAL
+       ======================================================== -->
+
+  <section class="question-section">
+
+    <div class="container question-inner">
+
+      <div class="section-label">
+        La pregunta que importa
+      </div>
+
+      <div class="big-question">
+        Si el futuro toma un camino diferente,
+        <span>¿qué ocurre con cada una de sus sucursales?</span>
+      </div>
+
+      <p class="question-description">
+        No buscamos adivinar cuál escenario ocurrirá.
+        Evaluamos cómo está posicionada su red frente a dos futuros
+        posibles y qué diferencias aparecen entre sus sucursales.
+      </p>
+
+    </div>
+
+  </section>
+
+
+  <!-- =======================================================
+       DOS ESCENARIOS
+       ======================================================== -->
+
+  <section class="scenarios" id="escenarios">
+
+    <div class="container">
+
+      <div class="center-heading">
+
+        <div class="section-label">
+          Dos futuros posibles
+        </div>
+
+        <h2 class="section-title">
+          La misma red puede tener dos posiciones estratégicas diferentes.
+        </h2>
+
+        <p class="section-text">
+          Evaluamos el comportamiento y las características de las
+          sucursales bajo dos escenarios económicos contrastantes.
+        </p>
+
+      </div>
+
+
+      <div class="scenario-grid">
+
+        <div class="scenario scenario-growth">
+
+          <div class="scenario-tag growth-tag">
+            Escenario 01
+          </div>
+
+          <h3>Crecimiento</h3>
+
+          <p>
+            Un entorno de recuperación, expansión del consumo,
+            mayor actividad comercial y mayor competencia por el mercado.
+          </p>
+
+          <div class="scenario-question">
+            ¿Qué sucursales pueden capturar crecimiento?
+          </div>
+
+        </div>
+
+
+        <div class="scenario scenario-contraction">
+
+          <div class="scenario-tag contraction-tag">
+            Escenario 02
+          </div>
+
+          <h3>Contracción</h3>
+
+          <p>
+            Un entorno de mayor presión económica, volatilidad,
+            reducción del consumo y presión sobre márgenes y costos.
+          </p>
+
+          <div class="scenario-question">
+            ¿Qué sucursales pueden resistir y cuáles están expuestas?
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =======================================================
+       MAPA
+       ======================================================== -->
+
+  <section class="map-section" id="mapa">
+
+    <div class="container map-grid">
+
+      <div class="map-copy">
+
+        <div class="section-label">
+          El resultado
+        </div>
+
+        <h2 class="section-title">
+          Un mapa para ver su red de una manera diferente.
+        </h2>
+
+        <p>
+          El análisis cruza las características económicas,
+          operacionales y estratégicas de cada sucursal con
+          los dos escenarios considerados.
+        </p>
+
+        <p>
+          El resultado permite identificar dónde se encuentran
+          las principales oportunidades, fortalezas y zonas de riesgo
+          de la red.
+        </p>
+
+        <a href="#contacto" class="btn btn-primary">
+          Solicitar una presentación →
+        </a>
+
+      </div>
+
+
+      <div class="map-visual">
+
+        <div class="map-box">
+
+          <div class="map-axis">
+
+            <div class="y-axis">
+              <span>Mayor resiliencia</span>
+              <span>Posición media</span>
+              <span>Menor resiliencia</span>
+            </div>
+
+            <div class="chart-area">
+
+              <div class="point point-star">
+                <span>Estrella</span>
+              </div>
+
+              <div class="point point-defensive">
+                <span>Defensiva</span>
+              </div>
+
+              <div class="point point-risk">
+                <span>Riesgo</span>
+              </div>
+
+              <div class="point point-offensive">
+                <span>Ofensiva</span>
+              </div>
+
+            </div>
+
+            <div></div>
+
+            <div class="x-axis">
+              <span>Menor potencial</span>
+              <span>Mayor potencial</span>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =======================================================
+       QUÉ DESCUBRE
+       ======================================================== -->
+
+  <section class="discover">
+
+    <div class="container">
+
+      <div class="section-label">
+        Lo que podrá descubrir
+      </div>
+
+      <h2 class="section-title">
+        Porque no todas las sucursales tienen el mismo futuro.
+      </h2>
+
+      <div class="discover-grid">
+
+        <div class="discover-card">
+
+          <div class="discover-icon">↗</div>
+
+          <h3>Potencial de crecimiento</h3>
+
+          <p>
+            Identifique las sucursales con características que
+            podrían permitirles capturar mejor un escenario expansivo.
+          </p>
+
+        </div>
+
+
+        <div class="discover-card">
+
+          <div class="discover-icon">◉</div>
+
+          <h3>Resiliencia</h3>
+
+          <p>
+            Detecte cuáles sucursales presentan mejores condiciones
+            para soportar un escenario de contracción.
+          </p>
+
+        </div>
+
+
+        <div class="discover-card">
+
+          <div class="discover-icon">!</div>
+
+          <h3>Riesgo</h3>
+
+          <p>
+            Localice las sucursales donde una combinación desfavorable
+            de factores puede comprometer su posición futura.
+          </p>
+
+        </div>
+
+
+        <div class="discover-card">
+
+          <div class="discover-icon">◆</div>
+
+          <h3>Prioridades de la red</h3>
+
+          <p>
+            Obtenga una visión comparativa que ayude a orientar
+            dónde concentrar atención, inversión y protección.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =======================================================
+       CÓMO FUNCIONA
+       ======================================================== -->
+
+  <section class="how" id="como">
+
+    <div class="container">
+
+      <div class="center-heading">
+
+        <div class="section-label">
+          Un estudio basado en sus propios datos
+        </div>
+
+        <h2 class="section-title">
+          Usted aporta los datos. Nosotros construimos el mapa.
+        </h2>
+
+        <p class="section-text">
+          No necesita instalar una nueva plataforma para obtener
+          una primera visión estratégica de su red.
+        </p>
+
+      </div>
+
+
+      <div class="steps">
+
+        <div class="step">
+          <div class="step-number">01</div>
+          <h3>Datos</h3>
+          <p>
+            La cadena suministra la información disponible
+            necesaria para el análisis.
+          </p>
+        </div>
+
+        <div class="step">
+          <div class="step-number">02</div>
+          <h3>Análisis</h3>
+          <p>
+            Estructuramos y analizamos los datos bajo la lógica
+            de los dos escenarios.
+          </p>
+        </div>
+
+        <div class="step">
+          <div class="step-number">03</div>
+          <h3>Valoración</h3>
+          <p>
+            Evaluamos la posición relativa de las sucursales
+            y sus principales fortalezas y vulnerabilidades.
+          </p>
+        </div>
+
+        <div class="step">
+          <div class="step-number">04</div>
+          <h3>Mapa</h3>
+          <p>
+            Presentamos una visión ejecutiva de impacto,
+            riesgo y oportunidad de la red.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =======================================================
+       RETAILMIND
+       ======================================================== -->
+
+  <section class="retailmind">
+
+    <div class="container retailmind-inner">
+
+      <img
+        class="retailmind-logo"
+        src="https://gestor-de-archivos.vercel.app/logos/logo-RetailMind-R-cuadrada.png"
+        alt="RetailMind">
+
+      <div class="section-label">
+        Metodología RetailMind
+      </div>
+
+      <h2>
+        De los datos de su red a una
+        <span>visión estratégica.</span>
+      </h2>
+
+      <p>
+        El Mapa de Impacto, Riesgo y Oportunidad utiliza el enfoque
+        analítico de RetailMind para transformar información de las
+        sucursales en contexto útil para la toma de decisiones.
+      </p>
+
+      <p class="retailmind-note">
+        El objetivo no es solamente saber qué ocurrió.
+        Es entender dónde está parada su red.
+      </p>
+
+    </div>
+
+  </section>
+
+
+  <!-- =======================================================
+       CTA FINAL
+       ======================================================== -->
+
+  <section class="final-cta" id="contacto">
+
+    <div class="container">
+
+      <div class="section-label">
+        El siguiente paso
+      </div>
+
+      <h2>
+        ¿Sabe realmente <span>dónde invertir y dónde proteger?</span>
+      </h2>
+
+      <p>
+        Solicite una presentación del Mapa de Impacto, Riesgo y
+        Oportunidad de la Red y conozca cómo puede aplicarse
+        a los datos de su cadena.
+      </p>
+
+      <!--
+        CAMBIAR ESTE ENLACE POR EL EMAIL, WHATSAPP
+        O FORMULARIO REAL DE CONTACTO.
+      -->
+
+      <a
+        href="mailto:contacto@retailmind360.com"
+        class="btn btn-primary">
+        Solicitar información →
+      </a>
+
+    </div>
+
+  </section>
+
+
+  <!-- =======================================================
+       FOOTER
+       ======================================================== -->
+
+  <footer>
+
+    <div class="container footer-inner">
+
+      <div class="footer-brand">
+
+        <img
+          src="https://gestor-de-archivos.vercel.app/logos/logo-RetailMind-R-cuadrada.png"
+          alt="RetailMind">
+
+        <span>RetailMind 360°</span>
+
+      </div>
+
+      <div class="footer-copy">
+        Inteligencia para el Retail · Latino BI
+      </div>
+
+    </div>
+
+  </footer>
+
+</body>
+</html>

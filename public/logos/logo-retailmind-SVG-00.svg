@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1447 352" width="1447" height="352">
+      <defs>
+        <linearGradient id="brandOrange" x1="0%" y1="100%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#FF5500"/>
+          <stop offset="50%" stop-color="#FF7700"/>
+          <stop offset="100%" stop-color="#FFAA00"/>
+        </linearGradient>
+        <linearGradient id="barOrange" x1="0%" y1="100%" x2="0%" y2="0%">
+          <stop offset="0%" stop-color="#E64A00"/>
+          <stop offset="100%" stop-color="#FF8800"/>
+        </linearGradient>
+        <linearGradient id="darkRetailGray" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#2C343E"/>
+          <stop offset="50%" stop-color="#47525E"/>
+          <stop offset="100%" stop-color="#1E232A"/>
+        </linearGradient>
+        <filter id="softShadow" x="-10%" y="-10%" width="120%" height="120%">
+          <feDropShadow dx="2" dy="4" stdDeviation="4" flood-color="#000000" flood-opacity="0.12"/>
+        </filter>
+      </defs>
+      <rect width="1447" height="352" fill="#050d17"/>
+      <g filter="url(#softShadow)">
+        <path d="M 180 236 C 145 220 125 180 135 138 C 147 92 188 60 236 60 C 275 60 310 82 328 118 L 358 100 C 332 52 288 22 236 22 C 160 22 96 75 80 150 C 66 218 105 282 172 304 Z" fill="url(#darkRetailGray)"/>
+        <path d="M 285 136 C 265 145 250 162 250 185 V 304 H 295 V 230 C 295 210 308 198 322 190 L 372 304 H 425 L 362 165 C 390 148 405 120 395 86 L 352 102 C 358 122 346 138 325 142 Z" fill="url(#darkRetailGray)"/>
+        <rect x="162" y="222" width="38" height="82" rx="4" fill="url(#barOrange)"/>
+        <rect x="210" y="176" width="38" height="128" rx="4" fill="url(#barOrange)"/>
+        <rect x="258" y="130" width="38" height="174" rx="4" fill="url(#barOrange)"/>
+        <path d="M 130 252 Q 260 210 415 95" fill="none" stroke="url(#brandOrange)" stroke-width="18" stroke-linecap="round"/>
+        <circle cx="430" cy="82" r="22" fill="url(#brandOrange)"/>
+      </g>
+      <g filter="url(#softShadow)" transform="translate(485, 238)">
+        <text font-family="'Inter', 'Segoe UI', sans-serif" font-weight="700" font-size="132" letter-spacing="-1.5">
+          <tspan fill="url(#darkRetailGray)">Retail</tspan>
+          <tspan fill="url(#brandOrange)" font-weight="800">Mind</tspan>
+        </text>
+      </g>
+    </svg>

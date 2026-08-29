@@ -18,7 +18,7 @@
           <feDropShadow dx="2" dy="4" stdDeviation="4" flood-color="#000000" flood-opacity="0.12"/>
         </filter>
       </defs>
-      <rect width="1447" height="352"/>
+      <rect width="1447" height="352" fill="none" fill-opacity="0"/>
       <g filter="url(#softShadow)">
         <path d="M 180 236 C 145 220 125 180 135 138 C 147 92 188 60 236 60 C 275 60 310 82 328 118 L 358 100 C 332 52 288 22 236 22 C 160 22 96 75 80 150 C 66 218 105 282 172 304 Z" fill="url(#darkRetailGray)"/>
         <path d="M 285 136 C 265 145 250 162 250 185 V 304 H 295 V 230 C 295 210 308 198 322 190 L 372 304 H 425 L 362 165 C 390 148 405 120 395 86 L 352 102 C 358 122 346 138 325 142 Z" fill="url(#darkRetailGray)"/>

@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>RetailMind 360° | Soluciones Especializadas</title>
+    <style>
+        /* Reset universal */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        /* Configuración para impresión */
+        @page {
+            size: A4;
+            margin: 0;
+        }
+        
+        body {
+            width: 210mm;
+            background-color: #ffffff;
+            color: #333333;
+            margin: 0 auto;
+            padding: 0;
+            position: relative;
+        }
+        
+        /* Contenedor de página - AHORA SIN position:absolute */
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 15mm;
+            page-break-after: always;
+            position: relative;
+            background-color: white;
+        }
+        
+        /* Páginas con fondos */
+        .page-1 {
+            background: linear-gradient(135deg, #2563EB 0%, #1e40af 100%);
+            color: #050337;
+        }
+        
+        .page-2 {
+            background-color: #ffffff;
+        }
+        
+        .page-3 {
+            background-color: #f8fafc;
+        }
+        
+        .page-4 {
+            background: linear-gradient(135deg, #1e40af 0%, #0f2659 100%);
+            color: white;
+        }
+        
+        /* Sangrados visuales */
+        .bleed-top {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5mm;
+            background-color: #2563EB;
+        }
+        
+        .bleed-bottom {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 5mm;
+            background: linear-gradient(90deg, #2563EB 0%, #10B981 25%, #6f42c1 50%, #007bff 75%, #2563EB 100%);
+        }
+        
+        /* Logo */
+        .logo-container {
+            text-align: center;
+            margin-bottom: 20mm;
+        }
+        
+        .logo-img {
+            height: 35mm;
+            display: block;
+            margin: 0 auto;
+        }
+        
+        /* Tipografía */
+        h1 {
+            font-size: 18pt;
+            font-weight: bold;
+            line-height: 1.3;
+            margin-bottom: 8mm;
+            text-align: center;
+        }
+        
+        h2 {
+            font-size: 14pt;
+            font-weight: bold;
+            color: #2563EB;
+            margin: 10mm 0 5mm 0;
+        }
+        
+        h3 {
+            font-size: 12pt;
+            font-weight: bold;
+            margin: 8mm 0 4mm 0;
+        }
+        
+        p {
+            font-size: 10pt;
+            line-height: 1.5;
+            margin-bottom: 5mm;
+        }
+        
+        .subtitle {
+            font-size: 11pt;
+            font-style: italic;
+            color: rgba(255,255,255,0.9);
+            text-align: center;
+            margin-bottom: 15mm;
+        }
+        
+        /* Grid de inserts */
+        .inserts-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 8mm;
+            margin-top: 10mm;
+        }
+        
+        .insert-card {
+            background-color: white;
+            border-radius: 3mm;
+            padding: 10mm;
+            box-shadow: 0 2mm 4mm rgba(0,0,0,0.1);
+            position: relative;
+            border-left: 5mm solid;
+        }
+        
+        .insert-ti { border-left-color: #2563EB; }
+        .insert-compras { border-left-color: #10B981; }
+        .insert-marketing { border-left-color: #6f42c1; }
+        .insert-operaciones { border-left-color: #007bff; }
+        
+        .insert-icon {
+            font-size: 24pt;
+            margin-bottom: 5mm;
+        }
+        
+        .insert-title {
+            font-size: 12pt;
+            font-weight: bold;
+            margin-bottom: 4mm;
+        }
+        
+        .insert-benefits {
+            font-size: 9pt;
+            line-height: 1.4;
+        }
+        
+        .insert-benefit {
+            margin-bottom: 3mm;
+            padding-left: 10mm;
+            position: relative;
+        }
+        
+        .insert-benefit:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #2563EB;
+            font-weight: bold;
+        }
+        
+        /* QR codes */
+        .qr-section {
+            text-align: center;
+            margin-top: 15mm;
+        }
+        
+        .qr-container {
+            width: 40mm;
+            height: 40mm;
+            background-color: white;
+            margin: 0 auto 8mm auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 2mm;
+            font-weight: bold;
+            color: #2563EB;
+            font-size: 28pt;
+        }
+        
+        .qr-text {
+            font-size: 10pt;
+            font-weight: bold;
+        }
+        
+        /* Footer */
+        .footer {
+            position: absolute;
+            bottom: 15mm;
+            width: calc(100% - 30mm);
+            text-align: center;
+            font-size: 8pt;
+            color: rgba(255,255,255,0.7);
+        }
+        
+        .footer-page-2 {
+            color: #64748b;
+        }
+        
+        .contact-info {
+            font-size: 9pt;
+            margin-top: 5mm;
+            line-height: 1.4;
+        }
+        
+        /* Beneficios comunes */
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 6mm;
+            margin-top: 8mm;
+        }
+        
+        .benefit-item {
+            background-color: #f1f5f9;
+            padding: 8mm;
+            border-radius: 2mm;
+            font-size: 9pt;
+        }
+        
+        .benefit-title {
+            font-weight: bold;
+            color: #2563EB;
+            margin-bottom: 3mm;
+        }
+        
+        /* Precios */
+        .pricing-box {
+            background-color: #f0fdf4;
+            border: 1mm solid #10B981;
+            border-radius: 3mm;
+            padding: 10mm;
+            margin: 10mm 0;
+            text-align: center;
+        }
+        
+        .price-item {
+            font-size: 11pt;
+            margin: 4mm 0;
+        }
+        
+        .price-highlight {
+            font-weight: bold;
+            color: #10B981;
+            font-size: 14pt;
+        }
+        
+        /* Iconos en texto */
+        .icon-text {
+            display: inline-block;
+            width: 5mm;
+            text-align: center;
+            margin-right: 3mm;
+            color: #2563EB;
+        }
+        
+        /* Estilo para vista en pantalla */
+        @media screen {
+            body {
+                width: auto;
+                max-width: 210mm;
+                margin: 20px auto;
+                box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            }
+            .page {
+                min-height: auto;
+                box-shadow: 0 0 10px rgba(0,0,0,0.2);
+                margin-bottom: 30px;
+            }
+            .bleed-top, .bleed-bottom {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PÁGINA 1: PORTADA -->
+    <div class="page page-1">
+        <div class="bleed-top"></div>
+        
+        <div class="logo-container">
+            <img src="https://gestor-de-archivos.vercel.app/logos/logo-RetailMind-R-cuadrada.png" class="logo-img" alt="RetailMind 360°">
+        </div>
+        
+        <h1>RetailMind 360°<br><span style="font-size: 14pt; font-weight: normal;">Soluciones Especializadas por Rol</span></h1>
+        
+        <p class="subtitle">
+            Descubra la solución diseñada específicamente<br>
+            para su área de responsabilidad
+        </p>
+        
+        <div class="inserts-grid">
+            <div class="insert-card insert-ti">
+                <div class="insert-icon">💻</div>
+                <div class="insert-title">Gerentes de TI</div>
+                <div class="insert-benefits">
+                    <div class="insert-benefit">Sin cambios en POS/ERP</div>
+                    <div class="insert-benefit">Arquitectura ligera</div>
+                    <div class="insert-benefit">Sin vendor lock-in</div>
+                </div>
+            </div>
+            
+            <div class="insert-card insert-compras">
+                <div class="insert-icon">📦</div>
+                <div class="insert-title">Jefes de Compras</div>
+                <div class="insert-benefits">
+                    <div class="insert-benefit">Alertas 72h antes de merma</div>
+                    <div class="insert-benefit">Score de obsolescencia</div>
+                    <div class="insert-benefit">Merma reducida 30%</div>
+                </div>
+            </div>
+            
+            <div class="insert-card insert-marketing">
+                <div class="insert-icon">📢</div>
+                <div class="insert-title">Gerentes de Marketing</div>
+                <div class="insert-benefits">
+                    <div class="insert-benefit">RFM Híbrido + temporalidad</div>
+                    <div class="insert-benefit">Champions mañaneros</div>
+                    <div class="insert-benefit">Campañas 40% más efectivas</div>
+                </div>
+            </div>
+            
+            <div class="insert-card insert-operaciones">
+                <div class="insert-icon">🏪</div>
+                <div class="insert-title">Gerentes Generales</div>
+                <div class="insert-benefits">
+                    <div class="insert-benefit">Radar de desempeño unificado</div>
+                    <div class="insert-benefit">Clustering de tiendas</div>
+                    <div class="insert-benefit">Sin silos operativos</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            RetailMind 360° | Hecho en Venezuela. Pensado para el mundo.<br>
+            alri.ga.r00@gmail.com | 0412-020-3300
+        </div>
+        
+        <div class="bleed-bottom"></div>
+    </div>
+
+    <!-- PÁGINA 2: BENEFICIOS COMUNES + RETAILDING -->
+    <div class="page page-2">
+        <div class="bleed-top" style="background-color: #1e40af;"></div>
+        
+        <h2>Beneficios Comunes a Todas las Soluciones</h2>
+        
+        <div class="benefits-grid">
+            <div class="benefit-item">
+                <div class="benefit-title">📊 Arquitectura de Datos Sólida</div>
+                <p>6 Datamarts especializados con gobernanza de datos y calidad enterprise. Sin silos de información.</p>
+            </div>
+            
+            <div class="benefit-item">
+                <div class="benefit-title">🔌 Sin Vendor Lock-In</div>
+                <p>Conexión flexible con Power BI, IBM Cognos o Tableau. Usted elige la plataforma.</p>
+            </div>
+            
+            <div class="benefit-item">
+                <div class="benefit-title">🔄 Actualización Diaria</div>
+                <p>Carga y procesamiento automático en menos de 15 minutos. Datos frescos todos los días.</p>
+            </div>
+            
+            <div class="benefit-item">
+                <div class="benefit-title">📈 Dashboards Accionables</div>
+                <p>Visualizaciones diseñadas para cada rol. No solo datos, decisiones accionables.</p>
+            </div>
+            
+            <div class="benefit-item">
+                <div class="benefit-title">🎓 Capacitación en Retailding</div>
+                <p>Aprendizaje práctico sobre cómo interpretar datos y actuar con disciplina de trader.</p>
+            </div>
+            
+            <div class="benefit-item">
+                <div class="benefit-title">💰 ROI < 6 Meses</div>
+                <p>Resultados comprobados: +15-20% en ticket promedio, merma reducida 30%, campañas 40% más efectivas.</p>
+            </div>
+        </div>
+        
+        <h2 style="margin-top: 15mm; color: #1e40af;">¿Qué es Retailding?</h2>
+        
+        <p style="font-size: 10pt; line-height: 1.6; margin: 8mm 0;">
+            <strong>Retail + Trading = Retailding</strong><br><br>
+            
+            Fenómeno económico-estructural observado en el retail venezolano donde la gestión operativa se ve forzada a adoptar dinámicas idénticas al trading financiero debido a:<br><br>
+            
+            • <strong>Hiperinflación:</strong> Volatilidad del costo de reposición<br>
+            • <strong>Diferencial cambiario extremo:</strong> Su caja es una cartera que se devalúa minuto a minuto<br>
+            • <strong>Fragmentación de medios de pago:</strong> Cada transacción tiene distinto costo de liquidación<br><br>
+            
+            <em>"En el Retailding, quien decide primero… gana. Y tú decides con datos, no con corazonadas."</em>
+        </p>
+        
+        <div class="footer footer-page-2" style="bottom: 15mm;">
+            Página 2 de 4 | RetailMind 360° – Del ticket al insight
+        </div>
+        
+        <div class="bleed-bottom" style="background: linear-gradient(90deg, #2563EB 0%, #10B981 50%, #6f42c1 100%);"></div>
+    </div>
+
+    <!-- PÁGINA 3: DIAGNÓSTICO ESTRATÉGICO INICIAL -->
+    <div class="page page-3">
+        <div class="bleed-top" style="background-color: #10B981;"></div>
+        
+        <h2 style="color: #10B981; text-align: center; margin-bottom: 10mm;">
+            Diagnóstico Estratégico Inicial<br>
+            <span style="font-size: 12pt; font-weight: normal; color: #334155;">7 días para ver sus datos con potencia de gigantes</span>
+        </h2>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8mm; margin-bottom: 15mm;">
+            <div style="background-color: white; padding: 10mm; border-radius: 3mm; box-shadow: 0 1mm 3mm rgba(0,0,0,0.05);">
+                <h3>📦 Entregables</h3>
+                <p class="insert-benefits">
+                    <div class="insert-benefit"><span class="icon-text">✓</span>Procesamiento de tickets + productos + sucursales</div>
+                    <div class="insert-benefit"><span class="icon-text">✓</span>5 Datamarts generados y actualizados diariamente</div>
+                    <div class="insert-benefit"><span class="icon-text">✓</span>Dashboards funcionales en Power BI / Cognos / Tableau</div>
+                    <div class="insert-benefit"><span class="icon-text">✓</span>Sesión de interpretación (1 hora) con nuestro equipo</div>
+                    <div class="insert-benefit"><span class="icon-text">✓</span>Informe de hallazgos + recomendaciones accionables</div>
+                </p>
+            </div>
+            
+            <div style="background-color: white; padding: 10mm; border-radius: 3mm; box-shadow: 0 1mm 3mm rgba(0,0,0,0.05);">
+                <h3>⏱️ Condiciones</h3>
+                <p class="insert-benefits">
+                    <div class="insert-benefit"><span class="icon-text">•</span>Duración: 7 días corridos</div>
+                    <div class="insert-benefit"><span class="icon-text">•</span>Sin compromiso de suscripción</div>
+                    <div class="insert-benefit"><span class="icon-text">•</span>Sin cambios en su POS/ERP</div>
+                    <div class="insert-benefit"><span class="icon-text">•</span>Implementación en 3–4 semanas</div>
+                    <div class="insert-benefit"><span class="icon-text">•</span>Primeros insights en menos de 14 días</div>
+                </p>
+            </div>
+        </div>
+        
+        <div class="pricing-box">
+            <h3 style="color: #047857; margin-bottom: 5mm;">Inversión</h3>
+            <div class="price-item">Hasta 3 sucursales: <span class="price-highlight">USD $480</span></div>
+            <div class="price-item">Hasta 10 sucursales: <span class="price-highlight">USD $680</span></div>
+            <div class="price-item">Más de 10 sucursales: <span class="price-highlight">USD $980</span></div>
+            <p style="font-size: 9pt; margin-top: 5mm; font-style: italic; color: #065f46;">
+                * Bonificación: Monto descontado del primer mes si contrata el servicio completo
+            </p>
+        </div>
+        
+        <div class="qr-section">
+<!-- QR Code con estilo mejorado -->
+<div style="text-align: center; margin: 20px 0;">
+    <div style="background-color: white; border-radius: 12px; padding: 15px; display: inline-block; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https://calendly.com/d/cxgn-dxz-s7v" 
+             alt="QR Code - Agendar Diagnóstico" 
+             style="width: 180px; height: 180px; display: block;">
+    </div>
+    <p style="margin-top: 12px; font-weight: 600; color: #2563EB; font-size: 14px;">
+        Escanee para agendar su Diagnóstico Estratégico Inicial
+    </p>
+    <p style="margin-top: 5px; font-size: 12px; color: #64748b;">
+        calendly.com/retailmind360/diagnostico
+    </p>
+</div>
+            <div class="qr-text">Agende hoy su Diagnóstico Estratégico Inicial</div>
+            <p class="contact-info" style="margin-top: 5mm;">
+                <strong>alri.ga.r00@gmail.com</strong><br>
+                0412-020-3300<br>
+                calendly.com/retailmind360/diagnostico
+            </p>
+        </div>
+        
+        <div class="footer footer-page-2" style="color: #64748b; bottom: 15mm;">
+            Página 3 de 4 | Validado con 438.055 ítems procesados • 980 clientes segmentados • 21 sucursales mapeadas
+        </div>
+        
+        <div class="bleed-bottom" style="background: linear-gradient(90deg, #6f42c1 0%, #007bff 50%, #2563EB 100%);"></div>
+    </div>
+
+<!-- PÁGINA 4: CONTRAPORTADA -->
+<div class="page page-4">
+    <div class="bleed-top" style="background-color: #0f2659;"></div>
+    
+    <div style="text-align: center;">
+        <img src="https://demo.lat/logos/Logo RetailMind 360 - Azul - Globo y Cerebro y Carrito - TRANSPARENTE.png" class="logo-img" style="height: 30mm;" alt="RetailMind 360°">
+        
+        <h1 style="margin-top: 10mm; font-size: 20pt; margin-bottom: 10mm;">
+            Compite como los gigantes del retail…<br>
+            opera como ellos.
+        </h1>
+        
+        <p style="font-size: 11pt; line-height: 1.6; margin: 10mm 15mm 10mm 15mm;">
+            No necesitas ser gigante para pensar como un gigante.<br>
+            RetailMind 360° democratiza la inteligencia de Walmart, Amazon y Costco<br>
+            para cadenas venezolanas y latinoamericanas.
+        </p>
+        
+        <div style="background-color: rgba(255,255,255,0.1); border-radius: 3mm; padding: 12mm; margin: 12mm 10mm; font-size: 10pt; line-height: 1.5;">
+            <strong>"En el Retailding venezolano, cada producto en anaquel es una posición financiera<br>
+            y cada bolívar en caja una cartera expuesta al diferencial cambiario.<br><br>
+            Con RetailMind 360°, usted opera como trader, no como víctima."</strong>
+        </div>
+        
+        <div class="qr-section" style="margin: 15mm 0 25mm 0;">
+<!-- QR Code con estilo mejorado -->
+<div style="text-align: center; margin: 20px 0;">
+    <div style="background-color: white; border-radius: 12px; padding: 15px; display: inline-block; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https://calendly.com/retailmind360/diagnostico" 
+             alt="QR Code - Agendar Diagnóstico" 
+             style="width: 180px; height: 180px; display: block;">
+    </div>
+    <p style="margin-top: 12px; font-weight: 600; color: #2563EB; font-size: 14px;">
+        Escanee para agendar su Diagnóstico Estratégico Inicial
+    </p>
+    <p style="margin-top: 5px; font-size: 12px; color: #64748b;">
+        calendly.com/retailmind360/diagnostico
+    </p>
+</div>
+            <div class="qr-text" style="font-size: 10pt; font-weight: bold; margin-top: 5mm;">
+                Escanee para agendar su Diagnóstico Estratégico Inicial
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer MOVIDO fuera del div central y con position: relative -->
+    <div class="footer" style="position: relative; margin-top: 5mm; text-align: center;">
+        <p style="font-size: 9pt; line-height: 1.4;">
+            RetailMind 360°<br>
+            Hecho en Venezuela. Pensado para el mundo.<br>
+            alri.ga.r00@gmail.com | 0412-020-3300<br>
+            Caracas, Venezuela
+        </p>
+    </div>
+    
+    <div class="bleed-bottom"></div>
+</div>
+</body>
+</html>

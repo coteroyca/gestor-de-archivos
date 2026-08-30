@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RetailMind 360° | Del ticket al insight</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts: Inter + Oswald -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --azul-retailmind: #2563EB;
+            --verde-retailder: #10B981;
+            --naranja-accion: #F97316;
+            --gris-texto: #334155;
+            --gris-claro: #f8fafc;
+            --gris-medio: #64748b;
+            --gris-fondo: #e2e8f0;
+        }
+        
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
+        }
+        
+        body {
+            background-color: #ffffff;
+            color: var(--gris-texto);
+            overflow-x: hidden;
+        }
+        
+        /* Sección 1: Portada */
+        .section-portada {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            padding: 80px 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+        
+        .portada-headline {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--azul-retailmind);
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+        
+        .portada-subheadline {
+            font-size: 1.25rem;
+            font-style: italic;
+            color: var(--gris-medio);
+            margin-bottom: 40px;
+        }
+        
+        .grafico-erosion {
+            background-color: var(--gris-claro);
+            border-radius: 8px;
+            padding: 25px;
+            margin: 30px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        
+        .grafico-erosion canvas {
+            max-width: 100%;
+            height: 250px;
+        }
+        
+        /* Sección 2: Solución con Gigantes */
+        .section-solucion {
+            background-color: #ffffff;
+            padding: 80px 0;
+            border-top: 1px solid var(--gris-fondo);
+            border-bottom: 1px solid var(--gris-fondo);
+        }
+        
+        .solucion-headline {
+            font-size: 2rem;
+            color: var(--azul-retailmind);
+            margin-bottom: 30px;
+        }
+        
+        .solucion-body {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+        
+        .solucion-lista i {
+            color: var(--naranja-accion);
+            margin-right: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .flujo-datos {
+            background-color: var(--gris-claro);
+            border-radius: 8px;
+            padding: 25px;
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        .flujo-item {
+            display: inline-block;
+            margin: 0 15px;
+            vertical-align: middle;
+        }
+        
+        .flujo-flecha {
+            color: var(--verde-retailder);
+            font-size: 1.5rem;
+            margin: 0 10px;
+        }
+        
+        /* Sección 3: Validación Real */
+        .section-validacion {
+            background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+            padding: 80px 0;
+            border-bottom: 1px solid var(--gris-fondo);
+        }
+        
+        .validacion-headline {
+            font-size: 1.8rem;
+            color: var(--azul-retailmind);
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        .stats-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 40px 0;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+            min-width: 150px;
+        }
+        
+        .stat-number {
+            font-family: 'Oswald', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--verde-retailder);
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 0.95rem;
+            color: var(--gris-medio);
+        }
+        
+        .stat-separator {
+            width: 1px;
+            height: 60px;
+            background-color: var(--gris-fondo);
+            margin: 0 30px;
+        }
+        
+        .roi-block {
+            background-color: var(--gris-claro);
+            border-left: 4px solid var(--verde-retailder);
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+        
+        .roi-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.2rem;
+            color: var(--verde-retailder);
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .beneficio-item {
+            margin-bottom: 12px;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .beneficio-item i {
+            position: absolute;
+            left: 0;
+            top: 2px;
+            color: var(--verde-retailder);
+            font-size: 0.9rem;
+        }
+        
+        .testimonial {
+            background-color: white;
+            border: 1px solid var(--gris-fondo);
+            border-radius: 8px;
+            padding: 25px;
+            margin: 40px 0;
+            position: relative;
+        }
+        
+        .testimonial::before {
+            content: """;
+            position: absolute;
+            top: -20px;
+            left: 20px;
+            font-size: 5rem;
+            color: var(--gris-fondo);
+            font-family: Georgia, serif;
+            line-height: 1;
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            padding-left: 20px;
+        }
+        
+        .testimonial-author {
+            font-weight: 600;
+            color: var(--gris-medio);
+            font-size: 0.95rem;
+        }
+        
+        /* Sección 4: Próximo Paso */
+        .section-cta {
+            background: linear-gradient(135deg, var(--azul-retailmind) 0%, #1e40af 100%);
+            padding: 80px 0;
+            color: white;
+        }
+        
+        .cta-headline {
+            font-size: 2rem;
+            color: white;
+            margin-bottom: 15px;
+        }
+        
+        .cta-subheadline {
+            font-size: 1.25rem;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 40px;
+        }
+        
+        .servicio-block {
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+        
+        .servicio-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.1rem;
+            color: white;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        
+        .servicio-lista {
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+        
+        .servicio-lista i {
+            color: var(--naranja-accion);
+            margin-right: 10px;
+        }
+        
+        .precios-block {
+            background-color: rgba(16, 185, 129, 0.15);
+            border-radius: 8px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+        
+        .precio-item {
+            margin-bottom: 12px;
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.25rem;
+            color: var(--naranja-accion);
+        }
+        
+        .bonificacion {
+            font-size: 0.9rem;
+            color: var(--verde-retailder);
+            font-style: italic;
+            margin-top: 15px;
+            display: block;
+        }
+        
+        .qr-container {
+            text-align: center;
+            margin: 40px 0;
+        }
+        
+        .qr-code {
+            width: 150px;
+            height: 150px;
+            background-color: white;
+            border-radius: 8px;
+            padding: 10px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 6rem;
+            color: var(--azul-retailmind);
+        }
+        
+        .btn-agendar {
+            background-color: var(--verde-retailder);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 6px;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-agendar:hover {
+            background-color: #0da271;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.6);
+        }
+        
+        .pie-contacto {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.7);
+        }
+        
+        /* Segmentos RFM */
+        .segmento-champions {
+            color: #28a745;
+        }
+        
+        .segmento-loyal {
+            color: #007bff;
+        }
+        
+        .segmento-recent {
+            color: #ffc107;
+        }
+        
+        .segmento-highspenders {
+            color: #6f42c1;
+        }
+        
+        .segmento-others {
+            color: #ced4da;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .portada-headline {
+                font-size: 2rem;
+            }
+            
+            .portada-subheadline {
+                font-size: 1rem;
+            }
+            
+            .solucion-headline, .validacion-headline, .cta-headline {
+                font-size: 1.6rem;
+            }
+            
+            .cta-subheadline {
+                font-size: 1.1rem;
+            }
+            
+            .stat-number {
+                font-size: 2.5rem;
+            }
+            
+            .stat-separator {
+                display: none;
+            }
+            
+            .stats-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .stat-item {
+                margin-bottom: 20px;
+            }
+            
+            .flujo-item, .flujo-flecha {
+                display: block;
+                margin: 10px 0;
+            }
+        }
+        
+        /* Animaciones */
+        .fade-in {
+            animation: fadeIn 0.8s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .stagger-item {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: staggerFadeIn 0.6s ease-out forwards;
+        }
+        
+        @keyframes staggerFadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================ -->
+    <!-- SECCIÓN 1: PORTADA -->
+    <!-- ============================================ -->
+    <section class="section-portada" id="portada">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-5 mb-lg-0 fade-in">
+                    <div class="text-start">
+						<img src="https://demo.lat/logos/Logo RetailMind 360 - Azul - Globo y Cerebro y Carrito - TRANSPARENTE.png" height="120px">
+                        <!-- Slogan superior -->
+                        <p class="text-muted small mb-3">Del ticket al insight</p>
+                        
+                        <!-- Headline principal -->
+                        <h1 class="portada-headline">
+                            Su caja no es efectivo.<br>
+                            Su caja es una cartera que se devalúa minuto a minuto.
+                        </h1>
+                        
+                        <!-- Subheadline -->
+                        <p class="portada-subheadline">
+                            En el Retailding venezolano, cada producto en anaquel es una posición financiera expuesta a la inflación.
+                        </p>
+                        
+                        <!-- Gráfico de erosión de capital -->
+                        <div class="grafico-erosion">
+                            <canvas id="graficoErosion"></canvas>
+                        </div>
+                        
+                        <!-- Pie de página -->
+                        <p class="text-muted small mt-4">
+                            RetailMind 360° | Hecho en Venezuela. Pensado para el mundo.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6 text-center fade-in">
+                    <!-- Logo (placeholder - reemplazar con imagen real) -->
+                    <div class="mb-5">
+                        <h2 class="display-4 fw-bold text-primary">
+                            <i class="fas fa-shopping-cart"></i> 
+                            <span class="text-dark">RetailMind</span> 
+                            <span class="text-primary">360°</span>
+                        </h2>
+                    </div>
+                    
+                    <!-- Imagen representativa (placeholder) -->
+                    <div class="bg-light border rounded-3 p-5">
+                        <i class="fas fa-chart-line fa-5x text-primary opacity-50"></i>
+                        <p class="mt-3 text-muted">Dashboard RetailMind 360° con datos reales</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SECCIÓN 2: SOLUCIÓN CON GIGANTES -->
+    <!-- ============================================ -->
+    <section class="section-solucion" id="solucion">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-5 mb-lg-0 fade-in">
+                    <!-- Headline -->
+                    <h2 class="solucion-headline">
+                        Competir como los gigantes del retail…<br>
+                        sin necesitar su presupuesto.
+                    </h2>
+                    
+                    <!-- Cuerpo de texto -->
+                    <p class="solucion-body">
+                        Walmart ajusta precios cada hora. Amazon predice demanda antes de que el cliente busque. Costco optimiza reposición con algoritmos que anticipan el comportamiento.
+                    </p>
+                    
+                    <p class="solucion-body">
+                        ¿Magia? No. Es <strong>arquitectura de datos + gobernanza + segmentación hipergranular</strong>.
+                    </p>
+                    
+                    <p class="solucion-body">
+                        Con RetailMind 360°, usted obtiene esa misma capacidad:
+                    </p>
+                    
+                    <!-- Lista de beneficios -->
+                    <ul class="solucion-lista list-unstyled">
+                        <li class="mb-2"><i class="fas fa-bolt"></i> <strong>6 Datamarts especializados</strong> (Tickets, Clientes RFM Híbrido, Productos, Sucursales, KPIs, Canasta)</li>
+                        <li class="mb-2"><i class="fas fa-bolt"></i> <strong>Conexión a las plataformas de los gigantes:</strong> Power BI, IBM Cognos, Tableau</li>
+                        <li class="mb-2"><i class="fas fa-bolt"></i> <strong>Sin vendor lock-in.</strong> Sin data scientists. Sin infraestructura millonaria.</li>
+                    </ul>
+                    
+                    <!-- Esquema de flujo de datos -->
+                    <div class="flujo-datos">
+                        <h6 class="text-muted mb-3">Arquitectura RetailMind 360°</h6>
+                        <div class="flujo-item">
+                            <i class="fas fa-receipt fa-2x text-primary mb-2"></i>
+                            <div class="small">Tickets POS/ERP</div>
+                        </div>
+                        <span class="flujo-flecha"><i class="fas fa-arrow-right"></i></span>
+                        <div class="flujo-item">
+                            <i class="fas fa-database fa-2x text-primary mb-2"></i>
+                            <div class="small">ETL (<15 min)</div>
+                        </div>
+                        <span class="flujo-flecha"><i class="fas fa-arrow-right"></i></span>
+                        <div class="flujo-item">
+                            <i class="fas fa-cubes fa-2x text-primary mb-2"></i>
+                            <div class="small">6 Datamarts</div>
+                        </div>
+                        <span class="flujo-flecha"><i class="fas fa-arrow-right"></i></span>
+                        <div class="flujo-item">
+                            <i class="fas fa-chart-bar fa-2x text-primary mb-2"></i>
+                            <div class="small">Dashboards accionables</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6 fade-in">
+                    <!-- Imagen o mockup -->
+                    <div class="bg-light border rounded-3 p-5 text-center">
+                        <i class="fas fa-project-diagram fa-5x text-primary opacity-50"></i>
+                        <p class="mt-3 text-muted">Integración con Power BI / Cognos / Tableau</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SECCIÓN 3: VALIDACIÓN REAL -->
+    <!-- ============================================ -->
+    <section class="section-validacion" id="validacion">
+        <div class="container">
+            <!-- Headline -->
+            <h2 class="validacion-headline">
+                Validado con operaciones reales en Venezuela.
+            </h2>
+            
+            <!-- Stats en 3 columnas -->
+            <div class="stats-container">
+                <div class="stat-item">
+                    <div class="stat-number">438.055</div>
+                    <div class="stat-label">ítems procesados</div>
+                </div>
+                
+                <div class="stat-separator d-none d-lg-block"></div>
+                
+                <div class="stat-item">
+                    <div class="stat-number">980</div>
+                    <div class="stat-label">clientes segmentados</div>
+                </div>
+                
+                <div class="stat-separator d-none d-lg-block"></div>
+                
+                <div class="stat-item">
+                    <div class="stat-number">21</div>
+                    <div class="stat-label">sucursales mapeadas</div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-6 offset-lg-3">
+                    <!-- Cuerpo de texto -->
+                    <p class="text-center lead">
+                        Nuestro ETL automatizado carga en menos de 15 minutos. Segmentamos con RFM Híbrido (cruzado con patrón temporal + tipo de tienda). Detectamos productos en riesgo de obsolescencia 72h antes de que se conviertan en merma.
+                    </p>
+                    
+                    <!-- Bloque ROI destacado -->
+                    <div class="roi-block">
+                        <div class="roi-title">ROI comprobado en <6 meses</div>
+                        <ul class="list-unstyled">
+                            <li class="beneficio-item"><i class="fas fa-check-circle"></i> +15–20% en ticket promedio al activar segmentos <span class="segmento-champions"><i class="fas fa-star"></i> Champions</span></li>
+                            <li class="beneficio-item"><i class="fas fa-check-circle"></i> Merma reducida hasta 30% con alertas proactivas</li>
+                            <li class="beneficio-item"><i class="fas fa-check-circle"></i> Reposición optimizada por tipo de tienda (mañanera residencial, laboral de oficinas, nocturna de entretenimiento)</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Testimonial -->
+                    <div class="testimonial">
+                        <p class="testimonial-text">
+                            Antes decidíamos con Excel y corazonadas. Hoy sabemos que en Los Teques están nuestros <span class="segmento-champions"><i class="fas fa-star"></i> Champions</span>… y ajustamos el surtido en tiempo real.
+                        </p>
+                        <div class="testimonial-author">
+                            — Gerente de Cadena con 12 sucursales, Caracas
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SECCIÓN 4: PRÓXIMO PASO (CTA) -->
+    <!-- ============================================ -->
+    <section class="section-cta" id="cta">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center mb-5 fade-in">
+                    <!-- Headline -->
+                    <h2 class="cta-headline">
+                        ¿Listo para operar como un Retailder?
+                    </h2>
+                    
+                    <!-- Subheadline -->
+                    <p class="cta-subheadline">
+                        En 7 días, vea cómo se ven SUS datos con la potencia de los gigantes.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <!-- Bloque servicio -->
+                    <div class="servicio-block fade-in">
+                        <div class="servicio-title">
+                            <i class="fas fa-microscope"></i> RetailMind 360° | Diagnóstico Estratégico Inicial
+                        </div>
+                        <ul class="servicio-lista list-unstyled">
+                            <li class="mb-2"><i class="fas fa-chart-bar"></i> Procesamiento de SUS tickets + productos + sucursales</li>
+                            <li class="mb-2"><i class="fas fa-chart-bar"></i> 5 Datamarts generados y actualizados diariamente (7 días)</li>
+                            <li class="mb-2"><i class="fas fa-chart-bar"></i> Dashboards funcionales en Power BI / Cognos / Tableau</li>
+                            <li class="mb-2"><i class="fas fa-chart-bar"></i> Sesión de interpretación (1 hora) con nuestro equipo</li>
+                            <li class="mb-2"><i class="fas fa-chart-bar"></i> Informe de hallazgos + recomendaciones accionables</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Bloque precios -->
+                    <div class="precios-block fade-in">
+                        <div class="servicio-title">
+                            <i class="fas fa-tag"></i> Inversión:
+                        </div>
+                        <div class="precio-item">
+                            <i class="fas fa-store"></i> Hasta 3 sucursales: <strong>USD $480</strong>
+                        </div>
+                        <div class="precio-item">
+                            <i class="fas fa-store"></i> Hasta 10 sucursales: <strong>USD $680</strong>
+                        </div>
+                        <div class="precio-item">
+                            <i class="fas fa-store"></i> Más de 10 sucursales: <strong>USD $980</strong>
+                        </div>
+                        <span class="bonificacion">
+                            <i class="fas fa-gift"></i> Bonificación: Monto descontado del primer mes si contrata el servicio completo
+                        </span>
+                    </div>
+                    
+                    <!-- QR Code + CTA -->
+                    <div class="qr-container fade-in">
+                        <div class="qr-code">
+                            <i class="fas fa-qrcode"></i>
+                        </div>
+                        <p class="text-white lead mb-3">Agende hoy su Diagnóstico Estratégico Inicial</p>
+                        <a href="https://calendly.com/retailmind360/diagnostico" class="btn btn-agendar btn-lg">
+                            <i class="fas fa-calendar-check me-2"></i>Agendar Ahora
+                        </a>
+                    </div>
+                    
+                    <!-- Pie de contacto -->
+                    <div class="pie-contacto">
+                        <p class="mb-1">
+                            <i class="fas fa-envelope"></i> alri.ga.r00@gmail.com | 
+                            <i class="fas fa-phone"></i> 0412-020-3300
+                        </p>
+                        <p class="mb-0">
+                            RetailMind 360° | Hecho en Venezuela. Pensado para el mundo.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- FOOTER -->
+    <!-- ============================================ -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container text-center">
+            <p class="mb-0 small">
+                &copy; 2025 RetailMind 360° | Transformamos tickets de venta en decisiones estratégicas.
+            </p>
+        </div>
+    </footer>
+
+    <!-- ============================================ -->
+    <!-- SCRIPTS -->
+    <!-- ============================================ -->
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Chart.js para gráfico de erosión -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <script>
+        $(document).ready(function() {
+            // Animación stagger para elementos
+            $('.stagger-item').each(function(index) {
+                $(this).css('animation-delay', (index * 0.1) + 's');
+                $(this).css('opacity', '1');
+            });
+            
+            // Gráfico de erosión de capital
+            const ctx = document.getElementById('graficoErosion').getContext('2d');
+            const erosionChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['0h', '12h', '24h', '36h', '48h', '60h', '72h'],
+                    datasets: [{
+                        label: 'Valor residual',
+                        data: [100, 96, 91, 85, 78, 70, 61],
+                        borderColor: '#F97316',
+                        backgroundColor: 'rgba(249, 115, 22, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 4,
+                        pointBackgroundColor: '#F97316'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Erosión de capital por diferencial cambiario + comisiones',
+                            font: {
+                                size: 12
+                            },
+                            color: '#64748b'
+                        },
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: 50,
+                            max: 105,
+                            title: {
+                                display: true,
+                                text: 'Valor residual (%)',
+                                font: {
+                                    size: 11
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(0,0,0,0.05)'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Horas',
+                                font: {
+                                    size: 11
+                                }
+                            },
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Smooth scroll para enlaces internos
+            $('a[href^="#"]').on('click', function(e) {
+                e.preventDefault();
+                const target = $(this.getAttribute('href'));
+                if(target.length) {
+                    $('html, body').stop().animate({
+                        scrollTop: target.offset().top - 80
+                    }, 800);
+                }
+            });
+            
+            // Botón flotante para CTA (opcional)
+            $('<button class="btn btn-success position-fixed bottom-0 end-0 m-3 rounded-circle shadow-lg" style="z-index: 1000;" id="btnFlotante"><i class="fas fa-arrow-up fa-lg"></i></button>')
+                .appendTo('body')
+                .on('click', function() {
+                    $('html, body').animate({
+                        scrollTop: $('#cta').offset().top - 80
+                    }, 800);
+                });
+            
+            // Mostrar/ocultar botón flotante según scroll
+            $(window).on('scroll', function() {
+                if($(this).scrollTop() > 300) {
+                    $('#btnFlotante').fadeIn();
+                } else {
+                    $('#btnFlotante').fadeOut();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

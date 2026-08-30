@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RETAILDING - Brochure Email</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Playfair+Display:ital@1&display=swap');
+        
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Inter', Arial, sans-serif;
+            background: #f5f5f5;
+        }
+        
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 40px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #0d1520 0%, #1a2332 100%);
+            padding: 50px 40px;
+            text-align: center;
+        }
+        
+        .logo {
+            font-size: 48px;
+            font-weight: 900;
+            background: linear-gradient(90deg, #ff6b35 0%, #f7931e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -1px;
+        }
+        
+        .subtitle {
+            color: #c5d3e0;
+            font-size: 14px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-top: 10px;
+        }
+        
+        .tagline {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 24px;
+            font-style: italic;
+            color: white;
+            margin-top: 20px;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        h2 {
+            color: #1a2332;
+            font-size: 28px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        p {
+            color: #555;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .highlight-box h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        .highlight-box p {
+            color: rgba(255,255,255,0.95);
+            font-size: 16px;
+        }
+        
+        .pillars-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .pillar-box {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 25px 20px;
+            text-align: center;
+        }
+        
+        .pillar-icon {
+            font-size: 36px;
+            margin-bottom: 15px;
+        }
+        
+        .pillar-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #ff6b35;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        
+        .pillar-text {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.5;
+        }
+        
+        .pricing-table {
+            margin: 30px 0;
+        }
+        
+        .pricing-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .pricing-card {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 25px 15px;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-3px);
+            border-color: #ff6b35;
+        }
+        
+        .pricing-card.featured {
+            background: #fff3ed;
+            border-color: #ff6b35;
+            position: relative;
+        }
+        
+        .badge {
+            background: #ff6b35;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        
+        .price {
+            font-size: 36px;
+            font-weight: 900;
+            color: #ff6b35;
+            margin: 15px 0;
+        }
+        
+        .price.free {
+            color: #00d4aa;
+        }
+        
+        .price-duration {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 15px;
+        }
+        
+        .features-list {
+            list-style: none;
+            padding: 0;
+            margin: 15px 0;
+            text-align: left;
+        }
+        
+        .features-list li {
+            padding: 8px 0;
+            font-size: 13px;
+            color: #666;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .features-list li::before {
+            content: '✓';
+            color: #00d4aa;
+            font-weight: 700;
+            margin-right: 8px;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+            color: white;
+            padding: 16px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 16px;
+            margin: 20px 0;
+            transition: transform 0.2s;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .benefits-list {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 30px 0;
+        }
+        
+        .benefit-item {
+            margin: 20px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+        
+        .benefit-item::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: #ff6b35;
+            font-weight: 700;
+            font-size: 20px;
+        }
+        
+        .benefit-title {
+            font-weight: 700;
+            color: #1a2332;
+            margin-bottom: 5px;
+        }
+        
+        .benefit-text {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .footer {
+            background: #1a2332;
+            color: #c5d3e0;
+            padding: 30px 40px;
+            text-align: center;
+            font-size: 13px;
+        }
+        
+        .footer-tagline {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-style: italic;
+            color: white;
+            margin-top: 15px;
+            font-size: 16px;
+        }
+        
+        @media (max-width: 600px) {
+            .pillars-grid,
+            .pricing-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .content {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">RETAILDING</div>
+			<h2 style="color:white;">Taller Ejecutivo</h2>
+            <div class="tagline">"Basa tus decisiones en datos."</div>
+            <div class="tagline">"Mejora tu rentabilidad."</div>
+        </div>
+        
+        <!-- Content -->
+        <div class="content">
+            <h2>¿Está Tu Supermercado Haciendo Retailding Sin Saberlo?</h2>
+            
+            <p>
+                <strong>Descubre cómo tomar decisiones basadas en datos</strong> y transformar la forma 
+                en que gestionas tu supermercado. Aprende a leer tus números como un trader lee el mercado.
+            </p>
+            
+            <!-- Highlight Box -->
+            <div class="highlight-box">
+                <h3>3 Horas Que Cambiarán Tu Gestión</h3>
+                <p>
+                    Aplica disciplinas probadas del trading financiero al retail venezolano. 
+                    Toma mejores decisiones desde el lunes siguiente.
+                </p>
+            </div>
+            
+            <!-- Three Pillars -->
+            <h2>Los 3 Pilares del Retailding</h2>
+            <div class="pillars-grid">
+                <div class="pillar-box">
+                    <div class="pillar-icon">🎯</div>
+                    <div class="pillar-title">Disciplina</div>
+                    <div class="pillar-text">Decisiones con reglas claras, no corazonadas</div>
+                </div>
+                <div class="pillar-box">
+                    <div class="pillar-icon">📊</div>
+                    <div class="pillar-title">Datos</div>
+                    <div class="pillar-text">Lee dashboards con confianza y actúa</div>
+                </div>
+                <div class="pillar-box">
+                    <div class="pillar-icon">🏢</div>
+                    <div class="pillar-title">Cultura</div>
+                    <div class="pillar-text">Crea hábitos de análisis diario</div>
+                </div>
+            </div>
+            
+            <!-- Benefits -->
+            <h2>Lo Que Aprenderás</h2>
+            <div class="benefits-list">
+                <div class="benefit-item">
+                    <div class="benefit-title">📈 Lectura de Gráficos de Velas Japonesas</div>
+                    <div class="benefit-text">Interpreta patrones de demanda y anticipa cambios</div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-title">💡 KPIs que Importan</div>
+                    <div class="benefit-text">Ticket Promedio, Margen, Rotación - en acción</div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-title">🎲 Gestión de Riesgo Retail</div>
+                    <div class="benefit-text">Stop Loss y Take Profit aplicados al retail</div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-title">🔍 Casos Prácticos Reales</div>
+                    <div class="benefit-text">3 casos del retail venezolano resueltos en grupo</div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-title">🛠️ Herramientas Aplicables</div>
+                    <div class="benefit-text">Templates, checklists y guías de referencia</div>
+                </div>
+            </div>
+            
+            <!-- Pricing -->
+            <h2>Elige Tu Camino</h2>
+            <div class="pricing-table">
+                <div class="pricing-row">
+                    <div class="pricing-card">
+                        <h3 style="font-size: 18px; margin-bottom: 10px;">Intro</h3>
+                        <div class="price free">GRATIS</div>
+                        <div class="price-duration">3 horas efectivas</div>
+                        <ul class="features-list">
+                            <li>Fundamentos</li>
+                            <li>Gráficos básicos</li>
+                            <li>2 casos prácticos</li>
+                            <li>Materiales digitales</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="pricing-card featured">
+                        <div class="badge">RECOMENDADO</div>
+                        <h3 style="font-size: 18px; margin-bottom: 10px;">Avanzado</h3>
+                        <div class="price">$120</div>
+                        <div class="price-duration">8 horas / 2 sesiones</div>
+                        <ul class="features-list">
+                            <li>Todo lo del Intro</li>
+                            <li>5 casos complejos</li>
+                            <li>Dashboard personal</li>
+                            <li>Certificado</li>
+                            <li>2 sesiones Q&A</li>
+                            <li>Comunidad privada</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="pricing-card">
+                        <h3 style="font-size: 18px; margin-bottom: 10px;">Membresía</h3>
+                        <div class="price">$40<span style="font-size: 16px;">/mes</span></div>
+                        <div class="price-duration">2 horas mensuales</div>
+                        <ul class="features-list">
+                            <li>Sesión mensual</li>
+                            <li>Casos nuevos</li>
+                            <li>Comunidad</li>
+                            <li>Dashboards actualizados</li>
+                            <li>Networking</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- CTA -->
+            <div style="text-align: center; margin: 40px 0;">
+                <h2>Transforma Datos en Decisiones</h2>
+                <p>Únete a gerentes y dueños que ya están tomando mejores decisiones.</p>
+                <a href="#" class="cta-button">Reserva Tu Cupo Ahora</a>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <div>RETAILDING - Decisiones basadas en datos para el retail moderno</div>
+            <div class="footer-tagline">"Gana quien mejor lee el mercado — en retail, como en trading"</div>
+        </div>
+    </div>
+</body>
+</html>

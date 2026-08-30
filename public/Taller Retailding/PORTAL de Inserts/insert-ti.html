@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RetailMind 360° | Solución para Gerentes de TI</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts: Inter + Oswald -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --azul-retailmind: #2563EB;
+            --verde-retailder: #10B981;
+            --naranja-accion: #F97316;
+            --gris-texto: #334155;
+            --gris-claro: #f8fafc;
+            --gris-medio: #64748b;
+            --gris-fondo: #e2e8f0;
+            --borde-azul: #2563EB;
+        }
+        
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
+        }
+        
+        body {
+            background-color: #ffffff;
+            color: var(--gris-texto);
+            overflow-x: hidden;
+        }
+        
+        .header-section {
+            background: linear-gradient(135deg, var(--azul-retailmind) 0%, #1e40af 100%);
+            padding: 60px 0 40px;
+            color: white;
+            position: relative;
+        }
+        
+        .header-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 8px;
+            height: 100%;
+            background-color: var(--borde-azul);
+        }
+        
+        .section-content {
+            background-color: #ffffff;
+            padding: 80px 0;
+            border-bottom: 1px solid var(--gris-fondo);
+        }
+        
+        .beneficio-item {
+            margin-bottom: 20px;
+            padding-left: 30px;
+            position: relative;
+        }
+        
+        .beneficio-item i {
+            position: absolute;
+            left: 0;
+            top: 5px;
+            font-size: 1.2rem;
+        }
+        
+        .arquitectura-item {
+            background-color: var(--gris-claro);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--azul-retailmind);
+        }
+        
+        .aliado-logo {
+            height: 50px;
+            margin: 0 20px;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+        
+        .aliado-logo:hover {
+            opacity: 1;
+        }
+        
+        .cta-section {
+            background: linear-gradient(135deg, var(--gris-claro) 0%, #ffffff 100%);
+            padding: 60px 0;
+            text-align: center;
+        }
+        
+        .btn-tecnico {
+            background-color: var(--azul-retailmind);
+            color: white;
+            border: 2px solid var(--azul-retailmind);
+            padding: 12px 35px;
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-tecnico:hover {
+            background-color: white;
+            color: var(--azul-retailmind);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .header-section {
+                padding: 40px 0 30px;
+            }
+            
+            .aliado-logo {
+                height: 40px;
+                margin: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================ -->
+    <!-- HEADER CON LOGO -->
+    <!-- ============================================ -->
+    <section class="header-section">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-12 text-center">
+                    <img src="https://demo.lat/logos/Logo RetailMind 360 - Azul - Globo y Cerebro y Carrito - TRANSPARENTE.png" height="100px" alt="RetailMind 360°">
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h1 class="display-4 fw-bold mb-3">
+                        Sin cambios en su POS/ERP.<br>
+                        Sin vendor lock-in. Sin sorpresas.
+                    </h1>
+                    <p class="lead opacity-90">
+                        RetailMind 360° es una capa de inteligencia sobre lo que YA tiene
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- CONTENIDO PRINCIPAL -->
+    <!-- ============================================ -->
+    <section class="section-content">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    
+                    <!-- Arquitectura Ligera -->
+                    <div class="mb-5">
+                        <h2 class="h3 fw-bold text-primary mb-4">
+                            <i class="fas fa-project-diagram me-2"></i>
+                            Arquitectura Ligera y No Disruptiva
+                        </h2>
+                        
+                        <div class="arquitectura-item">
+                            <h5 class="fw-bold mb-2">
+                                <i class="fas fa-database text-primary me-2"></i>
+                                Extracción vía CSV/API ligera
+                            </h5>
+                            <p class="mb-0">
+                                Sin middleware complejo ni cambios en su POS/ERP actual. Extraemos los datos que YA genera su sistema.
+                            </p>
+                        </div>
+                        
+                        <div class="arquitectura-item">
+                            <h5 class="fw-bold mb-2">
+                                <i class="fas fa-code text-primary me-2"></i>
+                                ETL automatizado en Python
+                            </h5>
+                            <p class="mb-0">
+                                Documentado línea por línea, con validación de calidad y limpieza automática incluida.
+                            </p>
+                        </div>
+                        
+                        <div class="arquitectura-item">
+                            <h5 class="fw-bold mb-2">
+                                <i class="fas fa-cubes text-primary me-2"></i>
+                                6 Datamarts con dimensiones conformes
+                            </h5>
+                            <p class="mb-0">
+                                Estándar Kimball para garantizar consistencia y evitar silos de información.
+                            </p>
+                        </div>
+                        
+                        <div class="arquitectura-item">
+                            <h5 class="fw-bold mb-2">
+                                <i class="fas fa-plug text-primary me-2"></i>
+                                Conexión SaaS flexible
+                            </h5>
+                            <p class="mb-0">
+                                Usted elige la plataforma: Power BI, IBM Cognos, Tableau. Sin vendor lock-in.
+                            </p>
+                        </div>
+                        
+                        <div class="arquitectura-item">
+                            <h5 class="fw-bold mb-2">
+                                <i class="fas fa-cog text-primary me-2"></i>
+                                Mantenimiento incluido
+                            </h5>
+                            <p class="mb-0">
+                                Validación diaria, actualización automática y soporte técnico en español.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Alianzas Técnicas -->
+                    <div class="mb-5">
+                        <h2 class="h3 fw-bold text-primary mb-4">
+                            <i class="fas fa-handshake me-2"></i>
+                            Alianzas Técnicas Validadas
+                        </h2>
+                        
+                        <div class="d-flex flex-wrap justify-content-center align-items-center py-4">
+                            <div class="aliado-logo">
+                                <i class="fab fa-microsoft fa-3x"></i>
+                                <div class="small mt-1">Power BI</div>
+                            </div>
+                            <div class="aliado-logo">
+                                <i class="fas fa-brain fa-3x"></i>
+                                <div class="small mt-1">IBM Cognos<br>with Watson</div>
+                            </div>
+                            <div class="aliado-logo">
+                                <i class="fas fa-chart-bar fa-3x"></i>
+                                <div class="small mt-1">Tableau</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Beneficios para TI -->
+                    <div class="mb-5">
+                        <h2 class="h3 fw-bold text-primary mb-4">
+                            <i class="fas fa-shield-alt me-2"></i>
+                            Beneficios Clave para su Infraestructura
+                        </h2>
+                        
+                        <div class="beneficio-item">
+                            <i class="fas fa-lock text-primary"></i>
+                            <strong>Estabilidad garantizada:</strong> No tocamos su stack actual. Zero downtime durante implementación.
+                        </div>
+                        
+                        <div class="beneficio-item">
+                            <i class="fas fa-sync-alt text-primary"></i>
+                            <strong>Sincronización automática:</strong> Carga diaria en menos de 15 minutos. Sin intervención manual.
+                        </div>
+                        
+                        <div class="beneficio-item">
+                            <i class="fas fa-chart-line text-primary"></i>
+                            <strong>Escalabilidad cloud:</strong> Arquitectura ligera compatible con conexiones limitadas en Venezuela.
+                        </div>
+                        
+                        <div class="beneficio-item">
+                            <i class="fas fa-user-shield text-primary"></i>
+                            <strong>Gobernanza de datos:</strong> Calidad enterprise con validación cruzada y control de versiones.
+                        </div>
+                        
+                        <div class="beneficio-item">
+                            <i class="fas fa-headset text-primary"></i>
+                            <strong>Soporte técnico especializado:</strong> Equipo de desarrollo disponible para resolver dudas técnicas complejas.
+                        </div>
+                    </div>
+                    
+                    <!-- Validación Técnica -->
+                    <div class="p-4 bg-light rounded-3 border">
+                        <h4 class="fw-bold mb-3 text-center">
+                            <i class="fas fa-vial text-primary me-2"></i>
+                            ¿Requiere validación técnica previa?
+                        </h4>
+                        <p class="text-center mb-0">
+                            Agende una sesión técnica con nuestro CTO para revisar arquitectura, ETL y Data Modules en detalle.
+                        </p>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- CTA FINAL -->
+    <!-- ============================================ -->
+    <section class="cta-section">
+        <div class="container">
+            <h2 class="display-5 fw-bold mb-4">¿Listo para una demo técnica con sus datos?</h2>
+            <p class="lead mb-4">Procesamos una muestra de sus tickets (10K registros) y le mostramos la arquitectura funcionando en vivo.</p>
+            <a href="https://calendly.com/retailmind360/sesion-tecnica" class="btn btn-tecnico btn-lg">
+                <i class="fas fa-calendar-check me-2"></i>Agendar Sesión Técnica
+            </a>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- FOOTER -->
+    <!-- ============================================ -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container text-center">
+            <p class="mb-0 small">
+                &copy; 2025 RetailMind 360° | Hecho en Venezuela. Pensado para el mundo.
+            </p>
+            <p class="mb-0 small">
+                <i class="fas fa-envelope"></i> alri.ga.r00@gmail.com | 
+                <i class="fas fa-phone"></i> 0412-020-3300
+            </p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+<!-- Botón flotante con animación hover -->
+<style>
+    .btn-retorno {
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+		background-color: white;
+    }
+    .btn-retorno:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 15px rgba(37, 99, 235, 0.3);
+        background-color: #2563EB;
+        color: white !important;
+    }
+</style>
+
+    <!-- Botón flotante de retorno al índice -->
+    <div style="position: fixed; bottom: 30px; left: 30px; z-index: 9999;">
+        <a href="portal-de-inserts.html" class="btn btn-retorno" style="border: 2px solid #2563EB; padding: 10px 20px; border-radius: 8px; text-decoration: none; color: #2563EB; font-weight: 600;">
+        <i class="fas fa-arrow-left me-1"></i> Volver al Índice&nbsp;&nbsp;<i class="fas fa-home me-2"></i>
+        </a>
+    </div>
+    
+</body>
+</html>

@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RetailMind 360° | Soluciones Especializadas por Rol</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts: Inter + Oswald -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --azul-retailmind: #2563EB;
+            --verde-retailder: #10B981;
+            --naranja-accion: #F97316;
+            --gris-texto: #334155;
+            --gris-claro: #f8fafc;
+            --gris-medio: #64748b;
+            --gris-fondo: #e2e8f0;
+            --borde-azul: #2563EB;
+            --borde-verde: #10B981;
+            --borde-morado: #6f42c1;
+            --borde-azul-medio: #007bff;
+        }
+        
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
+        }
+        
+        body {
+            background-color: #ffffff;
+            color: var(--gris-texto);
+            overflow-x: hidden;
+        }
+        
+        .header-section {
+            background: linear-gradient(135deg, var(--azul-retailmind) 0%, #1e40af 100%);
+            padding: 80px 0 60px;
+            color: white;
+            position: relative;
+        }
+        
+        .header-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(90deg, var(--borde-azul) 0%, var(--borde-verde) 33%, var(--borde-morado) 66%, var(--borde-azul-medio) 100%);
+        }
+        
+        .intro-section {
+            background-color: var(--gris-claro);
+            padding: 60px 0;
+            border-bottom: 1px solid var(--gris-fondo);
+        }
+        
+        .insert-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            margin-bottom: 30px;
+            border: 2px solid transparent;
+        }
+        
+        .insert-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+        
+        .insert-card-header {
+            padding: 25px;
+            color: white;
+            text-align: center;
+        }
+        
+        .insert-card-body {
+            padding: 30px;
+        }
+        
+        .insert-card-footer {
+            padding: 20px 30px;
+            background-color: var(--gris-claro);
+            text-align: center;
+        }
+        
+        .card-ti .insert-card-header {
+            background: linear-gradient(135deg, var(--borde-azul) 0%, #1e40af 100%);
+        }
+        
+        .card-compras .insert-card-header {
+            background: linear-gradient(135deg, var(--borde-verde) 0%, #0da271 100%);
+        }
+        
+        .card-marketing .insert-card-header {
+            background: linear-gradient(135deg, var(--borde-morado) 0%, #5a34a0 100%);
+        }
+        
+        .card-operaciones .insert-card-header {
+            background: linear-gradient(135deg, var(--borde-azul-medio) 0%, #0069d9 100%);
+        }
+        
+        .btn-insert {
+            font-family: 'Oswald', sans-serif;
+            font-weight: 600;
+            padding: 12px 30px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            width: 100%;
+        }
+        
+        .btn-ti {
+            background-color: var(--borde-azul);
+            color: white;
+            border: 2px solid var(--borde-azul);
+        }
+        
+        .btn-ti:hover {
+            background-color: white;
+            color: var(--borde-azul);
+        }
+        
+        .btn-compras {
+            background-color: var(--borde-verde);
+            color: white;
+            border: 2px solid var(--borde-verde);
+        }
+        
+        .btn-compras:hover {
+            background-color: white;
+            color: var(--borde-verde);
+        }
+        
+        .btn-marketing {
+            background-color: var(--borde-morado);
+            color: white;
+            border: 2px solid var(--borde-morado);
+        }
+        
+        .btn-marketing:hover {
+            background-color: white;
+            color: var(--borde-morado);
+        }
+        
+        .btn-operaciones {
+            background-color: var(--borde-azul-medio);
+            color: white;
+            border: 2px solid var(--borde-azul-medio);
+        }
+        
+        .btn-operaciones:hover {
+            background-color: white;
+            color: var(--borde-azul-medio);
+        }
+        
+        .beneficios-section {
+            padding: 80px 0;
+            background-color: white;
+            border-bottom: 1px solid var(--gris-fondo);
+        }
+        
+        .beneficio-item {
+            background-color: var(--gris-claro);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--azul-retailmind);
+        }
+        
+        .cta-section {
+            background: linear-gradient(135deg, var(--azul-retailmind) 0%, #1e40af 100%);
+            padding: 80px 0;
+            color: white;
+            text-align: center;
+        }
+        
+        .btn-principal {
+            background-color: var(--verde-retailder);
+            color: white;
+            border: 2px solid var(--verde-retailder);
+            padding: 15px 50px;
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-principal:hover {
+            background-color: white;
+            color: var(--verde-retailder);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(16, 185, 129, 0.4);
+        }
+        
+        .footer-section {
+            background-color: #1e293b;
+            color: white;
+            padding: 40px 0 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-section {
+                padding: 60px 0 40px;
+            }
+            
+            .insert-card {
+                margin-bottom: 20px;
+            }
+            
+            .btn-principal {
+                width: 100%;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================ -->
+    <!-- HEADER CON LOGO -->
+    <!-- ============================================ -->
+    <section class="header-section">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-12 text-center">
+                    <img src="https://demo.lat/logos/Logo RetailMind 360 - 01 - SIN FONDO.png" height="120px" alt="RetailMind 360°">
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h1 class="display-3 fw-bold mb-3">
+                        RetailMind 360°<br>
+                        <small class="fs-4">Soluciones Especializadas por Rol</small>
+                    </h1>
+                    <p class="lead opacity-90">
+                        Descubra la solución diseñada específicamente para su área de responsabilidad
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- INTRODUCCIÓN -->
+    <!-- ============================================ -->
+    <section class="intro-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h2 class="h3 fw-bold text-primary mb-4">
+                        <i class="fas fa-users-cog me-2"></i>
+                        Soluciones Personalizadas para Cada Rol
+                    </h2>
+                    <p class="lead">
+                        En el Retailding venezolano, cada rol enfrenta desafíos únicos. Por eso hemos desarrollado soluciones especializadas que abordan las necesidades específicas de cada área de su negocio.
+                    </p>
+                    <p class="mb-0">
+                        Seleccione su rol para ver la solución diseñada especialmente para usted:
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- CUADRÍCULA DE INSERTS -->
+    <!-- ============================================ -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row g-4">
+                
+                <!-- Insert TI -->
+                <div class="col-lg-6">
+                    <div class="insert-card card-ti">
+                        <div class="insert-card-header">
+                            <i class="fas fa-laptop-code fa-3x mb-3"></i>
+                            <h3 class="h4 mb-0">Solución para Gerentes de TI</h3>
+                        </div>
+                        <div class="insert-card-body">
+                            <h5 class="fw-bold mb-3">Arquitectura Ligera y No Disruptiva</h5>
+                            <p class="mb-3">
+                                Sin cambios en su POS/ERP. Sin vendor lock-in. Sin sorpresas.
+                            </p>
+                            <ul class="list-unstyled small">
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Extracción vía CSV/API ligera</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> ETL automatizado en Python</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> 6 Datamarts con dimensiones conformes</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Conexión SaaS flexible (Power BI, Cognos, Tableau)</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Mantenimiento incluido</li>
+                            </ul>
+                        </div>
+                        <div class="insert-card-footer">
+                            <a href="insert-ti.html" class="btn-insert btn-ti">
+                                <i class="fas fa-arrow-right me-2"></i>Ver Solución para TI
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Insert Compras -->
+                <div class="col-lg-6">
+                    <div class="insert-card card-compras">
+                        <div class="insert-card-header">
+                            <i class="fas fa-box-open fa-3x mb-3"></i>
+                            <h3 class="h4 mb-0">Solución para Jefes de Compras</h3>
+                        </div>
+                        <div class="insert-card-body">
+                            <h5 class="fw-bold mb-3">Alertas 72h Antes de Merma</h5>
+                            <p class="mb-3">
+                                En el Retailding venezolano, cada día que un producto no rota es capital que se evapora.
+                            </p>
+                            <ul class="list-unstyled small">
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Score de obsolescencia proactivo</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Zona Amarilla: >45 días sin rotar</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Zona Roja: >60 días sin rotar</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Segmentación RFM de productos</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Merma reducida hasta 30%</li>
+                            </ul>
+                        </div>
+                        <div class="insert-card-footer">
+                            <a href="insert-compras.html" class="btn-insert btn-compras">
+                                <i class="fas fa-arrow-right me-2"></i>Ver Solución para Compras
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Insert Marketing -->
+                <div class="col-lg-6">
+                    <div class="insert-card card-marketing">
+                        <div class="insert-card-header">
+                            <i class="fas fa-bullhorn fa-3x mb-3"></i>
+                            <h3 class="h4 mb-0">Solución para Gerentes de Marketing</h3>
+                        </div>
+                        <div class="insert-card-body">
+                            <h5 class="fw-bold mb-3">Segmentación Hiperlocal con RFM Híbrido</h5>
+                            <p class="mb-3">
+                                RFM tradicional le dice "Cliente X es Champion". Nosotros le decimos CUÁNDO y DÓNDE compra.
+                            </p>
+                            <ul class="list-unstyled small">
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Champions mañaneros residenciales</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Leales laborales</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Recientes finsemaneros</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Alto valor nocturnos</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Campañas 40% más efectivas</li>
+                            </ul>
+                        </div>
+                        <div class="insert-card-footer">
+                            <a href="insert-marketing.html" class="btn-insert btn-marketing">
+                                <i class="fas fa-arrow-right me-2"></i>Ver Solución para Marketing
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Insert Operaciones -->
+                <div class="col-lg-6">
+                    <div class="insert-card card-operaciones">
+                        <div class="insert-card-header">
+                            <i class="fas fa-store fa-3x mb-3"></i>
+                            <h3 class="h4 mb-0">Solución para Gerentes Generales</h3>
+                        </div>
+                        <div class="insert-card-body">
+                            <h5 class="fw-bold mb-3">Radar de Desempeño Unificado</h5>
+                            <p class="mb-3">
+                                Sus 12 sucursales no son 12 negocios distintos. Son 5 perfiles de demanda.
+                            </p>
+                            <ul class="list-unstyled small">
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Residencial Mañanera</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Laboral Oficinas</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Nocturna Entretenimiento</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Familiar Finsemana</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Básica Todo el Día</li>
+                            </ul>
+                        </div>
+                        <div class="insert-card-footer">
+                            <a href="insert-operaciones.html" class="btn-insert btn-operaciones">
+                                <i class="fas fa-arrow-right me-2"></i>Ver Solución para Operaciones
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- BENEFICIOS GENERALES -->
+    <!-- ============================================ -->
+    <section class="beneficios-section">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-12 text-center">
+                    <h2 class="h3 fw-bold text-primary mb-3">
+                        <i class="fas fa-chart-line me-2"></i>
+                        Beneficios Comunes a Todas las Soluciones
+                    </h2>
+                    <p class="lead">
+                        Independientemente de su rol, todas nuestras soluciones comparten estos beneficios fundamentales:
+                    </p>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="beneficio-item">
+                        <h5 class="fw-bold mb-3">
+                            <i class="fas fa-database text-primary me-2"></i>
+                            Arquitectura de Datos Sólida
+                        </h5>
+                        <p class="mb-0">
+                            6 Datamarts especializados con gobernanza de datos y calidad enterprise. Sin silos de información.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="beneficio-item">
+                        <h5 class="fw-bold mb-3">
+                            <i class="fas fa-plug text-primary me-2"></i>
+                            Sin Vendor Lock-In
+                        </h5>
+                        <p class="mb-0">
+                            Conexión flexible con Power BI, IBM Cognos o Tableau. Usted elige la plataforma.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="beneficio-item">
+                        <h5 class="fw-bold mb-3">
+                            <i class="fas fa-sync-alt text-primary me-2"></i>
+                            Actualización Diaria
+                        </h5>
+                        <p class="mb-0">
+                            Carga y procesamiento automático en menos de 15 minutos. Datos frescos todos los días.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="beneficio-item">
+                        <h5 class="fw-bold mb-3">
+                            <i class="fas fa-chart-bar text-primary me-2"></i>
+                            Dashboards Accionables
+                        </h5>
+                        <p class="mb-0">
+                            Visualizaciones diseñadas para cada rol. No solo datos, decisiones accionables.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="beneficio-item">
+                        <h5 class="fw-bold mb-3">
+                            <i class="fas fa-graduation-cap text-primary me-2"></i>
+                            Capacitación en Retailding
+                        </h5>
+                        <p class="mb-0">
+                            Aprendizaje práctico sobre cómo interpretar datos y actuar con disciplina de trader.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="beneficio-item">
+                        <h5 class="fw-bold mb-3">
+                            <i class="fas fa-dollar-sign text-primary me-2"></i>
+                            ROI < 6 Meses
+                        </h5>
+                        <p class="mb-0">
+                            Resultados comprobados: +15-20% en ticket promedio, merma reducida 30%, campañas 40% más efectivas.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- CTA PRINCIPAL -->
+    <!-- ============================================ -->
+    <section class="cta-section">
+        <div class="container">
+            <h2 class="display-4 fw-bold mb-4">
+                ¿Listo para Operar como un Retailder?
+            </h2>
+            <p class="lead mb-5">
+                En el Retailding, quien decide primero… gana. Y tú decides con datos, no con corazonadas.
+            </p>
+            
+            <div class="row g-4 mb-5">
+                <div class="col-lg-4">
+                    <div class="bg-white text-dark p-4 rounded-3 shadow">
+                        <h5 class="fw-bold mb-3">
+                            <i class="fas fa-microscope text-primary me-2"></i>
+                            Diagnóstico Estratégico Inicial
+                        </h5>
+                        <p class="mb-2"><strong>Hasta 3 sucursales:</strong> USD $480</p>
+                        <p class="mb-2"><strong>Hasta 10 sucursales:</strong> USD $680</p>
+                        <p class="mb-0"><strong>Más de 10 sucursales:</strong> USD $980</p>
+                        <small class="text-muted">*Monto descontado del primer mes si contrata el servicio completo</small>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="bg-white text-dark p-4 rounded-3 shadow">
+                        <h5 class="fw-bold mb-3">
+                            <i class="fas fa-clock text-primary me-2"></i>
+                            Implementación Rápida
+                        </h5>
+                        <p class="mb-0">
+                            3-4 semanas desde conexión hasta dashboards funcionales. Primeros insights en menos de 14 días.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="bg-white text-dark p-4 rounded-3 shadow">
+                        <h5 class="fw-bold mb-3">
+                            <i class="fas fa-shield-alt text-primary me-2"></i>
+                            Sin Cambios Disruptivos
+                        </h5>
+                        <p class="mb-0">
+                            No tocamos su POS/ERP. Extraemos datos existentes. Zero downtime durante implementación.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <a href="https://calendly.com/retailmind360/diagnostico" class="btn-principal">
+                <i class="fas fa-calendar-check me-2"></i>Agendar Diagnóstico Estratégico Inicial
+            </a>
+            
+            <p class="mt-4 opacity-75">
+                <i class="fas fa-info-circle me-2"></i>
+                Procesamos sus tickets y le mostramos cómo se verían sus datos con la potencia de los gigantes
+            </p>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- FOOTER -->
+    <!-- ============================================ -->
+    <footer class="footer-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <h5 class="fw-bold mb-3">RetailMind 360°</h5>
+                    <p class="small opacity-75">
+                        Transformamos tickets de venta en decisiones estratégicas.<br>
+                        Hecho en Venezuela. Pensado para el mundo.
+                    </p>
+                </div>
+                
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <h5 class="fw-bold mb-3">Contacto</h5>
+                    <ul class="list-unstyled small opacity-75">
+                        <li class="mb-2"><i class="fas fa-envelope me-2"></i> alri.ga.r00@gmail.com</li>
+                        <li class="mb-2"><i class="fas fa-phone me-2"></i> 0412-020-3300</li>
+                        <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i> Caracas, Venezuela</li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-4">
+                    <h5 class="fw-bold mb-3">Enlaces Rápidos</h5>
+                    <ul class="list-unstyled small opacity-75">
+                        <li class="mb-2"><a href="insert-ti.html" class="text-white text-decoration-none"><i class="fas fa-laptop-code me-2"></i> Solución para TI</a></li>
+                        <li class="mb-2"><a href="insert-compras.html" class="text-white text-decoration-none"><i class="fas fa-box-open me-2"></i> Solución para Compras</a></li>
+                        <li class="mb-2"><a href="insert-marketing.html" class="text-white text-decoration-none"><i class="fas fa-bullhorn me-2"></i> Solución para Marketing</a></li>
+                        <li class="mb-2"><a href="insert-operaciones.html" class="text-white text-decoration-none"><i class="fas fa-store me-2"></i> Solución para Operaciones</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <hr class="my-4 opacity-25">
+            
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="small mb-0 opacity-50">
+                        &copy; 2025 RetailMind 360° | Todos los derechos reservados
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+</body>
+</html>

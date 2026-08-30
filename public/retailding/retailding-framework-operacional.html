@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Framework Operacional de Candlestickización y Microestructura Retail</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter para la UI y Merriweather para el estilo clásico de documento -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Merriweather', 'serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Estilos personalizados para emular un procesador de texto (Microsoft Word) */
+        .page-sheet {
+            background-color: white;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
+            transition: all 0.3s ease;
+        }
+        
+        /* Ocultar barra de desplazamiento */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Estilos de impresión realistas */
+        @media print {
+            body {
+                background-color: white !important;
+                color: black !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .page-sheet {
+                box-shadow: none !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+            .page-break {
+                page-break-before: always;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col antialiased">
+
+    <!-- Top Header Bar -->
+<header class="no-print bg-slate-900 text-white px-6 py-4 flex items-center justify-between border-b border-slate-800 sticky top-0 z-50 shadow-md">
+		<div id="logo" class="flex items-center">
+			<img src="https://gestor-de-archivos.vercel.app/logos/logo-retailmind-SVG-000.svg" style="height:48px;">
+		</div>
+
+        <div class="flex items-center gap-3">
+            <div class="bg-blue-600 p-2 rounded-lg text-white">
+                <i class="fa-solid fa-file-invoice text-xl"></i>
+            </div>
+            <div>
+                <h1 class="text-sm font-bold tracking-wide uppercase text-blue-400">Retailding</h1>
+                <p class="text-xs text-slate-400 font-medium">Framework Operacional y Microestructura Conductual</p>
+            </div>
+        </div>
+        
+        <div class="flex items-center gap-4">
+            <!-- Selector de Tipo de Letra -->
+            <div class="flex bg-slate-800 rounded-lg p-1 text-xs font-semibold">
+                <button id="btnSans" onclick="setFontFamily('sans')" class="px-3 py-1.5 rounded-md bg-blue-600 text-white transition-all">SANS-SERIF (Inter)</button>
+                <button id="btnSerif" onclick="setFontFamily('serif')" class="px-3 py-1.5 rounded-md text-slate-400 hover:text-white transition-all">SERIF (Editorial)</button>
+            </div>
+
+            <!-- Botones de Acción -->
+            <button onclick="copyCleanHTML()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-4 py-2 rounded-lg transition-all flex items-center gap-2 shadow-sm">
+                <i class="fa-solid fa-copy"></i> Copiar para Word
+            </button>
+            
+            <button onclick="window.print()" class="bg-slate-700 hover:bg-slate-600 text-white text-xs font-bold px-4 py-2 rounded-lg transition-all flex items-center gap-2">
+                <i class="fa-solid fa-print"></i> PDF / Imprimir
+            </button>
+        </div>
+    </header>
+    <!-- Main Workspace -->
+    <div class="flex-1 flex max-w-[1600px] w-full mx-auto relative">
+
+        <!-- Left Sidebar Navigation -->
+        <aside class="no-print w-80 bg-slate-50 border-r border-slate-200 p-6 sticky top-[73px] h-[calc(100vh-73px)] overflow-y-auto hidden lg:block text-slate-600 no-scrollbar">
+            <div class="mb-6">
+                <div class="relative">
+                    <input type="text" id="docSearch" onkeyup="searchDocument()" placeholder="Buscar en el documento..." class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 pl-8">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-400 text-xs"></i>
+                </div>
+            </div>
+
+            <nav class="space-y-6">
+                <div>
+                    <span class="text-[10px] font-bold tracking-widest uppercase text-slate-400">DOCUMENTO DE DISEÑO</span>
+                    <ul class="mt-2 space-y-2 text-xs font-medium">
+                        <li><a href="#sec-intro" class="flex items-center gap-2 py-1 hover:text-blue-600 transition-all text-blue-600 font-bold sidebar-link"><i class="fa-solid fa-book-open"></i> 1. Introducción y Filosofía</a></li>
+                        <li><a href="#sec-concept" class="flex items-center gap-2 py-1 hover:text-blue-600 transition-all sidebar-link"><i class="fa-solid fa-lightbulb"></i> 2. Definición del Retailding</a></li>
+                        <li><a href="#sec-segment" class="flex items-center gap-2 py-1 hover:text-blue-600 transition-all sidebar-link"><i class="fa-solid fa-users-gear"></i> 3. Segmentación Estratégica</a></li>
+                        <li><a href="#sec-micro" class="flex items-center gap-2 py-1 hover:text-blue-600 transition-all sidebar-link"><i class="fa-solid fa-arrows-spin"></i> 4. Microestructura &amp; Order Flow</a></li>
+                        <li><a href="#sec-levels" class="flex items-center gap-2 py-1 hover:text-blue-600 transition-all sidebar-link"><i class="fa-solid fa-layer-group"></i> 5. Los Tres Niveles de Rastro</a></li>
+                        <li><a href="#sec-footprint" class="flex items-center gap-2 py-1 hover:text-blue-600 transition-all sidebar-link"><i class="fa-solid fa-shoe-prints"></i> 6. Retail Footprint Framework</a></li>
+                        <li><a href="#sec-imbalance" class="flex items-center gap-2 py-1 hover:text-blue-600 transition-all sidebar-link"><i class="fa-solid fa-scale-unbalanced"></i> 7. Desequilibrio Retail</a></li>
+                        <li><a href="#sec-states" class="flex items-center gap-2 py-1 hover:text-blue-600 transition-all sidebar-link"><i class="fa-solid fa-heart-pulse"></i> 8. Estados Operacionales</a></li>
+                        <li><a href="#sec-indices" class="flex items-center gap-2 py-1 hover:text-blue-600 transition-all sidebar-link"><i class="fa-solid fa-chart-line"></i> 9. Índices Propietarios</a></li>
+                        <li><a href="#sec-candlestick" class="flex items-center gap-2 py-1 hover:text-blue-600 transition-all sidebar-link"><i class="fa-solid fa-chart-bar"></i> 10. Candlestickización</a></li>
+                        <li><a href="#sec-equivalencias" class="flex items-center gap-2 py-1 hover:text-blue-600 transition-all sidebar-link"><i class="fa-solid fa-right-left"></i> 11. Tabla de Equivalencias</a></li>
+                        <li><a href="#sec-arch" class="flex items-center gap-2 py-1 hover:text-blue-600 transition-all sidebar-link"><i class="fa-solid fa-database"></i> 12. Arquitectura Técnica</a></li>
+                        <li><a href="#sec-risks" class="flex items-center gap-2 py-1 hover:text-blue-600 transition-all sidebar-link"><i class="fa-solid fa-triangle-exclamation"></i> 13. Reglas &amp; Riesgos</a></li>
+                        <li><a href="#sec-deployment" class="flex items-center gap-2 py-1 hover:text-blue-600 transition-all sidebar-link"><i class="fa-solid fa-route"></i> 14. Casos &amp; Ruta de Despliegue</a></li>
+                    </ul>
+                </div>
+
+                <div class="border-t border-slate-200 pt-4">
+                    <span class="text-[10px] font-bold tracking-widest uppercase text-slate-400">FICHA DE CONTROL</span>
+                    <div class="mt-2 text-[11px] space-y-1 text-slate-500 font-mono">
+                        <p><span class="font-bold">Autor:</span> Al Rigar</p>
+                        <p><span class="font-bold">Clasificación:</span> Confidencial / Dirección</p>
+                        <p><span class="font-bold">Versión:</span> 2.5 (Consolidada)</p>
+                        <p><span class="font-bold">Framework:</span> RetailMind 360°</p>
+                    </div>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Center Document Viewport -->
+        <main class="flex-1 overflow-y-auto h-[calc(100vh-73px)] p-4 md:p-8 flex justify-center no-scrollbar">
+            
+            <div id="document-content" class="page-sheet max-w-[900px] w-full p-8 md:p-16 border border-slate-300 min-h-[1200px] text-justify leading-relaxed font-sans select-text">
+                
+                <!-- Front Page / Executive Header -->
+                <div class="border-b-4 border-slate-900 pb-8 mb-12 text-left">
+                    <div class="flex justify-between items-start mb-6">
+                        <span class="text-xs font-mono font-bold uppercase tracking-widest text-blue-600 bg-blue-50 px-3 py-1 rounded-full">METODOLOGÍA DE VANGUARDIA</span>
+                        <span class="text-xs font-mono text-slate-400">REF: RM-FW-2026-V2</span>
+                    </div>
+                    <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900 leading-none">
+                        Framework Operacional para la Candlestickización y Microestructura Conductual del Retail
+                    </h1>
+                    <p class="text-lg text-slate-500 mt-4 italic">
+                        Unificación formal de microestructura de transacciones y segmentación de perfiles transaccionales bajo el paradigma del Retailding.
+                    </p>
+                    <div class="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-xs font-mono text-slate-500">
+                        <div><strong>AUTOR:</strong> Al Rigar</div>
+                        <div><strong>ORGANIZACIÓN:</strong> Latino BI / RetailMind C.A.</div>
+                        <div><strong>FECHA:</strong> Mayo, 2026</div>
+                    </div>
+                </div>
+
+                <!-- SECTION 1 -->
+                <section id="sec-intro" class="mb-12 scroll-mt-24">
+                    <div class="flex items-center gap-2 mb-4 text-slate-900">
+                        <span class="text-lg font-bold">1.</span>
+                        <h2 class="text-xl font-bold uppercase tracking-tight">Introducción y Filosofía Analítica</h2>
+                    </div>
+                    <p class="mb-4">
+                        RetailMind 360° define el concepto de <strong>"Candlestickización"</strong> como el proceso de representación temporal, secuencial y conductual de variables operacionales retail mediante estructuras analíticas inspiradas en modelos OHLC (Open, High, Low, Close) y principios de microestructura de mercado.
+                    </p>
+                    <p class="mb-4">
+                        La finalidad de esta metodología no es replicar visualmente los mercados financieros ni construir metáforas estéticas superficiales. Al contrario, este framework operacional está diseñado para identificar dinámicas universales de comportamiento humano bajo incertidumbre y estrés económico, permitiendo interpretar la intención de compra, detectar fricción operacional, medir volatilidad conductual, identificar desequilibrios de consumo y modelar la presión comercial del mercado retail latinoamericano. La Candlestickización constituye uno de los pilares metodológicos centrales del paradigma <strong>Retailding</strong>.
+                    </p>
+                </section>
+
+                <!-- SECTION 2 -->
+                <section id="sec-concept" class="mb-12 scroll-mt-24">
+                    <div class="flex items-center gap-2 mb-4 text-slate-900">
+                        <span class="text-lg font-bold">2.</span>
+                        <h2 class="text-xl font-bold uppercase tracking-tight">Definición del Fenómeno y el Término "Retailding"</h2>
+                    </div>
+                    <p class="mb-4">
+                        El <strong>Retailding</strong> (neologismo derivado de la unión de <em>Retail</em> y <em>Trading</em>) es el fenómeno socioeconómico donde el consumidor final o pequeño comerciante adopta el comportamiento y la mentalidad de un <strong>Trader</strong> financiero para gestionar su economía diaria. 
+                    </p>
+                    <p class="mb-4">
+                        Ante la volatilidad, la inflación y la complejidad del entorno regulatorio y bancario, el sujeto deja de ser un comprador pasivo y se convierte en un estratega que busca optimizar el "yield" o rendimiento de sus ingresos disponibles. 
+                    </p>
+                    
+                    <div class="bg-blue-50 border-l-4 border-blue-600 p-4 rounded-r-lg my-6 text-slate-700">
+                        <h4 class="font-bold text-xs uppercase tracking-wider text-blue-800 mb-1">Definiciones Clave:</h4>
+                        <ul class="list-disc pl-5 space-y-1 text-sm">
+                            <li><strong>El Término:</strong> Neologismo que describe la aplicación de herramientas de análisis técnico y criterios de mercados financieros al consumo y micro-comercio.</li>
+                            <li><strong>La Metodología:</strong> Conjunto de mejores prácticas y herramientas de trading (análisis de tendencias, velas japonesas, soportes y resistencias) adaptadas para visibilizar y rentabilizar el comportamiento del consumidor en el ecosistema bancario y comercial.</li>
+                            <li><strong>El Retailder:</strong> El actor conductual (cliente o buhonero) que ejecuta un micro-P&amp;L mental antes de cada transacción, evaluando costos de fricción y spreads de cambio.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- SECTION 3 -->
+                <section id="sec-segment" class="mb-12 scroll-mt-24">
+                    <div class="flex items-center gap-2 mb-4 text-slate-900">
+                        <span class="text-lg font-bold">3.</span>
+                        <h2 class="text-xl font-bold uppercase tracking-tight">Segmentación por Estrategia de Retailding</h2>
+                    </div>
+                    <p class="mb-4">
+                        A diferencia de la segmentación tradicional de mercadeo (geográfica, edad, demográfica), el framework de RetailMind clasifica al cliente por la forma en que opera sus fondos y activos (inventario/capital). A continuación se define la taxonomía fundamental:
+                    </p>
+
+                    <!-- Table Segmentacion -->
+                    <div class="overflow-x-auto my-6">
+                        <table class="w-full text-xs text-left border-collapse border border-slate-200">
+                            <thead>
+                                <tr class="bg-slate-900 text-white font-semibold">
+                                    <th class="p-3 border border-slate-200 w-1/4">Perfil de Estrategia</th>
+                                    <th class="p-3 border border-slate-200 w-1/2">Definición y Comportamiento</th>
+                                    <th class="p-3 border border-slate-200 w-1/4">Objetivo del Operador / Banco</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200 text-slate-700">
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 border border-slate-200 font-bold text-slate-900">El Arbitrador</td>
+                                    <td class="p-3 border border-slate-200">Mueve fondos entre instituciones o marcas buscando el menor costo transaccional o la mejor tasa de cambio inmediata. Aprovecha brechas de valor entre canales cambiarios (Tasa BCV vs. Paralela) o promociones cruzadas.</td>
+                                    <td class="p-3 border border-slate-200">Retención mediante eficiencia en costos, simplificación de pasarelas de pago y lealtad por volumen.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 border border-slate-200 font-bold text-slate-900">El Hedger (Cobertura)</td>
+                                    <td class="p-3 border border-slate-200">Su prioridad es la preservación del valor. Convierte moneda local a activos duros (divisas, tarjetas de regalo o inventario físico no perecedero) inmediatamente al recibir fondos para cubrirse de la inflación y devaluación intradía.</td>
+                                    <td class="p-3 border border-slate-200">Ofrecer cuentas custodia, facilidades de conversión instantánea, y productos de inversión de liquidez inmediata.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 border border-slate-200 font-bold text-slate-900">El Scalper</td>
+                                    <td class="p-3 border border-slate-200">Opera al día en microintervalos. Realiza múltiples microtransacciones de muy corta duración. Vive en el flujo de caja inmediato, con alta frecuencia transaccional pero nula capacidad de acumulación de capital a largo plazo.</td>
+                                    <td class="p-3 border border-slate-200">Rentabilizar vía comisiones por alta frecuencia de uso de POS/Pago Móvil y ofrecer microcréditos de ciclo ultra corto.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 class="text-sm font-bold text-slate-900 mt-6 mb-3">Diferenciador Analítico: RFM Tradicional vs. Estrategia Retailding</h3>
+                    <p class="mb-4">
+                        La visión tradicional de segmentación RFM (Recency, Frequency, Monetary) se profundiza cuando se mapea bajo el modelo conductual del Retailding:
+                    </p>
+
+                    <ul class="list-disc pl-5 space-y-2 text-sm my-4">
+                        <li><strong>Recencia (R):</strong> En lugar de indicar simplemente "días desde la última compra", se interpreta como la <strong>Señal de Mercado</strong> que indica el ciclo de reposición de inventario o "apuesta" de cobertura del cliente.</li>
+                        <li><strong>Frecuencia (F):</strong> Deja de ser un simple contador de visitas y se redefine como la <strong>Velocidad de Scalping</strong>, la cual mide la intensidad y urgencia con la que el cliente opera su micro-P&amp;L personal.</li>
+                        <li><strong>Monetario (M):</strong> Deja de ser solo volumen de ventas acumulado para representar el <strong>Tamaño de la Posición</strong> que el cliente está dispuesto a exponer en un canal, categoría o institución financiera específica.</li>
+                    </ul>
+                </section>
+
+                <!-- SECTION 4 -->
+                <section id="sec-micro" class="mb-12 scroll-mt-24">
+                    <div class="flex items-center gap-2 mb-4 text-slate-900">
+                        <span class="text-lg font-bold">4.</span>
+                        <h2 class="text-xl font-bold uppercase tracking-tight">Microestructura &amp; El Equivalente del "Order Flow"</h2>
+                    </div>
+                    <p class="mb-4">
+                        Los sistemas tradicionales de analítica retail observan únicamente el comportamiento ejecutado (tickets finalizados, contabilidad cerrada). Este enfoque ignora más del <strong>80% del flujo conductual interactivo</strong> en el punto de venta física o digital.
+                    </p>
+                    <p class="mb-4">
+                        RetailMind 360° introduce un segundo nivel analítico: el <strong>comportamiento no declarado</strong>. Este se define como <em>"toda intención observable de compra que no necesariamente culmina en una transacción ejecutada"</em>. Incluye productos agregados al carrito, mermas de intención, sustituciones por fricción de precio, cambios en la cantidad solicitada, abandonos de carritos en línea o físicos, y secuencias de indecisión en pasillo.
+                    </p>
+
+                    <p class="mb-4">
+                        En los mercados financieros, el <strong>Order Book</strong> representa la intención de compra/venta pendiente de ejecución a distintos niveles de precio (liquidez latente). En Retailding, la demanda pendiente de ejecución se rastrea a través de los carritos de compra activos, escaneos repetidos de precios en balanzas o lectores y productos agregados temporalmente.
+                    </p>
+
+                    <div class="overflow-x-auto my-6">
+                        <table class="w-full text-xs text-left border-collapse border border-slate-200">
+                            <thead>
+                                <tr class="bg-slate-900 text-white font-semibold">
+                                    <th class="p-3 border border-slate-200 w-1/4">Concepto de Trading</th>
+                                    <th class="p-3 border border-slate-200 w-1/4">Equivalente en Retailding</th>
+                                    <th class="p-3 border border-slate-200 w-1/2">Descripción e Impacto Operacional</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200 text-slate-700">
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 border border-slate-200 font-bold text-slate-900">Buy Market Order (Orden Agresiva)</td>
+                                    <td class="p-3 border border-slate-200">Compra impulsiva / inmediata</td>
+                                    <td class="p-3 border border-slate-200">Clientes que toman el producto KVI (Key Value Item) y avanzan al checkout sin comparar precios ni validar la tasa cambiaria. Sensibilidad temporal baja.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 border border-slate-200 font-bold text-slate-900">Limit Order (Orden Pasiva)</td>
+                                    <td class="p-3 border border-slate-200">Producto en carrito / Intención latente</td>
+                                    <td class="p-3 border border-slate-200">Demanda latente que espera validación de valor en el checkout o una confirmación de liquidez para convertirse en flujo monetario efectivo.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 border border-slate-200 font-bold text-slate-900">Liquidity Sweep (Barrido de Liquidez)</td>
+                                    <td class="p-3 border border-slate-200">Vaciado rápido de inventario (Quiebre)</td>
+                                    <td class="p-3 border border-slate-200">Consumo acelerado de un SKU específico motivado por arbitraje de precios o pánico inflacionario. Se asocia con compras de acopio o reventa.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 border border-slate-200 font-bold text-slate-900">Absorption (Absorción de Ventas)</td>
+                                    <td class="p-3 border border-slate-200">Promociones que no aceleran volumen</td>
+                                    <td class="p-3 border border-slate-200">El mercado absorbe los descuentos pero la elasticidad general no aumenta. Hay saturación o agotamiento de la demanda disponible en la categoría.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 border border-slate-200 font-bold text-slate-900">Spoofing (Órdenes Engañosas)</td>
+                                    <td class="p-3 border border-slate-200">Carritos masivos abandonados</td>
+                                    <td class="p-3 border border-slate-200">Intención de compra acumulada en carritos que se cancela en bloque en la caja debido a un cambio repentino en las condiciones de pago (caída de puntos de venta, salto de tasa, comisiones inesperadas).</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 border border-slate-200 font-bold text-slate-900">Volume Delta (Diferencial neto)</td>
+                                    <td class="p-3 border border-slate-200">Presión neta de compra por categoría</td>
+                                    <td class="p-3 border border-slate-200">El balance dinámico entre los productos cargados activamente en los carritos y los productos descartados o devueltos a los anaqueles.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- SECTION 5 -->
+                <section id="sec-levels" class="mb-12 scroll-mt-24">
+                    <div class="flex items-center gap-2 mb-4 text-slate-900">
+                        <span class="text-lg font-bold">5.</span>
+                        <h2 class="text-xl font-bold uppercase tracking-tight">Los Tres Niveles de Comportamiento y Taxonomía de Eventos</h2>
+                    </div>
+                    <p class="mb-4">
+                        Para operar este modelo, los flujos transaccionales crudos se agrupan en tres niveles jerárquicos inmutables que conforman el rastro conductual:
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-6">
+                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                            <span class="text-xs font-bold font-mono text-blue-600 block mb-1">Nivel 1</span>
+                            <h4 class="font-bold text-sm text-slate-900 mb-2">INTENCIÓN</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed">Adición al carrito o escaneo. Representa el interés inicial y la evaluación de valor del cliente a un precio de referencia observado.</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                            <span class="text-xs font-bold font-mono text-emerald-600 block mb-1">Nivel 2</span>
+                            <h4 class="font-bold text-sm text-slate-900 mb-2">EJECUCIÓN</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed">Checkout o compra efectiva. Es la transferencia final de liquidez por el activo. El cliente supera el umbral del dolor financiero.</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                            <span class="text-xs font-bold font-mono text-red-600 block mb-1">Nivel 3</span>
+                            <h4 class="font-bold text-sm text-slate-900 mb-2">CANCELACIÓN</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed">Abandono o remoción. Indica fricción, insuficiencia de liquidez o arrepentimiento de compra por priorización presupuestaria.</p>
+                        </div>
+                    </div>
+
+                    <p class="mb-4">
+                        Este mapeo origina la métrica de <strong>"Liquidity Friction Retail"</strong>: si un producto tiene una tasa de intención altísima pero una ejecución mínima en caja, el precio psicológico de reposición se ha roto, manifestando estrés conductual explícito.
+                    </p>
+
+                    <h3 class="text-sm font-bold text-slate-900 mt-6 mb-3">Taxonomía de Eventos Fundamentales</h3>
+                    <div class="overflow-x-auto my-4">
+                        <table class="w-full text-xs text-left border-collapse border border-slate-200">
+                            <thead>
+                                <tr class="bg-slate-900 text-white font-semibold">
+                                    <th class="p-3 border border-slate-200">ID de Evento</th>
+                                    <th class="p-3 border border-slate-200">Tipo de Acción</th>
+                                    <th class="p-3 border border-slate-200">Significado Analítico</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200 text-slate-700">
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 border border-slate-200 font-mono font-bold text-blue-600">ADD_TO_CART</td>
+                                    <td class="p-3 border border-slate-200">Producto agregado</td>
+                                    <td class="p-3 border border-slate-200">Declaración inicial de interés de compra. Captura el precio de referencia inicial observado en góndola.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 border border-slate-200 font-mono font-bold text-red-600">REMOVE_FROM_CART</td>
+                                    <td class="p-3 border border-slate-200">Producto removido</td>
+                                    <td class="p-3 border border-slate-200">Reversión voluntaria de la intención de compra. Pérdida de interés o ajuste presupuestario intradía en pasillo.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 border border-slate-200 font-mono font-bold text-amber-600">QUANTITY_CHANGE</td>
+                                    <td class="p-3 border border-slate-200">Modificación de cantidad</td>
+                                    <td class="p-3 border border-slate-200">Ajuste de volumen. Reacción inmediata a restricciones de liquidez de última hora o a incentivos promocionales.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 border border-slate-200 font-mono font-bold text-purple-600">SUBSTITUTE</td>
+                                    <td class="p-3 border border-slate-200">Sustitución de SKU</td>
+                                    <td class="p-3 border border-slate-200">Mapeo de elasticidad cruzada y rechazo al costo unitario del SKU original en favor de marcas blancas o alternativas.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 border border-slate-200 font-mono font-bold text-indigo-600">SCAN</td>
+                                    <td class="p-3 border border-slate-200">Consulta de precio</td>
+                                    <td class="p-3 border border-slate-200">Búsqueda activa de información. Revela indecisión, desconfianza en la marcación física y alta sensibilidad marginal al precio.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 border border-slate-200 font-mono font-bold text-emerald-600">CHECKOUT</td>
+                                    <td class="p-3 border border-slate-200">Compra ejecutada</td>
+                                    <td class="p-3 border border-slate-200">Transacción cerrada con éxito. Validación contable y reposición efectiva del capital de trabajo en el balance de la caja.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 border border-slate-200 font-mono font-bold text-slate-600">ABANDON</td>
+                                    <td class="p-3 border border-slate-200">Abandono total</td>
+                                    <td class="p-3 border border-slate-200">Muerte transaccional. El carrito de compras se abandona en su totalidad debido a fricciones críticas insalvables antes de facturar.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- SECTION 6 -->
+                <section id="sec-footprint" class="mb-12 scroll-mt-24">
+                    <div class="flex items-center gap-2 mb-4 text-slate-900">
+                        <span class="text-lg font-bold">6.</span>
+                        <h2 class="text-xl font-bold uppercase tracking-tight">Retail Footprint Framework</h2>
+                    </div>
+                    <p class="mb-4">
+                        El <strong>Retail Footprint</strong> se define formalmente como la representación multidimensional de la intensidad, concentración y distribución de la participación transaccional dentro de un intervalo temporal, zona de exhibición o categoría específica de productos.
+                    </p>
+
+                    <h3 class="text-sm font-bold text-slate-900 mt-6 mb-3">6.1 Footprint por SKU (Producto)</h3>
+                    <div class="overflow-x-auto my-4">
+                        <table class="w-full text-xs text-left border-collapse border border-slate-200">
+                            <thead>
+                                <tr class="bg-slate-900 text-white font-semibold">
+                                    <th class="p-3 border border-slate-200 w-1/3">Patrón Transaccional Detectado</th>
+                                    <th class="p-3 border border-slate-200 w-2/3">Interpretación y Alerta Operacional</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200 text-slate-700">
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 border border-slate-200 font-bold text-slate-900">Aumento severo de compras con alta cantidad por ticket</td>
+                                    <td class="p-3 border border-slate-200"><strong>Alerta de Acumulación o Acaparamiento:</strong> Indica distorsión de mercado por arbitraje de precios, pánico ante devaluación o compras mayoristas no autorizadas ("ballenas" acaparando).</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 border border-slate-200 font-bold text-slate-900">Caída drástica de compras múltiples por ticket</td>
+                                    <td class="p-3 border border-slate-200"><strong>Racionamiento Orgánico / Pérdida de Poder de Compra:</strong> El consumidor se ve limitado estrictamente por su liquidez inmediata a comprar una sola unidad, eliminando las compras de stock familiar.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 border border-slate-200 font-bold text-slate-900">Explosión transaccional intradía concentrada en KVI</td>
+                                    <td class="p-3 border border-slate-200"><strong>Evento Cambiario Anómalo / Arbitraje Inmediato:</strong> El público detecta rezago de precios frente a la cotización informal antes del salto oficial de tasa, barriendo con el inventario de bajo margen.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 class="text-sm font-bold text-slate-900 mt-6 mb-3">6.2 Footprint Temporal</h3>
+                    <div class="overflow-x-auto my-4">
+                        <table class="w-full text-xs text-left border-collapse border border-slate-200">
+                            <thead>
+                                <tr class="bg-slate-900 text-white font-semibold">
+                                    <th class="p-3 border border-slate-200 w-1/3">Variables de Intervalo</th>
+                                    <th class="p-3 border border-slate-200 w-2/3">Diagnóstico Operacional del Intervalo</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200 text-slate-700">
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 border border-slate-200 font-bold text-slate-900">Alto Volumen Transaccional + Alto Ticket Promedio</td>
+                                    <td class="p-3 border border-slate-200"><strong>Fuerte Presión Compradora:</strong> Alta velocidad de circulación. Momento óptimo para retener márgenes, suspender descuentos o desplegar inventarios complementarios de menor rotación.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 border border-slate-200 font-bold text-slate-900">Alto Volumen Transaccional + Bajo Ticket Promedio</td>
+                                    <td class="p-3 border border-slate-200"><strong>Consumo Defensivo Extremo:</strong> Clientes comprando exclusivamente productos básicos de manera hiperfragmentada. Alta ocupación física de cajas con baja rentabilidad neta por operación.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 border border-slate-200 font-bold text-slate-900">Bajo Volumen Transaccional + Alto Desvío Estándar</td>
+                                    <td class="p-3 border border-slate-200"><strong>Incertidumbre y Dispersión Cambiaria:</strong> El mercado carece de una tasa o precio de referencia claro. El comportamiento debe estabilizarse reduciendo la ventana temporal de actualización de precios.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- SECTION 7 -->
+                <section id="sec-imbalance" class="mb-12 scroll-mt-24">
+                    <div class="flex items-center gap-2 mb-4 text-slate-900">
+                        <span class="text-lg font-bold">7.</span>
+                        <h2 class="text-xl font-bold uppercase tracking-tight">Framework de Desequilibrio Retail (Retail Imbalance)</h2>
+                    </div>
+                    <p class="mb-4">
+                        El desequilibrio retail es la métrica de microestructura que diagnostica la distancia analítica entre lo que los clientes desean comprar y lo que el punto de venta realmente logra facturarles.
+                    </p>
+
+                    <h3 class="text-sm font-bold text-slate-900 mt-6 mb-3">7.1 El Modelo Conceptual</h3>
+                    <p class="mb-4">
+                        El indicador clave del desequilibrio transaccional se modela matemáticamente mediante la siguiente ecuación:
+                    </p>
+                    
+                    <div class="bg-slate-100 p-6 rounded-lg text-center my-6 font-mono font-bold text-sm text-slate-800 border border-slate-300">
+                        Retail Imbalance = <span class="text-blue-600">(Compras Ejecutadas - Eventos de Abandono)</span> / Eventos Totales de Intención
+                    </div>
+
+                    <p class="mb-4 text-xs text-slate-500 italic">
+                        Donde "Compras Ejecutadas" equivale a checkouts exitosos del SKU; "Eventos de Abandono" es la suma de remociones manuales y abandonos de carritos con dicho SKU; y "Eventos Totales" es la suma agregada de agregaciones (intenciones).
+                    </p>
+
+                    <h3 class="text-sm font-bold text-slate-900 mt-6 mb-3">7.2 Tabla de Interpretación Operacional</h3>
+                    <div class="overflow-x-auto my-4">
+                        <table class="w-full text-xs text-left border-collapse border border-slate-200">
+                            <thead>
+                                <tr class="bg-slate-900 text-white font-semibold">
+                                    <th class="p-3 border border-slate-200 w-1/4">Valor del Imbalance</th>
+                                    <th class="p-3 border border-slate-200 w-1/4">Estado Analítico</th>
+                                    <th class="p-3 border border-slate-200 w-1/2">Acción Recomendada</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200 text-slate-700">
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 border border-slate-200 font-bold text-emerald-600">&gt; +0.40 (Positivo Fuerte)</td>
+                                    <td class="p-3 border border-slate-200 font-bold">Aceptación Orgánica Completa</td>
+                                    <td class="p-3 border border-slate-200">El precio y las condiciones de reposición son ideales. Optimizar abastecimiento en góndola; la elasticidad del precio permite evaluar incrementos marginales de margen sin afectar volumen.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 border border-slate-200 font-bold text-red-600">&lt; -0.30 (Negativo Fuerte)</td>
+                                    <td class="p-3 border border-slate-200 font-bold">Fricción de Tráfico / Rechazo</td>
+                                    <td class="p-3 border border-slate-200">Los consumidores desean el producto pero rechazan el precio o el medio de pago en la línea de caja. Ajustar la estrategia de cobro (ofrecer descuento por pago inmediato en divisas) o evaluar promociones.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 border border-slate-200 font-bold text-amber-600">Deterioro Continuo Gradual</td>
+                                    <td class="p-3 border border-slate-200 font-bold">Agotamiento Crítico de Demanda</td>
+                                    <td class="p-3 border border-slate-200">Señales de fatiga en la categoría. Es peligroso forzar compras adicionales a proveedores; alto riesgo de inventario estancado ("hueso"). Reducir compras de reposición.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- SECTION 8 -->
+                <section id="sec-states" class="mb-12 scroll-mt-24">
+                    <div class="flex items-center gap-2 mb-4 text-slate-900">
+                        <span class="text-lg font-bold">8.</span>
+                        <h2 class="text-xl font-bold uppercase tracking-tight">Estados Operacionales del Mercado Retail</h2>
+                    </div>
+                    <p class="mb-4">
+                        RetailMind 360° descarta las categorías emocionales subjetivas para clasificar el humor y comportamiento de los clientes. En su lugar, utiliza cuatro <strong>Estados Operacionales Formales</strong> sustentados en métricas analíticas de microestructura temporal:
+                    </p>
+
+                    <div class="space-y-4 my-6">
+                        <div class="p-4 border border-slate-200 rounded-lg hover:shadow-sm transition-all bg-white">
+                            <h4 class="font-bold text-sm text-emerald-700 mb-1"><i class="fa-solid fa-circle-check"></i> 8.1 Estado Calm (Estabilidad)</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed">Caracterizado por baja volatilidad transaccional intradía, dispersión de tickets controlada, estabilidad en la mezcla de facturación diaria por categorías y elasticidad precio alineada con las series históricas estacionales.</p>
+                        </div>
+                        <div class="p-4 border border-slate-200 rounded-lg hover:shadow-sm transition-all bg-white">
+                            <h4 class="font-bold text-sm text-amber-700 mb-1"><i class="fa-solid fa-triangle-exclamation"></i> 8.2 Estado Stress (Fricción Activa)</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed">Se detecta un incremento sistemático en las tasas de abandono de carritos (ABANDON), aumento en las transacciones con productos sustitutos (marcas blancas o genéricos), dispersión creciente en el volumen transaccional intradía y un paulatino deterioro en el fill rate comercial.</p>
+                        </div>
+                        <div class="p-4 border border-slate-200 rounded-lg hover:shadow-sm transition-all bg-white">
+                            <h4 class="font-bold text-sm text-red-700 mb-1"><i class="fa-solid fa-bolt-lightning"></i> 8.3 Estado Panic-like (Pánico / Acumulación Defensiva)</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed">Aceleración transaccional anómala y violenta. El tiempo promedio de decisión del consumidor cae drásticamente. Se observa una acumulación acelerada de productos esenciales (KVI defensivos: harina, arroz, aceites), con una inelasticidad casi total a las variaciones de precio en tiempo real.</p>
+                        </div>
+                        <div class="p-4 border border-slate-200 rounded-lg hover:shadow-sm transition-all bg-white">
+                            <h4 class="font-bold text-sm text-blue-700 mb-1"><i class="fa-solid fa-face-laugh-beam"></i> 8.4 Estado Euphoria-like (Euforia / Premiumización)</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed">Expansión sostenida del ticket de compra. Disminución de la sensibilidad general de precios y desplome de la tasa de abandono de carritos. Aumento de las compras por impulso de categorías no esenciales, productos de indulgencia, licores y líneas premium.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION 9 -->
+                <section id="sec-indices" class="mb-12 scroll-mt-24">
+                    <div class="flex items-center gap-2 mb-4 text-slate-900">
+                        <span class="text-lg font-bold">9.</span>
+                        <h2 class="text-xl font-bold uppercase tracking-tight">Índices Operacionales Propietarios de RetailMind</h2>
+                    </div>
+                    <p class="mb-4">
+                        Para automatizar la toma de decisiones mediante alertas automatizadas y algoritmos de Pricing Dinámico, el framework consolida el flujo de datos conductuales en cinco indicadores sintéticos principales:
+                    </p>
+
+                    <div class="space-y-6 my-6 font-mono text-xs">
+                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                            <h4 class="font-bold text-slate-900 mb-2">9.1 PANIC SIGNAL</h4>
+                            <p class="text-slate-600 mb-2">Desviación estadística instantánea del volumen de consumo de un SKU básico contra su media histórica.</p>
+                            <div class="bg-white p-2 rounded border border-slate-300 font-bold text-blue-600 text-center">
+                                Panic Signal = (Consumo Actual - Media Histórica) / Desviación Estándar Histórica
+                            </div>
+                            <p class="text-[10px] text-slate-500 mt-2">Valores superiores a +3.00 indican anomalías graves de compra defensiva o acaparamiento especulativo inmediato.</p>
+                        </div>
+
+                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                            <h4 class="font-bold text-slate-900 mb-2">9.2 FILL RATE CONDUCTUAL RETAIL</h4>
+                            <p class="text-slate-600 mb-2">Mide la efectividad real en volumen y valor de la canalización de la intención de compra del cliente.</p>
+                            <div class="bg-white p-2 rounded border border-slate-300 font-bold text-blue-600 text-center">
+                                Fill Rate Conductual = Valor Monetario Ejecutado / Valor Monetario Intencionado
+                            </div>
+                            <p class="text-[10px] text-slate-500 mt-2">Un deterioro progresivo del índice, aún con ventas estables en volumen, avisa que la sucursal está perdiendo capital por mermas invisibles o por la pérdida sistemática de clientes en el checkout debido a fricciones bancarias.</p>
+                        </div>
+                    </div>
+
+                    <p class="mb-4">
+                        Adicionalmente, se implementan tres algoritmos predictivos compuestos de alta complejidad:
+                    </p>
+                    <ul class="list-disc pl-5 space-y-3 text-sm my-4">
+                        <li><strong>9.3 Consumer Hesitation Index (CHI):</strong> Evalúa el tiempo medio de permanencia de un producto en el carrito antes de checkout, la tasa de sustitución por SKU y la frecuencia de escaneo (SCAN) de precios sin checkout posterior. A mayor CHI, mayor parálisis del cliente por incertidumbre de precios o cambiaria.</li>
+                        <li><strong>9.4 Inventory Absorption Velocity (IAV):</strong> Mide la velocidad neta con la que el piso de venta consume la disponibilidad física de un SKU determinado frente a la capacidad y velocidad real de reposición por parte del centro de distribución.</li>
+                        <li><strong>9.5 Retail Sentiment Index (RSI Retail):</strong> El equivalente definitivo del Fear &amp; Greed Index bursátil aplicado a la cadena transaccional de supermercados. Consolida el volumen neto de categorías defensivas versus productos premium, combinado con el CHI y la tasa de abandono de carritos para categorizar el humor general del mercado en una escala de 0 a 100.</li>
+                    </ul>
+                </section>
+
+                <!-- SECTION 10 -->
+                <section id="sec-candlestick" class="mb-12 scroll-mt-24">
+                    <div class="flex items-center gap-2 mb-4 text-slate-900">
+                        <span class="text-lg font-bold">10.</span>
+                        <h2 class="text-xl font-bold uppercase tracking-tight">Candlestickización Operacional y Velas de Intención</h2>
+                    </div>
+                    <p class="mb-4">
+                        La <strong>Candlestickización</strong> consiste en mapear temporalmente secuencias operacionales de los tickets y pasillos dentro de una ventana de tiempo predefinida utilizando la notación bursátil estándar OHLC. Las variables representadas pueden variar desde el ticket promedio hasta el margen real de reposición o el fill rate conductual.
+                    </p>
+
+                    <h3 class="text-sm font-bold text-slate-900 mt-6 mb-3">10.1 La Vela de Intención de Compra (Fill Rate OHLC)</h3>
+                    <p class="mb-4">
+                        Es el instrumento analítico más poderoso de este framework, pues mapea la volatilidad intradiaria de la aceptación de los precios y de la fluidez de los medios de pago:
+                    </p>
+
+                    <ul class="list-disc pl-5 space-y-2 text-sm my-4">
+                        <li><strong>Open (Apertura):</strong> El Fill Rate de Intención de la sucursal al inicio del bloque de tiempo evaluado (ej. 08:00 AM).</li>
+                        <li><strong>High (Máximo):</strong> El punto máximo de conversión de intención a ticket ejecutado durante el intervalo.</li>
+                        <li><strong>Low (Mínimo):</strong> El punto crítico del intervalo donde el abandono de carritos se disparó o el fill rate colapsó debido a un choque operativo, caída de sistemas de pago o salto cambiario.</li>
+                        <li><strong>Close (Cierre):</strong> El Fill Rate de Intención consolidado en el último segundo del bloque evaluado (ej. 12:00 PM).</li>
+                    </ul>
+
+                    <h3 class="text-sm font-bold text-slate-900 mt-6 mb-3">10.2 Interpretación de Formas de Velas de Intención</h3>
+                    <div class="overflow-x-auto my-4">
+                        <table class="w-full text-xs text-left border-collapse border border-slate-200">
+                            <thead>
+                                <tr class="bg-slate-900 text-white font-semibold">
+                                    <th class="p-3 border border-slate-200 w-1/4">Formación Visual de la Vela</th>
+                                    <th class="p-3 border border-slate-200 w-1/4">Lectura Conductual</th>
+                                    <th class="p-3 border border-slate-200 w-1/2">Diagnóstico Estratégico</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200 text-slate-700">
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 border border-slate-200 font-bold text-emerald-600"><i class="fa-solid fa-caret-up text-lg mr-1"></i> Vela Verde de Cuerpo Amplio</td>
+                                    <td class="p-3 border border-slate-200">Aceptación creciente sostenida</td>
+                                    <td class="p-3 border border-slate-200">Inercia operativa positiva. La fluidez del checkout es óptima, no hay rechazo al portafolio de precios vigente ni problemas con medios de cobro.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 border border-slate-200 font-bold text-red-600"><i class="fa-solid fa-caret-down text-lg mr-1"></i> Vela Roja de Cuerpo Amplio</td>
+                                    <td class="p-3 border border-slate-200">Deterioro severo de intención</td>
+                                    <td class="p-3 border border-slate-200">Fuga masiva de clientes en la línea de cajas. La diferencia cambiaria de última hora o fallas críticas en los sistemas de pago están bloqueando la conversión de ventas.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 border border-slate-200 font-bold text-blue-600"><i class="fa-solid fa-arrows-up-down text-lg mr-1"></i> Vela con Mecha Inferior Larga</td>
+                                    <td class="p-3 border border-slate-200 font-medium">Recuperación operativa exitosa</td>
+                                    <td class="p-3 border border-slate-200">Hubo un choque o cuello de botella crítico durante el turno (ej. caída de internet o de tasa), pero la administración reaccionó rápido estabilizando el flujo.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 border border-slate-200 font-bold text-amber-600"><i class="fa-solid fa-circle-exclamation text-lg mr-1"></i> Vela con Mecha Superior Larga</td>
+                                    <td class="p-3 border border-slate-200">Falsa aceptación / Rechazo tardío</td>
+                                    <td class="p-3 border border-slate-200">Los clientes se entusiasmaron al inicio cargando mercancía a la góndola, pero el precio final consolidado en caja o el cobro de comisiones inesperadas truncó masivamente las ventas.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- SECTION 11 -->
+                <section id="sec-equivalencias" class="mb-12 scroll-mt-24">
+                    <div class="flex items-center gap-2 mb-4 text-slate-900">
+                        <span class="text-lg font-bold">11.</span>
+                        <h2 class="text-xl font-bold uppercase tracking-tight">Tabla de Equivalencias Metodológicas</h2>
+                    </div>
+                    <p class="mb-4">
+                        Para facilitar la apropiación y transferencia tecnológica a los directores, se establece la siguiente tabla de equivalencias definitivas entre el análisis técnico del trading tradicional y el comportamiento en el consumo y banca minorista de RetailMind:
+                    </p>
+
+                    <div class="overflow-x-auto my-6">
+                        <table class="w-full text-xs text-left border-collapse border border-slate-200">
+                            <thead>
+                                <tr class="bg-slate-900 text-white font-semibold">
+                                    <th class="p-3 border border-slate-200 w-1/3">Término de Trading Profesional</th>
+                                    <th class="p-3 border border-slate-200 w-2/3">Equivalente en el Contexto del Consumidor / Banca</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200 text-slate-700">
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 border border-slate-200 font-bold text-slate-900">Velas Japonesas (Candlesticks)</td>
+                                    <td class="p-3 border border-slate-200">Visualización sintética de la volatilidad del flujo de caja (apertura, cierre, máximo y mínimo de saldo/gasto) en un periodo de tiempo determinado.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 border border-slate-200 font-bold text-slate-900">Soporte y Resistencia</td>
+                                    <td class="p-3 border border-slate-200">Nivel de precio o gasto crítico donde el consumidor se detiene (Soporte de oferta o inelasticidad básica) o acelera su salida (Resistencia de costo prohibitivo para la canasta).</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 border border-slate-200 font-bold text-slate-900">Spread (Diferencial)</td>
+                                    <td class="p-3 border border-slate-200">Diferencia entre el costo de oportunidad de pagar en efectivo vs. digital o divisa vs. bolívares (el costo oculto de "entrar" en la transacción).</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 border border-slate-200 font-bold text-slate-900">Stop-Loss (Parar Pérdida)</td>
+                                    <td class="p-3 border border-slate-200">Decisión consciente de no comprar un producto, recortar la canasta básica o cerrar una cuenta bancaria cuando el costo operativo o inflacionario supera el beneficio.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 border border-slate-200 font-bold text-slate-900">Take-Profit (Tomar Ganancia)</td>
+                                    <td class="p-3 border border-slate-200">Aprovechar una oferta relámpago, combo o tasa de cambio oficial favorable para liquidar una posición de ahorro fiduciario y convertirla en bienes básicos duraderos.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- SECTION 12 -->
+                <section id="sec-arch" class="mb-12 scroll-mt-24">
+                    <div class="flex items-center gap-2 mb-4 text-slate-900">
+                        <span class="text-lg font-bold">12.</span>
+                        <h2 class="text-xl font-bold uppercase tracking-tight">Arquitectura Técnica de Captura y Procesamiento</h2>
+                    </div>
+                    <p class="mb-4">
+                        Para dar soporte analítico real al modelo, el área de ingeniería de datos debe abandonar los reportes basados en lotes diarios (batch processing) y migrar la infraestructura hacia una captura basada en flujos de eventos inmutables (<strong>Event Sourcing</strong>).
+                    </p>
+
+                    <h3 class="text-sm font-bold text-slate-900 mt-6 mb-3">12.1 Estructura del Event Stream (<code class="bg-slate-100 px-1 py-0.5 rounded text-blue-600 text-xs">retail_event_stream</code>)</h3>
+                    <div class="overflow-x-auto my-4">
+                        <table class="w-full text-xs text-left border-collapse border border-slate-200 font-mono">
+                            <thead>
+                                <tr class="bg-slate-900 text-white font-semibold">
+                                    <th class="p-3 border border-slate-200">Campo Técnico</th>
+                                    <th class="p-3 border border-slate-200">Tipo de Dato</th>
+                                    <th class="p-3 border border-slate-200">Descripción Conceptual</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200 text-slate-700">
+                                <tr>
+                                    <td class="p-3 border border-slate-200 font-bold">session_id</td>
+                                    <td class="p-3 border border-slate-200">UUID (String)</td>
+                                    <td class="p-3 border border-slate-200">Identificador único de la sesión interactiva del consumidor o del carrito.</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 border border-slate-200 font-bold">timestamp_event</td>
+                                    <td class="p-3 border border-slate-200">Epoch MS (Long)</td>
+                                    <td class="p-3 border border-slate-200">Marca temporal de alta resolución para análisis de microintervalos secuenciales.</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 border border-slate-200 font-bold">store_id / pos_id</td>
+                                    <td class="p-3 border border-slate-200">Integer / String</td>
+                                    <td class="p-3 border border-slate-200">Ubicación física exacta de la sucursal y la caja registradora emisor.</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 border border-slate-200 font-bold">sku / category_id</td>
+                                    <td class="p-3 border border-slate-200">Integer / String</td>
+                                    <td class="p-3 border border-slate-200">Identificación única del producto evaluado y su categoría de canasta.</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 border border-slate-200 font-bold">action_type</td>
+                                    <td class="p-3 border border-slate-200">Enum</td>
+                                    <td class="p-3 border border-slate-200">ADD_TO_CART, REMOVE_FROM_CART, SCAN, CHECKOUT, etc.</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 border border-slate-200 font-bold">quantity / price</td>
+                                    <td class="p-3 border border-slate-200">Decimal / Float</td>
+                                    <td class="p-3 border border-slate-200">Cantidad de unidades y precio de referencia observado en góndola en el momento del evento.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 class="text-sm font-bold text-slate-900 mt-6 mb-3">12.2 Principio de Inmutabilidad de los Datos</h3>
+                    <p class="mb-4">
+                        La base de datos analítica operativa <strong>no debe sufrir operaciones destructivas</strong>. En su lugar, cada remoción o abandono total de carrito debe registrarse como un nuevo evento inmutable con signo inverso en el flujo secuencial, garantizando la reconstrucción matemática exacta del libro de intenciones y el cálculo dinámico de la pérdida operativa de conversión.
+                    </p>
+                </section>
+
+                <!-- SECTION 13 -->
+                <section id="sec-risks" class="mb-12 scroll-mt-24">
+                    <div class="flex items-center gap-2 mb-4 text-slate-900">
+                        <span class="text-lg font-bold">13.</span>
+                        <h2 class="text-xl font-bold uppercase tracking-tight">Reglas de Oro y Prevención de Riesgos Conceptuales</h2>
+                    </div>
+                    
+                    <h3 class="text-sm font-bold text-slate-900 mt-6 mb-3">13.1 La Regla de Oro del Baseline Histórico</h3>
+                    <p class="mb-4">
+                        Toda señal o anomalía conductual detectada bajo el paradigma del Retailding carece por completo de valor operacional si no se interpreta contra un <strong>baseline histórico riguroso</strong>. Los picos transaccionales deben contrastarse contra la estacionalidad diaria, quincenas, ciclos de promociones activas e incluso el día de la semana y la franja horaria. Sin un baseline, un incremento estacional normal de compras puede confundirse falsamente con un estado de pánico especulativo.
+                    </p>
+
+                    <h3 class="text-sm font-bold text-slate-900 mt-6 mb-3">13.2 Prevención de Riesgos Conceptuales de Implementación</h3>
+                    <p class="mb-4">
+                        Para mantener el rigor corporativo y evitar derivas operativas que resten credibilidad a los proyectos, se establecen las siguientes prohibiciones técnico-metodológicas innegociables:
+                    </p>
+
+                    <div class="bg-red-50 border-l-4 border-red-600 p-4 rounded-r-lg my-6 text-slate-700">
+                        <ul class="space-y-3 text-xs">
+                            <li><strong>1. NO afirmar equivalencia directa con mercados financieros:</strong> Los mercados de valores operan bajo subastas de doble vía sumamente líquidas; el retail es un canal de distribución con precios fijados unilateralmente. Las analogías no deben extrapolarse de forma literal.</li>
+                            <li><strong>2. NO priorizar la narrativa sobre la medición cuantitativa:</strong> Un término de trading "atractivo" no es una solución de negocio. Si un fenómeno conductual no posee una fórmula matemática clara ni un mapeo de datos estructurados, no se implementa en los dashboards.</li>
+                            <li><strong>3. NO usar analogías especulativas como hechos psicológicos:</strong> El pánico o la euforia son clasificaciones numéricas de perfiles estadísticos de compra, no juicios psicológicos o morales sobre la población de consumidores.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- SECTION 14 -->
+                <section id="sec-deployment" class="mb-12 scroll-mt-24">
+                    <div class="flex items-center gap-2 mb-4 text-slate-900">
+                        <span class="text-lg font-bold">14.</span>
+                        <h2 class="text-xl font-bold uppercase tracking-tight">Casos de Uso Estratégicos y Ruta de Despliegue</h2>
+                    </div>
+                    
+                    <ul class="list-decimal pl-5 space-y-3 text-sm my-4">
+                        <li><strong>Pricing Dinámico Inteligente:</strong> Detección inmediata del rechazo psicológico al incremento de precios en KVIs mediante el análisis de la "mecha superior" en las velas de intención de compra (Fill Rate), evitando el desplome del tráfico en tienda.</li>
+                        <li><strong>Gestión de Inventarios por Presión de Demanda:</strong> Disparar órdenes de reabastecimiento urgente de productos de alta rotación al detectar el incremento de la <em>Inventory Absorption Velocity</em>, adelantándose al quiebre de stock en góndola.</li>
+                        <li><strong>Medición de Absorción Promocional Real:</strong> Validar si los descuentos promocionales realmente están inyectando volumen nuevo o si el mercado está en un estado de absorción saturado donde solo se canibalizan los márgenes.</li>
+                    </ul>
+
+                    <h3 class="text-sm font-bold text-slate-900 mt-6 mb-3">Ruta de Implementación Gradual Recomendada (Fase 1)</h3>
+                    <p class="mb-4">
+                        Para mitigar el riesgo de parálisis por desconocimiento técnico en el personal gerencial, se prescribe un plan de despliegue focalizado únicamente en tres componentes funcionales durante la primera etapa comercial de la plataforma:
+                    </p>
+
+                    <div class="overflow-x-auto my-4">
+                        <table class="w-full text-xs text-left border-collapse border border-slate-200">
+                            <thead>
+                                <tr class="bg-slate-900 text-white font-semibold">
+                                    <th class="p-3 border border-slate-200 w-1/4">Eje de Despliegue (Fase 1)</th>
+                                    <th class="p-3 border border-slate-200 w-1/3">Componente Operativo</th>
+                                    <th class="p-3 border border-slate-200 w-5/12">Resultado de Negocio Esperado</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200 text-slate-700">
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 border border-slate-200 font-bold">1. Footprint Retail Básico</td>
+                                    <td class="p-3 border border-slate-200">Mapeo simplificado de Intención (agregados), Compra (checkouts) y Abandono (remociones).</td>
+                                    <td class="p-3 border border-slate-200">Visibilidad en tiempo real de la merma conductual del portafolio por sucursal. Reducción de carritos abandonados.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 border border-slate-200 font-bold">2. Retail Imbalance Estándar</td>
+                                    <td class="p-3 border border-slate-200">Cálculo de la fórmula de desequilibrio por SKU estrella en tiempo real.</td>
+                                    <td class="p-3 border border-slate-200">Identificación temprana de rechazos técnicos o psicológicos de precios en cajas de cobro antes de cerrar el turno.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 border border-slate-200 font-bold">3. Clasificación Simple de Estado</td>
+                                    <td class="p-3 border border-slate-200">Segmentación automatizada de sucursales en estados Calm, Stress y Panic-like.</td>
+                                    <td class="p-3 border border-slate-200">Alertas predictivas para logística y compras ante saltos inminentes de inflación o variaciones cambiarias.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <hr class="border-slate-300 my-8">
+
+                <!-- Institutional Footer -->
+                <div class="text-xs text-slate-400 font-mono flex justify-between">
+                    <div>© 2026 RetailMind 360° - Latino BI.</div>
+                    <div>Pág. 1 de 1</div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts & Interactividad -->
+    <script>
+        // Función para cambiar de fuentes de tipografía
+        function setFontFamily(font) {
+            const doc = document.getElementById('document-content');
+            const btnSans = document.getElementById('btnSans');
+            const btnSerif = document.getElementById('btnSerif');
+            
+            if (font === 'sans') {
+                doc.classList.remove('font-serif');
+                doc.classList.add('font-sans');
+                btnSans.classList.add('bg-blue-600', 'text-white');
+                btnSans.classList.remove('text-slate-400');
+                btnSerif.classList.remove('bg-blue-600', 'text-white');
+                btnSerif.classList.add('text-slate-400');
+            } else {
+                doc.classList.remove('font-sans');
+                doc.classList.add('font-serif');
+                btnSerif.classList.add('bg-blue-600', 'text-white');
+                btnSerif.classList.remove('text-slate-400');
+                btnSans.classList.remove('bg-blue-600', 'text-white');
+                btnSans.classList.add('text-slate-400');
+            }
+        }
+
+        // Buscador interno de términos del documento
+        function searchDocument() {
+            const input = document.getElementById('docSearch').value.toLowerCase();
+            const doc = document.getElementById('document-content');
+            const sections = doc.getElementsByTagName('section');
+            
+            for (let i = 0; i < sections.length; i++) {
+                const text = sections[i].innerText.toLowerCase();
+                if (text.includes(input)) {
+                    sections[i].style.opacity = '1';
+                } else {
+                    sections[i].style.opacity = '0.35';
+                }
+            }
+        }
+
+        // Función para copiar el contenido HTML limpio (ideal para pegar en Word con formato intacto)
+        function copyCleanHTML() {
+            const docElement = document.getElementById('document-content');
+            
+            // Creamos un clon para limpiar elementos que no queremos en el copiado
+            const docClone = docElement.cloneNode(true);
+            
+            // Forzar inline styles para que Word interprete la tipografía y bordes de tablas
+            const tables = docClone.querySelectorAll('table');
+            tables.forEach(table => {
+                table.setAttribute('style', 'width:100%; border-collapse:collapse; margin:20px 0; border:1px solid #cbd5e1;');
+            });
+            
+            const tableHeaders = docClone.querySelectorAll('th');
+            tableHeaders.forEach(th => {
+                th.setAttribute('style', 'background-color:#0f172a; color:white; font-weight:bold; padding:10px; border:1px solid #cbd5e1; font-size:12px; text-align:left;');
+            });
+            
+            const tableCells = docClone.querySelectorAll('td');
+            tableCells.forEach(td => {
+                td.setAttribute('style', 'padding:10px; border:1px solid #cbd5e1; font-size:12px; text-align:left;');
+            });
+
+            const highlights = docClone.querySelectorAll('.bg-blue-50');
+            highlights.forEach(hl => {
+                hl.setAttribute('style', 'background-color:#eff6ff; border-left:4px solid #2563eb; padding:15px; margin:20px 0; border-radius:4px;');
+            });
+
+            const textToCopy = docClone.innerHTML;
+            
+            // Crear elemento temporal para el portapapeles
+            const tempDiv = document.createElement('div');
+            tempDiv.style.position = 'absolute';
+            tempDiv.style.left = '-9999px';
+            tempDiv.innerHTML = textToCopy;
+            document.body.appendChild(tempDiv);
+            
+            // Selección y copiado
+            const range = document.createRange();
+            range.selectNode(tempDiv);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+            
+            try {
+                document.execCommand('copy');
+                alert("¡Documento copiado al portapapeles con formato enriquecido! Ya puedes ir a Microsoft Word y presionar Ctrl+V (o Cmd+V) para pegarlo directamente.");
+            } catch (err) {
+                alert("No se pudo copiar de forma automatizada debido a limitaciones del navegador. Inténtalo de nuevo.");
+            }
+            
+            document.body.removeChild(tempDiv);
+            window.getSelection().removeAllRanges();
+        }
+
+        // Efecto scroll suave de los enlaces laterales
+        document.querySelectorAll('.sidebar-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('text-blue-600', 'font-bold'));
+                this.classList.add('text-blue-600', 'font-bold');
+            });
+        });
+    </script>
+</body>
+</html>

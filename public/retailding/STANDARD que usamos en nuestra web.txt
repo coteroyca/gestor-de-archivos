@@ -1,0 +1,25 @@
+en nuestra web usamos: Fontawesome, Bootstrap y Jquery
+
+enlaces en nuestro <head>
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900&amp;display=swap">
+<link rel="stylesheet" href="https://latinobi-ven.com/userfiles/templates/new-world/assets/fonts/fontawesome-free-5.15.4-web/css/all.css">
+<script type="text/javascript" src="https://latinobi-ven.com/userfiles/modules/microweber/api/libs/bootstrap5/js/bootstrap.bundle.min.js?mwv=1.3.2"></script>
+<script type="text/javascript" src="https://latinobi-ven.com/userfiles/modules/microweber/api/libs/bootstrap-select-1.13.12/js/bootstrap-select.min.js?mwv=1.3.2"></script>
+<link rel="stylesheet" type="text/css" href="https://latinobi-ven.com/userfiles/modules/microweber/api/libs/bootstrap-select-1.13.12/css/bootstrap-select.min.css?mwv=1.3.2">
+<link rel="stylesheet" type="text/css" href="https://latinobi-ven.com/userfiles/modules/microweber/api/libs/fontawesome-4.7.0/css/font-awesome.min.css?mwv=1.3.2">
+<link href="https://latinobi-ven.com/userfiles/media/default/css/new-world/assets/css/main.scss.1.3.2-5.7.css?t=1689450077" id="theme-style" rel="stylesheet" type="text/css" media="all">
+
+
+favicon ==> <link rel="shortcut icon" href="https://latinobi-ven.com/userfiles/media/default/favicon-lbi.png">
+
+Imagenes y Logos
+Logo del header (Verde con fondo blanco) ==> https://latinobi-ven.com/userfiles/media/default/latino-bi-verde-oscuro-pequeno.png
+Logo del footer (blanco con fondo transparente) ==> https://latinobi-ven.com/userfiles/media/default/latino-bi-blanco-pequeno.png
+Insignia de Partner IBM del footer (blanco con fondo transparente ==> https://latinobi-ven.com/userfiles/media/default/ibm-blanco.png
+
+
+
+
+
+

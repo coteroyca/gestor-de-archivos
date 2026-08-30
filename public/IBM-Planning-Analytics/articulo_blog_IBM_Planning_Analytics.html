@@ -1,0 +1,703 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IBM Planning Analytics: activos multidimensionales, gobernanza y planificación inteligente | Latino BI</title>
+  <meta name="description" content="IBM Planning Analytics convierte datos en una plataforma de planificación gobernada, con writeback, aplicaciones, PAW y PAfE para negocio y finanzas.">
+  <meta name="keywords" content="IBM Planning Analytics, TM1, PAW, PAfE, writeback, budgeting, forecasting, planning analytics">
+
+  <link rel="shortcut icon" href="https://latinobi-ven.com/userfiles/media/default/favicon-lbi.png">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&amp;family=DM+Sans:wght@300;400;500;600&amp;family=Playfair+Display:ital,wght@0,700;0,900;1,700&amp;display=swap">
+  <link rel="stylesheet" href="https://latinobi-ven.com/userfiles/templates/new-world/assets/fonts/fontawesome-free-5.15.4-web/css/all.css">
+  <link rel="stylesheet" type="text/css" href="https://latinobi-ven.com/userfiles/modules/microweber/api/libs/bootstrap-select-1.13.12/css/bootstrap-select.min.css?mwv=1.3.2">
+  <link rel="stylesheet" type="text/css" href="https://latinobi-ven.com/userfiles/modules/microweber/api/libs/fontawesome-4.7.0/css/font-awesome.min.css?mwv=1.3.2">
+  <link href="https://latinobi-ven.com/userfiles/media/default/css/new-world/assets/css/main.scss.1.3.2-5.7.css?t=1689450077" id="theme-style" rel="stylesheet" type="text/css" media="all">
+
+  <style>
+    :root {
+      --lbi-green:       #2D6A4F;
+      --lbi-green-dark:  #1B4332;
+      --lbi-green-mid:   #40916C;
+      --lbi-green-lite:  #D8F3DC;
+      --lbi-accent:      #52B788;
+      --cream:           #F7F9F7;
+      --ink:             #1C2B1E;
+      --muted:           #5A6E61;
+      --line:            #DDE8E0;
+      --gold:            #E9A84C;
+      --red-soft:        #E05252;
+      --white:           #FFFFFF;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 17px;
+      line-height: 1.78;
+    }
+
+    /* ── PROGRESS BAR ── */
+    #progress-bar {
+      position: fixed; top: 0; left: 0; height: 3px;
+      background: linear-gradient(90deg, var(--lbi-green), var(--lbi-accent));
+      width: 0%; z-index: 9999;
+      transition: width .1s linear;
+    }
+
+    /* ── NAV ── */
+    .blog-nav {
+      position: sticky; top: 0; z-index: 200;
+      background: #fff;
+      border-bottom: 2px solid var(--lbi-green-lite);
+      box-shadow: 0 2px 12px rgba(45,106,79,.08);
+    }
+    .blog-nav .inner {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 12px 0;
+    }
+    .blog-nav .logo-wrap img { height: 38px; width: auto; }
+    .blog-nav .nav-right { display: flex; align-items: center; gap: 20px; }
+    .blog-nav .nav-label {
+      font-size: .78rem; font-weight: 700;
+      color: var(--muted); letter-spacing: .06em; text-transform: uppercase;
+    
+      font-family: 'DM Mono', monospace;
+    }
+    .blog-nav .cta-btn {
+      font-size: .82rem; font-weight: 700;
+      padding: 9px 22px; border-radius: 4px;
+      background: var(--lbi-green); color: #fff;
+      border: none; text-decoration: none;
+      letter-spacing: .03em;
+      transition: background .2s, transform .15s;
+      display: inline-flex; align-items: center; gap: 7px;
+    
+      font-family: 'DM Sans', sans-serif;
+    }
+    .blog-nav .cta-btn:hover { background: var(--lbi-green-dark); color: #fff; transform: translateY(-1px); }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--lbi-green-dark);
+      overflow: hidden; position: relative;
+      padding: 80px 0 72px;
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 65% 55% at 85% 35%, rgba(64,145,108,.3) 0%, transparent 65%),
+        radial-gradient(ellipse 40% 50% at 5% 80%, rgba(82,183,136,.12) 0%, transparent 60%);
+    }
+    .hero-grid {
+      position: absolute; inset: 0; opacity: .05;
+      background-image:
+        linear-gradient(rgba(255,255,255,.6) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.6) 1px, transparent 1px);
+      background-size: 56px 56px;
+    }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: .72rem; font-weight: 700;
+      letter-spacing: .14em; color: var(--lbi-accent);
+      background: rgba(82,183,136,.15);
+      border: 1px solid rgba(82,183,136,.35);
+      border-radius: 3px; padding: 5px 13px;
+      margin-bottom: 24px; text-transform: uppercase;
+    
+      font-family: 'DM Mono', monospace;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 900; line-height: 1.15;
+      color: #fff; margin-bottom: 20px;
+    
+      font-family: 'Playfair Display', serif;
+    }
+    .hero .hero-lead {
+      font-size: 1.08rem; font-weight: 300;
+      color: rgba(255,255,255,.7);
+      max-width: 620px; line-height: 1.75;
+    }
+    .hero-feature-box {
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 12px; padding: 28px 24px;
+    }
+    .hero-feature-box .feat-item {
+      display: flex; align-items: center; gap: 14px;
+      padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .hero-feature-box .feat-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .hero-feature-box .feat-item:first-child { padding-top: 0; }
+    .feat-icon {
+      width: 38px; height: 38px; border-radius: 8px; flex-shrink: 0;
+      background: rgba(82,183,136,.2);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--lbi-accent); font-size: 1rem;
+    }
+    .feat-label { font-size: .9rem; font-weight: 700; color: rgba(255,255,255,.88); }
+
+    /* ── MAIN CONTENT ── */
+    main { padding-bottom: 64px; }
+
+    .section-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      box-shadow: 0 6px 24px rgba(27,67,50,.06);
+      margin-bottom: 24px;
+      transition: box-shadow .25s, transform .2s;
+    }
+    .section-card:hover {
+      box-shadow: 0 12px 36px rgba(45,106,79,.1);
+      transform: translateY(-2px);
+    }
+    .section-card .card-body { padding: 36px 40px; }
+
+    h2.card-title {
+      font-size: 1.35rem; font-weight: 900;
+      color: var(--lbi-green-dark);
+      margin-bottom: 16px;
+    
+      font-family: 'Playfair Display', serif;
+    }
+    p { color: #374151; margin-bottom: 16px; }
+    p:last-child { margin-bottom: 0; }
+
+    /* ── CARD ACCENT BORDERS ── */
+    .section-card.accent-green  { border-top: 3px solid var(--lbi-green); }
+    .section-card.accent-mint   { border-top: 3px solid var(--lbi-accent); }
+    .section-card.accent-gold   { border-top: 3px solid var(--gold); }
+
+    /* ── QUOTE BOX ── */
+    .quote-card {
+      background: var(--lbi-green-dark);
+      border-radius: 10px; padding: 36px 32px;
+      position: relative; overflow: hidden;
+      margin-bottom: 24px;
+    }
+    .quote-card::before {
+      content: '\201C';
+      font-size: 9rem; line-height: 1;
+      color: var(--lbi-accent); opacity: .15;
+      position: absolute; top: -10px; left: 14px;
+      font-family: Georgia, serif;
+    }
+    .quote-card .quote-label {
+      font-size: .7rem; font-weight: 700; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--lbi-accent);
+      display: block; margin-bottom: 14px;
+    
+      font-family: 'DM Mono', monospace;
+    }
+    .quote-card p {
+      font-size: 1.18rem; font-style: italic; font-weight: 300;
+      color: #fff; line-height: 1.7; position: relative; z-index: 1;
+    
+      font-family: 'Playfair Display', serif;
+    }
+
+    /* ── SECTION LABEL ── */
+    .section-label {
+      font-size: .68rem; font-weight: 700;
+      letter-spacing: .16em; color: var(--lbi-green);
+      text-transform: uppercase; margin-bottom: 8px;
+      display: flex; align-items: center; gap: 8px;
+    
+      font-family: 'DM Mono', monospace;
+    }
+    .section-label::after {
+      content: ''; flex: 1; max-width: 36px;
+      height: 1px; background: var(--lbi-green); opacity: .4;
+    }
+
+    /* ── ICON BULLETS ── */
+    .icon-bullet {
+      width: 34px; height: 34px; border-radius: 8px;
+      display: inline-flex; align-items: center; justify-content: center;
+      background: var(--lbi-green-lite); color: var(--lbi-green);
+      font-size: .9rem; flex-shrink: 0;
+    }
+
+    /* ── FAQ ACCORDION ── */
+    .accordion-item {
+      border: 1px solid var(--line);
+      border-radius: 8px !important;
+      margin-bottom: 8px; overflow: hidden;
+    }
+    .accordion-button {
+      font-weight: 700; font-size: .95rem;
+      color: var(--lbi-green-dark);
+      background: #fff;
+    
+      font-family: 'DM Sans', sans-serif;
+    }
+    .accordion-button:not(.collapsed) {
+      color: var(--lbi-green);
+      background: var(--lbi-green-lite);
+      box-shadow: none;
+    }
+    .accordion-button:focus { box-shadow: 0 0 0 3px rgba(82,183,136,.25); }
+    .accordion-button::after {
+      filter: hue-rotate(100deg) saturate(.8);
+    }
+    .accordion-body { font-size: .95rem; color: #4B5563; }
+
+    /* ── CTA SECTION ── */
+    .cta-section {
+      background: linear-gradient(135deg, var(--lbi-green-dark), #0d2b1a);
+      border-radius: 12px; padding: 48px 44px;
+      position: relative; overflow: hidden;
+    }
+    .cta-section::before {
+      content: ''; position: absolute; top: -80px; right: -80px;
+      width: 260px; height: 260px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(64,145,108,.28), transparent 70%);
+    }
+    .cta-section h2 {
+      font-size: 1.4rem; font-weight: 900; color: #fff;
+      margin-bottom: 10px; position: relative; z-index: 1;
+    }
+    .cta-section p {
+      color: rgba(255,255,255,.6); font-size: .96rem;
+      position: relative; z-index: 1;
+    }
+    .cta-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--lbi-accent); color: var(--lbi-green-dark);
+      padding: 12px 28px; border-radius: 5px;
+      font-weight: 900; font-size: .92rem; text-decoration: none;
+      transition: all .2s; position: relative; z-index: 1;
+      white-space: nowrap;
+    
+      font-family: 'DM Sans', sans-serif;
+    }
+    .cta-primary:hover { background: #fff; color: var(--lbi-green-dark); transform: translateY(-2px); }
+
+    /* ── SECTION DIVIDER ── */
+    .section-divider {
+      display: flex; align-items: center; gap: 14px;
+      margin: 40px 0 32px;
+    }
+    .section-divider::before, .section-divider::after {
+      content: ''; flex: 1; height: 1px; background: var(--line);
+    }
+    .section-divider span {
+      font-size: .68rem; font-weight: 700;
+      letter-spacing: .14em; color: var(--muted);
+      white-space: nowrap; text-transform: uppercase;
+    
+      font-family: 'DM Mono', monospace;
+    }
+
+    /* ── FOOTER ── */
+    .site-footer {
+      background: var(--lbi-green-dark);
+      padding: 44px 0 28px; margin-top: 72px;
+    }
+    .site-footer .footer-logo img { height: 36px; width: auto; margin-bottom: 12px; }
+    .site-footer .footer-tagline { font-size: .85rem; color: rgba(255,255,255,.5); margin-bottom: 3px; font-weight: 300; }
+    .site-footer .footer-company { font-size: .78rem; color: rgba(255,255,255,.32); font-weight: 300; }
+    .site-footer .ibm-badge img { height: 32px; width: auto; opacity: .72; }
+    .site-footer .ibm-badge span {
+      display: block; font-size: .65rem; font-weight: 700;
+      letter-spacing: .1em; color: rgba(255,255,255,.32);
+      text-transform: uppercase; margin-top: 5px; text-align: center;
+    }
+    .footer-divider { border-color: rgba(255,255,255,.1); margin: 28px 0 20px; }
+    .footer-copy { font-size: .78rem; color: rgba(255,255,255,.3); font-weight: 300; 
+      font-family: 'DM Mono', monospace;
+    }
+    .footer-links { display: flex; gap: 18px; flex-wrap: wrap; }
+    .footer-links a {
+      font-size: .78rem; color: rgba(255,255,255,.4); font-weight: 700;
+      text-decoration: none; letter-spacing: .04em; transition: color .2s;
+    }
+    .footer-links a:hover { color: var(--lbi-accent); }
+
+    /* ── TOAST ── */
+    #toast {
+      position: fixed; bottom: 28px; right: 28px;
+      background: var(--lbi-green-dark); color: #fff;
+      padding: 11px 18px; border-radius: 8px;
+      font-size: .85rem; display: none; z-index: 9998;
+      box-shadow: 0 8px 24px rgba(0,0,0,.25);
+      align-items: center; gap: 9px;
+    }
+    #toast.show { display: flex; }
+
+    /* ── FADE IN ── */
+    .fade-in { opacity: 0; transform: translateY(22px); transition: opacity .5s ease, transform .5s ease; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── TAGS ── */
+    .tag-list { display: flex; flex-wrap: wrap; gap: 7px; }
+    .tag {
+      font-size: .68rem; font-weight: 700; letter-spacing: .07em;
+      padding: 4px 11px; border-radius: 4px;
+      background: var(--lbi-green-lite);
+      border: 1px solid rgba(45,106,79,.2);
+      color: var(--lbi-green); text-transform: uppercase;
+    
+      font-family: 'DM Mono', monospace;
+    }
+
+    /* ── SHARE ── */
+    .share-row { display: flex; gap: 9px; align-items: center; }
+    .share-label { font-size: .78rem; color: var(--muted); font-weight: 700; margin-right: 3px; }
+    .share-btn {
+      width: 36px; height: 36px; border-radius: 7px;
+      border: 1px solid var(--line); background: #fff;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted); font-size: .88rem;
+      text-decoration: none; transition: all .2s; cursor: pointer;
+    
+      font-family: 'DM Sans', sans-serif;
+    }
+    .share-btn:hover { background: var(--lbi-green); color: #fff; border-color: var(--lbi-green); }
+
+    .article-footer {
+      border-top: 1px solid var(--line);
+      padding-top: 28px; margin-top: 20px;
+      display: flex; justify-content: space-between;
+      align-items: center; flex-wrap: wrap; gap: 14px;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .hero { padding: 56px 0 48px; }
+      .section-card .card-body { padding: 24px 20px; }
+      .cta-section { padding: 36px 22px; }
+      .blog-nav .nav-label { display: none; 
+      font-family: 'DM Mono', monospace;
+    }
+      .hero-feature-box { margin-top: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<!-- ══ NAV ══ -->
+<nav class="blog-nav">
+  <div class="container">
+    <div class="inner">
+      <a href="https://latinobi-ven.com" class="logo-wrap">
+        <img src="https://latinobi-ven.com/userfiles/media/default/latino-bi-verde-oscuro-pequeno.png" alt="Latino BI" />
+      </a>
+      <div class="nav-right">
+        <span class="nav-label">IBM Planning Analytics</span>
+        <a href="https://demo.lat/planning" class="cta-btn" target="_blank">
+          <i class="fas fa-arrow-right"></i> Ver Demo
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<header class="hero">
+  <div class="hero-grid"></div>
+  <div class="container position-relative">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-7">
+        <div class="hero-tag"><i class="fas fa-circle" style="font-size:.4rem"></i>&nbsp; Planning Analytics · Plataforma de planificación</div>
+        <h1>IBM Planning Analytics: activos multidimensionales, gobernanza y planificación inteligente</h1>
+        <p class="hero-lead">Hay herramientas que solo guardan datos. Y hay plataformas que ayudan a la empresa a pensar mejor, planificar mejor y decidir con más control. IBM Planning Analytics pertenece claramente al segundo grupo.</p>
+      </div>
+      <div class="col-lg-5">
+        <div class="hero-feature-box">
+          <div class="feat-item">
+            <div class="feat-icon"><i class="fas fa-shield-alt"></i></div>
+            <span class="feat-label">Gobernanza centralizada</span>
+          </div>
+          <div class="feat-item">
+            <div class="feat-icon"><i class="fas fa-memory"></i></div>
+            <span class="feat-label">Motor en memoria</span>
+          </div>
+          <div class="feat-item">
+            <div class="feat-icon"><i class="fas fa-sync-alt"></i></div>
+            <span class="feat-label">Writeback online</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ══ MAIN ══ -->
+<main class="container mt-5">
+
+  <!-- El valor de un modelo vivo -->
+  <div class="fade-in">
+    <div class="section-label"><i class="fas fa-circle" style="font-size:.4rem"></i>&nbsp; Núcleo de la plataforma</div>
+    <div class="section-card accent-green">
+      <div class="card-body">
+        <h2 class="card-title">El valor de un modelo vivo</h2>
+        <p>Planning Analytics se construye sobre activos multidimensionales como dimensiones, cubos, reglas, atributos, procesos de Turbo Integrator y chores. Esos objetos no son solo elementos técnicos: son la forma en que el negocio queda modelado, automatizado y protegido dentro de una estructura común.</p>
+        <p>A partir de ese núcleo se crean activos de consumo como views, books y websheets, que permiten navegar, analizar y capturar información sin romper el vínculo con el servidor. En otras palabras, el modelo no se queda encerrado en la administración: se vuelve utilizable para el negocio.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-divider fade-in"><span>Capacidades clave</span></div>
+
+  <!-- Gobernanza + PAW/PAfE -->
+  <div class="row g-4 mb-4">
+    <div class="col-lg-6 fade-in">
+      <div class="section-card accent-mint h-100">
+        <div class="card-body">
+          <h2 class="card-title">Gobernanza sin fricción</h2>
+          <p>Uno de los puntos más valiosos de Planning Analytics es que centraliza el dato y, al mismo tiempo, permite colaboración controlada. El servidor TM1 mantiene la información en memoria y en un punto único de control, lo que ayuda a sostener una sola fuente de verdad.</p>
+          <p>Además, el writeback permite que los cambios hechos por usuarios autorizados se guarden en el servidor de forma controlada, mientras que los sandboxes ayudan a probar escenarios antes de publicar. El resultado es una colaboración mucho más sana: el negocio participa, pero sin perder gobierno ni trazabilidad.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6 fade-in">
+      <div class="section-card accent-green h-100">
+        <div class="card-body">
+          <h2 class="card-title">PAW y PAfE: dos puertas al mismo corazón</h2>
+          <p>Planning Analytics Workspace (PAW) es el entorno web donde se modela, administra y organiza gran parte del contenido. IBM lo posiciona como la interfaz central para trabajar con Planning Analytics, incluyendo modelado, análisis y organización de aplicaciones.</p>
+          <p>Planning Analytics for Excel (PAfE) cumple otra función complementaria: llevar la potencia del cubo al mundo de Excel sin perder la conexión con el modelo central. Quienes trabajan cómodamente en planillas siguen usando su entorno habitual, pero sobre una base gobernada y compartida.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Applications + Quote -->
+  <div class="row g-4 mb-4">
+    <div class="col-lg-7 fade-in">
+      <div class="section-card accent-gold h-100">
+        <div class="card-body">
+          <h2 class="card-title">Applications: ordenar el trabajo, no solo los datos</h2>
+          <p>Otro concepto clave son las applications. IBM permite agrupar books, views y websheets en secciones para ordenar el trabajo por proceso, área o ciclo de planificación. Esa organización transforma un conjunto de objetos técnicos en una experiencia clara y navegable para el usuario de negocio.</p>
+          <p>En vez de entregar contenido disperso, puedes estructurar una aplicación para presupuesto, otra para forecast y otra para análisis de variaciones. Así, el usuario no solo encuentra datos: encuentra un flujo de trabajo completo.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-5 fade-in">
+      <div class="quote-card h-100 d-flex flex-column justify-content-center">
+        <span class="quote-label"><i class="fas fa-quote-left me-1"></i> La idea central</span>
+        <p>Planning Analytics no solo administra datos; administra la forma en que la empresa construye su verdad operativa.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-divider fade-in"><span>Versatilidad e impacto</span></div>
+
+  <!-- Dónde encaja + Por qué importa -->
+  <div class="row g-4 mb-4">
+    <div class="col-lg-6 fade-in">
+      <div class="section-card accent-mint h-100">
+        <div class="card-body">
+          <h2 class="card-title">Dónde encaja mejor</h2>
+          <p>Planning Analytics funciona indistintamente para presupuesto, forecast, reporting, análisis de escenarios, control de gestión y planificación operativa. Esa versatilidad es una de sus grandes ventajas: la misma plataforma puede adaptarse a diferentes áreas sin perder consistencia.</p>
+          <p>IBM lo presenta como una solución integrada para agilizar planning, budgeting y forecasting, con capacidades de análisis más ágiles, actualizaciones en tiempo real y mejores escenarios de decisión. Por eso no es raro que una misma implementación termine apoyando finanzas, supply chain, ventas o workforce planning.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6 fade-in">
+      <div class="section-card accent-green h-100">
+        <div class="card-body">
+          <h2 class="card-title">Por qué importa en proyectos reales</h2>
+          <p>En un proyecto real, la diferencia no la hace solo el cubo. La hace la forma en que el cubo se integra con los procesos, con la experiencia del usuario y con la gobernanza de la información.</p>
+          <p>Cuando todo está bien diseñado, Planning Analytics reduce reprocesos, mejora la trazabilidad y acelera la toma de decisiones. El negocio ve una aplicación ordenada; TI ve un modelo gobernado; y ambos trabajan sobre el mismo dato.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cierre comercial -->
+  <div class="fade-in">
+    <div class="section-card accent-gold">
+      <div class="card-body">
+        <h2 class="card-title">Cierre comercial</h2>
+        <p>Si una empresa quiere pasar de planillas dispersas a una plataforma realmente gobernada, Planning Analytics ofrece una propuesta sólida y muy bien alineada con el mundo actual. Su combinación de memoria, control centralizado, writeback, colaboración y organización por aplicaciones lo vuelve especialmente atractivo para organizaciones que necesitan velocidad sin sacrificar orden.</p>
+        <p>En una frase: Planning Analytics no solo administra datos; administra la forma en que la empresa construye su verdad operativa. Y eso, en entornos donde cada decisión cuenta, vale muchísimo más que un simple reporte.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-divider fade-in"><span>Preguntas frecuentes</span></div>
+
+  <!-- FAQ -->
+  <div class="fade-in mb-4">
+    <div class="section-card">
+      <div class="card-body">
+        <div class="section-label mb-3"><i class="fas fa-circle" style="font-size:.4rem"></i>&nbsp; Preguntas rápidas</div>
+        <div class="accordion" id="faqAccordion">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="faq1">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1">
+                ¿Planning Analytics reemplaza Excel?
+              </button>
+            </h2>
+            <div id="collapse1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">No. Lo complementa. PAfE permite seguir trabajando en Excel conectado al modelo central, manteniendo el entorno familiar del usuario sobre una base gobernada.</div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="faq2">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2">
+                ¿PAW sirve solo para ver información?
+              </button>
+            </h2>
+            <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">No. PAW también permite modelar, administrar y organizar el contenido de negocio. Es la interfaz central de la plataforma.</div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="faq3">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3">
+                ¿Qué aporta el writeback?
+              </button>
+            </h2>
+            <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">Permite guardar cambios en el servidor de forma controlada y compartirlos con usuarios autorizados, manteniendo trazabilidad completa.</div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="faq4">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4">
+                ¿Para qué áreas sirve?
+              </button>
+            </h2>
+            <div id="collapse4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">Para finanzas, ventas, supply chain, workforce, IT y otros escenarios de planificación y análisis. La misma plataforma se adapta sin perder consistencia.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section fade-in">
+    <div class="row align-items-center g-4">
+      <div class="col-lg-9">
+        <h2>¿Quieres llevar este enfoque a tu organización?</h2>
+        <p class="mb-0">Si todavía trabajas con planillas dispersas y versiones paralelas, Planning Analytics puede ser el siguiente paso natural hacia una planificación más gobernada, colaborativa y escalable.</p>
+      </div>
+      <div class="col-lg-3 text-lg-end">
+        <a href="https://demo.lat/planning" class="cta-primary" target="_blank">
+          Conocer más &nbsp;<i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Article footer / tags / share -->
+  <div class="article-footer fade-in">
+    <div class="tag-list">
+      <span class="tag">IBM Planning Analytics</span>
+      <span class="tag">TM1</span>
+      <span class="tag">PAW</span>
+      <span class="tag">PAfE</span>
+      <span class="tag">Writeback</span>
+      <span class="tag">Gobernanza</span>
+    </div>
+    <div class="share-row">
+      <span class="share-label">Compartir</span>
+      <a class="share-btn" id="shareLinkedIn" href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+      <a class="share-btn" id="shareTwitter" href="#" title="Twitter / X"><i class="fab fa-twitter"></i></a>
+      <button class="share-btn" id="copyLink" title="Copiar enlace"><i class="fas fa-link"></i></button>
+    </div>
+  </div>
+
+</main>
+
+<!-- ══ FOOTER ══ -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-6 mb-4 mb-md-0">
+        <div class="footer-logo">
+          <img src="https://latinobi-ven.com/userfiles/media/default/latino-bi-blanco-pequeno.png" alt="Latino BI" />
+        </div>
+        <div class="footer-tagline">Latinoamericana de Business Intelligence C.A.</div>
+        <div class="footer-company">Partners certificados IBM · Business Intelligence &amp; Analytics</div>
+      </div>
+      <div class="col-md-6 text-md-end">
+        <div class="ibm-badge d-inline-block">
+          <img src="https://latinobi-ven.com/userfiles/media/default/ibm-blanco.png" alt="IBM Partner" />
+          <span>IBM Business Partner</span>
+        </div>
+      </div>
+    </div>
+    <hr class="footer-divider">
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+      <div class="footer-copy">&copy; 2024 Latino BI · Todos los derechos reservados</div>
+      <div class="footer-links">
+        <a href="https://latinobi-ven.com">Inicio</a>
+        <a href="https://latinobi-ven.com/ibm-planning-analytics">Planning Analytics</a>
+        <a href="https://demo.lat/planning">Demo</a>
+        <a href="https://latinobi-ven.com/contacto">Contacto</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div id="toast"><i class="fas fa-check"></i>&nbsp; Enlace copiado al portapapeles</div>
+
+<!-- Scripts estándar Latino BI -->
+<script type="text/javascript" src="https://latinobi-ven.com/userfiles/modules/microweber/api/libs/bootstrap5/js/bootstrap.bundle.min.js?mwv=1.3.2"></script>
+<script type="text/javascript" src="https://latinobi-ven.com/userfiles/modules/microweber/api/libs/bootstrap-select-1.13.12/js/bootstrap-select.min.js?mwv=1.3.2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<script>
+$(function () {
+
+  /* Progress bar */
+  $(window).on('scroll', function () {
+    var pct = ($(document).scrollTop() / ($(document).height() - $(window).height())) * 100;
+    $('#progress-bar').css('width', pct + '%');
+  });
+
+  /* Fade-in on scroll */
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { $(e.target).addClass('visible'); }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+  $('.fade-in').each(function () { obs.observe(this); });
+
+  /* Copy link */
+  $('#copyLink').on('click', function (e) {
+    e.preventDefault();
+    navigator.clipboard.writeText(window.location.href).then(function () {
+      $('#toast').addClass('show');
+      setTimeout(function () { $('#toast').removeClass('show'); }, 2800);
+    });
+  });
+
+  /* Share */
+  var pageUrl   = encodeURIComponent(window.location.href);
+  var pageTitle = encodeURIComponent(document.title);
+  $('#shareLinkedIn').attr('href', 'https://www.linkedin.com/sharing/share-offsite/?url=' + pageUrl);
+  $('#shareTwitter').attr('href',  'https://twitter.com/intent/tweet?url=' + pageUrl + '&text=' + pageTitle);
+  $('[id^="share"]').attr('target', '_blank').attr('rel', 'noopener');
+
+  /* FAQ smooth scroll */
+  $('.accordion-button').on('click', function () {
+    setTimeout(function () {
+      $('html, body').animate({ scrollTop: $('#faqAccordion').offset().top - 80 }, 200);
+    }, 150);
+  });
+
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,169 @@
+<svg width="800" height="800" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#0d1520;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1a2332;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Shopping cart definition -->
+    <g id="cart-up">
+      <!-- Green cart (bullish) -->
+      <path d="M -15,-8 L -12,-8 L -8,8 L 8,8 L 12,-8 L 15,-8" 
+            fill="none" stroke="#00d4aa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="-4" cy="12" r="2" fill="#00d4aa"/>
+      <circle cx="4" cy="12" r="2" fill="#00d4aa"/>
+      <!-- Items in cart -->
+      <rect x="-6" y="-3" width="4" height="6" fill="#00d4aa" opacity="0.7" rx="1"/>
+      <rect x="-1" y="-5" width="4" height="8" fill="#00d4aa" opacity="0.9" rx="1"/>
+      <rect x="4" y="-1" width="4" height="4" fill="#00d4aa" opacity="0.6" rx="1"/>
+    </g>
+    
+    <g id="cart-down">
+      <!-- Red cart (bearish) -->
+      <path d="M -15,-8 L -12,-8 L -8,8 L 8,8 L 12,-8 L 15,-8" 
+            fill="none" stroke="#ff3d5a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="-4" cy="12" r="2" fill="#ff3d5a"/>
+      <circle cx="4" cy="12" r="2" fill="#ff3d5a"/>
+      <!-- Items in cart -->
+      <rect x="-6" y="0" width="4" height="3" fill="#ff3d5a" opacity="0.7" rx="1"/>
+      <rect x="-1" y="-2" width="4" height="5" fill="#ff3d5a" opacity="0.9" rx="1"/>
+      <rect x="4" y="1" width="4" height="2" fill="#ff3d5a" opacity="0.6" rx="1"/>
+    </g>
+    
+    <g id="cart-white">
+      <!-- White cart (neutral/highlight) -->
+      <path d="M -15,-8 L -12,-8 L -8,8 L 8,8 L 12,-8 L 15,-8" 
+            fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="-4" cy="12" r="2" fill="#ffffff"/>
+      <circle cx="4" cy="12" r="2" fill="#ffffff"/>
+      <!-- Items in cart -->
+      <rect x="-6" y="-1" width="4" height="4" fill="#ffffff" opacity="0.7" rx="1"/>
+      <rect x="-1" y="-3" width="4" height="6" fill="#ffffff" opacity="0.9" rx="1"/>
+      <rect x="4" y="0" width="4" height="3" fill="#ffffff" opacity="0.6" rx="1"/>
+    </g>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="800" fill="url(#bgGrad)"/>
+  
+  <!-- Subtle grid lines -->
+  <g opacity="0.05">
+    <line x1="0" y1="200" x2="800" y2="200" stroke="#fff" stroke-width="1"/>
+    <line x1="0" y1="400" x2="800" y2="400" stroke="#fff" stroke-width="1"/>
+    <line x1="0" y1="600" x2="800" y2="600" stroke="#fff" stroke-width="1"/>
+    <line x1="200" y1="0" x2="200" y2="800" stroke="#fff" stroke-width="1"/>
+    <line x1="400" y1="0" x2="400" y2="800" stroke="#fff" stroke-width="1"/>
+    <line x1="600" y1="0" x2="600" y2="800" stroke="#fff" stroke-width="1"/>
+  </g>
+  
+  <!-- Trend curve with area underneath -->
+  <defs>
+    <linearGradient id="areaGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#00d4aa;stop-opacity:0.25" />
+      <stop offset="100%" style="stop-color:#00d4aa;stop-opacity:0" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Area bajo la curva -->
+  <path d="M 50,575 
+           Q 100,555 100,555
+           T 200,510
+           T 300,435
+           T 400,365
+           T 500,365
+           T 600,225
+           T 700,180
+           L 750,158
+           L 750,800 L 50,800 Z" 
+        fill="url(#areaGradient)"/>
+  
+  <!-- Curva de tendencia -->
+  <path d="M 50,575 
+           Q 100,555 100,555
+           T 200,510
+           T 300,435
+           T 400,365
+           T 500,365
+           T 600,225
+           T 700,180
+           L 750,158" 
+        fill="none" 
+        stroke="#00d4aa" 
+        stroke-width="3" 
+        stroke-linecap="round"
+        opacity="0.8"/>
+  
+  <!-- Candlestick Chart with Shopping Carts (NO rectangles, only wicks + carts) -->
+  
+  <!-- Candle 1 - Bullish (GREEN) -->
+  <g transform="translate(100, 650)">
+    <!-- Wick superior (máximo) -->
+    <line x1="0" y1="-95" x2="0" y2="-110" stroke="#00d4aa" stroke-width="3" stroke-linecap="round"/>
+    <!-- Wick inferior (mínimo) -->
+    <line x1="0" y1="-55" x2="0" y2="20" stroke="#00d4aa" stroke-width="3" stroke-linecap="round"/>
+    <!-- Cart en el centro (donde estaba el cuerpo) -->
+    <use href="#cart-up" transform="scale(2.2) translate(0, -36)"/>
+  </g>
+  
+  <!-- Candle 2 - Bearish (RED) -->
+  <g transform="translate(200, 580)">
+    <!-- Wick superior -->
+    <line x1="0" y1="-70" x2="0" y2="-85" stroke="#ff3d5a" stroke-width="3" stroke-linecap="round"/>
+    <!-- Wick inferior -->
+    <line x1="0" y1="-30" x2="0" y2="15" stroke="#ff3d5a" stroke-width="3" stroke-linecap="round"/>
+    <!-- Cart en el centro -->
+    <use href="#cart-down" transform="scale(2.2) translate(0, -26)"/>
+  </g>
+  
+  <!-- Candle 3 - Bullish (GREEN) -->
+  <g transform="translate(300, 520)">
+    <!-- Wick superior -->
+    <line x1="0" y1="-110" x2="0" y2="-130" stroke="#00d4aa" stroke-width="3" stroke-linecap="round"/>
+    <!-- Wick inferior -->
+    <line x1="0" y1="-65" x2="0" y2="25" stroke="#00d4aa" stroke-width="3" stroke-linecap="round"/>
+    <!-- Cart en el centro -->
+    <use href="#cart-up" transform="scale(2.2) translate(0, -45)"/>
+  </g>
+  
+  <!-- Candle 4 - Bullish (GREEN) -->
+  <g transform="translate(400, 450)">
+    <!-- Wick superior -->
+    <line x1="0" y1="-85" x2="0" y2="-105" stroke="#00d4aa" stroke-width="3" stroke-linecap="round"/>
+    <!-- Wick inferior -->
+    <line x1="0" y1="-50" x2="0" y2="18" stroke="#00d4aa" stroke-width="3" stroke-linecap="round"/>
+    <!-- Cart en el centro -->
+    <use href="#cart-up" transform="scale(2.2) translate(0, -33)"/>
+  </g>
+  
+  <!-- Candle 5 - Neutral/Highlight (WHITE) -->
+  <g transform="translate(500, 420)">
+    <!-- Wick superior -->
+    <line x1="0" y1="-55" x2="0" y2="-70" stroke="#ffffff" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+    <!-- Wick inferior -->
+    <line x1="0" y1="-25" x2="0" y2="12" stroke="#ffffff" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+    <!-- Cart blanco en el centro -->
+    <use href="#cart-white" transform="scale(2.2) translate(0, -20)"/>
+  </g>
+  
+  <!-- Candle 6 - Bullish (GREEN) -->
+  <g transform="translate(600, 350)">
+    <!-- Wick superior -->
+    <line x1="0" y1="-125" x2="0" y2="-145" stroke="#00d4aa" stroke-width="3" stroke-linecap="round"/>
+    <!-- Wick inferior -->
+    <line x1="0" y1="-75" x2="0" y2="28" stroke="#00d4aa" stroke-width="3" stroke-linecap="round"/>
+    <!-- Cart en el centro -->
+    <use href="#cart-up" transform="scale(2.2) translate(0, -50)"/>
+  </g>
+  
+  <!-- Candle 7 - Bullish (GREEN) -->
+  <g transform="translate(700, 280)">
+    <!-- Wick superior -->
+    <line x1="0" y1="-100" x2="0" y2="-120" stroke="#00d4aa" stroke-width="3" stroke-linecap="round"/>
+    <!-- Wick inferior -->
+    <line x1="0" y1="-60" x2="0" y2="22" stroke="#00d4aa" stroke-width="3" stroke-linecap="round"/>
+    <!-- Cart en el centro -->
+    <use href="#cart-up" transform="scale(2.2) translate(0, -40)"/>
+  </g>
+  
+</svg>

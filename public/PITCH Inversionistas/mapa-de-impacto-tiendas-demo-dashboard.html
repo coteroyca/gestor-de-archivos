@@ -1041,135 +1041,139 @@
         // ================================================================
         // DASHBOARD 1: DIAGNÓSTICO 4×3 CON DONUT + MAPA + SPARKLINES
         // ================================================================
-        function renderDiagnostico() {
-            const counts = contarTipos();
-            const total = tiendas.length;
-            const historicoTipos = contarTiposHistorico();
+function renderDiagnostico() {
+    const counts = contarTipos();
+    const total = tiendas.length;
+    const historicoTipos = contarTiposHistorico();
 
-            return `
-                        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
-                            <div class="breadcrumb"><span class="active-crumb">Diagnóstico 4×3</span></div>
-                            <div class="drill-tabs">
-                                <div class="drill-tab active">Holding</div>
-                                <div class="drill-tab">Sucursales</div>
-                            </div>
-                        </div>
+    return `
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+            <div class="breadcrumb"><span class="active-crumb">Diagnóstico 4×3</span></div>
+            <div class="drill-tabs">
+                <div class="drill-tab active">Holding</div>
+                <div class="drill-tab">Sucursales</div>
+            </div>
+        </div>
 
-                        <!-- KPI ROW CON SPARKLINES -->
-                        <div class="kpi-row">
-                            <div class="kpi">
-                                <div class="kpi-label">🟢 JOYA</div>
-                                <div class="kpi-value">${counts.JOYA}</div>
-                                <div class="kpi-delta up">▲ ${counts.JOYA > 4 ? '+1 vs trimestre' : 'estable'}</div>
-                                <div class="kpi-spark">${sparklineKPI('JOYA', '#00E676')}</div>
-                            </div>
-                            <div class="kpi">
-                                <div class="kpi-label">🟡 APUESTA</div>
-                                <div class="kpi-value">${counts.APUESTA}</div>
-                                <div class="kpi-delta flat">→ sin cambios</div>
-                                <div class="kpi-spark">${sparklineKPI('APUESTA', '#D4AF37')}</div>
-                            </div>
-                            <div class="kpi">
-                                <div class="kpi-label">🟠 BUNKER</div>
-                                <div class="kpi-value">${counts.BUNKER}</div>
-                                <div class="kpi-delta flat">→ sin cambios</div>
-                                <div class="kpi-spark">${sparklineKPI('BUNKER', '#FFA500')}</div>
-                            </div>
-                            <div class="kpi">
-                                <div class="kpi-label">🔴 LASTRE</div>
-                                <div class="kpi-value">${counts.LASTRE}</div>
-                                <div class="kpi-delta down">▼ ${counts.LASTRE > 0 ? '1 tienda en riesgo' : 'ninguna'}</div>
-                                <div class="kpi-spark">${sparklineKPI('LASTRE', '#FF4D4D')}</div>
-                            </div>
-                        </div>
+        <!-- KPI ROW CON SPARKLINES -->
+        <div class="kpi-row">
+            <div class="kpi">
+                <div class="kpi-label">🟢 JOYA</div>
+                <div class="kpi-value">${counts.JOYA}</div>
+                <div class="kpi-delta up">▲ ${counts.JOYA > 4 ? '+1 vs trimestre' : 'estable'}</div>
+                <div class="kpi-spark">${sparklineKPI('JOYA', '#00E676')}</div>
+            </div>
+            <div class="kpi">
+                <div class="kpi-label">🟡 APUESTA</div>
+                <div class="kpi-value">${counts.APUESTA}</div>
+                <div class="kpi-delta flat">→ sin cambios</div>
+                <div class="kpi-spark">${sparklineKPI('APUESTA', '#D4AF37')}</div>
+            </div>
+            <div class="kpi">
+                <div class="kpi-label">🟠 BUNKER</div>
+                <div class="kpi-value">${counts.BUNKER}</div>
+                <div class="kpi-delta flat">→ sin cambios</div>
+                <div class="kpi-spark">${sparklineKPI('BUNKER', '#FFA500')}</div>
+            </div>
+            <div class="kpi">
+                <div class="kpi-label">🔴 LASTRE</div>
+                <div class="kpi-value">${counts.LASTRE}</div>
+                <div class="kpi-delta down">▼ ${counts.LASTRE > 0 ? '1 tienda en riesgo' : 'ninguna'}</div>
+                <div class="kpi-spark">${sparklineKPI('LASTRE', '#FF4D4D')}</div>
+            </div>
+        </div>
 
-                        <!-- DONUT CHART + MAPA (2 columnas) -->
-                        <div class="two-col">
-                            <div class="panel">
-                                <div class="panel-title">Composición de la Red</div>
-                                <div class="donut-wrap">
-                                    <div class="donut-container">
-                                        <canvas id="donutChart"></canvas>
-                                        <div class="donut-center">
-                                            <div class="total">${total}</div>
-                                            <div class="label">Tiendas</div>
-                                        </div>
-                                    </div>
-                                    <div class="donut-legend">
-                                        ${['JOYA','APUESTA','BUNKER','LASTRE'].map(tipo => `
-                                            <div class="donut-legend-item">
-                                                <div class="donut-legend-dot" style="background:${colorTipoHex(tipo)};"></div>
-                                                ${tipo} <span style="color:#fff;font-weight:700;margin-left:4px;">${counts[tipo]}</span>
-                                                <span style="color:var(--steel-muted);font-size:10px;">(${((counts[tipo]/total)*100).toFixed(0)}%)</span>
-                                            </div>
-                                        `).join('')}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="panel">
-                                <div class="panel-title">🗺️ Ubicación de Tiendas</div>
-                                ${renderMapaBurbujas()}
-                            </div>
+        <!-- DONUT CHART + MAPA (2 columnas) -->
+        <div class="two-col">
+            <div class="panel">
+                <div class="panel-title">Composición de la Red</div>
+                <div class="donut-wrap">
+                    <div class="donut-container">
+                        <canvas id="donutChart"></canvas>
+                        <div class="donut-center">
+                            <div class="total">${total}</div>
+                            <div class="label">Tiendas</div>
                         </div>
+                    </div>
+                    <div class="donut-legend">
+                        ${['JOYA','APUESTA','BUNKER','LASTRE'].map(tipo => `
+                            <div class="donut-legend-item">
+                                <div class="donut-legend-dot" style="background:${colorTipoHex(tipo)};"></div>
+                                ${tipo} <span style="color:#fff;font-weight:700;margin-left:4px;">${counts[tipo]}</span>
+                                <span style="color:var(--steel-muted);font-size:10px;">(${((counts[tipo]/total)*100).toFixed(0)}%)</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            </div>
+            <div class="panel">
+                <div class="panel-title">🗺️ Ubicación de Tiendas</div>
+                ${renderMapaBurbujas()}
+            </div>
+        </div>
 
-                        <!-- TABLA DIAGNÓSTICO -->
-                        <div style="font-size:10px;font-weight:700;color:var(--rolex-gold);letter-spacing:1px;text-transform:uppercase;font-family:'Cinzel';">Evaluación por Tienda · Últimos 6 meses</div>
-                        <div style="overflow-x:auto;">
-                            <table class="matrix-table">
-                                <thead><tr>
-                                    <th>Tienda</th>
-                                    <th>Ciudad</th>
-                                    <th>Salud</th>
-                                    <th>Resiliencia</th>
-                                    <th>Potencial</th>
-                                    <th>Exposición</th>
-                                    <th>Tipología</th>
-                                    <th>Tendencia</th>
-                                    <th>Evolución 6m</th>
-                                </tr></thead>
-                                <tbody>
-                                    ${tiendas.map(t => {
-                                        const trend = calcularTendencia(t.historico, 'salud');
-                                        const trendLabel = trend.direccion === 'up' ? '▲ Mejora' : trend.direccion === 'down' ? '▼ Deterioro' : '→ Estable';
-                                        const trendClass = trend.direccion === 'up' ? 'up' : trend.direccion === 'down' ? 'down' : 'flat';
-                                        const color = colorTipo(t.tipo);
-                                        const valores = t.historico.map(h => h.salud);
-                                        return `
-                                            <tr class="${t.tipo.toLowerCase()}">
-                                                <td style="font-weight:600;color:#fff;">${t.nombre}</td>
-                                                <td style="color:var(--steel-muted);">${t.ciudad}</td>
-                                                <td>${t.salud.toFixed(1)}</td>
-                                                <td>${t.resiliencia.toFixed(1)}</td>
-                                                <td>${t.potencial.toFixed(1)}</td>
-                                                <td>${t.exposicion.toFixed(1)}</td>
-                                                <td><strong>${t.tipo}</strong></td>
-                                                <td><span class="trend-badge ${trendClass}">${trendLabel}</span></td>
-                                                <td class="sparkline-cell">${sparklineSVG(valores, color)}</td>
-                                            </tr>
-                                        `;
-                                    }).join('')}
-                                </tbody>
-                            </table>
-                        </div>
+        <!-- ============================================================ -->
+        <!-- TABLA DIAGNÓSTICO (CORREGIDA) -->
+        <!-- ============================================================ -->
+        <div style="font-size:10px;font-weight:700;color:var(--rolex-gold);letter-spacing:1px;text-transform:uppercase;font-family:'Cinzel';margin-top:8px;">Evaluación por Tienda · Últimos 6 meses</div>
+        <div style="overflow-x:auto;">
+            <table class="matrix-table">
+                <thead>
+                    <tr>
+                        <th>Tienda</th>
+                        <th>Ciudad</th>
+                        <th>Salud</th>
+                        <th>Resiliencia</th>
+                        <th>Potencial</th>
+                        <th>Exposición</th>
+                        <th>Tipología</th>
+                        <th>Tendencia</th>
+                        <th>Evolución 6m</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${tiendas.map(t => {
+                        const trend = calcularTendencia(t.historico, 'salud');
+                        const trendLabel = trend.direccion === 'up' ? '▲ Mejora' : trend.direccion === 'down' ? '▼ Deterioro' : '→ Estable';
+                        const trendClass = trend.direccion === 'up' ? 'up' : trend.direccion === 'down' ? 'down' : 'flat';
+                        const color = colorTipo(t.tipo);
+                        const valores = t.historico.map(h => h.salud);
+                        return `
+                            <tr class="${t.tipo.toLowerCase()}">
+                                <td style="font-weight:600;color:#fff;">${t.nombre}</td>
+                                <td style="color:var(--steel-muted);">${t.ciudad}</td>
+                                <td>${t.salud.toFixed(1)}</td>
+                                <td>${t.resiliencia.toFixed(1)}</td>
+                                <td>${t.potencial.toFixed(1)}</td>
+                                <td>${t.exposicion.toFixed(1)}</td>
+                                <td><strong>${t.tipo}</strong></td>
+                                <td><span class="trend-badge ${trendClass}">${trendLabel}</span></td>
+                                <td class="sparkline-cell">${sparklineSVG(valores, color)}</td>
+                            </tr>
+                        `;
+                    }).join('')}
+                </tbody>
+            </table>
+        </div>
 
-                        <div class="narrative-box">
-                            <div class="narr-header"><span class="narr-icon">🧠</span><span class="narr-title">Narrativa IA · Diagnóstico con Histórico</span></div>
-                            <div class="narr-text">
-                                La red tiene <strong>${counts.JOYA} tiendas JOYA</strong> (${((counts.JOYA/total)*100).toFixed(0)}% del total) que son el motor de crecimiento. 
-                                <strong>${counts.APUESTA} tiendas APUESTA</strong> requieren inversión controlada. 
-                                Las <strong>${counts.BUNKER} tiendas BUNKER</strong> son estables pero sin crecimiento. 
-                                <strong>${counts.LASTRE} tienda(s) LASTRE</strong> debe(n) ser evaluadas para cierre.
-                                <br><br>
-                                <strong>Tendencias destacadas:</strong> 
-                                ${tiendas.filter(t => calcularTendencia(t.historico, 'salud').direccion === 'up').length} tiendas están mejorando su salud.
-                                ${tiendas.filter(t => calcularTendencia(t.historico, 'salud').direccion === 'down').length} tiendas muestran deterioro.
-                                <span style="color:var(--rolex-gold);">◆</span> La composición de la red ha mejorado en los últimos 6 meses: 
-                                <span class="trend-badge up">+${counts.JOYA - historicoTipos[meses[0]].JOYA} JOYA</span>
-                                <span class="trend-badge down">${counts.LASTRE - historicoTipos[meses[0]].LASTRE > 0 ? '+' : ''}${counts.LASTRE - historicoTipos[meses[0]].LASTRE} LASTRE</span>
-                            </div>
-                        </div>
-                    `;
-        }
+        <div class="narrative-box">
+            <div class="narr-header"><span class="narr-icon">🧠</span><span class="narr-title">Narrativa IA · Diagnóstico con Histórico</span></div>
+            <div class="narr-text">
+                La red tiene <strong>${counts.JOYA} tiendas JOYA</strong> (${((counts.JOYA/total)*100).toFixed(0)}% del total) que son el motor de crecimiento. 
+                <strong>${counts.APUESTA} tiendas APUESTA</strong> requieren inversión controlada. 
+                Las <strong>${counts.BUNKER} tiendas BUNKER</strong> son estables pero sin crecimiento. 
+                <strong>${counts.LASTRE} tienda(s) LASTRE</strong> debe(n) ser evaluadas para cierre.
+                <br><br>
+                <strong>Tendencias destacadas:</strong> 
+                ${tiendas.filter(t => calcularTendencia(t.historico, 'salud').direccion === 'up').length} tiendas están mejorando su salud.
+                ${tiendas.filter(t => calcularTendencia(t.historico, 'salud').direccion === 'down').length} tiendas muestran deterioro.
+                <span style="color:var(--rolex-gold);">◆</span> La composición de la red ha mejorado en los últimos 6 meses: 
+                <span class="trend-badge up">+${counts.JOYA - historicoTipos[meses[0]].JOYA} JOYA</span>
+                <span class="trend-badge down">${counts.LASTRE - historicoTipos[meses[0]].LASTRE > 0 ? '+' : ''}${counts.LASTRE - historicoTipos[meses[0]].LASTRE} LASTRE</span>
+            </div>
+        </div>
+    `;
+}
 
         // ================================================================
         // OTROS DASHBOARDS (versiones simplificadas)

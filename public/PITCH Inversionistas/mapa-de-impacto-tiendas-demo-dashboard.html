@@ -1046,6 +1046,9 @@ function renderDiagnostico() {
     const total = tiendas.length;
     const historicoTipos = contarTiposHistorico();
 
+    // Depuración: verifica que los datos existen
+    console.log('Renderizando Diagnóstico con', tiendas.length, 'tiendas');
+
     return `
         <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
             <div class="breadcrumb"><span class="active-crumb">Diagnóstico 4×3</span></div>
@@ -1113,14 +1116,16 @@ function renderDiagnostico() {
         </div>
 
         <!-- ============================================================ -->
-        <!-- TABLA DIAGNÓSTICO (CORREGIDA) -->
+        <!-- TABLA DIAGNÓSTICO CON SPARKLINES (AHORA SÍ VISIBLE) -->
         <!-- ============================================================ -->
-        <div style="font-size:10px;font-weight:700;color:var(--rolex-gold);letter-spacing:1px;text-transform:uppercase;font-family:'Cinzel';margin-top:8px;">Evaluación por Tienda · Últimos 6 meses</div>
-        <div style="overflow-x:auto;">
+        <div style="font-size:10px;font-weight:700;color:var(--rolex-gold);letter-spacing:1px;text-transform:uppercase;font-family:'Cinzel';margin-top:24px;padding-top:12px;border-top:1px solid var(--border-deep);">
+            📋 Evaluación por Tienda · Últimos 6 meses
+        </div>
+        <div style="overflow-x:auto;margin-top:8px;">
             <table class="matrix-table">
                 <thead>
                     <tr>
-                        <th>Tienda</th>
+                        <th style="min-width:120px;">Tienda</th>
                         <th>Ciudad</th>
                         <th>Salud</th>
                         <th>Resiliencia</th>
@@ -1128,7 +1133,7 @@ function renderDiagnostico() {
                         <th>Exposición</th>
                         <th>Tipología</th>
                         <th>Tendencia</th>
-                        <th>Evolución 6m</th>
+                        <th style="min-width:80px;">Evolución 6m</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -1140,7 +1145,7 @@ function renderDiagnostico() {
                         const valores = t.historico.map(h => h.salud);
                         return `
                             <tr class="${t.tipo.toLowerCase()}">
-                                <td style="font-weight:600;color:#fff;">${t.nombre}</td>
+                                <td style="font-weight:600;color:#fff;text-align:left;padding-left:12px;">${t.nombre}</td>
                                 <td style="color:var(--steel-muted);">${t.ciudad}</td>
                                 <td>${t.salud.toFixed(1)}</td>
                                 <td>${t.resiliencia.toFixed(1)}</td>
@@ -1557,11 +1562,12 @@ function renderDiagnostico() {
                 chartInstance = null; }
 
             switch (vista) {
-                case 'diagnostico':
-                    document.getElementById('mainContent').innerHTML = renderDiagnostico();
-                    setTimeout(() => renderDonut(), 100);
-                    break;
-                case 'riesgo':
+case 'diagnostico':
+    document.getElementById('mainContent').innerHTML = renderDiagnostico();
+    // Esperar a que el DOM se actualice antes de renderizar el donut
+    setTimeout(() => renderDonut(), 150);
+    break;
+	case 'riesgo':
                     document.getElementById('mainContent').innerHTML = renderRiesgo();
                     break;
                 case 'eficiencia':

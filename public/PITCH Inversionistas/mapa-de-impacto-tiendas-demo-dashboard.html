@@ -12,6 +12,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
     </script>
     <style>
+        /* ===== RESET Y BASE ===== */
         * {
             margin: 0;
             padding: 0;
@@ -62,6 +63,7 @@
             border-radius: 20px;
         }
 
+        /* ===== SHELL ===== */
         .shell {
             display: grid;
             grid-template-rows: 56px 1fr;
@@ -70,7 +72,7 @@
             overflow: hidden;
         }
 
-        /* TOPBAR */
+        /* ===== TOPBAR ===== */
         .topbar {
             grid-column: 1/-1;
             background: rgba(11, 22, 18, 0.85);
@@ -134,7 +136,7 @@
             box-shadow: 0 0 8px var(--hulk-glow);
         }
 
-        /* SIDEBAR */
+        /* ===== SIDEBAR ===== */
         .sidebar {
             background: var(--surface);
             border-right: 1px solid var(--border-deep);
@@ -179,7 +181,7 @@
             text-align: center;
         }
 
-        /* MAIN */
+        /* ===== MAIN ===== */
         .main {
             overflow-y: auto;
             padding: 1.5rem;
@@ -189,7 +191,7 @@
             background: transparent;
         }
 
-        /* BREADCRUMB */
+        /* ===== BREADCRUMB ===== */
         .breadcrumb {
             display: flex;
             align-items: center;
@@ -209,7 +211,7 @@
             font-weight: 600;
         }
 
-        /* DRILL TABS */
+        /* ===== DRILL TABS ===== */
         .drill-tabs {
             display: flex;
             gap: 6px;
@@ -238,7 +240,7 @@
             box-shadow: 0 0 12px var(--hulk-glow);
         }
 
-        /* KPI CARD */
+        /* ===== KPI CARD ===== */
         .kpi-row {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -288,6 +290,16 @@
             font-size: 11px;
             font-weight: 600;
         }
+        .kpi-spark {
+            margin-top: 8px;
+            height: 24px;
+            display: flex;
+            align-items: flex-end;
+        }
+        .kpi-spark svg {
+            width: 100%;
+            height: 100%;
+        }
         .up {
             color: var(--hulk-vibrant);
             text-shadow: 0 0 6px rgba(0, 230, 118, 0.3);
@@ -299,7 +311,7 @@
             color: var(--rolex-gold);
         }
 
-        /* STATE GRID */
+        /* ===== STATE GRID ===== */
         .state-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -383,7 +395,7 @@
             font-weight: 600;
         }
 
-        /* PANELS */
+        /* ===== PANELS ===== */
         .two-col {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -406,7 +418,7 @@
             font-family: 'Cinzel', serif;
         }
 
-        /* HIERARCHY LIST */
+        /* ===== HIERARCHY LIST ===== */
         .hier-item {
             display: flex;
             align-items: center;
@@ -454,7 +466,7 @@
             font-size: 14px;
         }
 
-        /* NARRATIVE BOX */
+        /* ===== NARRATIVE BOX ===== */
         .narrative-box {
             background: linear-gradient(135deg, rgba(0, 135, 68, 0.12) 0%, rgba(15, 31, 26, 0.8) 100%);
             border: 1px solid var(--border-glow);
@@ -490,14 +502,14 @@
             font-weight: 600;
         }
 
-        /* CHART WRAP */
+        /* ===== CHART WRAP ===== */
         .chart-wrap {
             position: relative;
             height: 200px;
             margin-top: 8px;
         }
 
-        /* MATRIX TABLE */
+        /* ===== MATRIX TABLE ===== */
         .matrix-table {
             width: 100%;
             border-collapse: collapse;
@@ -545,7 +557,7 @@
             padding: 4px 8px;
         }
 
-        /* TREND BADGE */
+        /* ===== TREND BADGE ===== */
         .trend-badge {
             display: inline-flex;
             align-items: center;
@@ -571,7 +583,113 @@
             border: 1px solid rgba(212, 175, 55, 0.3);
         }
 
-        /* RESPONSIVE */
+        /* ===== MAPA DE BURBUJAS SVG ===== */
+        .map-container {
+            background: var(--abyssal);
+            border-radius: 12px;
+            border: 1px solid var(--border-deep);
+            padding: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+        .map-container svg {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .map-bubble {
+            transition: r 0.2s ease;
+            cursor: pointer;
+        }
+        .map-bubble:hover {
+            filter: drop-shadow(0 0 8px currentColor);
+        }
+        .map-label {
+            font-size: 7px;
+            fill: var(--steel-light);
+            font-weight: 600;
+            text-anchor: middle;
+            pointer-events: none;
+        }
+        .map-legend {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 6px;
+        }
+        .map-legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 9px;
+            color: var(--steel-muted);
+        }
+        .map-legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* ===== DONUT CHART WRAP ===== */
+        .donut-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+        .donut-container {
+            width: 160px;
+            height: 160px;
+            position: relative;
+        }
+        .donut-container canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+        .donut-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            pointer-events: none;
+        }
+        .donut-center .total {
+            font-size: 28px;
+            font-weight: 800;
+            font-family: 'Cinzel', serif;
+            color: #fff;
+            line-height: 1;
+        }
+        .donut-center .label {
+            font-size: 9px;
+            color: var(--steel-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .donut-legend {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .donut-legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            color: var(--steel-silver);
+        }
+        .donut-legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 720px) {
             .shell {
                 grid-template-columns: 1fr;
@@ -606,6 +724,18 @@
             .two-col {
                 grid-template-columns: 1fr;
             }
+            .donut-wrap {
+                flex-direction: column;
+                align-items: center;
+            }
+            .donut-legend {
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .map-container svg {
+                height: 180px;
+            }
         }
     </style>
 </head>
@@ -617,7 +747,7 @@
             <img src="https://gestor-de-archivos.vercel.app/assets/logos/logo-retailmind-hulk-transparente.png" alt="RetailMind 360°" style="height:32px;">
             <div class="topbar-divider"></div>
             <span style="font-size:11px;color:var(--steel-muted);letter-spacing:0.5px;">Mapa de Impacto · Demo</span>
-            <span class="topbar-badge">7 Dashboards + Histórico</span>
+            <span class="topbar-badge">8 Dashboards + Histórico</span>
             <div class="topbar-divider"></div>
             <span class="topbar-date" id="dateLabel">lunes, 31 de agosto de 2026</span>
             <div class="topbar-user" style="margin-left:auto">
@@ -643,7 +773,7 @@
 
         <!-- MAIN -->
         <div class="main" id="mainContent">
-            <!-- Aquí se inyecta el contenido dinámico -->
+            <!-- Contenido inyectado por JS -->
         </div>
     </div>
 
@@ -655,30 +785,29 @@
 
         // Datos base por tienda (valores actuales)
         const tiendasBase = [
-            { nombre: 'Plaza Norte', ciudad: 'Caracas', salud: 2.8, resiliencia: 2.9, potencial: 2.9, exposicion: 2.7,
-            tipo: 'JOYA' },
-            { nombre: 'Plaza Centro', ciudad: 'Caracas', salud: 2.7, resiliencia: 2.7, potencial: 2.8, exposicion: 2.6,
-            tipo: 'JOYA' },
-            { nombre: 'Plaza Este', ciudad: 'Caracas', salud: 2.5, resiliencia: 2.6, potencial: 2.8, exposicion: 2.5,
-            tipo: 'JOYA' },
-            { nombre: 'Plaza Oeste', ciudad: 'Caracas', salud: 2.6, resiliencia: 2.8, potencial: 2.7, exposicion: 2.8,
-            tipo: 'JOYA' },
-            { nombre: 'Plaza Sur', ciudad: 'Caracas', salud: 2.8, resiliencia: 2.7, potencial: 2.9, exposicion: 2.4,
-            tipo: 'JOYA' },
-            { nombre: 'Plaza Maracaibo', ciudad: 'Maracaibo', salud: 1.2, resiliencia: 1.0, potencial: 3.0, exposicion: 1.3,
-                tipo: 'APUESTA' },
-            { nombre: 'Plaza Valencia', ciudad: 'Valencia', salud: 1.0, resiliencia: 1.0, potencial: 2.7, exposicion: 1.3,
-                tipo: 'APUESTA' },
-            { nombre: 'Plaza Barquisimeto', ciudad: 'Barquisimeto', salud: 2.0, resiliencia: 3.0, potencial: 1.3,
+            { nombre: 'Plaza Norte', ciudad: 'Caracas', lat: 10.5, lng: -66.9, salud: 2.8, resiliencia: 2.9, potencial: 2.9,
+                exposicion: 2.7, tipo: 'JOYA' },
+            { nombre: 'Plaza Centro', ciudad: 'Caracas', lat: 10.48, lng: -66.92, salud: 2.7, resiliencia: 2.7, potencial: 2.8,
+                exposicion: 2.6, tipo: 'JOYA' },
+            { nombre: 'Plaza Este', ciudad: 'Caracas', lat: 10.52, lng: -66.85, salud: 2.5, resiliencia: 2.6, potencial: 2.8,
+                exposicion: 2.5, tipo: 'JOYA' },
+            { nombre: 'Plaza Oeste', ciudad: 'Caracas', lat: 10.46, lng: -66.95, salud: 2.6, resiliencia: 2.8, potencial: 2.7,
+                exposicion: 2.8, tipo: 'JOYA' },
+            { nombre: 'Plaza Sur', ciudad: 'Caracas', lat: 10.44, lng: -66.88, salud: 2.8, resiliencia: 2.7, potencial: 2.9,
+                exposicion: 2.4, tipo: 'JOYA' },
+            { nombre: 'Plaza Maracaibo', ciudad: 'Maracaibo', lat: 10.65, lng: -71.61, salud: 1.2, resiliencia: 1.0,
+                potencial: 3.0, exposicion: 1.3, tipo: 'APUESTA' },
+            { nombre: 'Plaza Valencia', ciudad: 'Valencia', lat: 10.18, lng: -68.00, salud: 1.0, resiliencia: 1.0,
+                potencial: 2.7, exposicion: 1.3, tipo: 'APUESTA' },
+            { nombre: 'Plaza Barquisimeto', ciudad: 'Barquisimeto', lat: 10.08, lng: -69.32, salud: 2.0, resiliencia: 3.0,
+                potencial: 1.3, exposicion: 2.0, tipo: 'BUNKER' },
+            { nombre: 'Plaza Maturín', ciudad: 'Maturín', lat: 9.75, lng: -63.18, salud: 2.0, resiliencia: 3.0, potencial: 1.0,
                 exposicion: 2.0, tipo: 'BUNKER' },
-            { nombre: 'Plaza Maturín', ciudad: 'Maturín', salud: 2.0, resiliencia: 3.0, potencial: 1.0, exposicion: 2.0,
-                tipo: 'BUNKER' },
-            { nombre: 'Plaza San Cristóbal', ciudad: 'San Cristóbal', salud: 1.0, resiliencia: 1.0, potencial: 1.0,
-                exposicion: 3.0, tipo: 'LASTRE' }
+            { nombre: 'Plaza San Cristóbal', ciudad: 'San Cristóbal', lat: 7.77, lng: -72.22, salud: 1.0, resiliencia: 1.0,
+                potencial: 1.0, exposicion: 3.0, tipo: 'LASTRE' }
         ];
 
         // Generar histórico de 6 meses para cada tienda
-        // Cada tienda tiene una "trayectoria" ligeramente diferente
         function generarHistorico(tienda, meses) {
             const historico = [];
             const seed = tienda.nombre.length * 7 + tienda.salud * 3;
@@ -688,15 +817,12 @@
             let valExposicion = tienda.exposicion - 0.3 + (seed % 8) * 0.07;
 
             for (let i = 0; i < meses.length; i++) {
-                // Añadir pequeña variación aleatoria con tendencia
-                const trend = i / meses.length * 0.4; // tendencia general
+                const trend = i / meses.length * 0.4;
                 const noise = (Math.sin(i * 0.8 + seed) * 0.15) + (Math.random() * 0.1 - 0.05);
-
                 valSalud = Math.max(0.5, Math.min(3.0, valSalud + 0.04 * trend + noise * 0.3));
                 valResiliencia = Math.max(0.5, Math.min(3.0, valResiliencia + 0.03 * trend + noise * 0.25));
                 valPotencial = Math.max(0.5, Math.min(3.0, valPotencial + 0.05 * trend + noise * 0.35));
                 valExposicion = Math.max(0.5, Math.min(3.0, valExposicion + 0.02 * trend + noise * 0.2));
-
                 historico.push({
                     mes: meses[i],
                     salud: parseFloat(valSalud.toFixed(2)),
@@ -711,12 +837,10 @@
         // Construir dataset completo
         const tiendas = tiendasBase.map(t => {
             const historico = generarHistorico(t, meses);
-            // El último mes es el valor actual
             const ultimo = historico[historico.length - 1];
             return {
                 ...t,
                 historico: historico,
-                // Asegurar que el valor actual coincida con el último histórico
                 salud: ultimo.salud,
                 resiliencia: ultimo.resiliencia,
                 potencial: ultimo.potencial,
@@ -724,7 +848,7 @@
             };
         });
 
-        // Recalcular tipo basado en los valores actuales
+        // Recalcular tipo
         tiendas.forEach(t => {
             if (t.resiliencia >= 2.5 && t.potencial >= 2.5) t.tipo = 'JOYA';
             else if (t.resiliencia < 2.5 && t.potencial >= 2.5) t.tipo = 'APUESTA';
@@ -733,7 +857,7 @@
         });
 
         // ================================================================
-        // CONTADORES POR TIPO
+        // CONTADORES POR TIPO (con histórico para sparklines)
         // ================================================================
         function contarTipos() {
             const counts = { JOYA: 0, APUESTA: 0, BUNKER: 0, LASTRE: 0 };
@@ -741,8 +865,28 @@
             return counts;
         }
 
+        function contarTiposHistorico() {
+            // Para cada mes, contar cuántas tiendas de cada tipo
+            const result = {};
+            meses.forEach((mes, idx) => {
+                const counts = { JOYA: 0, APUESTA: 0, BUNKER: 0, LASTRE: 0 };
+                tiendas.forEach(t => {
+                    // Determinar tipo basado en los valores históricos de ese mes
+                    const h = t.historico[idx];
+                    let tipo = '';
+                    if (h.resiliencia >= 2.5 && h.potencial >= 2.5) tipo = 'JOYA';
+                    else if (h.resiliencia < 2.5 && h.potencial >= 2.5) tipo = 'APUESTA';
+                    else if (h.resiliencia >= 2.5 && h.potencial < 2.5) tipo = 'BUNKER';
+                    else tipo = 'LASTRE';
+                    counts[tipo]++;
+                });
+                result[mes] = counts;
+            });
+            return result;
+        }
+
         // ================================================================
-        // CALCULAR TENDENCIA (últimos 6 meses)
+        // CALCULAR TENDENCIA
         // ================================================================
         function calcularTendencia(historico, key) {
             const valores = historico.map(h => h[key]);
@@ -778,7 +922,7 @@
         }
 
         // ================================================================
-        // FUNCIÓN PARA OBTENER COLOR DE TIPO
+        // COLORES POR TIPO
         // ================================================================
         function colorTipo(tipo) {
             switch (tipo) {
@@ -795,11 +939,113 @@
             }
         }
 
+        function colorTipoHex(tipo) {
+            switch (tipo) {
+                case 'JOYA':
+                    return '#00E676';
+                case 'APUESTA':
+                    return '#D4AF37';
+                case 'BUNKER':
+                    return '#FFA500';
+                case 'LASTRE':
+                    return '#FF4D4D';
+                default:
+                    return '#7E998F';
+            }
+        }
+
         // ================================================================
-        // DASHBOARD 1: DIAGNÓSTICO 4×3 CON SPARKLINES
+        // SPARKLINE PARA KPI CARDS (evolución de tipologías)
+        // ================================================================
+        function sparklineKPI(tipo, color, height = 28, width = 120) {
+            const historicoTipos = contarTiposHistorico();
+            const valores = meses.map(m => historicoTipos[m][tipo]);
+            if (valores.length < 2) return '';
+            const min = Math.min(...valores);
+            const max = Math.max(...valores);
+            const range = (max - min) || 1;
+            const pad = 2;
+            const puntos = valores.map((v, i) => {
+                const x = (i / (valores.length - 1)) * (width - pad * 2) + pad;
+                const y = height - pad - ((v - min) / range) * (height - pad * 2);
+                return `${x.toFixed(1)},${y.toFixed(1)}`;
+            }).join(' ');
+            return `<svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" style="display:block;">
+                        <polyline points="${puntos}" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <polygon points="${puntos}" fill="${color}20" opacity="0.3"/>
+                    </svg>`;
+        }
+
+        // ================================================================
+        // MAPA DE BURBUJAS SVG
+        // ================================================================
+        function renderMapaBurbujas() {
+            // Normalizar coordenadas para un SVG 400x300
+            const lats = tiendas.map(t => t.lat);
+            const lngs = tiendas.map(t => t.lng);
+            const minLat = Math.min(...lats) - 0.3;
+            const maxLat = Math.max(...lats) + 0.3;
+            const minLng = Math.min(...lngs) - 0.3;
+            const maxLng = Math.max(...lngs) + 0.3;
+
+            const toX = (lng) => ((lng - minLng) / (maxLng - minLng)) * 360 + 20;
+            const toY = (lat) => ((maxLat - lat) / (maxLat - minLat)) * 260 + 20;
+
+            return `
+                        <div class="map-container">
+                            <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                                <!-- Fondo sutil -->
+                                <rect width="400" height="300" fill="rgba(11,22,18,0.6)" rx="8"/>
+                                <!-- Líneas de cuadrícula decorativas -->
+                                ${[0, 1, 2].map(i => `
+                                    <line x1="${20 + i*120}" y1="20" x2="${20 + i*120}" y2="280" stroke="rgba(212,175,55,0.06)" stroke-width="1"/>
+                                    <line x1="20" y1="${20 + i*87}" x2="380" y2="${20 + i*87}" stroke="rgba(212,175,55,0.06)" stroke-width="1"/>
+                                `).join('')}
+                                <!-- Burbujas -->
+                                ${tiendas.map(t => {
+                                    const cx = toX(t.lng);
+                                    const cy = toY(t.lat);
+                                    const r = 10 + (t.salud + t.resiliencia + t.potencial) / 3 * 6;
+                                    const color = colorTipoHex(t.tipo);
+                                    return `
+                                        <circle cx="${cx}" cy="${cy}" r="${r}" 
+                                                fill="${color}30" stroke="${color}" stroke-width="2"
+                                                class="map-bubble" 
+                                                style="filter: drop-shadow(0 0 6px ${color}40);"
+                                                onmouseenter="this.setAttribute('r', ${r+4})" 
+                                                onmouseleave="this.setAttribute('r', ${r})"/>
+                                        <text x="${cx}" y="${cy + 2}" class="map-label" font-size="7" fill="#fff" font-weight="700">${t.nombre.split(' ').pop()}</text>
+                                    `;
+                                }).join('')}
+                                <!-- Etiquetas de ciudades -->
+                                ${[...new Set(tiendas.map(t => t.ciudad))].map(ciudad => {
+                                    const t = tiendas.find(t => t.ciudad === ciudad);
+                                    if (!t) return '';
+                                    const cx = toX(t.lng);
+                                    const cy = toY(t.lat) - 18;
+                                    return `<text x="${cx}" y="${cy}" font-size="7" fill="#7E998F" text-anchor="middle" font-weight="600">${ciudad}</text>`;
+                                }).join('')}
+                            </svg>
+                            <div class="map-legend">
+                                ${['JOYA','APUESTA','BUNKER','LASTRE'].map(tipo => `
+                                    <div class="map-legend-item">
+                                        <div class="map-legend-dot" style="background:${colorTipoHex(tipo)};"></div>
+                                        ${tipo}
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+        }
+
+        // ================================================================
+        // DASHBOARD 1: DIAGNÓSTICO 4×3 CON DONUT + MAPA + SPARKLINES
         // ================================================================
         function renderDiagnostico() {
             const counts = contarTipos();
+            const total = tiendas.length;
+            const historicoTipos = contarTiposHistorico();
+
             return `
                         <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
                             <div class="breadcrumb"><span class="active-crumb">Diagnóstico 4×3</span></div>
@@ -809,18 +1055,70 @@
                             </div>
                         </div>
 
+                        <!-- KPI ROW CON SPARKLINES -->
                         <div class="kpi-row">
-                            <div class="kpi"><div class="kpi-label">🟢 JOYA</div><div class="kpi-value">${counts.JOYA}</div><div class="kpi-delta up">▲ ${counts.JOYA > 4 ? '+1 vs trimestre' : 'estable'}</div></div>
-                            <div class="kpi"><div class="kpi-label">🟡 APUESTA</div><div class="kpi-value">${counts.APUESTA}</div><div class="kpi-delta flat">→ sin cambios</div></div>
-                            <div class="kpi"><div class="kpi-label">🟠 BUNKER</div><div class="kpi-value">${counts.BUNKER}</div><div class="kpi-delta flat">→ sin cambios</div></div>
-                            <div class="kpi"><div class="kpi-label">🔴 LASTRE</div><div class="kpi-value">${counts.LASTRE}</div><div class="kpi-delta down">▼ ${counts.LASTRE > 0 ? '1 tienda en riesgo' : 'ninguna'}</div></div>
+                            <div class="kpi">
+                                <div class="kpi-label">🟢 JOYA</div>
+                                <div class="kpi-value">${counts.JOYA}</div>
+                                <div class="kpi-delta up">▲ ${counts.JOYA > 4 ? '+1 vs trimestre' : 'estable'}</div>
+                                <div class="kpi-spark">${sparklineKPI('JOYA', '#00E676')}</div>
+                            </div>
+                            <div class="kpi">
+                                <div class="kpi-label">🟡 APUESTA</div>
+                                <div class="kpi-value">${counts.APUESTA}</div>
+                                <div class="kpi-delta flat">→ sin cambios</div>
+                                <div class="kpi-spark">${sparklineKPI('APUESTA', '#D4AF37')}</div>
+                            </div>
+                            <div class="kpi">
+                                <div class="kpi-label">🟠 BUNKER</div>
+                                <div class="kpi-value">${counts.BUNKER}</div>
+                                <div class="kpi-delta flat">→ sin cambios</div>
+                                <div class="kpi-spark">${sparklineKPI('BUNKER', '#FFA500')}</div>
+                            </div>
+                            <div class="kpi">
+                                <div class="kpi-label">🔴 LASTRE</div>
+                                <div class="kpi-value">${counts.LASTRE}</div>
+                                <div class="kpi-delta down">▼ ${counts.LASTRE > 0 ? '1 tienda en riesgo' : 'ninguna'}</div>
+                                <div class="kpi-spark">${sparklineKPI('LASTRE', '#FF4D4D')}</div>
+                            </div>
                         </div>
 
+                        <!-- DONUT CHART + MAPA (2 columnas) -->
+                        <div class="two-col">
+                            <div class="panel">
+                                <div class="panel-title">Composición de la Red</div>
+                                <div class="donut-wrap">
+                                    <div class="donut-container">
+                                        <canvas id="donutChart"></canvas>
+                                        <div class="donut-center">
+                                            <div class="total">${total}</div>
+                                            <div class="label">Tiendas</div>
+                                        </div>
+                                    </div>
+                                    <div class="donut-legend">
+                                        ${['JOYA','APUESTA','BUNKER','LASTRE'].map(tipo => `
+                                            <div class="donut-legend-item">
+                                                <div class="donut-legend-dot" style="background:${colorTipoHex(tipo)};"></div>
+                                                ${tipo} <span style="color:#fff;font-weight:700;margin-left:4px;">${counts[tipo]}</span>
+                                                <span style="color:var(--steel-muted);font-size:10px;">(${((counts[tipo]/total)*100).toFixed(0)}%)</span>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel">
+                                <div class="panel-title">🗺️ Ubicación de Tiendas</div>
+                                ${renderMapaBurbujas()}
+                            </div>
+                        </div>
+
+                        <!-- TABLA DIAGNÓSTICO -->
                         <div style="font-size:10px;font-weight:700;color:var(--rolex-gold);letter-spacing:1px;text-transform:uppercase;font-family:'Cinzel';">Evaluación por Tienda · Últimos 6 meses</div>
                         <div style="overflow-x:auto;">
                             <table class="matrix-table">
                                 <thead><tr>
                                     <th>Tienda</th>
+                                    <th>Ciudad</th>
                                     <th>Salud</th>
                                     <th>Resiliencia</th>
                                     <th>Potencial</th>
@@ -839,6 +1137,7 @@
                                         return `
                                             <tr class="${t.tipo.toLowerCase()}">
                                                 <td style="font-weight:600;color:#fff;">${t.nombre}</td>
+                                                <td style="color:var(--steel-muted);">${t.ciudad}</td>
                                                 <td>${t.salud.toFixed(1)}</td>
                                                 <td>${t.resiliencia.toFixed(1)}</td>
                                                 <td>${t.potencial.toFixed(1)}</td>
@@ -856,21 +1155,24 @@
                         <div class="narrative-box">
                             <div class="narr-header"><span class="narr-icon">🧠</span><span class="narr-title">Narrativa IA · Diagnóstico con Histórico</span></div>
                             <div class="narr-text">
-                                La red tiene <strong>${counts.JOYA} tiendas JOYA</strong> que son el motor de crecimiento. 
+                                La red tiene <strong>${counts.JOYA} tiendas JOYA</strong> (${((counts.JOYA/total)*100).toFixed(0)}% del total) que son el motor de crecimiento. 
                                 <strong>${counts.APUESTA} tiendas APUESTA</strong> requieren inversión controlada. 
                                 Las <strong>${counts.BUNKER} tiendas BUNKER</strong> son estables pero sin crecimiento. 
-                                La tienda <strong>LASTRE</strong> debe ser evaluada para cierre.
+                                <strong>${counts.LASTRE} tienda(s) LASTRE</strong> debe(n) ser evaluadas para cierre.
                                 <br><br>
                                 <strong>Tendencias destacadas:</strong> 
                                 ${tiendas.filter(t => calcularTendencia(t.historico, 'salud').direccion === 'up').length} tiendas están mejorando su salud.
                                 ${tiendas.filter(t => calcularTendencia(t.historico, 'salud').direccion === 'down').length} tiendas muestran deterioro.
+                                <span style="color:var(--rolex-gold);">◆</span> La composición de la red ha mejorado en los últimos 6 meses: 
+                                <span class="trend-badge up">+${counts.JOYA - historicoTipos[meses[0]].JOYA} JOYA</span>
+                                <span class="trend-badge down">${counts.LASTRE - historicoTipos[meses[0]].LASTRE > 0 ? '+' : ''}${counts.LASTRE - historicoTipos[meses[0]].LASTRE} LASTRE</span>
                             </div>
                         </div>
                     `;
         }
 
         // ================================================================
-        // DASHBOARD 2: MAPA DE RIESGO
+        // OTROS DASHBOARDS (versiones simplificadas)
         // ================================================================
         function renderRiesgo() {
             const vulnerables = tiendas.filter(t => t.exposicion < 2.0);
@@ -891,6 +1193,7 @@
                                         <div style="font-weight:600;color:#fff;">${t.nombre}</div>
                                         <div style="font-size:11px;color:var(--steel-muted);">Exposición: ${t.exposicion.toFixed(1)}</div>
                                         <div style="margin-top:6px;font-weight:700;color:${color};">${riesgo}</div>
+                                        <div style="font-size:9px;color:var(--steel-muted);margin-top:2px;">${t.ciudad}</div>
                                     </div>
                                 `;
                             }).join('')}
@@ -898,9 +1201,6 @@
                     `;
         }
 
-        // ================================================================
-        // DASHBOARD 3: TOP/BOTTOM PERFORMERS
-        // ================================================================
         function renderEficiencia() {
             const sorted = [...tiendas].sort((a, b) => (b.salud + b.resiliencia + b.potencial) - (a.salud + a.resiliencia + a
                 .potencial));
@@ -935,9 +1235,6 @@
                     `;
         }
 
-        // ================================================================
-        // DASHBOARD 4: ANÁLISIS DE BRECHA
-        // ================================================================
         function renderBrecha() {
             const avg = {
                 salud: tiendas.reduce((s, t) => s + t.salud, 0) / tiendas.length,
@@ -968,10 +1265,8 @@
                     `;
         }
 
-        // ================================================================
-        // DASHBOARD 5: SIMULACIÓN DE PESOS
-        // ================================================================
         function renderSimulacion() {
+            const counts = contarTipos();
             return `
                         <div class="breadcrumb"><span class="active-crumb">⚙️ Simulación de Pesos</span></div>
                         <div class="narrative-box">
@@ -991,19 +1286,16 @@
                             <div class="panel">
                                 <div class="panel-title">Resultado</div>
                                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;">
-                                    <span style="color:var(--steel-muted);">JOYA</span><span style="color:var(--hulk-vibrant);font-weight:700;">${contarTipos().JOYA}</span>
-                                    <span style="color:var(--steel-muted);">APUESTA</span><span style="color:var(--rolex-gold);font-weight:700;">${contarTipos().APUESTA}</span>
-                                    <span style="color:var(--steel-muted);">BUNKER</span><span style="color:#FFA500;font-weight:700;">${contarTipos().BUNKER}</span>
-                                    <span style="color:var(--steel-muted);">LASTRE</span><span style="color:var(--red);font-weight:700;">${contarTipos().LASTRE}</span>
+                                    <span style="color:var(--steel-muted);">JOYA</span><span style="color:var(--hulk-vibrant);font-weight:700;">${counts.JOYA}</span>
+                                    <span style="color:var(--steel-muted);">APUESTA</span><span style="color:var(--rolex-gold);font-weight:700;">${counts.APUESTA}</span>
+                                    <span style="color:var(--steel-muted);">BUNKER</span><span style="color:#FFA500;font-weight:700;">${counts.BUNKER}</span>
+                                    <span style="color:var(--steel-muted);">LASTRE</span><span style="color:var(--red);font-weight:700;">${counts.LASTRE}</span>
                                 </div>
                             </div>
                         </div>
                     `;
         }
 
-        // ================================================================
-        // DASHBOARD 6: PLAN DE ACCIÓN
-        // ================================================================
         function renderAccion() {
             const counts = contarTipos();
             return `
@@ -1031,9 +1323,6 @@
                     `;
         }
 
-        // ================================================================
-        // DASHBOARD 7: MATRIZ DE ESCENARIOS
-        // ================================================================
         function renderEscenarios() {
             return `
                         <div class="breadcrumb"><span class="active-crumb">📌 Matriz de Escenarios</span></div>
@@ -1057,15 +1346,13 @@
         }
 
         // ================================================================
-        // DASHBOARD 8: EVOLUCIÓN HISTÓRICA (NUEVO)
+        // DASHBOARD 8: EVOLUCIÓN HISTÓRICA
         // ================================================================
         let chartInstance = null;
 
         function renderHistorico() {
-            // Preparar datos para Chart.js
-            const labels = meses;
             const datasets = tiendas.map(t => {
-                const color = colorTipo(t.tipo);
+                const color = colorTipoHex(t.tipo);
                 return {
                     label: t.nombre,
                     data: t.historico.map(h => parseFloat(((h.salud + h.resiliencia + h.potencial) / 3).toFixed(2))),
@@ -1078,7 +1365,6 @@
                 };
             });
 
-            // Datos para gráfico de área apilada (salud de la cadena)
             const saludCadena = meses.map((_, i) => {
                 return tiendas.reduce((sum, t) => sum + t.historico[i].salud, 0) / tiendas.length;
             });
@@ -1089,7 +1375,6 @@
                 return tiendas.reduce((sum, t) => sum + t.historico[i].potencial, 0) / tiendas.length;
             });
 
-            // Construir HTML
             const html = `
                         <div class="breadcrumb"><span class="active-crumb">📈 Evolución Histórica · 6 Meses</span></div>
 
@@ -1138,10 +1423,8 @@
                         </div>
                     `;
 
-            // Inyectar HTML y luego renderizar gráficos
             document.getElementById('mainContent').innerHTML = html;
 
-            // Renderizar gráficos después de que el DOM esté listo
             setTimeout(() => {
                 renderHealthChart(saludCadena, resilienciaCadena, potencialCadena);
                 renderTrendChart(datasets);
@@ -1253,20 +1536,26 @@
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(el => {
                 const txt = el.textContent.trim().toLowerCase();
-                if (txt.includes(vista.replace('diagnostico', 'diagnóstico').replace('riesgo', 'mapa')
-                        .replace('eficiencia', 'top').replace('brecha', 'brecha')
-                        .replace('simulacion', 'simulación').replace('accion', 'acción')
-                        .replace('escenarios', 'matriz').replace('historico', 'evolución'))) {
-                    el.classList.add('active');
-                }
+                const map = {
+                    'diagnostico': 'diagnóstico',
+                    'riesgo': 'mapa',
+                    'eficiencia': 'top',
+                    'brecha': 'brecha',
+                    'simulacion': 'simulación',
+                    'accion': 'acción',
+                    'escenarios': 'matriz',
+                    'historico': 'evolución'
+                };
+                if (txt.includes(map[vista] || vista)) el.classList.add('active');
             });
-            // Limpiar instancia de gráfico si existe
+
             if (chartInstance) { chartInstance.destroy();
                 chartInstance = null; }
 
             switch (vista) {
                 case 'diagnostico':
                     document.getElementById('mainContent').innerHTML = renderDiagnostico();
+                    setTimeout(() => renderDonut(), 100);
                     break;
                 case 'riesgo':
                     document.getElementById('mainContent').innerHTML = renderRiesgo();
@@ -1291,7 +1580,63 @@
                     break;
                 default:
                     document.getElementById('mainContent').innerHTML = renderDiagnostico();
+                    setTimeout(() => renderDonut(), 100);
             }
+        }
+
+        // ================================================================
+        // RENDER DONUT CHART
+        // ================================================================
+        let donutInstance = null;
+
+        function renderDonut() {
+            const canvas = document.getElementById('donutChart');
+            if (!canvas) return;
+            if (donutInstance) { donutInstance.destroy();
+                donutInstance = null; }
+
+            const counts = contarTipos();
+            const ctx = canvas.getContext('2d');
+            donutInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['JOYA', 'APUESTA', 'BUNKER', 'LASTRE'],
+                    datasets: [{
+                        data: [counts.JOYA, counts.APUESTA, counts.BUNKER, counts.LASTRE],
+                        backgroundColor: ['#00E676', '#D4AF37', '#FFA500', '#FF4D4D'],
+                        borderColor: ['#00E676', '#D4AF37', '#FFA500', '#FF4D4D'],
+                        borderWidth: 0,
+                        hoverOffset: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '70%',
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#0B1612',
+                            borderColor: 'rgba(212, 175, 55, 0.4)',
+                            borderWidth: 1,
+                            titleColor: '#F1F5F9',
+                            bodyColor: '#7E998F',
+                            padding: 10,
+                            callbacks: {
+                                label: function(context) {
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const pct = total > 0 ? ((context.parsed / total) * 100).toFixed(0) : 0;
+                                    return context.label + ': ' + context.parsed + ' tiendas (' + pct + '%)';
+                                }
+                            }
+                        }
+                    },
+                    animation: {
+                        animateRotate: true,
+                        duration: 800
+                    }
+                }
+            });
         }
 
         // ================================================================

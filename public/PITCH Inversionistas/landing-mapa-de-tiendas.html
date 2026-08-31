@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa de Impacto, Riesgo y Oportunidad | RetailMind 360°</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Reset y base */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f8fafc; color: #0f172a; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            padding: 80px 0 64px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .hero-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 48px;
+            position: relative;
+            z-index: 1;
+        }
+        .hero-text { flex: 1; }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(56, 189, 248, 0.15);
+            color: #38bdf8;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+        .hero h1 {
+            font-size: 3.25rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+        .hero h1 span { color: #38bdf8; }
+        .hero p {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            max-width: 520px;
+            line-height: 1.6;
+            margin-bottom: 32px;
+        }
+        .hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; }
+        .btn-primary {
+            background: #38bdf8;
+            color: #0f172a;
+            padding: 14px 36px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-primary:hover {
+            background: #7dd3fc;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(56, 189, 248, 0.3);
+        }
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            padding: 14px 36px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            border: 1px solid #475569;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.05);
+            border-color: #94a3b8;
+        }
+        .hero-visual {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .hero-visual img {
+            max-width: 100%;
+            height: auto;
+            max-height: 320px;
+            filter: drop-shadow(0 8px 32px rgba(0,0,0,0.4));
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .logo-container img {
+            height: 48px;
+            width: auto;
+        }
+        .logo-container span {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #38bdf8;
+            letter-spacing: -0.5px;
+        }
+
+        @media (max-width: 768px) {
+            .hero { padding: 48px 0; }
+            .hero-content { flex-direction: column; text-align: center; }
+            .hero h1 { font-size: 2.25rem; }
+            .hero p { max-width: 100%; }
+            .hero-buttons { justify-content: center; }
+            .hero-visual img { max-height: 200px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ======== HERO ======== -->
+<section class="hero">
+    <div class="container hero-content">
+        <div class="hero-text">
+            <div class="logo-container">
+                <img src="https://gestor-de-archivos.vercel.app/logos/logo-retailmind-SVG-000.svg" alt="RetailMind 360°" />
+                <span>RetailMind 360°</span>
+            </div>
+            <div class="hero-badge">🔵 Subproducto Estrella</div>
+            <h1>¿Sabes qué tiendas <span>defender</span> y cuáles <span>abandonar</span> antes de que llegue Walmart?</h1>
+            <p>El <strong>Mapa de Impacto, Riesgo y Oportunidad</strong> de tu red de tiendas te da la respuesta. Un diagnóstico estratégico que evalúa cada tienda en 4 dimensiones críticas y 2 escenarios macroeconómicos.</p>
+            <div class="hero-buttons">
+                <a href="#demo" class="btn-primary">🚀 Solicitar Demo</a>
+                <a href="#metodologia" class="btn-secondary">📊 Ver Metodología</a>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <img src="https://via.placeholder.com/500x400/1e293b/38bdf8?text=Dashboard+Preview" alt="Vista previa del Dashboard" />
+        </div>
+    </div>
+</section>
+<!-- ======== PROPUESTA DE VALOR ======== -->
+<section style="padding: 80px 0; background: white;">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 56px;">
+            <p style="color: #38bdf8; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; font-size: 0.85rem;">Propuesta de Valor</p>
+            <h2 style="font-size: 2.5rem; font-weight: 700; color: #0f172a;">Lo que realmente necesitas saber</h2>
+            <p style="color: #64748b; max-width: 600px; margin: 12px auto 0; font-size: 1.1rem;">No es un análisis financiero más. Es un <strong>plan de batalla</strong> para tu red de tiendas.</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px;">
+            <!-- Pilar 1 -->
+            <div style="background: #f1f5f9; border-radius: 12px; padding: 32px; border-bottom: 4px solid #38bdf8;">
+                <div style="font-size: 2.5rem; margin-bottom: 16px;">🛡️</div>
+                <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 12px;">Defiende lo que vale la pena</h3>
+                <p style="color: #475569; line-height: 1.6;">Identifica qué tiendas son <strong>defendibles</strong> ante un entrante global y cuáles son vulnerables. No gastes recursos en lo que no se puede salvar.</p>
+            </div>
+            <!-- Pilar 2 -->
+            <div style="background: #f1f5f9; border-radius: 12px; padding: 32px; border-bottom: 4px solid #f59e0b;">
+                <div style="font-size: 2.5rem; margin-bottom: 16px;">🎯</div>
+                <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 12px;">Ataca donde hay oportunidad</h3>
+                <p style="color: #475569; line-height: 1.6;">Descubre qué tiendas tienen <strong>potencial de crecimiento</strong> y merecen inversión. Convierte tus joyas ocultas en motores de expansión.</p>
+            </div>
+            <!-- Pilar 3 -->
+            <div style="background: #f1f5f9; border-radius: 12px; padding: 32px; border-bottom: 4px solid #ef4444;">
+                <div style="font-size: 2.5rem; margin-bottom: 16px;">⚡</div>
+                <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 12px;">Actúa antes de que sea tarde</h3>
+                <p style="color: #475569; line-height: 1.6;">Con <strong>dos escenarios macroeconómicos</strong> (crecimiento vs recesión), sabrás exactamente qué hacer en cada tienda, pase lo que pase.</p>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- ======== ¿QUÉ INCLUYE? ======== -->
+<section style="padding: 80px 0; background: #f8fafc;">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 56px;">
+            <p style="color: #38bdf8; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; font-size: 0.85rem;">El Entregable</p>
+            <h2 style="font-size: 2.5rem; font-weight: 700; color: #0f172a;">6 Dashboards en 1</h2>
+            <p style="color: #64748b; max-width: 600px; margin: 12px auto 0; font-size: 1.1rem;">Un solo diagnóstico, múltiples miradas. Todo lo que necesitas para tomar decisiones estratégicas.</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
+            <div style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid #e2e8f0;">
+                <span style="font-size: 2rem;">📊</span>
+                <h4 style="margin: 12px 0 8px; font-weight: 700;">Diagnóstico 4×3</h4>
+                <p style="color: #64748b; font-size: 0.95rem;">Evaluación de cada tienda en 4 dimensiones y 3 variables. La foto completa.</p>
+            </div>
+            <div style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid #e2e8f0;">
+                <span style="font-size: 2rem;">🗺️</span>
+                <h4 style="margin: 12px 0 8px; font-weight: 700;">Mapa de Calor de Riesgo</h4>
+                <p style="color: #64748b; font-size: 0.95rem;">Visualización geográfica de vulnerabilidad. Sabrás <strong>dónde</strong> está el riesgo.</p>
+            </div>
+            <div style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid #e2e8f0;">
+                <span style="font-size: 2rem;">🏆</span>
+                <h4 style="margin: 12px 0 8px; font-weight: 700;">Top/Bottom Performers</h4>
+                <p style="color: #64748b; font-size: 0.95rem;">Líderes y rezagados por dimensión. ¿Quién tira del carro y quién lo frena?</p>
+            </div>
+            <div style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid #e2e8f0;">
+                <span style="font-size: 2rem;">📈</span>
+                <h4 style="margin: 12px 0 8px; font-weight: 700;">Análisis de Brecha</h4>
+                <p style="color: #64748b; font-size: 0.95rem;">¿En qué debe mejorar cada tienda? Radar charts y brechas vs promedio.</p>
+            </div>
+            <div style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid #e2e8f0;">
+                <span style="font-size: 2rem;">⚙️</span>
+                <h4 style="margin: 12px 0 8px; font-weight: 700;">Simulación de Pesos</h4>
+                <p style="color: #64748b; font-size: 0.95rem;">Ajusta la importancia de cada variable. ¿Qué pasa si cambias los pesos?</p>
+            </div>
+            <div style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid #e2e8f0;">
+                <span style="font-size: 2rem;">📋</span>
+                <h4 style="margin: 12px 0 8px; font-weight: 700;">Plan de Acción</h4>
+                <p style="color: #64748b; font-size: 0.95rem;">Recomendaciones concretas por tienda y escenario. <strong>Ejecutable</strong>.</p>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- ======== ¿CÓMO FUNCIONA? ======== -->
+<section style="padding: 80px 0; background: white;">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 56px;">
+            <p style="color: #38bdf8; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; font-size: 0.85rem;">Metodología</p>
+            <h2 style="font-size: 2.5rem; font-weight: 700; color: #0f172a;">Simple, pero poderosa</h2>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; text-align: center;">
+            <div>
+                <div style="background: #38bdf8; color: white; width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; margin: 0 auto 16px;">1</div>
+                <h4 style="font-weight: 700; margin-bottom: 8px;">Datos</h4>
+                <p style="color: #64748b; font-size: 0.95rem;">Cargamos 12 variables clave de tu red de tiendas.</p>
+            </div>
+            <div>
+                <div style="background: #38bdf8; color: white; width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; margin: 0 auto 16px;">2</div>
+                <h4 style="font-weight: 700; margin-bottom: 8px;">Evaluamos</h4>
+                <p style="color: #64748b; font-size: 0.95rem;">Cada tienda en 4 dimensiones: Salud, Resiliencia, Potencial y Exposición.</p>
+            </div>
+            <div>
+                <div style="background: #38bdf8; color: white; width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; margin: 0 auto 16px;">3</div>
+                <h4 style="font-weight: 700; margin-bottom: 8px;">Clasificamos</h4>
+                <p style="color: #64748b; font-size: 0.95rem;">JOYA, APUESTA, BUNKER o LASTRE. Sabrás qué hacer con cada una.</p>
+            </div>
+            <div>
+                <div style="background: #38bdf8; color: white; width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; margin: 0 auto 16px;">4</div>
+                <h4 style="font-weight: 700; margin-bottom: 8px;">Actúas</h4>
+                <p style="color: #64748b; font-size: 0.95rem;">Recibes un plan de acción claro para cada escenario macroeconómico.</p>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- ======== PARA QUIÉN ======== -->
+<section style="padding: 80px 0; background: #f8fafc;">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 56px;">
+            <p style="color: #38bdf8; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; font-size: 0.85rem;">Audiencia</p>
+            <h2 style="font-size: 2.5rem; font-weight: 700; color: #0f172a;">Para quienes toman decisiones</h2>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px;">
+            <div style="background: white; border-radius: 12px; padding: 32px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: center;">
+                <span style="font-size: 2.5rem;">👔</span>
+                <h4 style="font-weight: 700; margin: 12px 0 8px;">CEO / Director General</h4>
+                <p style="color: #64748b;">Visión estratégica y asignación de recursos. ¿Dónde invierto y dónde cierro?</p>
+            </div>
+            <div style="background: white; border-radius: 12px; padding: 32px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: center;">
+                <span style="font-size: 2.5rem;">📈</span>
+                <h4 style="font-weight: 700; margin: 12px 0 8px;">Director de Finanzas</h4>
+                <p style="color: #64748b;">Evaluación de inversión y desinversión. ¿Qué tienda genera valor y cuál es un lastre?</p>
+            </div>
+            <div style="background: white; border-radius: 12px; padding: 32px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: center;">
+                <span style="font-size: 2.5rem;">🏬</span>
+                <h4 style="font-weight: 700; margin: 12px 0 8px;">Director de Operaciones</h4>
+                <p style="color: #64748b;">Implementación de acciones en tiendas. ¿Qué hago en cada tienda y cuándo?</p>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- ======== TESTIMONIOS ======== -->
+<section style="padding: 80px 0; background: #0f172a; color: white;">
+    <div class="container" style="text-align: center;">
+        <p style="color: #38bdf8; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; font-size: 0.85rem;">Resultados Reales</p>
+        <h2 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 48px;">Lo que dicen nuestros clientes</h2>
+
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; text-align: left;">
+            <div style="background: #1e293b; border-radius: 12px; padding: 32px; border-left: 4px solid #38bdf8;">
+                <p style="font-style: italic; color: #cbd5e1; font-size: 1.1rem; line-height: 1.6;">"Identificamos 5 tiendas LASTRE que estaban drenando recursos. Las cerramos y redirigimos la inversión a nuestras JOYA. El resultado: <strong>+18% en EBITDA</strong> en 6 meses."</p>
+                <div style="margin-top: 16px;">
+                    <p style="font-weight: 700;">— Director Financiero</p>
+                    <p style="color: #94a3b8; font-size: 0.9rem;">Cadena Regional de Supermercados</p>
+                </div>
+            </div>
+            <div style="background: #1e293b; border-radius: 12px; padding: 32px; border-left: 4px solid #38bdf8;">
+                <p style="font-style: italic; color: #cbd5e1; font-size: 1.1rem; line-height: 1.6;">"El análisis de escenarios nos preparó para la recesión. Cuando el mercado cayó, ya sabíamos qué tiendas proteger y cuáles dejar caer. <strong>No tomamos decisiones en caliente</strong>."</p>
+                <div style="margin-top: 16px;">
+                    <p style="font-weight: 700;">— Director de Operaciones</p>
+                    <p style="color: #94a3b8; font-size: 0.9rem;">Cadena de Retail con 50+ tiendas</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- ======== PRECIO / CTA ======== -->
+<section id="demo" style="padding: 80px 0; background: white;">
+    <div class="container">
+        <div style="max-width: 720px; margin: 0 auto; text-align: center;">
+            <h2 style="font-size: 2.5rem; font-weight: 700; color: #0f172a; margin-bottom: 16px;">¿Listo para conocer el mapa de tu red?</h2>
+            <p style="color: #64748b; font-size: 1.1rem; margin-bottom: 32px;">Un diagnóstico que te dice qué tiendas defender, cuáles abandonar y dónde invertir. En <strong>menos de 2 semanas</strong>.</p>
+
+            <div style="background: #f1f5f9; border-radius: 12px; padding: 32px; margin-bottom: 32px;">
+                <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 4px;">Inversión desde</p>
+                <p style="font-size: 2.5rem; font-weight: 800; color: #0f172a;">$3,990 USD</p>
+                <p style="color: #64748b; font-size: 0.9rem;">por cadena (hasta 50 tiendas) · Consultoría incluida</p>
+            </div>
+
+            <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+                <a href="#" class="btn-primary" style="font-size: 1.1rem; padding: 16px 48px;">🚀 Solicitar Demo</a>
+                <a href="#" class="btn-secondary" style="border-color: #cbd5e1; color: #0f172a;">📄 Descargar Brochure</a>
+            </div>
+
+            <p style="color: #94a3b8; font-size: 0.8rem; margin-top: 24px;">🔒 Sin compromiso · Demo personalizada con tus datos · Garantía de satisfacción</p>
+        </div>
+    </div>
+</section>
+<!-- ======== FOOTER ======== -->
+<footer style="background: #0f172a; color: #94a3b8; padding: 48px 0; border-top: 1px solid #1e293b;">
+    <div class="container">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <img src="https://gestor-de-archivos.vercel.app/logos/logo-retailmind-SVG-000.svg" alt="RetailMind 360°" style="height: 36px;" />
+                <span style="font-weight: 700; color: white;">RetailMind 360°</span>
+            </div>
+            <div style="display: flex; gap: 24px; font-size: 0.9rem;">
+                <a href="#" style="color: #94a3b8; text-decoration: none;">Política de Privacidad</a>
+                <a href="#" style="color: #94a3b8; text-decoration: none;">Términos de Uso</a>
+                <a href="#" style="color: #94a3b8; text-decoration: none;">Contacto</a>
+            </div>
+            <p style="font-size: 0.85rem;">&copy; 2025 RetailMind 360°. Todos los derechos reservados.</p>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>

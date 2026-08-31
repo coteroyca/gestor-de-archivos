@@ -8,6 +8,9 @@
     <!-- Fuentes Luxury: Cinzel y Outfit -->
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js para gráficos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
+    </script>
     <style>
         * {
             margin: 0;
@@ -16,24 +19,20 @@
         }
 
         :root {
-            /* === PALETA ROLEX HULK EXCLUSIVE === */
             --hulk: #008744;
             --hulk-vibrant: #00E676;
             --hulk-dark: #002B15;
             --hulk-glow: rgba(0, 230, 118, 0.25);
-            
             --abyssal: #050B08;
             --surface: #0B1612;
             --surface-card: #0F1F1A;
             --border-deep: rgba(212, 175, 55, 0.25);
             --border-glow: rgba(212, 175, 55, 0.4);
-            
             --rolex-gold: #D4AF37;
             --rolex-gold-light: #F3E5AB;
             --steel-light: #F1F5F9;
             --steel-muted: #7E998F;
             --steel-silver: #CBD5E1;
-            
             --red: #FF4D4D;
             --gold: #D4AF37;
             --blue-accent: #29B6F6;
@@ -42,8 +41,7 @@
 
         body {
             background: var(--abyssal);
-            background-image: 
-                radial-gradient(circle at 50% 0%, rgba(0, 135, 68, 0.15) 0%, transparent 75%),
+            background-image: radial-gradient(circle at 50% 0%, rgba(0, 135, 68, 0.15) 0%, transparent 75%),
                 radial-gradient(circle at 85% 30%, rgba(212, 175, 55, 0.05) 0%, transparent 50%);
             font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
             color: var(--steel-light);
@@ -52,8 +50,13 @@
             line-height: 1.5;
         }
 
-        ::-webkit-scrollbar { width: 5px; height: 5px; }
-        ::-webkit-scrollbar-track { background: var(--abyssal); }
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--abyssal);
+        }
         ::-webkit-scrollbar-thumb {
             background: linear-gradient(180deg, var(--hulk), var(--rolex-gold));
             border-radius: 20px;
@@ -79,9 +82,12 @@
             gap: 1rem;
             position: relative;
             z-index: 10;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
         }
-        .topbar img { height: 28px; filter: drop-shadow(0 0 8px rgba(0,230,118,0.3)); }
+        .topbar img {
+            height: 28px;
+            filter: drop-shadow(0 0 8px rgba(0, 230, 118, 0.3));
+        }
         .topbar-divider {
             width: 1px;
             height: 24px;
@@ -89,7 +95,11 @@
             margin: 0 0.5rem;
             opacity: 0.5;
         }
-        .topbar-date { font-size: 11px; color: var(--steel-muted); letter-spacing: 0.5px; }
+        .topbar-date {
+            font-size: 11px;
+            color: var(--steel-muted);
+            letter-spacing: 0.5px;
+        }
         .topbar-badge {
             background: linear-gradient(135deg, rgba(0, 135, 68, 0.3), rgba(212, 175, 55, 0.15));
             color: var(--rolex-gold-light);
@@ -103,12 +113,23 @@
             text-transform: uppercase;
             box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
         }
-        .topbar-user { display: flex; align-items: center; gap: 8px; margin-left: 1rem; }
+        .topbar-user {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: 1rem;
+        }
         .avatar {
-            width: 30px; height: 30px; border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
             background: linear-gradient(135deg, var(--rolex-gold), var(--hulk));
-            display: flex; align-items: center; justify-content: center;
-            font-size: 11px; font-weight: 800; color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 800;
+            color: #000;
             border: 1px solid var(--rolex-gold-light);
             box-shadow: 0 0 8px var(--hulk-glow);
         }
@@ -152,7 +173,11 @@
             background: linear-gradient(90deg, rgba(0, 135, 68, 0.25) 0%, transparent 100%);
             font-weight: 600;
         }
-        .nav-icon { font-size: 14px; width: 18px; text-align: center; }
+        .nav-icon {
+            font-size: 14px;
+            width: 18px;
+            text-align: center;
+        }
 
         /* MAIN */
         .main {
@@ -165,26 +190,60 @@
         }
 
         /* BREADCRUMB */
-        .breadcrumb { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--steel-muted); }
-        .breadcrumb span { cursor: pointer; transition: color 0.15s; }
-        .breadcrumb span:hover { color: var(--rolex-gold); }
-        .breadcrumb .active-crumb { color: var(--steel-light); font-weight: 600; }
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            color: var(--steel-muted);
+        }
+        .breadcrumb span {
+            cursor: pointer;
+            transition: color 0.15s;
+        }
+        .breadcrumb span:hover {
+            color: var(--rolex-gold);
+        }
+        .breadcrumb .active-crumb {
+            color: var(--steel-light);
+            font-weight: 600;
+        }
 
         /* DRILL TABS */
-        .drill-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
-        .drill-tab {
-            padding: 6px 16px; border-radius: 20px; font-size: 11px; font-weight: 600;
-            cursor: pointer; transition: all 0.2s ease; border: 1px solid var(--border-deep);
-            color: var(--steel-muted); background: rgba(15, 31, 26, 0.6);
+        .drill-tabs {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
         }
-        .drill-tab:hover { color: var(--steel-light); border-color: var(--hulk); background: rgba(0, 135, 68, 0.15); }
+        .drill-tab {
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid var(--border-deep);
+            color: var(--steel-muted);
+            background: rgba(15, 31, 26, 0.6);
+        }
+        .drill-tab:hover {
+            color: var(--steel-light);
+            border-color: var(--hulk);
+            background: rgba(0, 135, 68, 0.15);
+        }
         .drill-tab.active {
             background: linear-gradient(135deg, var(--hulk), var(--hulk-dark));
-            border-color: var(--rolex-gold); color: #fff; box-shadow: 0 0 12px var(--hulk-glow);
+            border-color: var(--rolex-gold);
+            color: #fff;
+            box-shadow: 0 0 12px var(--hulk-glow);
         }
 
         /* KPI CARD */
-        .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+        .kpi-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
         .kpi {
             background: linear-gradient(145deg, var(--surface-card), var(--surface));
             border: 1px solid var(--border-deep);
@@ -195,7 +254,12 @@
             overflow: hidden;
         }
         .kpi::before {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
             background: linear-gradient(90deg, transparent, var(--rolex-gold), transparent);
             opacity: 0.5;
         }
@@ -205,91 +269,233 @@
             box-shadow: 0 8px 25px rgba(212, 175, 55, 0.15);
         }
         .kpi-label {
-            font-size: 10px; color: var(--steel-muted); font-weight: 700;
-            letter-spacing: 1px; text-transform: uppercase; font-family: 'Cinzel', serif;
+            font-size: 10px;
+            color: var(--steel-muted);
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-family: 'Cinzel', serif;
         }
         .kpi-value {
-            font-size: 26px; font-weight: 700; margin: 6px 0 2px;
-            color: #fff; font-family: 'Cinzel', serif; text-shadow: 0 0 10px rgba(255,255,255,0.1);
+            font-size: 26px;
+            font-weight: 700;
+            margin: 6px 0 2px;
+            color: #fff;
+            font-family: 'Cinzel', serif;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
         }
-        .kpi-delta { font-size: 11px; font-weight: 600; }
-        .up { color: var(--hulk-vibrant); text-shadow: 0 0 6px rgba(0, 230, 118, 0.3); }
-        .down { color: var(--red); }
-        .flat { color: var(--rolex-gold); }
+        .kpi-delta {
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .up {
+            color: var(--hulk-vibrant);
+            text-shadow: 0 0 6px rgba(0, 230, 118, 0.3);
+        }
+        .down {
+            color: var(--red);
+        }
+        .flat {
+            color: var(--rolex-gold);
+        }
 
         /* STATE GRID */
-        .state-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .state-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
         .state-card {
             background: linear-gradient(145deg, var(--surface-card), var(--surface));
             border: 1px solid var(--border-deep);
-            border-radius: 14px; padding: 1.2rem;
+            border-radius: 14px;
+            padding: 1.2rem;
             transition: all 0.25s ease;
         }
         .state-card:hover {
-            border-color: var(--rolex-gold); transform: translateY(-3px);
+            border-color: var(--rolex-gold);
+            transform: translateY(-3px);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 15px rgba(212, 175, 55, 0.2);
         }
-        .sc-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
-        .sc-domain {
-            font-size: 10px; font-weight: 700; color: var(--rolex-gold);
-            letter-spacing: 1px; text-transform: uppercase; font-family: 'Cinzel', serif;
+        .sc-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
         }
-        .sc-status { font-size: 9px; padding: 2px 10px; border-radius: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
-        .s-green { background: rgba(0, 230, 118, 0.12); color: var(--hulk-vibrant); border: 1px solid rgba(0, 230, 118, 0.3); }
-        .s-red { background: rgba(239, 68, 68, 0.12); color: var(--red); border: 1px solid rgba(239, 68, 68, 0.3); }
-        .s-yellow { background: rgba(212, 175, 55, 0.12); color: var(--rolex-gold); border: 1px solid rgba(212, 175, 55, 0.3); }
-        .s-blue { background: rgba(41, 182, 246, 0.12); color: var(--blue-accent); border: 1px solid rgba(41, 182, 246, 0.3); }
-        .s-purple { background: rgba(171, 71, 188, 0.12); color: var(--purple); border: 1px solid rgba(171, 71, 188, 0.3); }
-        .sc-state { font-size: 15px; font-weight: 700; margin-bottom: 8px; color: #fff; }
-        .sc-row { display: flex; justify-content: space-between; align-items: center; margin: 4px 0; font-size: 11px; color: var(--steel-muted); }
-        .sc-row strong { color: var(--steel-light); font-weight: 600; }
+        .sc-domain {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--rolex-gold);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-family: 'Cinzel', serif;
+        }
+        .sc-status {
+            font-size: 9px;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .s-green {
+            background: rgba(0, 230, 118, 0.12);
+            color: var(--hulk-vibrant);
+            border: 1px solid rgba(0, 230, 118, 0.3);
+        }
+        .s-red {
+            background: rgba(239, 68, 68, 0.12);
+            color: var(--red);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+        .s-yellow {
+            background: rgba(212, 175, 55, 0.12);
+            color: var(--rolex-gold);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+        .s-blue {
+            background: rgba(41, 182, 246, 0.12);
+            color: var(--blue-accent);
+            border: 1px solid rgba(41, 182, 246, 0.3);
+        }
+        .s-purple {
+            background: rgba(171, 71, 188, 0.12);
+            color: var(--purple);
+            border: 1px solid rgba(171, 71, 188, 0.3);
+        }
+        .sc-state {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+        .sc-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 4px 0;
+            font-size: 11px;
+            color: var(--steel-muted);
+        }
+        .sc-row strong {
+            color: var(--steel-light);
+            font-weight: 600;
+        }
 
         /* PANELS */
-        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
         .panel {
             background: linear-gradient(145deg, var(--surface-card), var(--surface));
-            border: 1px solid var(--border-deep); border-radius: 14px; padding: 1.2rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            border: 1px solid var(--border-deep);
+            border-radius: 14px;
+            padding: 1.2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
         .panel-title {
-            font-size: 11px; font-weight: 700; color: var(--rolex-gold);
-            letter-spacing: 1px; text-transform: uppercase; margin-bottom: 14px; font-family: 'Cinzel', serif;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--rolex-gold);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+            font-family: 'Cinzel', serif;
         }
 
         /* HIERARCHY LIST */
         .hier-item {
-            display: flex; align-items: center; gap: 10px; padding: 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 0;
             border-bottom: 1px solid var(--border-deep);
             transition: all 0.2s ease;
         }
-        .hier-item:last-child { border-bottom: none; }
-        .hier-item:hover { padding-left: 6px; }
-        .hier-item:hover .hi-name { color: var(--hulk-vibrant); }
-        .hi-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; box-shadow: 0 0 6px currentColor; }
-        .hi-name { font-size: 12px; font-weight: 500; flex: 1; color: var(--steel-light); }
-        .hi-state { font-size: 10px; padding: 2px 8px; border-radius: 8px; font-weight: 700; }
-        .hi-delta { font-size: 11px; font-weight: 600; min-width: 50px; text-align: right; }
-        .hi-arrow { color: var(--rolex-gold); font-size: 14px; }
+        .hier-item:last-child {
+            border-bottom: none;
+        }
+        .hier-item:hover {
+            padding-left: 6px;
+        }
+        .hier-item:hover .hi-name {
+            color: var(--hulk-vibrant);
+        }
+        .hi-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            box-shadow: 0 0 6px currentColor;
+        }
+        .hi-name {
+            font-size: 12px;
+            font-weight: 500;
+            flex: 1;
+            color: var(--steel-light);
+        }
+        .hi-state {
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 8px;
+            font-weight: 700;
+        }
+        .hi-delta {
+            font-size: 11px;
+            font-weight: 600;
+            min-width: 50px;
+            text-align: right;
+        }
+        .hi-arrow {
+            color: var(--rolex-gold);
+            font-size: 14px;
+        }
 
         /* NARRATIVE BOX */
         .narrative-box {
             background: linear-gradient(135deg, rgba(0, 135, 68, 0.12) 0%, rgba(15, 31, 26, 0.8) 100%);
             border: 1px solid var(--border-glow);
             border-left: 4px solid var(--rolex-gold);
-            border-radius: 14px; padding: 1.2rem;
+            border-radius: 14px;
+            padding: 1.2rem;
             box-shadow: 0 4px 25px rgba(0, 0, 0, 0.4);
         }
-        .narr-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
-        .narr-icon { font-size: 16px; }
-        .narr-title {
-            font-size: 11px; font-weight: 700; color: var(--rolex-gold);
-            letter-spacing: 1px; text-transform: uppercase; font-family: 'Cinzel', serif;
+        .narr-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
         }
-        .narr-text { font-size: 12px; color: var(--steel-silver); line-height: 1.7; }
-        .narr-text strong { color: #fff; font-weight: 600; }
+        .narr-icon {
+            font-size: 16px;
+        }
+        .narr-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--rolex-gold);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-family: 'Cinzel', serif;
+        }
+        .narr-text {
+            font-size: 12px;
+            color: var(--steel-silver);
+            line-height: 1.7;
+        }
+        .narr-text strong {
+            color: #fff;
+            font-weight: 600;
+        }
 
         /* CHART WRAP */
-        .chart-wrap { position: relative; height: 190px; margin-top: 8px; }
+        .chart-wrap {
+            position: relative;
+            height: 200px;
+            margin-top: 8px;
+        }
 
         /* MATRIX TABLE */
         .matrix-table {
@@ -298,7 +504,8 @@
             font-size: 12px;
             margin-top: 8px;
         }
-        .matrix-table th, .matrix-table td {
+        .matrix-table th,
+        .matrix-table td {
             padding: 10px 12px;
             text-align: center;
             border: 1px solid var(--border-deep);
@@ -313,21 +520,92 @@
         .matrix-table td {
             color: var(--steel-silver);
         }
-        .matrix-table .joya { background: rgba(0, 230, 118, 0.15); color: var(--hulk-vibrant); font-weight: 700; }
-        .matrix-table .apuesta { background: rgba(212, 175, 55, 0.15); color: var(--rolex-gold); font-weight: 700; }
-        .matrix-table .bunker { background: rgba(255, 165, 0, 0.15); color: #FFA500; font-weight: 700; }
-        .matrix-table .lastre { background: rgba(255, 77, 77, 0.15); color: var(--red); font-weight: 700; }
+        .matrix-table .joya {
+            background: rgba(0, 230, 118, 0.15);
+            color: var(--hulk-vibrant);
+            font-weight: 700;
+        }
+        .matrix-table .apuesta {
+            background: rgba(212, 175, 55, 0.15);
+            color: var(--rolex-gold);
+            font-weight: 700;
+        }
+        .matrix-table .bunker {
+            background: rgba(255, 165, 0, 0.15);
+            color: #FFA500;
+            font-weight: 700;
+        }
+        .matrix-table .lastre {
+            background: rgba(255, 77, 77, 0.15);
+            color: var(--red);
+            font-weight: 700;
+        }
+        .matrix-table .sparkline-cell {
+            width: 80px;
+            padding: 4px 8px;
+        }
+
+        /* TREND BADGE */
+        .trend-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+        .trend-badge.up {
+            background: rgba(0, 230, 118, 0.15);
+            color: var(--hulk-vibrant);
+            border: 1px solid rgba(0, 230, 118, 0.3);
+        }
+        .trend-badge.down {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--red);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+        .trend-badge.flat {
+            background: rgba(212, 175, 55, 0.15);
+            color: var(--rolex-gold);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
 
         /* RESPONSIVE */
         @media (max-width: 720px) {
-            .shell { grid-template-columns: 1fr; grid-template-rows: 56px 1fr; }
-            .topbar { padding: 0 0.75rem; gap: 0.6rem; }
-            .topbar img { height: 22px; max-width: 130px; object-fit: contain; }
-            .topbar-badge, .topbar-user, .topbar-date { display: none; }
-            .sidebar { display: none; }
-            .main { grid-column: 1; padding: 1rem; gap: 1rem; }
-            .kpi-row { grid-template-columns: repeat(2, 1fr); }
-            .state-grid, .two-col { grid-template-columns: 1fr; }
+            .shell {
+                grid-template-columns: 1fr;
+                grid-template-rows: 56px 1fr;
+            }
+            .topbar {
+                padding: 0 0.75rem;
+                gap: 0.6rem;
+            }
+            .topbar img {
+                height: 22px;
+                max-width: 130px;
+                object-fit: contain;
+            }
+            .topbar-badge,
+            .topbar-user,
+            .topbar-date {
+                display: none;
+            }
+            .sidebar {
+                display: none;
+            }
+            .main {
+                grid-column: 1;
+                padding: 1rem;
+                gap: 1rem;
+            }
+            .kpi-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .state-grid,
+            .two-col {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -339,7 +617,7 @@
             <img src="https://gestor-de-archivos.vercel.app/assets/logos/logo-retailmind-hulk-transparente.png" alt="RetailMind 360°" style="height:32px;">
             <div class="topbar-divider"></div>
             <span style="font-size:11px;color:var(--steel-muted);letter-spacing:0.5px;">Mapa de Impacto · Demo</span>
-            <span class="topbar-badge">7 Dashboards</span>
+            <span class="topbar-badge">7 Dashboards + Histórico</span>
             <div class="topbar-divider"></div>
             <span class="topbar-date" id="dateLabel">lunes, 31 de agosto de 2026</span>
             <div class="topbar-user" style="margin-left:auto">
@@ -358,6 +636,7 @@
             <div class="nav-item" onclick="cambiarVista('simulacion')"><span class="nav-icon">⚙️</span> Simulación de Pesos</div>
             <div class="nav-item" onclick="cambiarVista('accion')"><span class="nav-icon">📋</span> Plan de Acción</div>
             <div class="nav-item" onclick="cambiarVista('escenarios')"><span class="nav-icon">📌</span> Matriz de Escenarios</div>
+            <div class="nav-item" onclick="cambiarVista('historico')"><span class="nav-icon">📈</span> Evolución Histórica</div>
             <div class="sidebar-section" style="margin-top:auto;">Sistema</div>
             <div class="nav-item"><span class="nav-icon">⚙️</span> Configuración</div>
         </div>
@@ -370,20 +649,88 @@
 
     <script>
         // ================================================================
-        // DATOS DE EJEMPLO (10 tiendas)
+        // DATOS DE EJEMPLO (10 tiendas) + HISTÓRICO (6 meses)
         // ================================================================
-        const tiendas = [
-            { nombre: 'Plaza Norte', ciudad: 'Caracas', salud: 2.8, resiliencia: 2.9, potencial: 2.9, exposicion: 2.7, tipo: 'JOYA' },
-            { nombre: 'Plaza Centro', ciudad: 'Caracas', salud: 2.7, resiliencia: 2.7, potencial: 2.8, exposicion: 2.6, tipo: 'JOYA' },
-            { nombre: 'Plaza Este', ciudad: 'Caracas', salud: 2.5, resiliencia: 2.6, potencial: 2.8, exposicion: 2.5, tipo: 'JOYA' },
-            { nombre: 'Plaza Oeste', ciudad: 'Caracas', salud: 2.6, resiliencia: 2.8, potencial: 2.7, exposicion: 2.8, tipo: 'JOYA' },
-            { nombre: 'Plaza Sur', ciudad: 'Caracas', salud: 2.8, resiliencia: 2.7, potencial: 2.9, exposicion: 2.4, tipo: 'JOYA' },
-            { nombre: 'Plaza Maracaibo', ciudad: 'Maracaibo', salud: 1.2, resiliencia: 1.0, potencial: 3.0, exposicion: 1.3, tipo: 'APUESTA' },
-            { nombre: 'Plaza Valencia', ciudad: 'Valencia', salud: 1.0, resiliencia: 1.0, potencial: 2.7, exposicion: 1.3, tipo: 'APUESTA' },
-            { nombre: 'Plaza Barquisimeto', ciudad: 'Barquisimeto', salud: 2.0, resiliencia: 3.0, potencial: 1.3, exposicion: 2.0, tipo: 'BUNKER' },
-            { nombre: 'Plaza Maturín', ciudad: 'Maturín', salud: 2.0, resiliencia: 3.0, potencial: 1.0, exposicion: 2.0, tipo: 'BUNKER' },
-            { nombre: 'Plaza San Cristóbal', ciudad: 'San Cristóbal', salud: 1.0, resiliencia: 1.0, potencial: 1.0, exposicion: 3.0, tipo: 'LASTRE' }
+        const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'];
+
+        // Datos base por tienda (valores actuales)
+        const tiendasBase = [
+            { nombre: 'Plaza Norte', ciudad: 'Caracas', salud: 2.8, resiliencia: 2.9, potencial: 2.9, exposicion: 2.7,
+            tipo: 'JOYA' },
+            { nombre: 'Plaza Centro', ciudad: 'Caracas', salud: 2.7, resiliencia: 2.7, potencial: 2.8, exposicion: 2.6,
+            tipo: 'JOYA' },
+            { nombre: 'Plaza Este', ciudad: 'Caracas', salud: 2.5, resiliencia: 2.6, potencial: 2.8, exposicion: 2.5,
+            tipo: 'JOYA' },
+            { nombre: 'Plaza Oeste', ciudad: 'Caracas', salud: 2.6, resiliencia: 2.8, potencial: 2.7, exposicion: 2.8,
+            tipo: 'JOYA' },
+            { nombre: 'Plaza Sur', ciudad: 'Caracas', salud: 2.8, resiliencia: 2.7, potencial: 2.9, exposicion: 2.4,
+            tipo: 'JOYA' },
+            { nombre: 'Plaza Maracaibo', ciudad: 'Maracaibo', salud: 1.2, resiliencia: 1.0, potencial: 3.0, exposicion: 1.3,
+                tipo: 'APUESTA' },
+            { nombre: 'Plaza Valencia', ciudad: 'Valencia', salud: 1.0, resiliencia: 1.0, potencial: 2.7, exposicion: 1.3,
+                tipo: 'APUESTA' },
+            { nombre: 'Plaza Barquisimeto', ciudad: 'Barquisimeto', salud: 2.0, resiliencia: 3.0, potencial: 1.3,
+                exposicion: 2.0, tipo: 'BUNKER' },
+            { nombre: 'Plaza Maturín', ciudad: 'Maturín', salud: 2.0, resiliencia: 3.0, potencial: 1.0, exposicion: 2.0,
+                tipo: 'BUNKER' },
+            { nombre: 'Plaza San Cristóbal', ciudad: 'San Cristóbal', salud: 1.0, resiliencia: 1.0, potencial: 1.0,
+                exposicion: 3.0, tipo: 'LASTRE' }
         ];
+
+        // Generar histórico de 6 meses para cada tienda
+        // Cada tienda tiene una "trayectoria" ligeramente diferente
+        function generarHistorico(tienda, meses) {
+            const historico = [];
+            const seed = tienda.nombre.length * 7 + tienda.salud * 3;
+            let valSalud = tienda.salud - 0.6 + (seed % 5) * 0.1;
+            let valResiliencia = tienda.resiliencia - 0.5 + (seed % 7) * 0.08;
+            let valPotencial = tienda.potencial - 0.4 + (seed % 6) * 0.09;
+            let valExposicion = tienda.exposicion - 0.3 + (seed % 8) * 0.07;
+
+            for (let i = 0; i < meses.length; i++) {
+                // Añadir pequeña variación aleatoria con tendencia
+                const trend = i / meses.length * 0.4; // tendencia general
+                const noise = (Math.sin(i * 0.8 + seed) * 0.15) + (Math.random() * 0.1 - 0.05);
+
+                valSalud = Math.max(0.5, Math.min(3.0, valSalud + 0.04 * trend + noise * 0.3));
+                valResiliencia = Math.max(0.5, Math.min(3.0, valResiliencia + 0.03 * trend + noise * 0.25));
+                valPotencial = Math.max(0.5, Math.min(3.0, valPotencial + 0.05 * trend + noise * 0.35));
+                valExposicion = Math.max(0.5, Math.min(3.0, valExposicion + 0.02 * trend + noise * 0.2));
+
+                historico.push({
+                    mes: meses[i],
+                    salud: parseFloat(valSalud.toFixed(2)),
+                    resiliencia: parseFloat(valResiliencia.toFixed(2)),
+                    potencial: parseFloat(valPotencial.toFixed(2)),
+                    exposicion: parseFloat(valExposicion.toFixed(2))
+                });
+            }
+            return historico;
+        }
+
+        // Construir dataset completo
+        const tiendas = tiendasBase.map(t => {
+            const historico = generarHistorico(t, meses);
+            // El último mes es el valor actual
+            const ultimo = historico[historico.length - 1];
+            return {
+                ...t,
+                historico: historico,
+                // Asegurar que el valor actual coincida con el último histórico
+                salud: ultimo.salud,
+                resiliencia: ultimo.resiliencia,
+                potencial: ultimo.potencial,
+                exposicion: ultimo.exposicion
+            };
+        });
+
+        // Recalcular tipo basado en los valores actuales
+        tiendas.forEach(t => {
+            if (t.resiliencia >= 2.5 && t.potencial >= 2.5) t.tipo = 'JOYA';
+            else if (t.resiliencia < 2.5 && t.potencial >= 2.5) t.tipo = 'APUESTA';
+            else if (t.resiliencia >= 2.5 && t.potencial < 2.5) t.tipo = 'BUNKER';
+            else t.tipo = 'LASTRE';
+        });
 
         // ================================================================
         // CONTADORES POR TIPO
@@ -395,50 +742,131 @@
         }
 
         // ================================================================
-        // DASHBOARD 1: DIAGNÓSTICO 4×3
+        // CALCULAR TENDENCIA (últimos 6 meses)
+        // ================================================================
+        function calcularTendencia(historico, key) {
+            const valores = historico.map(h => h[key]);
+            if (valores.length < 2) return { direccion: 'flat', delta: 0, pct: 0 };
+            const primero = valores[0];
+            const ultimo = valores[valores.length - 1];
+            const delta = ultimo - primero;
+            const pct = primero !== 0 ? (delta / Math.abs(primero)) * 100 : 0;
+            let direccion = 'flat';
+            if (delta > 0.08) direccion = 'up';
+            else if (delta < -0.08) direccion = 'down';
+            return { direccion, delta, pct };
+        }
+
+        // ================================================================
+        // GENERAR SPARKLINE SVG
+        // ================================================================
+        function sparklineSVG(valores, color, height = 24, width = 60) {
+            if (!valores || valores.length < 2) return '';
+            const min = Math.min(...valores);
+            const max = Math.max(...valores);
+            const range = (max - min) || 1;
+            const pad = 2;
+            const puntos = valores.map((v, i) => {
+                const x = (i / (valores.length - 1)) * (width - pad * 2) + pad;
+                const y = height - pad - ((v - min) / range) * (height - pad * 2);
+                return `${x.toFixed(1)},${y.toFixed(1)}`;
+            }).join(' ');
+            return `<svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" style="display:inline-block;vertical-align:middle;">
+                        <polyline points="${puntos}" fill="none" stroke="${color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <polygon points="${puntos}" fill="${color}10" opacity="0.3"/>
+                    </svg>`;
+        }
+
+        // ================================================================
+        // FUNCIÓN PARA OBTENER COLOR DE TIPO
+        // ================================================================
+        function colorTipo(tipo) {
+            switch (tipo) {
+                case 'JOYA':
+                    return 'var(--hulk-vibrant)';
+                case 'APUESTA':
+                    return 'var(--rolex-gold)';
+                case 'BUNKER':
+                    return '#FFA500';
+                case 'LASTRE':
+                    return 'var(--red)';
+                default:
+                    return 'var(--steel-muted)';
+            }
+        }
+
+        // ================================================================
+        // DASHBOARD 1: DIAGNÓSTICO 4×3 CON SPARKLINES
         // ================================================================
         function renderDiagnostico() {
             const counts = contarTipos();
             return `
-                <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
-                    <div class="breadcrumb"><span class="active-crumb">Diagnóstico 4×3</span></div>
-                    <div class="drill-tabs">
-                        <div class="drill-tab active">Holding</div>
-                        <div class="drill-tab">Sucursales</div>
-                    </div>
-                </div>
+                        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+                            <div class="breadcrumb"><span class="active-crumb">Diagnóstico 4×3</span></div>
+                            <div class="drill-tabs">
+                                <div class="drill-tab active">Holding</div>
+                                <div class="drill-tab">Sucursales</div>
+                            </div>
+                        </div>
 
-                <div class="kpi-row">
-                    <div class="kpi"><div class="kpi-label">🟢 JOYA</div><div class="kpi-value">${counts.JOYA}</div><div class="kpi-delta up">▲ Alto potencial</div></div>
-                    <div class="kpi"><div class="kpi-label">🟡 APUESTA</div><div class="kpi-value">${counts.APUESTA}</div><div class="kpi-delta flat">→ Atención</div></div>
-                    <div class="kpi"><div class="kpi-label">🟠 BUNKER</div><div class="kpi-value">${counts.BUNKER}</div><div class="kpi-delta flat">→ Defensa</div></div>
-                    <div class="kpi"><div class="kpi-label">🔴 LASTRE</div><div class="kpi-value">${counts.LASTRE}</div><div class="kpi-delta down">▼ Cerrar</div></div>
-                </div>
+                        <div class="kpi-row">
+                            <div class="kpi"><div class="kpi-label">🟢 JOYA</div><div class="kpi-value">${counts.JOYA}</div><div class="kpi-delta up">▲ ${counts.JOYA > 4 ? '+1 vs trimestre' : 'estable'}</div></div>
+                            <div class="kpi"><div class="kpi-label">🟡 APUESTA</div><div class="kpi-value">${counts.APUESTA}</div><div class="kpi-delta flat">→ sin cambios</div></div>
+                            <div class="kpi"><div class="kpi-label">🟠 BUNKER</div><div class="kpi-value">${counts.BUNKER}</div><div class="kpi-delta flat">→ sin cambios</div></div>
+                            <div class="kpi"><div class="kpi-label">🔴 LASTRE</div><div class="kpi-value">${counts.LASTRE}</div><div class="kpi-delta down">▼ ${counts.LASTRE > 0 ? '1 tienda en riesgo' : 'ninguna'}</div></div>
+                        </div>
 
-                <div style="font-size:10px;font-weight:700;color:var(--rolex-gold);letter-spacing:1px;text-transform:uppercase;font-family:'Cinzel';">Evaluación por Tienda</div>
-                <div style="overflow-x:auto;">
-                    <table class="matrix-table">
-                        <thead><tr><th>Tienda</th><th>Salud</th><th>Resiliencia</th><th>Potencial</th><th>Exposición</th><th>Tipología</th></tr></thead>
-                        <tbody>
-                            ${tiendas.map(t => `
-                                <tr class="${t.tipo.toLowerCase()}">
-                                    <td style="font-weight:600;color:#fff;">${t.nombre}</td>
-                                    <td>${t.salud.toFixed(1)}</td>
-                                    <td>${t.resiliencia.toFixed(1)}</td>
-                                    <td>${t.potencial.toFixed(1)}</td>
-                                    <td>${t.exposicion.toFixed(1)}</td>
-                                    <td><strong>${t.tipo}</strong></td>
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
-                </div>
+                        <div style="font-size:10px;font-weight:700;color:var(--rolex-gold);letter-spacing:1px;text-transform:uppercase;font-family:'Cinzel';">Evaluación por Tienda · Últimos 6 meses</div>
+                        <div style="overflow-x:auto;">
+                            <table class="matrix-table">
+                                <thead><tr>
+                                    <th>Tienda</th>
+                                    <th>Salud</th>
+                                    <th>Resiliencia</th>
+                                    <th>Potencial</th>
+                                    <th>Exposición</th>
+                                    <th>Tipología</th>
+                                    <th>Tendencia</th>
+                                    <th>Evolución 6m</th>
+                                </tr></thead>
+                                <tbody>
+                                    ${tiendas.map(t => {
+                                        const trend = calcularTendencia(t.historico, 'salud');
+                                        const trendLabel = trend.direccion === 'up' ? '▲ Mejora' : trend.direccion === 'down' ? '▼ Deterioro' : '→ Estable';
+                                        const trendClass = trend.direccion === 'up' ? 'up' : trend.direccion === 'down' ? 'down' : 'flat';
+                                        const color = colorTipo(t.tipo);
+                                        const valores = t.historico.map(h => h.salud);
+                                        return `
+                                            <tr class="${t.tipo.toLowerCase()}">
+                                                <td style="font-weight:600;color:#fff;">${t.nombre}</td>
+                                                <td>${t.salud.toFixed(1)}</td>
+                                                <td>${t.resiliencia.toFixed(1)}</td>
+                                                <td>${t.potencial.toFixed(1)}</td>
+                                                <td>${t.exposicion.toFixed(1)}</td>
+                                                <td><strong>${t.tipo}</strong></td>
+                                                <td><span class="trend-badge ${trendClass}">${trendLabel}</span></td>
+                                                <td class="sparkline-cell">${sparklineSVG(valores, color)}</td>
+                                            </tr>
+                                        `;
+                                    }).join('')}
+                                </tbody>
+                            </table>
+                        </div>
 
-                <div class="narrative-box">
-                    <div class="narr-header"><span class="narr-icon">🧠</span><span class="narr-title">Narrativa IA · Diagnóstico</span></div>
-                    <div class="narr-text">La red tiene <strong>${counts.JOYA} tiendas JOYA</strong> que son el motor de crecimiento. <strong>${counts.APUESTA} tiendas APUESTA</strong> requieren inversión controlada. Las <strong>${counts.BUNKER} tiendas BUNKER</strong> son estables pero sin crecimiento. La tienda <strong>LASTRE</strong> debe ser evaluada para cierre.</div>
-                </div>
-            `;
+                        <div class="narrative-box">
+                            <div class="narr-header"><span class="narr-icon">🧠</span><span class="narr-title">Narrativa IA · Diagnóstico con Histórico</span></div>
+                            <div class="narr-text">
+                                La red tiene <strong>${counts.JOYA} tiendas JOYA</strong> que son el motor de crecimiento. 
+                                <strong>${counts.APUESTA} tiendas APUESTA</strong> requieren inversión controlada. 
+                                Las <strong>${counts.BUNKER} tiendas BUNKER</strong> son estables pero sin crecimiento. 
+                                La tienda <strong>LASTRE</strong> debe ser evaluada para cierre.
+                                <br><br>
+                                <strong>Tendencias destacadas:</strong> 
+                                ${tiendas.filter(t => calcularTendencia(t.historico, 'salud').direccion === 'up').length} tiendas están mejorando su salud.
+                                ${tiendas.filter(t => calcularTendencia(t.historico, 'salud').direccion === 'down').length} tiendas muestran deterioro.
+                            </div>
+                        </div>
+                    `;
         }
 
         // ================================================================
@@ -447,63 +875,64 @@
         function renderRiesgo() {
             const vulnerables = tiendas.filter(t => t.exposicion < 2.0);
             return `
-                <div class="breadcrumb"><span class="active-crumb">🗺️ Mapa de Calor de Riesgo</span></div>
-                <div class="kpi-row">
-                    <div class="kpi"><div class="kpi-label">Tiendas Vulnerables</div><div class="kpi-value">${vulnerables.length}</div><div class="kpi-delta down">⚠️ Atención</div></div>
-                    <div class="kpi"><div class="kpi-label">Exposición Promedio</div><div class="kpi-value">${(tiendas.reduce((s,t) => s + t.exposicion, 0) / tiendas.length).toFixed(1)}</div><div class="kpi-delta flat">→</div></div>
-                    <div class="kpi"><div class="kpi-label">Riesgo Alto (Score < 2)</div><div class="kpi-value">${vulnerables.filter(t => t.exposicion < 1.5).length}</div><div class="kpi-delta down">▼ Crítico</div></div>
-                </div>
-                <div style="font-size:10px;font-weight:700;color:var(--rolex-gold);letter-spacing:1px;text-transform:uppercase;font-family:'Cinzel';">Mapa de Riesgo por Tienda</div>
-                <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-top:8px;">
-                    ${tiendas.map(t => {
-                        const riesgo = t.exposicion < 1.5 ? '🔴 Alto' : t.exposicion < 2.0 ? '🟡 Medio' : '🟢 Bajo';
-                        const color = t.exposicion < 1.5 ? 'var(--red)' : t.exposicion < 2.0 ? 'var(--rolex-gold)' : 'var(--hulk-vibrant)';
-                        return `
-                            <div style="background:var(--surface-card);border:1px solid var(--border-deep);border-radius:10px;padding:12px;text-align:center;">
-                                <div style="font-weight:600;color:#fff;">${t.nombre}</div>
-                                <div style="font-size:11px;color:var(--steel-muted);">Exposición: ${t.exposicion.toFixed(1)}</div>
-                                <div style="margin-top:6px;font-weight:700;color:${color};">${riesgo}</div>
-                            </div>
-                        `;
-                    }).join('')}
-                </div>
-            `;
+                        <div class="breadcrumb"><span class="active-crumb">🗺️ Mapa de Calor de Riesgo</span></div>
+                        <div class="kpi-row">
+                            <div class="kpi"><div class="kpi-label">Tiendas Vulnerables</div><div class="kpi-value">${vulnerables.length}</div><div class="kpi-delta down">⚠️ Atención</div></div>
+                            <div class="kpi"><div class="kpi-label">Exposición Promedio</div><div class="kpi-value">${(tiendas.reduce((s,t) => s + t.exposicion, 0) / tiendas.length).toFixed(1)}</div><div class="kpi-delta flat">→</div></div>
+                            <div class="kpi"><div class="kpi-label">Riesgo Alto (Score < 2)</div><div class="kpi-value">${vulnerables.filter(t => t.exposicion < 1.5).length}</div><div class="kpi-delta down">▼ Crítico</div></div>
+                        </div>
+                        <div style="font-size:10px;font-weight:700;color:var(--rolex-gold);letter-spacing:1px;text-transform:uppercase;font-family:'Cinzel';">Mapa de Riesgo por Tienda</div>
+                        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-top:8px;">
+                            ${tiendas.map(t => {
+                                const riesgo = t.exposicion < 1.5 ? '🔴 Alto' : t.exposicion < 2.0 ? '🟡 Medio' : '🟢 Bajo';
+                                const color = t.exposicion < 1.5 ? 'var(--red)' : t.exposicion < 2.0 ? 'var(--rolex-gold)' : 'var(--hulk-vibrant)';
+                                return `
+                                    <div style="background:var(--surface-card);border:1px solid var(--border-deep);border-radius:10px;padding:12px;text-align:center;">
+                                        <div style="font-weight:600;color:#fff;">${t.nombre}</div>
+                                        <div style="font-size:11px;color:var(--steel-muted);">Exposición: ${t.exposicion.toFixed(1)}</div>
+                                        <div style="margin-top:6px;font-weight:700;color:${color};">${riesgo}</div>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    `;
         }
 
         // ================================================================
         // DASHBOARD 3: TOP/BOTTOM PERFORMERS
         // ================================================================
         function renderEficiencia() {
-            const sorted = [...tiendas].sort((a,b) => (b.salud + b.resiliencia + b.potencial) - (a.salud + a.resiliencia + a.potencial));
-            const top3 = sorted.slice(0,3);
+            const sorted = [...tiendas].sort((a, b) => (b.salud + b.resiliencia + b.potencial) - (a.salud + a.resiliencia + a
+                .potencial));
+            const top3 = sorted.slice(0, 3);
             const bottom3 = sorted.slice(-3);
             return `
-                <div class="breadcrumb"><span class="active-crumb">🏆 Top/Bottom Performers</span></div>
-                <div class="two-col">
-                    <div class="panel">
-                        <div class="panel-title">🏆 Top 3 Tiendas</div>
-                        ${top3.map(t => `
-                            <div class="hier-item">
-                                <div class="hi-dot" style="background:var(--hulk-vibrant);"></div>
-                                <span class="hi-name">${t.nombre}</span>
-                                <span class="hi-state s-green">Líder</span>
-                                <span class="hi-delta up">${((t.salud + t.resiliencia + t.potencial)/3).toFixed(1)}</span>
+                        <div class="breadcrumb"><span class="active-crumb">🏆 Top/Bottom Performers</span></div>
+                        <div class="two-col">
+                            <div class="panel">
+                                <div class="panel-title">🏆 Top 3 Tiendas</div>
+                                ${top3.map(t => `
+                                    <div class="hier-item">
+                                        <div class="hi-dot" style="background:var(--hulk-vibrant);"></div>
+                                        <span class="hi-name">${t.nombre}</span>
+                                        <span class="hi-state s-green">Líder</span>
+                                        <span class="hi-delta up">${((t.salud + t.resiliencia + t.potencial)/3).toFixed(1)}</span>
+                                    </div>
+                                `).join('')}
                             </div>
-                        `).join('')}
-                    </div>
-                    <div class="panel">
-                        <div class="panel-title">📉 Bottom 3 Tiendas</div>
-                        ${bottom3.map(t => `
-                            <div class="hier-item">
-                                <div class="hi-dot" style="background:var(--red);"></div>
-                                <span class="hi-name">${t.nombre}</span>
-                                <span class="hi-state s-red">Rezagada</span>
-                                <span class="hi-delta down">${((t.salud + t.resiliencia + t.potencial)/3).toFixed(1)}</span>
+                            <div class="panel">
+                                <div class="panel-title">📉 Bottom 3 Tiendas</div>
+                                ${bottom3.map(t => `
+                                    <div class="hier-item">
+                                        <div class="hi-dot" style="background:var(--red);"></div>
+                                        <span class="hi-name">${t.nombre}</span>
+                                        <span class="hi-state s-red">Rezagada</span>
+                                        <span class="hi-delta down">${((t.salud + t.resiliencia + t.potencial)/3).toFixed(1)}</span>
+                                    </div>
+                                `).join('')}
                             </div>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
+                        </div>
+                    `;
         }
 
         // ================================================================
@@ -511,32 +940,32 @@
         // ================================================================
         function renderBrecha() {
             const avg = {
-                salud: tiendas.reduce((s,t) => s + t.salud, 0) / tiendas.length,
-                resiliencia: tiendas.reduce((s,t) => s + t.resiliencia, 0) / tiendas.length,
-                potencial: tiendas.reduce((s,t) => s + t.potencial, 0) / tiendas.length,
-                exposicion: tiendas.reduce((s,t) => s + t.exposicion, 0) / tiendas.length
+                salud: tiendas.reduce((s, t) => s + t.salud, 0) / tiendas.length,
+                resiliencia: tiendas.reduce((s, t) => s + t.resiliencia, 0) / tiendas.length,
+                potencial: tiendas.reduce((s, t) => s + t.potencial, 0) / tiendas.length,
+                exposicion: tiendas.reduce((s, t) => s + t.exposicion, 0) / tiendas.length
             };
             return `
-                <div class="breadcrumb"><span class="active-crumb">📈 Análisis de Brecha</span></div>
-                <div class="narrative-box">
-                    <div class="narr-header"><span class="narr-icon">📊</span><span class="narr-title">Brecha vs Promedio de la Cadena</span></div>
-                    <div class="narr-text">Promedios: Salud <strong>${avg.salud.toFixed(1)}</strong> · Resiliencia <strong>${avg.resiliencia.toFixed(1)}</strong> · Potencial <strong>${avg.potencial.toFixed(1)}</strong> · Exposición <strong>${avg.exposicion.toFixed(1)}</strong></div>
-                </div>
-                <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:8px;">
-                    ${tiendas.map(t => {
-                        const brecha = ((t.salud + t.resiliencia + t.potencial + t.exposicion) / 4) - 
-                                       ((avg.salud + avg.resiliencia + avg.potencial + avg.exposicion) / 4);
-                        const color = brecha >= 0 ? 'var(--hulk-vibrant)' : 'var(--red)';
-                        return `
-                            <div style="background:var(--surface-card);border:1px solid var(--border-deep);border-radius:10px;padding:12px;text-align:center;">
-                                <div style="font-weight:600;color:#fff;">${t.nombre}</div>
-                                <div style="font-size:20px;font-weight:700;color:${color};">${brecha >= 0 ? '+' : ''}${brecha.toFixed(1)}</div>
-                                <div style="font-size:10px;color:var(--steel-muted);">vs promedio</div>
-                            </div>
-                        `;
-                    }).join('')}
-                </div>
-            `;
+                        <div class="breadcrumb"><span class="active-crumb">📈 Análisis de Brecha</span></div>
+                        <div class="narrative-box">
+                            <div class="narr-header"><span class="narr-icon">📊</span><span class="narr-title">Brecha vs Promedio de la Cadena</span></div>
+                            <div class="narr-text">Promedios: Salud <strong>${avg.salud.toFixed(1)}</strong> · Resiliencia <strong>${avg.resiliencia.toFixed(1)}</strong> · Potencial <strong>${avg.potencial.toFixed(1)}</strong> · Exposición <strong>${avg.exposicion.toFixed(1)}</strong></div>
+                        </div>
+                        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:8px;">
+                            ${tiendas.map(t => {
+                                const brecha = ((t.salud + t.resiliencia + t.potencial + t.exposicion) / 4) - 
+                                               ((avg.salud + avg.resiliencia + avg.potencial + avg.exposicion) / 4);
+                                const color = brecha >= 0 ? 'var(--hulk-vibrant)' : 'var(--red)';
+                                return `
+                                    <div style="background:var(--surface-card);border:1px solid var(--border-deep);border-radius:10px;padding:12px;text-align:center;">
+                                        <div style="font-weight:600;color:#fff;">${t.nombre}</div>
+                                        <div style="font-size:20px;font-weight:700;color:${color};">${brecha >= 0 ? '+' : ''}${brecha.toFixed(1)}</div>
+                                        <div style="font-size:10px;color:var(--steel-muted);">vs promedio</div>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    `;
         }
 
         // ================================================================
@@ -544,32 +973,32 @@
         // ================================================================
         function renderSimulacion() {
             return `
-                <div class="breadcrumb"><span class="active-crumb">⚙️ Simulación de Pesos</span></div>
-                <div class="narrative-box">
-                    <div class="narr-header"><span class="narr-icon">🎯</span><span class="narr-title">Ajuste de Pesos Personalizados</span></div>
-                    <div class="narr-text">Modifica los pesos de cada variable para ver cómo cambia la tipología de las tiendas.</div>
-                </div>
-                <div class="two-col">
-                    <div class="panel">
-                        <div class="panel-title">Pesos Actuales</div>
-                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;">
-                            <span style="color:var(--steel-muted);">Salud Financiera</span><span style="color:#fff;font-weight:600;">33%</span>
-                            <span style="color:var(--steel-muted);">Resiliencia</span><span style="color:#fff;font-weight:600;">33%</span>
-                            <span style="color:var(--steel-muted);">Potencial</span><span style="color:#fff;font-weight:600;">33%</span>
-                            <span style="color:var(--steel-muted);">Exposición</span><span style="color:#fff;font-weight:600;">33%</span>
+                        <div class="breadcrumb"><span class="active-crumb">⚙️ Simulación de Pesos</span></div>
+                        <div class="narrative-box">
+                            <div class="narr-header"><span class="narr-icon">🎯</span><span class="narr-title">Ajuste de Pesos Personalizados</span></div>
+                            <div class="narr-text">Modifica los pesos de cada variable para ver cómo cambia la tipología de las tiendas.</div>
                         </div>
-                    </div>
-                    <div class="panel">
-                        <div class="panel-title">Resultado</div>
-                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;">
-                            <span style="color:var(--steel-muted);">JOYA</span><span style="color:var(--hulk-vibrant);font-weight:700;">5</span>
-                            <span style="color:var(--steel-muted);">APUESTA</span><span style="color:var(--rolex-gold);font-weight:700;">2</span>
-                            <span style="color:var(--steel-muted);">BUNKER</span><span style="color:#FFA500;font-weight:700;">2</span>
-                            <span style="color:var(--steel-muted);">LASTRE</span><span style="color:var(--red);font-weight:700;">1</span>
+                        <div class="two-col">
+                            <div class="panel">
+                                <div class="panel-title">Pesos Actuales</div>
+                                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;">
+                                    <span style="color:var(--steel-muted);">Salud Financiera</span><span style="color:#fff;font-weight:600;">33%</span>
+                                    <span style="color:var(--steel-muted);">Resiliencia</span><span style="color:#fff;font-weight:600;">33%</span>
+                                    <span style="color:var(--steel-muted);">Potencial</span><span style="color:#fff;font-weight:600;">33%</span>
+                                    <span style="color:var(--steel-muted);">Exposición</span><span style="color:#fff;font-weight:600;">33%</span>
+                                </div>
+                            </div>
+                            <div class="panel">
+                                <div class="panel-title">Resultado</div>
+                                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;">
+                                    <span style="color:var(--steel-muted);">JOYA</span><span style="color:var(--hulk-vibrant);font-weight:700;">${contarTipos().JOYA}</span>
+                                    <span style="color:var(--steel-muted);">APUESTA</span><span style="color:var(--rolex-gold);font-weight:700;">${contarTipos().APUESTA}</span>
+                                    <span style="color:var(--steel-muted);">BUNKER</span><span style="color:#FFA500;font-weight:700;">${contarTipos().BUNKER}</span>
+                                    <span style="color:var(--steel-muted);">LASTRE</span><span style="color:var(--red);font-weight:700;">${contarTipos().LASTRE}</span>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            `;
+                    `;
         }
 
         // ================================================================
@@ -578,28 +1007,28 @@
         function renderAccion() {
             const counts = contarTipos();
             return `
-                <div class="breadcrumb"><span class="active-crumb">📋 Plan de Acción</span></div>
-                <div class="narrative-box">
-                    <div class="narr-header"><span class="narr-icon">📌</span><span class="narr-title">Recomendaciones Estratégicas</span></div>
-                    <div class="narr-text">
-                        <strong>JOYA (${counts.JOYA} tiendas):</strong> Invertir y atacar.<br>
-                        <strong>APUESTA (${counts.APUESTA} tiendas):</strong> Invertir con cautela.<br>
-                        <strong>BUNKER (${counts.BUNKER} tiendas):</strong> Mantener mínimo.<br>
-                        <strong>LASTRE (${counts.LASTRE} tiendas):</strong> Prioridad de cierre.
-                    </div>
-                </div>
-                <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-top:8px;">
-                    ${tiendas.map(t => `
-                        <div style="background:var(--surface-card);border:1px solid var(--border-deep);border-radius:10px;padding:12px;text-align:center;border-left:4px solid ${t.tipo === 'JOYA' ? 'var(--hulk-vibrant)' : t.tipo === 'APUESTA' ? 'var(--rolex-gold)' : t.tipo === 'BUNKER' ? '#FFA500' : 'var(--red)'};">
-                            <div style="font-weight:600;color:#fff;">${t.nombre}</div>
-                            <div style="font-size:12px;font-weight:700;margin-top:4px;color:${t.tipo === 'JOYA' ? 'var(--hulk-vibrant)' : t.tipo === 'APUESTA' ? 'var(--rolex-gold)' : t.tipo === 'BUNKER' ? '#FFA500' : 'var(--red)'};">${t.tipo}</div>
-                            <div style="font-size:10px;color:var(--steel-muted);margin-top:4px;">
-                                ${t.tipo === 'JOYA' ? '🚀 Invertir' : t.tipo === 'APUESTA' ? '⚠️ Evaluar' : t.tipo === 'BUNKER' ? '🛡️ Defender' : '🔴 Cerrar'}
+                        <div class="breadcrumb"><span class="active-crumb">📋 Plan de Acción</span></div>
+                        <div class="narrative-box">
+                            <div class="narr-header"><span class="narr-icon">📌</span><span class="narr-title">Recomendaciones Estratégicas</span></div>
+                            <div class="narr-text">
+                                <strong>JOYA (${counts.JOYA} tiendas):</strong> Invertir y atacar.<br>
+                                <strong>APUESTA (${counts.APUESTA} tiendas):</strong> Invertir con cautela.<br>
+                                <strong>BUNKER (${counts.BUNKER} tiendas):</strong> Mantener mínimo.<br>
+                                <strong>LASTRE (${counts.LASTRE} tiendas):</strong> Prioridad de cierre.
                             </div>
                         </div>
-                    `).join('')}
-                </div>
-            `;
+                        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-top:8px;">
+                            ${tiendas.map(t => `
+                                <div style="background:var(--surface-card);border:1px solid var(--border-deep);border-radius:10px;padding:12px;text-align:center;border-left:4px solid ${colorTipo(t.tipo)};">
+                                    <div style="font-weight:600;color:#fff;">${t.nombre}</div>
+                                    <div style="font-size:12px;font-weight:700;margin-top:4px;color:${colorTipo(t.tipo)};">${t.tipo}</div>
+                                    <div style="font-size:10px;color:var(--steel-muted);margin-top:4px;">
+                                        ${t.tipo === 'JOYA' ? '🚀 Invertir' : t.tipo === 'APUESTA' ? '⚠️ Evaluar' : t.tipo === 'BUNKER' ? '🛡️ Defender' : '🔴 Cerrar'}
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
         }
 
         // ================================================================
@@ -607,24 +1036,214 @@
         // ================================================================
         function renderEscenarios() {
             return `
-                <div class="breadcrumb"><span class="active-crumb">📌 Matriz de Escenarios</span></div>
-                <div style="font-size:10px;font-weight:700;color:var(--rolex-gold);letter-spacing:1px;text-transform:uppercase;font-family:'Cinzel';">Crecimiento vs Depresión</div>
-                <div style="overflow-x:auto;">
-                    <table class="matrix-table">
-                        <thead><tr><th>Tipología</th><th>🔮 Crecimiento</th><th>🐻 Depresión</th></tr></thead>
-                        <tbody>
-                            <tr><td class="joya">JOYA</td><td style="color:var(--hulk-vibrant);">INVERTIR Y ATACAR</td><td style="color:var(--hulk-vibrant);">PROTEGER Y FORTALECER</td></tr>
-                            <tr><td class="apuesta">APUESTA</td><td style="color:var(--rolex-gold);">INVERTIR CON CAUTELA</td><td style="color:var(--rolex-gold);">CONGELAR INVERSIÓN</td></tr>
-                            <tr><td class="bunker">BUNKER</td><td style="color:#FFA500;">MANTENER MÍNIMO</td><td style="color:#FFA500;">RESERVAR COMO COLCHÓN</td></tr>
-                            <tr><td class="lastre">LASTRE</td><td style="color:var(--red);">CERRAR/VENDER</td><td style="color:var(--red);">PRIORIDAD DE CIERRE</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="narrative-box">
-                    <div class="narr-header"><span class="narr-icon">📊</span><span class="narr-title">Recomendación Estratégica</span></div>
-                    <div class="narr-text">En escenario de <strong>crecimiento</strong>, priorizar inversión en JOYA y evaluar APUESTA. En <strong>depresión</strong>, proteger JOYA, usar BUNKER como colchón y cerrar LASTRE.</div>
-                </div>
-            `;
+                        <div class="breadcrumb"><span class="active-crumb">📌 Matriz de Escenarios</span></div>
+                        <div style="font-size:10px;font-weight:700;color:var(--rolex-gold);letter-spacing:1px;text-transform:uppercase;font-family:'Cinzel';">Crecimiento vs Depresión</div>
+                        <div style="overflow-x:auto;">
+                            <table class="matrix-table">
+                                <thead><tr><th>Tipología</th><th>🔮 Crecimiento</th><th>🐻 Depresión</th></tr></thead>
+                                <tbody>
+                                    <tr><td class="joya">JOYA</td><td style="color:var(--hulk-vibrant);">INVERTIR Y ATACAR</td><td style="color:var(--hulk-vibrant);">PROTEGER Y FORTALECER</td></tr>
+                                    <tr><td class="apuesta">APUESTA</td><td style="color:var(--rolex-gold);">INVERTIR CON CAUTELA</td><td style="color:var(--rolex-gold);">CONGELAR INVERSIÓN</td></tr>
+                                    <tr><td class="bunker">BUNKER</td><td style="color:#FFA500;">MANTENER MÍNIMO</td><td style="color:#FFA500;">RESERVAR COMO COLCHÓN</td></tr>
+                                    <tr><td class="lastre">LASTRE</td><td style="color:var(--red);">CERRAR/VENDER</td><td style="color:var(--red);">PRIORIDAD DE CIERRE</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="narrative-box">
+                            <div class="narr-header"><span class="narr-icon">📊</span><span class="narr-title">Recomendación Estratégica</span></div>
+                            <div class="narr-text">En escenario de <strong>crecimiento</strong>, priorizar inversión en JOYA y evaluar APUESTA. En <strong>depresión</strong>, proteger JOYA, usar BUNKER como colchón y cerrar LASTRE.</div>
+                        </div>
+                    `;
+        }
+
+        // ================================================================
+        // DASHBOARD 8: EVOLUCIÓN HISTÓRICA (NUEVO)
+        // ================================================================
+        let chartInstance = null;
+
+        function renderHistorico() {
+            // Preparar datos para Chart.js
+            const labels = meses;
+            const datasets = tiendas.map(t => {
+                const color = colorTipo(t.tipo);
+                return {
+                    label: t.nombre,
+                    data: t.historico.map(h => parseFloat(((h.salud + h.resiliencia + h.potencial) / 3).toFixed(2))),
+                    borderColor: color,
+                    backgroundColor: color + '20',
+                    borderWidth: 2,
+                    pointRadius: 3,
+                    tension: 0.3,
+                    fill: false
+                };
+            });
+
+            // Datos para gráfico de área apilada (salud de la cadena)
+            const saludCadena = meses.map((_, i) => {
+                return tiendas.reduce((sum, t) => sum + t.historico[i].salud, 0) / tiendas.length;
+            });
+            const resilienciaCadena = meses.map((_, i) => {
+                return tiendas.reduce((sum, t) => sum + t.historico[i].resiliencia, 0) / tiendas.length;
+            });
+            const potencialCadena = meses.map((_, i) => {
+                return tiendas.reduce((sum, t) => sum + t.historico[i].potencial, 0) / tiendas.length;
+            });
+
+            // Construir HTML
+            const html = `
+                        <div class="breadcrumb"><span class="active-crumb">📈 Evolución Histórica · 6 Meses</span></div>
+
+                        <div class="narrative-box">
+                            <div class="narr-header"><span class="narr-icon">📊</span><span class="narr-title">Salud de la Cadena · Evolución Agregada</span></div>
+                            <div class="narr-text">
+                                La <strong>salud promedio de la cadena</strong> muestra una tendencia 
+                                ${saludCadena[saludCadena.length-1] > saludCadena[0] ? '📈 positiva' : '📉 negativa'} 
+                                en los últimos 6 meses. 
+                                <strong>Resiliencia</strong> se mantiene ${resilienciaCadena[resilienciaCadena.length-1] > resilienciaCadena[0] ? 'en mejora' : 'estable'},
+                                mientras que <strong>Potencial</strong> 
+                                ${potencialCadena[potencialCadena.length-1] > potencialCadena[0] ? 'está creciendo' : 'requiere atención'}.
+                            </div>
+                        </div>
+
+                        <div class="panel">
+                            <div class="panel-title">📊 Salud de la Cadena (Promedio Ponderado)</div>
+                            <div class="chart-wrap">
+                                <canvas id="healthChart"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="panel">
+                            <div class="panel-title">📈 Trayectoria de Tiendas · Puntaje Total</div>
+                            <div class="chart-wrap">
+                                <canvas id="trendChart"></canvas>
+                            </div>
+                        </div>
+
+                        <div style="font-size:10px;font-weight:700;color:var(--rolex-gold);letter-spacing:1px;text-transform:uppercase;font-family:'Cinzel';margin-top:8px;">Resumen de Tendencias</div>
+                        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:8px;">
+                            ${tiendas.map(t => {
+                                const trend = calcularTendencia(t.historico, 'salud');
+                                const trendIcon = trend.direccion === 'up' ? '▲' : trend.direccion === 'down' ? '▼' : '→';
+                                const trendColor = trend.direccion === 'up' ? 'var(--hulk-vibrant)' : trend.direccion === 'down' ? 'var(--red)' : 'var(--rolex-gold)';
+                                return `
+                                    <div style="background:var(--surface-card);border:1px solid var(--border-deep);border-radius:10px;padding:12px;display:flex;justify-content:space-between;align-items:center;">
+                                        <span style="font-weight:600;color:#fff;">${t.nombre}</span>
+                                        <span style="color:${trendColor};font-weight:700;font-size:14px;">
+                                            ${trendIcon} ${trend.delta > 0 ? '+' : ''}${trend.delta.toFixed(2)}
+                                        </span>
+                                        <span class="trend-badge ${trend.direccion}">${trend.direccion === 'up' ? 'Mejora' : trend.direccion === 'down' ? 'Deterioro' : 'Estable'}</span>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    `;
+
+            // Inyectar HTML y luego renderizar gráficos
+            document.getElementById('mainContent').innerHTML = html;
+
+            // Renderizar gráficos después de que el DOM esté listo
+            setTimeout(() => {
+                renderHealthChart(saludCadena, resilienciaCadena, potencialCadena);
+                renderTrendChart(datasets);
+            }, 100);
+        }
+
+        function renderHealthChart(salud, resiliencia, potencial) {
+            const ctx = document.getElementById('healthChart');
+            if (!ctx) return;
+            if (chartInstance) { chartInstance.destroy();
+                chartInstance = null; }
+
+            chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: meses,
+                    datasets: [{
+                        label: 'Salud Financiera',
+                        data: salud,
+                        borderColor: '#00E676',
+                        backgroundColor: 'rgba(0, 230, 118, 0.15)',
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 4,
+                        pointBackgroundColor: '#00E676'
+                    }, {
+                        label: 'Resiliencia Defensiva',
+                        data: resiliencia,
+                        borderColor: '#D4AF37',
+                        backgroundColor: 'rgba(212, 175, 55, 0.10)',
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 4,
+                        pointBackgroundColor: '#D4AF37',
+                        borderDash: [4, 3]
+                    }, {
+                        label: 'Potencial Ofensivo',
+                        data: potencial,
+                        borderColor: '#29B6F6',
+                        backgroundColor: 'rgba(41, 182, 246, 0.10)',
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 4,
+                        pointBackgroundColor: '#29B6F6',
+                        borderDash: [2, 3]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: { color: '#CBD5E1', font: { size: 11, family: 'Outfit' }, boxWidth: 12 }
+                        },
+                        tooltip: {
+                            backgroundColor: '#0B1612',
+                            borderColor: 'rgba(212, 175, 55, 0.4)',
+                            borderWidth: 1,
+                            titleColor: '#F1F5F9',
+                            bodyColor: '#7E998F',
+                            padding: 10
+                        }
+                    },
+                    scales: {
+                        x: { ticks: { color: '#7E998F', font: { size: 10 } }, grid: { color: 'rgba(212, 175, 55, 0.08)' } },
+                        y: { min: 0.5, max: 3.0, ticks: { color: '#7E998F', font: { size: 10 }, stepSize: 0.5 },
+                            grid: { color: 'rgba(212, 175, 55, 0.08)' } }
+                    }
+                }
+            });
+        }
+
+        function renderTrendChart(datasets) {
+            const ctx = document.getElementById('trendChart');
+            if (!ctx) return;
+
+            new Chart(ctx, {
+                type: 'line',
+                data: { labels: meses, datasets: datasets },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: { color: '#CBD5E1', font: { size: 10, family: 'Outfit' }, boxWidth: 10, padding: 6 }
+                        },
+                        tooltip: {
+                            backgroundColor: '#0B1612',
+                            borderColor: 'rgba(212, 175, 55, 0.4)',
+                            borderWidth: 1,
+                            titleColor: '#F1F5F9',
+                            bodyColor: '#7E998F',
+                            padding: 10
+                        }
+                    },
+                    scales: {
+                        x: { ticks: { color: '#7E998F', font: { size: 9 } }, grid: { color: 'rgba(212, 175, 55, 0.05)' } },
+                        y: { min: 0.5, max: 3.0, ticks: { color: '#7E998F', font: { size: 9 }, stepSize: 0.5 },
+                            grid: { color: 'rgba(212, 175, 55, 0.05)' } }
+                    }
+                }
+            });
         }
 
         // ================================================================
@@ -633,27 +1252,53 @@
         function cambiarVista(vista) {
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(el => {
-                if (el.textContent.trim().toLowerCase().includes(vista.replace('diagnostico','diagnóstico').replace('riesgo','mapa').replace('eficiencia','top').replace('brecha','brecha').replace('simulacion','simulación').replace('accion','acción').replace('escenarios','matriz'))) {
+                const txt = el.textContent.trim().toLowerCase();
+                if (txt.includes(vista.replace('diagnostico', 'diagnóstico').replace('riesgo', 'mapa')
+                        .replace('eficiencia', 'top').replace('brecha', 'brecha')
+                        .replace('simulacion', 'simulación').replace('accion', 'acción')
+                        .replace('escenarios', 'matriz').replace('historico', 'evolución'))) {
                     el.classList.add('active');
                 }
             });
-            const main = document.getElementById('mainContent');
-            switch(vista) {
-                case 'diagnostico': main.innerHTML = renderDiagnostico(); break;
-                case 'riesgo': main.innerHTML = renderRiesgo(); break;
-                case 'eficiencia': main.innerHTML = renderEficiencia(); break;
-                case 'brecha': main.innerHTML = renderBrecha(); break;
-                case 'simulacion': main.innerHTML = renderSimulacion(); break;
-                case 'accion': main.innerHTML = renderAccion(); break;
-                case 'escenarios': main.innerHTML = renderEscenarios(); break;
-                default: main.innerHTML = renderDiagnostico();
+            // Limpiar instancia de gráfico si existe
+            if (chartInstance) { chartInstance.destroy();
+                chartInstance = null; }
+
+            switch (vista) {
+                case 'diagnostico':
+                    document.getElementById('mainContent').innerHTML = renderDiagnostico();
+                    break;
+                case 'riesgo':
+                    document.getElementById('mainContent').innerHTML = renderRiesgo();
+                    break;
+                case 'eficiencia':
+                    document.getElementById('mainContent').innerHTML = renderEficiencia();
+                    break;
+                case 'brecha':
+                    document.getElementById('mainContent').innerHTML = renderBrecha();
+                    break;
+                case 'simulacion':
+                    document.getElementById('mainContent').innerHTML = renderSimulacion();
+                    break;
+                case 'accion':
+                    document.getElementById('mainContent').innerHTML = renderAccion();
+                    break;
+                case 'escenarios':
+                    document.getElementById('mainContent').innerHTML = renderEscenarios();
+                    break;
+                case 'historico':
+                    renderHistorico();
+                    break;
+                default:
+                    document.getElementById('mainContent').innerHTML = renderDiagnostico();
             }
         }
 
         // ================================================================
         // INICIALIZACIÓN
         // ================================================================
-        document.getElementById('dateLabel').textContent = new Date().toLocaleDateString('es-MX', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        document.getElementById('dateLabel').textContent = new Date().toLocaleDateString('es-MX', { weekday: 'long',
+            year: 'numeric', month: 'long', day: 'numeric' });
         cambiarVista('diagnostico');
     </script>
 </body>

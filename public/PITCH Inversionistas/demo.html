@@ -754,7 +754,7 @@
         // CONFIGURACIÓN DEL DEMO
         // ================================================================
         // Cambia este prefijo para personalizar los nombres de las tiendas
-        const PREFIJO_TIENDA = "Sucursal ";  // Ej: "Sucursal ", "Plaza ", "Tienda "
+        const PREFIJO_TIENDA = "Kalea ";  // Ej: "Sucursal ", "Plaza ", "Tienda "
 
         // ================================================================
         // DATOS DE EJEMPLO
@@ -762,32 +762,32 @@
         const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'];
 
         // Datos base con 2 JOYA, 3 APUESTA, 3 BUNKER, 2 LASTRE
-        const tiendasBase = [
-            // JOYA (2)
-            { nombre: PREFIJO_TIENDA + 'Norte', ciudad: 'Caracas', lat: 10.5, lng: -66.9, salud: 2.8, resiliencia: 2.9,
-                potencial: 2.9, exposicion: 2.7, tipo: 'JOYA' },
-            { nombre: PREFIJO_TIENDA + 'Centro', ciudad: 'Caracas', lat: 10.48, lng: -66.92, salud: 2.7, resiliencia: 2.7,
-                potencial: 2.8, exposicion: 2.6, tipo: 'JOYA' },
-            // APUESTA (3)
-            { nombre: PREFIJO_TIENDA + 'Este', ciudad: 'Caracas', lat: 10.52, lng: -66.85, salud: 1.5, resiliencia: 1.0,
-                potencial: 2.8, exposicion: 2.5, tipo: 'APUESTA' },
-            { nombre: PREFIJO_TIENDA + 'Maracaibo', ciudad: 'Maracaibo', lat: 10.65, lng: -71.61, salud: 1.2, resiliencia: 1.0,
-                potencial: 3.0, exposicion: 1.3, tipo: 'APUESTA' },
-            { nombre: PREFIJO_TIENDA + 'Valencia', ciudad: 'Valencia', lat: 10.18, lng: -68.00, salud: 1.0, resiliencia: 1.0,
-                potencial: 2.7, exposicion: 1.3, tipo: 'APUESTA' },
-            // BUNKER (3)
-            { nombre: PREFIJO_TIENDA + 'Oeste', ciudad: 'Caracas', lat: 10.46, lng: -66.95, salud: 2.0, resiliencia: 2.8,
-                potencial: 1.7, exposicion: 2.8, tipo: 'BUNKER' },
-            { nombre: PREFIJO_TIENDA + 'Barquisimeto', ciudad: 'Barquisimeto', lat: 10.08, lng: -69.32, salud: 2.0,
-                resiliencia: 3.0, potencial: 1.3, exposicion: 2.0, tipo: 'BUNKER' },
-            { nombre: PREFIJO_TIENDA + 'Maturín', ciudad: 'Maturín', lat: 9.75, lng: -63.18, salud: 2.0, resiliencia: 3.0,
-                potencial: 1.0, exposicion: 2.0, tipo: 'BUNKER' },
-            // LASTRE (2)
-            { nombre: PREFIJO_TIENDA + 'Sur', ciudad: 'Caracas', lat: 10.44, lng: -66.88, salud: 1.0, resiliencia: 1.0,
-                potencial: 1.0, exposicion: 2.9, tipo: 'LASTRE' },
-            { nombre: PREFIJO_TIENDA + 'San Cristóbal', ciudad: 'San Cristóbal', lat: 7.77, lng: -72.22, salud: 1.0,
-                resiliencia: 1.0, potencial: 1.0, exposicion: 3.0, tipo: 'LASTRE' }
-        ];
+       const tiendasBase = [
+    // JOYA (2) - Valores altos para asegurar que sigan siendo JOYA
+    { nombre: PREFIJO_TIENDA + 'Norte', ciudad: 'Caracas', lat: 10.5, lng: -66.9, salud: 3.0, resiliencia: 3.0,
+        potencial: 3.0, exposicion: 2.7, tipo: 'JOYA' },
+    { nombre: PREFIJO_TIENDA + 'Centro', ciudad: 'Caracas', lat: 10.48, lng: -66.92, salud: 3.0, resiliencia: 3.0,
+        potencial: 2.9, exposicion: 2.6, tipo: 'JOYA' },
+    // APUESTA (3)
+    { nombre: PREFIJO_TIENDA + 'Este', ciudad: 'Caracas', lat: 10.52, lng: -66.85, salud: 1.5, resiliencia: 1.0,
+        potencial: 2.8, exposicion: 2.5, tipo: 'APUESTA' },
+    { nombre: PREFIJO_TIENDA + 'Maracaibo', ciudad: 'Maracaibo', lat: 10.65, lng: -71.61, salud: 1.2, resiliencia: 1.0,
+        potencial: 3.0, exposicion: 1.3, tipo: 'APUESTA' },
+    { nombre: PREFIJO_TIENDA + 'Valencia', ciudad: 'Valencia', lat: 10.18, lng: -68.00, salud: 1.0, resiliencia: 1.0,
+        potencial: 2.7, exposicion: 1.3, tipo: 'APUESTA' },
+    // BUNKER (3)
+    { nombre: PREFIJO_TIENDA + 'Oeste', ciudad: 'Caracas', lat: 10.46, lng: -66.95, salud: 2.0, resiliencia: 2.8,
+        potencial: 1.7, exposicion: 2.8, tipo: 'BUNKER' },
+    { nombre: PREFIJO_TIENDA + 'Barquisimeto', ciudad: 'Barquisimeto', lat: 10.08, lng: -69.32, salud: 2.0,
+        resiliencia: 3.0, potencial: 1.3, exposicion: 2.0, tipo: 'BUNKER' },
+    { nombre: PREFIJO_TIENDA + 'Maturín', ciudad: 'Maturín', lat: 9.75, lng: -63.18, salud: 2.0, resiliencia: 3.0,
+        potencial: 1.0, exposicion: 2.0, tipo: 'BUNKER' },
+    // LASTRE (2)
+    { nombre: PREFIJO_TIENDA + 'Sur', ciudad: 'Caracas', lat: 10.44, lng: -66.88, salud: 1.0, resiliencia: 1.0,
+        potencial: 1.0, exposicion: 2.9, tipo: 'LASTRE' },
+    { nombre: PREFIJO_TIENDA + 'San Cristóbal', ciudad: 'San Cristóbal', lat: 7.77, lng: -72.22, salud: 1.0,
+        resiliencia: 1.0, potencial: 1.0, exposicion: 3.0, tipo: 'LASTRE' }
+];
 
         function generarHistorico(tienda, meses) {
             const historico = [];

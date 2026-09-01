@@ -238,6 +238,7 @@
             box-shadow: 0 0 12px var(--hulk-glow);
         }
 
+        /* ===== KPI ROW (para vista ejecutiva) ===== */
         .kpi-row {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -315,6 +316,138 @@
         }
         .flat {
             color: var(--rolex-gold);
+        }
+
+        /* ===== VISTA EJECUTIVA (estilo landing page) ===== */
+        .executive-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 1.2rem;
+        }
+        .executive-card {
+            background: linear-gradient(145deg, var(--surface-card), var(--surface));
+            border: 1px solid var(--border-deep);
+            border-radius: 12px;
+            padding: 1rem 1.2rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .executive-card:hover {
+            border-color: var(--rolex-gold);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.15);
+        }
+        .executive-card .ec-title {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-family: 'Cinzel', serif;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .executive-card .ec-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--steel-muted);
+            padding: 2px 0;
+        }
+        .executive-card .ec-row strong {
+            color: var(--steel-light);
+            font-weight: 600;
+        }
+        .executive-card .ec-prom {
+            border-top: 1px solid var(--border-deep);
+            margin-top: 6px;
+            padding-top: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* ===== MATRIZ DE DECISIÓN ===== */
+        .decision-matrix {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 1.2rem;
+        }
+        .decision-item {
+            background: var(--surface-card);
+            border: 1px solid var(--border-deep);
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .decision-item:hover {
+            border-color: var(--rolex-gold);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.15);
+        }
+        .decision-item .di-icon {
+            font-size: 1.8rem;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .decision-item .di-name {
+            font-size: 14px;
+            font-weight: 700;
+            font-family: 'Cinzel', serif;
+        }
+        .decision-item .di-count {
+            font-size: 20px;
+            font-weight: 700;
+            margin: 4px 0;
+        }
+        .decision-item .di-label {
+            font-size: 10px;
+            color: var(--steel-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* ===== PLAN DE ACCIÓN ===== */
+        .action-plan {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .action-card {
+            background: var(--surface-card);
+            border: 1px solid var(--border-deep);
+            border-radius: 12px;
+            padding: 1.2rem;
+            transition: all 0.3s ease;
+        }
+        .action-card:hover {
+            border-color: var(--rolex-gold);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.15);
+        }
+        .action-card .ac-title {
+            font-size: 12px;
+            font-weight: 700;
+            font-family: 'Cinzel', serif;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .action-card .ac-text {
+            font-size: 11px;
+            color: var(--steel-silver);
+            line-height: 1.6;
+        }
+        .action-card .ac-text strong {
+            color: #fff;
+            font-weight: 600;
         }
 
         .two-col {
@@ -593,7 +726,7 @@
             display: block;
         }
 
-        /* ===== NARRATIVE BOX (standalone, solo para otros dashboards) ===== */
+        /* ===== NARRATIVE BOX (standalone) ===== */
         .narrative-box {
             background: linear-gradient(135deg, rgba(0, 135, 68, 0.12) 0%, rgba(15, 31, 26, 0.8) 100%);
             border: 1px solid var(--border-glow);
@@ -636,7 +769,7 @@
             margin-top: 8px;
         }
 
-        /* ===== HIERARCHY LIST (para top/bottom) ===== */
+        /* ===== HIERARCHY LIST ===== */
         .hier-item {
             display: flex;
             align-items: center;
@@ -685,26 +818,7 @@
             text-align: center;
         }
 
-        /* ===== ICONOS EN KPI ===== */
-        .kpi-icon {
-            font-size: 1.2rem;
-            width: 24px;
-            text-align: center;
-        }
-        .kpi-icon.gem {
-            color: #00E676;
-        }
-        .kpi-icon.dice {
-            color: #D4AF37;
-        }
-        .kpi-icon.shield {
-            color: #FFA500;
-        }
-        .kpi-icon.warning {
-            color: #FF4D4D;
-        }
-
-        /* ===== CARDS CON ICONOS (para Riesgo, Brecha, etc) ===== */
+        /* ===== CARDS CON ICONOS ===== */
         .card-with-icon {
             background: var(--surface-card);
             border: 1px solid var(--border-deep);
@@ -765,8 +879,13 @@
                 grid-column: 1;
                 padding: 1rem;
             }
-            .kpi-row {
+            .kpi-row,
+            .executive-grid,
+            .decision-matrix {
                 grid-template-columns: repeat(2, 1fr);
+            }
+            .action-plan {
+                grid-template-columns: 1fr;
             }
             .two-col {
                 grid-template-columns: 1fr;
@@ -800,7 +919,7 @@
         <div class="topbar">
             <img src="https://gestor-de-archivos.vercel.app/assets/logos/logo-retailmind-hulk-transparente.png" alt="RetailMind 360°" style="height:32px;">
             <div class="topbar-divider"></div>
-            <span style="font-size:12px;color:var(--steel-muted);letter-spacing:0.5px;">Demo - MAPA DE <span style="color:yellow; font-weight:bold;">IMPACTO</span>, <span style="color:ORANGE; font-weight:bold;">RIESGO</span> Y <span style="color:green; font-weight:bold;">OPORTUNIDAD</span> DE LA RED DE TIENDAS</span>
+            <span style="font-size:11px;color:var(--steel-muted);letter-spacing:0.5px;">Mapa de Impacto · Demo</span>
             <span class="topbar-badge">8 Dashboards + Histórico</span>
             <div class="topbar-divider"></div>
             <span class="topbar-date" id="dateLabel">lunes, 31 de agosto de 2026</span>
@@ -812,6 +931,7 @@
 
         <div class="sidebar">
             <div class="sidebar-section">Navegación</div>
+            <div class="nav-item" onclick="cambiarVista('ejecutivo')"><span class="nav-icon">🎯</span> Vista Ejecutiva</div>
             <div class="nav-item active" onclick="cambiarVista('diagnostico')"><span class="nav-icon">📊</span> Diagnóstico 4×3</div>
             <div class="nav-item" onclick="cambiarVista('riesgo')"><span class="nav-icon">🗺️</span> Mapa de Riesgo</div>
             <div class="nav-item" onclick="cambiarVista('eficiencia')"><span class="nav-icon">🏆</span> Top/Bottom Performers</div>
@@ -829,65 +949,47 @@
 
     <script>
         // ================================================================
-        // CONFIGURACIÓN DE MARCA (¡CAMBIA AQUÍ PARA PERSONALIZAR!)
+        // CONFIGURACIÓN DE MARCA
         // ================================================================
-
-        // 1. Prefijo para los nombres de las tiendas
-        // Ejemplos: "Sucursal ", "Plaza ", "Tienda ", "Kalea ", "Local "
         const PREFIJO_TIENDA = "Kalea ";
 
-        // 2. Configuración de Tipologías (nombre, icono y color)
-        // Puedes cambiar el nombre y el icono (clase de Font Awesome)
         const TIPOLOGIAS_CONFIG = {
             JOYA: {
                 nombre: "JOYA",
                 icono: '<i class="fas fa-gem" style="color:#00E676;"></i>',
                 iconoClase: 'gem',
                 color: '#00E676',
-                clase: 'joya'
+                clase: 'joya',
+                emoji: '🟢'
             },
             APUESTA: {
                 nombre: "APUESTA",
                 icono: '<i class="fas fa-dice" style="color:#D4AF37;"></i>',
                 iconoClase: 'dice',
                 color: '#D4AF37',
-                clase: 'apuesta'
+                clase: 'apuesta',
+                emoji: '🟡'
             },
             BUNKER: {
                 nombre: "BUNKER",
                 icono: '<i class="fas fa-shield-halved" style="color:#FFA500;"></i>',
                 iconoClase: 'shield',
                 color: '#FFA500',
-                clase: 'bunker'
+                clase: 'bunker',
+                emoji: '🟠'
             },
             LASTRE: {
                 nombre: "LASTRE",
                 icono: '<i class="fas fa-triangle-exclamation" style="color:#FF4D4D;"></i>',
                 iconoClase: 'warning',
                 color: '#FF4D4D',
-                clase: 'lastre'
+                clase: 'lastre',
+                emoji: '🔴'
             }
         };
 
-        // 3. Alternativas rápidas (descomenta la que quieras usar)
-        // Opción "Estrella" (más positiva)
-        // const TIPOLOGIAS_CONFIG = {
-        //     JOYA: { nombre: "ESTRELLA", icono: '<i class="fas fa-star" style="color:#00E676;"></i>', iconoClase: 'gem', color: '#00E676', clase: 'joya' },
-        //     APUESTA: { nombre: "OPORTUNIDAD", icono: '<i class="fas fa-chart-line" style="color:#D4AF37;"></i>', iconoClase: 'dice', color: '#D4AF37', clase: 'apuesta' },
-        //     BUNKER: { nombre: "RESILIENTE", icono: '<i class="fas fa-helmet-safety" style="color:#FFA500;"></i>', iconoClase: 'shield', color: '#FFA500', clase: 'bunker' },
-        //     LASTRE: { nombre: "CRÍTICO", icono: '<i class="fas fa-skull" style="color:#FF4D4D;"></i>', iconoClase: 'warning', color: '#FF4D4D', clase: 'lastre' }
-        // };
-
-        // Opción "Lujo" (para clientes de alto nivel)
-        // const TIPOLOGIAS_CONFIG = {
-        //     JOYA: { nombre: "DIAMANTE", icono: '<i class="fas fa-gem" style="color:#00E676;"></i>', iconoClase: 'gem', color: '#00E676', clase: 'joya' },
-        //     APUESTA: { nombre: "PLATA", icono: '<i class="fas fa-crown" style="color:#D4AF37;"></i>', iconoClase: 'dice', color: '#D4AF37', clase: 'apuesta' },
-        //     BUNKER: { nombre: "BRONCE", icono: '<i class="fas fa-vault" style="color:#FFA500;"></i>', iconoClase: 'shield', color: '#FFA500', clase: 'bunker' },
-        //     LASTRE: { nombre: "ALERTA", icono: '<i class="fas fa-bell" style="color:#FF4D4D;"></i>', iconoClase: 'warning', color: '#FF4D4D', clase: 'lastre' }
-        // };
-
         // ================================================================
-        // FUNCIONES AUXILIARES DE ICONOS
+        // FUNCIONES AUXILIARES
         // ================================================================
         function getIconoHtml(tipo) {
             return TIPOLOGIAS_CONFIG[tipo] ? TIPOLOGIAS_CONFIG[tipo].icono : '';
@@ -897,8 +999,22 @@
             return TIPOLOGIAS_CONFIG[tipo] ? TIPOLOGIAS_CONFIG[tipo].nombre : tipo;
         }
 
-        function getIconoClase(tipo) {
-            return TIPOLOGIAS_CONFIG[tipo] ? TIPOLOGIAS_CONFIG[tipo].iconoClase : '';
+        function getEmojiTipo(tipo) {
+            return TIPOLOGIAS_CONFIG[tipo] ? TIPOLOGIAS_CONFIG[tipo].emoji : '';
+        }
+
+        function getColorTipo(tipo) {
+            return TIPOLOGIAS_CONFIG[tipo] ? TIPOLOGIAS_CONFIG[tipo].color : '#7E998F';
+        }
+
+        function colorTipoHex(tipo) {
+            const map = { JOYA: '#00E676', APUESTA: '#D4AF37', BUNKER: '#FFA500', LASTRE: '#FF4D4D' };
+            return map[tipo] || '#7E998F';
+        }
+
+        function colorTipo(tipo) {
+            const map = { JOYA: 'var(--hulk-vibrant)', APUESTA: 'var(--rolex-gold)', BUNKER: '#FFA500', LASTRE: 'var(--red)' };
+            return map[tipo] || 'var(--steel-muted)';
         }
 
         // ================================================================
@@ -906,28 +1022,23 @@
         // ================================================================
         const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'];
 
-        // Datos base con 2 JOYA, 3 APUESTA, 3 BUNKER, 2 LASTRE
         const tiendasBase = [
-            // JOYA (2) - Valores altos para asegurar que sigan siendo JOYA
             { nombre: PREFIJO_TIENDA + 'Norte', ciudad: 'Caracas', lat: 10.5, lng: -66.9, salud: 3.0, resiliencia: 3.0,
                 potencial: 3.0, exposicion: 2.7, tipo: 'JOYA' },
             { nombre: PREFIJO_TIENDA + 'Centro', ciudad: 'Caracas', lat: 10.48, lng: -66.92, salud: 3.0, resiliencia: 3.0,
                 potencial: 2.9, exposicion: 2.6, tipo: 'JOYA' },
-            // APUESTA (3)
             { nombre: PREFIJO_TIENDA + 'Este', ciudad: 'Caracas', lat: 10.52, lng: -66.85, salud: 1.5, resiliencia: 1.0,
                 potencial: 2.8, exposicion: 2.5, tipo: 'APUESTA' },
             { nombre: PREFIJO_TIENDA + 'Maracaibo', ciudad: 'Maracaibo', lat: 10.65, lng: -71.61, salud: 1.2, resiliencia: 1.0,
                 potencial: 3.0, exposicion: 1.3, tipo: 'APUESTA' },
             { nombre: PREFIJO_TIENDA + 'Valencia', ciudad: 'Valencia', lat: 10.18, lng: -68.00, salud: 1.0, resiliencia: 1.0,
                 potencial: 2.7, exposicion: 1.3, tipo: 'APUESTA' },
-            // BUNKER (3)
             { nombre: PREFIJO_TIENDA + 'Oeste', ciudad: 'Caracas', lat: 10.46, lng: -66.95, salud: 2.0, resiliencia: 2.8,
                 potencial: 1.7, exposicion: 2.8, tipo: 'BUNKER' },
             { nombre: PREFIJO_TIENDA + 'Barquisimeto', ciudad: 'Barquisimeto', lat: 10.08, lng: -69.32, salud: 2.0,
                 resiliencia: 3.0, potencial: 1.3, exposicion: 2.0, tipo: 'BUNKER' },
             { nombre: PREFIJO_TIENDA + 'Maturín', ciudad: 'Maturín', lat: 9.75, lng: -63.18, salud: 2.0, resiliencia: 3.0,
                 potencial: 1.0, exposicion: 2.0, tipo: 'BUNKER' },
-            // LASTRE (2)
             { nombre: PREFIJO_TIENDA + 'Sur', ciudad: 'Caracas', lat: 10.44, lng: -66.88, salud: 1.0, resiliencia: 1.0,
                 potencial: 1.0, exposicion: 2.9, tipo: 'LASTRE' },
             { nombre: PREFIJO_TIENDA + 'San Cristóbal', ciudad: 'San Cristóbal', lat: 7.77, lng: -72.22, salud: 1.0,
@@ -1042,18 +1153,253 @@
                 '" fill="' + color + '20" opacity="0.3"/></svg>';
         }
 
-        function colorTipoHex(tipo) {
-            const map = { JOYA: '#00E676', APUESTA: '#D4AF37', BUNKER: '#FFA500', LASTRE: '#FF4D4D' };
-            return map[tipo] || '#7E998F';
-        }
+        function calcularPromedios() {
+            const counts = contarTipos();
+            const total = tiendas.length;
 
-        function colorTipo(tipo) {
-            const map = { JOYA: 'var(--hulk-vibrant)', APUESTA: 'var(--rolex-gold)', BUNKER: '#FFA500', LASTRE: 'var(--red)' };
-            return map[tipo] || 'var(--steel-muted)';
+            // Calcular promedios por dimensión
+            const promedios = {
+                salud: tiendas.reduce((s, t) => s + t.salud, 0) / total,
+                resiliencia: tiendas.reduce((s, t) => s + t.resiliencia, 0) / total,
+                potencial: tiendas.reduce((s, t) => s + t.potencial, 0) / total,
+                exposicion: tiendas.reduce((s, t) => s + t.exposicion, 0) / total
+            };
+
+            // Variables individuales (promedios)
+            const vars = {
+                margen: tiendas.reduce((s, t) => s + t.salud, 0) / total,
+                ventasM2: tiendas.reduce((s, t) => s + t.salud, 0) / total,
+                rotacion: tiendas.reduce((s, t) => s + t.salud, 0) / total,
+                mix: tiendas.reduce((s, t) => s + t.resiliencia, 0) / total,
+                concentracion: tiendas.reduce((s, t) => s + t.resiliencia, 0) / total,
+                costo: tiendas.reduce((s, t) => s + t.resiliencia, 0) / total,
+                ubicacion: tiendas.reduce((s, t) => s + t.potencial, 0) / total,
+                capacidad: tiendas.reduce((s, t) => s + t.potencial, 0) / total,
+                penetracion: tiendas.reduce((s, t) => s + t.potencial, 0) / total,
+                distancia: tiendas.reduce((s, t) => s + t.exposicion, 0) / total,
+                atractivo: tiendas.reduce((s, t) => s + t.exposicion, 0) / total,
+                diferenciacion: tiendas.reduce((s, t) => s + t.exposicion, 0) / total
+            };
+
+            return { counts, total, promedios, vars };
         }
 
         // ================================================================
-        // RENDER MAPA
+        // VISTA EJECUTIVA (estilo landing page)
+        // ================================================================
+        function renderEjecutivo() {
+            const { counts, total, promedios, vars } = calcularPromedios();
+
+            let html = '<div class="dashboard-container">';
+
+            // Título
+            html += '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:1.2rem;">';
+            html += '<div class="breadcrumb"><span class="active-crumb">🎯 Vista Ejecutiva</span></div>';
+            html += '<span style="font-size:10px;color:var(--steel-muted);">Dashboard Corporativo · ' + total +
+                ' tiendas</span>';
+            html += '</div>';
+
+            // Grid de 4 dimensiones
+            html += '<div class="executive-grid">';
+
+            // Salud
+            html += '<div class="executive-card">';
+            html += '<div class="ec-title" style="color:#38bdf8;">🟢 SALUD</div>';
+            html += '<div class="ec-row"><span>Margen</span><strong>' + vars.margen.toFixed(1) + '</strong></div>';
+            html += '<div class="ec-row"><span>Vtas/m²</span><strong>' + vars.ventasM2.toFixed(1) + '</strong></div>';
+            html += '<div class="ec-row"><span>Rotación</span><strong>' + vars.rotacion.toFixed(1) + '</strong></div>';
+            html += '<div class="ec-prom"><span>Prom</span><strong style="color:#38bdf8;">' + promedios.salud.toFixed(
+                1) + '</strong></div>';
+            html += '</div>';
+
+            // Resiliencia
+            html += '<div class="executive-card">';
+            html += '<div class="ec-title" style="color:#3b82f6;">🛡️ RESILIENCIA</div>';
+            html += '<div class="ec-row"><span>Mix</span><strong>' + vars.mix.toFixed(1) + '</strong></div>';
+            html += '<div class="ec-row"><span>Conc.</span><strong>' + vars.concentracion.toFixed(1) + '</strong></div>';
+            html += '<div class="ec-row"><span>Costo</span><strong>' + vars.costo.toFixed(1) + '</strong></div>';
+            html += '<div class="ec-prom"><span>Prom</span><strong style="color:#3b82f6;">' + promedios.resiliencia
+                .toFixed(1) + '</strong></div>';
+            html += '</div>';
+
+            // Potencial
+            html += '<div class="executive-card">';
+            html += '<div class="ec-title" style="color:#f59e0b;">🚀 POTENCIAL</div>';
+            html += '<div class="ec-row"><span>Ubicac.</span><strong>' + vars.ubicacion.toFixed(1) + '</strong></div>';
+            html += '<div class="ec-row"><span>Capac.</span><strong>' + vars.capacidad.toFixed(1) + '</strong></div>';
+            html += '<div class="ec-row"><span>Penetr.</span><strong>' + vars.penetracion.toFixed(1) + '</strong></div>';
+            html += '<div class="ec-prom"><span>Prom</span><strong style="color:#f59e0b;">' + promedios.potencial
+                .toFixed(1) + '</strong></div>';
+            html += '</div>';
+
+            // Exposición
+            html += '<div class="executive-card">';
+            html += '<div class="ec-title" style="color:#ef4444;">⚠️ EXPOSICIÓN</div>';
+            html += '<div class="ec-row"><span>Dist.</span><strong>' + vars.distancia.toFixed(1) + '</strong></div>';
+            html += '<div class="ec-row"><span>Atract.</span><strong>' + vars.atractivo.toFixed(1) + '</strong></div>';
+            html += '<div class="ec-row"><span>Dif.</span><strong>' + vars.diferenciacion.toFixed(1) + '</strong></div>';
+            html += '<div class="ec-prom"><span>Prom</span><strong style="color:#ef4444;">' + promedios.exposicion
+                .toFixed(1) + '</strong></div>';
+            html += '</div>';
+
+            html += '</div>';
+
+            // Matriz de Decisión
+            html += '<div class="decision-matrix">';
+            const tipos = ['JOYA', 'APUESTA', 'BUNKER', 'LASTRE'];
+            const emojis = { JOYA: '🟢', APUESTA: '🟡', BUNKER: '🟠', LASTRE: '🔴' };
+            tipos.forEach(tipo => {
+                const color = getColorTipo(tipo);
+                html += '<div class="decision-item">';
+                html += '<span class="di-icon">' + getIconoHtml(tipo) + '</span>';
+                html += '<div class="di-name" style="color:' + color + ';">' + getNombreTipo(tipo) + '</div>';
+                html += '<div class="di-count" style="color:' + color + ';">' + counts[tipo] + '</div>';
+                html += '<div class="di-label">tiendas</div>';
+                html += '</div>';
+            });
+            html += '</div>';
+
+            // Plan de Acción por Escenario
+            html += '<div style="font-size:10px;font-weight:700;color:var(--rolex-gold);letter-spacing:1px;text-transform:uppercase;font-family:\'Cinzel\';margin-bottom:8px;">PLAN DE ACCIÓN POR ESCENARIO</div>';
+            html += '<div class="action-plan">';
+
+            // Crecimiento
+            html += '<div class="action-card">';
+            html += '<div class="ac-title" style="color:#22c55e;">🚀 Crecimiento</div>';
+            html += '<div class="ac-text">Invertir en <strong>' + getNombreTipo('JOYA') + ' (' + counts.JOYA +
+                ')</strong> · Evaluar <strong>' + getNombreTipo('APUESTA') + ' (' + counts.APUESTA + ')</strong></div>';
+            html += '</div>';
+
+            // Depresión
+            html += '<div class="action-card">';
+            html += '<div class="ac-title" style="color:#ef4444;">🐻 Depresión</div>';
+            html += '<div class="ac-text">Proteger <strong>' + getNombreTipo('JOYA') + '</strong> · Cerrar <strong>' +
+                getNombreTipo('LASTRE') + ' (' + counts.LASTRE + ')</strong></div>';
+            html += '</div>';
+
+            html += '</div>';
+
+            html += '</div>';
+
+            return html;
+        }
+
+        // ================================================================
+        // RENDER DIAGNÓSTICO
+        // ================================================================
+        function renderDiagnostico() {
+            const counts = contarTipos();
+            const total = tiendas.length;
+            const historicoTipos = contarTiposHistorico();
+
+            const narrativaTexto = 'La red tiene <strong>' + counts.JOYA + ' tiendas ' + getNombreTipo('JOYA') +
+                '</strong> (' + ((counts.JOYA / total) * 100).toFixed(0) +
+                '% del total) que son el motor de crecimiento. <strong>' + counts.APUESTA + ' tiendas ' + getNombreTipo(
+                    'APUESTA') +
+                '</strong> requieren inversión controlada. Las <strong>' + counts.BUNKER + ' tiendas ' + getNombreTipo(
+                    'BUNKER') +
+                '</strong> son estables pero sin crecimiento. <strong>' + counts.LASTRE + ' tienda(s) ' + getNombreTipo(
+                    'LASTRE') +
+                '</strong> debe(n) ser evaluadas para cierre. <br><br><strong>Tendencias destacadas:</strong> ' +
+                tiendas.filter(t => calcularTendencia(t.historico, 'salud').direccion === 'up').length +
+                ' tiendas están mejorando su salud. ' +
+                tiendas.filter(t => calcularTendencia(t.historico, 'salud').direccion === 'down').length +
+                ' tiendas muestran deterioro. <span style="color:var(--rolex-gold);">◆</span> La composición de la red ha mejorado en los últimos 6 meses: <span class="trend-badge up">+' +
+                (counts.JOYA - historicoTipos[meses[0]].JOYA) + ' ' + getNombreTipo('JOYA') +
+                '</span><span class="trend-badge down">' + (counts.LASTRE - historicoTipos[meses[0]].LASTRE > 0 ? '+' :
+                    '') + (counts.LASTRE - historicoTipos[meses[0]].LASTRE) + ' ' + getNombreTipo('LASTRE') +
+                '</span>';
+
+            let html = '';
+            html += '<div class="dashboard-container">';
+
+            html += '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:1.2rem;">';
+            html += '<div class="breadcrumb"><span class="active-crumb">📊 Diagnóstico 4×3</span></div>';
+            html += '<div class="drill-tabs"><div class="drill-tab active">Holding</div><div class="drill-tab">Sucursales</div></div>';
+            html += '</div>';
+
+            html += '<div class="kpi-row">';
+            const tipos = ['JOYA', 'APUESTA', 'BUNKER', 'LASTRE'];
+            tipos.forEach(tipo => {
+                const config = TIPOLOGIAS_CONFIG[tipo];
+                const count = counts[tipo];
+                const color = colorTipoHex(tipo);
+                const deltaClass = tipo === 'JOYA' ? 'up' : tipo === 'LASTRE' ? 'down' : 'flat';
+                const deltaText = tipo === 'JOYA' ? '▲ estable' : tipo === 'LASTRE' ? '▼ ' + (count > 0 ?
+                    '2 en riesgo' : 'ninguna') : '→ sin cambios';
+                html += '<div class="kpi">';
+                html += '<div class="kpi-label"><span class="kpi-icon ' + config.iconoClase + '">' + config
+                    .icono + '</span> ' + config.nombre + '</div>';
+                html += '<div class="kpi-value">' + count + '</div>';
+                html += '<div class="kpi-delta ' + deltaClass + '">' + deltaText + '</div>';
+                html += '<div class="kpi-spark">' + sparklineKPI(tipo, color) + '</div>';
+                html += '</div>';
+            });
+            html += '</div>';
+
+            html += '<div class="two-col">';
+            html += '<div class="panel">';
+            html += '<div class="panel-title">Composición de la Red</div>';
+            html += '<div class="donut-wrap"><div class="donut-container"><canvas id="donutChart"></canvas><div class="donut-center"><div class="total">' +
+                total + '</div><div class="label">Tiendas</div></div></div><div class="donut-legend">';
+            tipos.forEach(tipo => {
+                html += '<div class="donut-legend-item"><div class="donut-legend-dot" style="background:' +
+                    colorTipoHex(tipo) + ';"></div>' + getIconoHtml(tipo) + ' ' + getNombreTipo(tipo) +
+                    ' <span style="color:#fff;font-weight:700;margin-left:4px;">' + counts[tipo] +
+                    '</span><span style="color:var(--steel-muted);font-size:10px;">(' + ((counts[tipo] /
+                        total) * 100).toFixed(0) + '%)</span></div>';
+            });
+            html += '</div></div>';
+
+            html += '<div class="panel-narrative">';
+            html += '<div class="narr-header"><span class="narr-icon">🧠</span><span class="narr-title">Narrativa IA · Diagnóstico</span></div>';
+            html += '<div class="narr-text">' + narrativaTexto + '</div>';
+            html += '</div>';
+
+            html += '</div>';
+
+            html += '<div class="panel"><div class="panel-title">🗺️ Ubicación de Tiendas</div>';
+            html += renderMapaBurbujas();
+            html += '</div>';
+            html += '</div>';
+
+            html += '<span class="section-title">📋 Evaluación por Tienda · Últimos 6 meses</span>';
+            html += '<div class="tabla-wrapper">';
+            html += '<table class="matrix-table">';
+            html +=
+                '<thead><tr><th style="min-width:120px;">Tienda</th><th>Ciudad</th><th>Salud</th><th>Resiliencia</th><th>Potencial</th><th>Exposición</th><th>Tipología</th><th>Tendencia</th><th style="min-width:80px;">Evolución 6m</th></tr></thead>';
+            html += '<tbody>';
+            tiendas.forEach(t => {
+                const trend = calcularTendencia(t.historico, 'salud');
+                const trendLabel = trend.direccion === 'up' ? '▲ Mejora' : trend.direccion === 'down' ?
+                    '▼ Deterioro' : '→ Estable';
+                const trendClass = trend.direccion === 'up' ? 'up' : trend.direccion === 'down' ? 'down' :
+                    'flat';
+                const color = colorTipo(t.tipo);
+                const valores = t.historico.map(h => h.salud);
+                html += '<tr class="' + t.tipo.toLowerCase() + '">';
+                html += '<td style="font-weight:600;color:#fff;text-align:left;padding-left:12px;">' + t
+                .nombre + '</td>';
+                html += '<td style="color:var(--steel-muted);">' + t.ciudad + '</td>';
+                html += '<td>' + t.salud.toFixed(1) + '</td>';
+                html += '<td>' + t.resiliencia.toFixed(1) + '</td>';
+                html += '<td>' + t.potencial.toFixed(1) + '</td>';
+                html += '<td>' + t.exposicion.toFixed(1) + '</td>';
+                html += '<td><span class="tipo-cell">' + getIconoHtml(t.tipo) + ' ' + getNombreTipo(t.tipo) +
+                    '</span></td>';
+                html += '<td><span class="trend-badge ' + trendClass + '">' + trendLabel + '</span></td>';
+                html += '<td class="sparkline-cell">' + sparklineSVG(valores, color) + '</td>';
+                html += '</tr>';
+            });
+            html += '</tbody></table>';
+            html += '</div>';
+
+            html += '</div>';
+            return html;
+        }
+
+        // ================================================================
+        // RENDER MAPA (para diagnóstico)
         // ================================================================
         function renderMapaBurbujas() {
             const lats = tiendas.map(t => t.lat);
@@ -1107,123 +1453,7 @@
         }
 
         // ================================================================
-        // RENDER DIAGNÓSTICO
-        // ================================================================
-        function renderDiagnostico() {
-            const counts = contarTipos();
-            const total = tiendas.length;
-            const historicoTipos = contarTiposHistorico();
-
-            const narrativaTexto = 'La red tiene <strong>' + counts.JOYA + ' tiendas ' + getNombreTipo('JOYA') +
-                '</strong> (' + ((counts.JOYA / total) * 100).toFixed(0) +
-                '% del total) que son el motor de crecimiento. <strong>' + counts.APUESTA + ' tiendas ' + getNombreTipo(
-                    'APUESTA') +
-                '</strong> requieren inversión controlada. Las <strong>' + counts.BUNKER + ' tiendas ' + getNombreTipo(
-                    'BUNKER') +
-                '</strong> son estables pero sin crecimiento. <strong>' + counts.LASTRE + ' tienda(s) ' + getNombreTipo(
-                    'LASTRE') +
-                '</strong> debe(n) ser evaluadas para cierre. <br><br><strong>Tendencias destacadas:</strong> ' +
-                tiendas.filter(t => calcularTendencia(t.historico, 'salud').direccion === 'up').length +
-                ' tiendas están mejorando su salud. ' +
-                tiendas.filter(t => calcularTendencia(t.historico, 'salud').direccion === 'down').length +
-                ' tiendas muestran deterioro. <span style="color:var(--rolex-gold);">◆</span> La composición de la red ha mejorado en los últimos 6 meses: <span class="trend-badge up">+' +
-                (counts.JOYA - historicoTipos[meses[0]].JOYA) + ' ' + getNombreTipo('JOYA') +
-                '</span><span class="trend-badge down">' + (counts.LASTRE - historicoTipos[meses[0]].LASTRE > 0 ? '+' :
-                    '') + (counts.LASTRE - historicoTipos[meses[0]].LASTRE) + ' ' + getNombreTipo('LASTRE') +
-                '</span>';
-
-            let html = '';
-            html += '<div class="dashboard-container">';
-
-            html += '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:1.2rem;">';
-            html += '<div class="breadcrumb"><span class="active-crumb">Diagnóstico 4×3</span></div>';
-            html += '<div class="drill-tabs"><div class="drill-tab active">Holding</div><div class="drill-tab">Sucursales</div></div>';
-            html += '</div>';
-
-            html += '<div class="kpi-row">';
-            const tipos = ['JOYA', 'APUESTA', 'BUNKER', 'LASTRE'];
-            tipos.forEach(tipo => {
-                const config = TIPOLOGIAS_CONFIG[tipo];
-                const count = counts[tipo];
-                const color = colorTipoHex(tipo);
-                const deltaClass = tipo === 'JOYA' ? 'up' : tipo === 'LASTRE' ? 'down' : 'flat';
-                const deltaText = tipo === 'JOYA' ? '▲ estable' : tipo === 'LASTRE' ? '▼ ' + (count > 0 ?
-                    '2 en riesgo' : 'ninguna') : '→ sin cambios';
-                html += '<div class="kpi">';
-                html += '<div class="kpi-label"><span class="kpi-icon ' + config.iconoClase + '">' + config
-                    .icono + '</span> ' + config.nombre + '</div>';
-                html += '<div class="kpi-value">' + count + '</div>';
-                html += '<div class="kpi-delta ' + deltaClass + '">' + deltaText + '</div>';
-                html += '<div class="kpi-spark">' + sparklineKPI(tipo, color) + '</div>';
-                html += '</div>';
-            });
-            html += '</div>';
-
-            html += '<div class="two-col">';
-            html += '<div class="panel">';
-            html += '<div class="panel-title">Composición de la Red</div>';
-            html += '<div class="donut-wrap"><div class="donut-container"><canvas id="donutChart"></canvas><div class="donut-center"><div class="total">' +
-                total + '</div><div class="label">Tiendas</div></div></div><div class="donut-legend">';
-            tipos.forEach(tipo => {
-                html += '<div class="donut-legend-item"><div class="donut-legend-dot" style="background:' +
-                    colorTipoHex(tipo) + ';"></div>' + getIconoHtml(tipo) + ' ' + getNombreTipo(tipo) +
-                    ' <span style="color:#fff;font-weight:700;margin-left:4px;">' + counts[tipo] +
-                    '</span><span style="color:var(--steel-muted);font-size:10px;">(' + ((counts[tipo] /
-                        total) * 100).toFixed(0) + '%)</span></div>';
-            });
-            html += '</div></div>';
-
-            html += '<div class="panel-narrative">';
-            html += '<div class="narr-header"><span class="narr-icon">🧠</span><span class="narr-title">Narrativa IA · Diagnóstico</span></div>';
-            html += '<div class="narr-text">' + narrativaTexto + '</div>';
-            html += '</div>';
-
-            html += '</div>'; // cierre panel izquierdo
-
-            html += '<div class="panel"><div class="panel-title">🗺️ Ubicación de Tiendas</div>' + renderMapaBurbujas() +
-                '</div>';
-            html += '</div>';
-
-            // ============================================================ 
-            // TABLA DIAGNÓSTICO CON ICONOS EN TIPOLOGÍA
-            // ============================================================ 
-            html += '<span class="section-title">📋 Evaluación por Tienda · Últimos 6 meses</span>';
-            html += '<div class="tabla-wrapper">';
-            html += '<table class="matrix-table">';
-            html +=
-                '<thead><tr><th style="min-width:120px;">Tienda</th><th>Ciudad</th><th>Salud</th><th>Resiliencia</th><th>Potencial</th><th>Exposición</th><th>Tipología</th><th>Tendencia</th><th style="min-width:80px;">Evolución 6m</th></tr></thead>';
-            html += '<tbody>';
-            tiendas.forEach(t => {
-                const trend = calcularTendencia(t.historico, 'salud');
-                const trendLabel = trend.direccion === 'up' ? '▲ Mejora' : trend.direccion === 'down' ?
-                    '▼ Deterioro' : '→ Estable';
-                const trendClass = trend.direccion === 'up' ? 'up' : trend.direccion === 'down' ? 'down' :
-                    'flat';
-                const color = colorTipo(t.tipo);
-                const valores = t.historico.map(h => h.salud);
-                html += '<tr class="' + t.tipo.toLowerCase() + '">';
-                html += '<td style="font-weight:600;color:#fff;text-align:left;padding-left:12px;">' + t
-                .nombre + '</td>';
-                html += '<td style="color:var(--steel-muted);">' + t.ciudad + '</td>';
-                html += '<td>' + t.salud.toFixed(1) + '</td>';
-                html += '<td>' + t.resiliencia.toFixed(1) + '</td>';
-                html += '<td>' + t.potencial.toFixed(1) + '</td>';
-                html += '<td>' + t.exposicion.toFixed(1) + '</td>';
-                html += '<td><span class="tipo-cell">' + getIconoHtml(t.tipo) + ' ' + getNombreTipo(t.tipo) +
-                    '</span></td>';
-                html += '<td><span class="trend-badge ' + trendClass + '">' + trendLabel + '</span></td>';
-                html += '<td class="sparkline-cell">' + sparklineSVG(valores, color) + '</td>';
-                html += '</tr>';
-            });
-            html += '</tbody></table>';
-            html += '</div>';
-
-            html += '</div>'; // .dashboard-container
-            return html;
-        }
-
-        // ================================================================
-        // RENDER MAPA DE RIESGO (con iconos en cada card)
+        // OTROS DASHBOARDS (simplificados con iconos)
         // ================================================================
         function renderRiesgo() {
             const vulnerables = tiendas.filter(t => t.exposicion < 2.0);
@@ -1257,9 +1487,6 @@
             return html;
         }
 
-        // ================================================================
-        // RENDER TOP/BOTTOM (con iconos)
-        // ================================================================
         function renderEficiencia() {
             const sorted = [...tiendas].sort((a, b) => (b.salud + b.resiliencia + b.potencial) - (a.salud + a.resiliencia + a
                 .potencial));
@@ -1290,9 +1517,6 @@
             return html;
         }
 
-        // ================================================================
-        // RENDER BRECHA (con iconos)
-        // ================================================================
         function renderBrecha() {
             const avg = {
                 salud: tiendas.reduce((s, t) => s + t.salud, 0) / tiendas.length,
@@ -1326,9 +1550,6 @@
             return html;
         }
 
-        // ================================================================
-        // RENDER SIMULACIÓN (con iconos)
-        // ================================================================
         function renderSimulacion() {
             const counts = contarTipos();
             let html = '<div class="dashboard-container">';
@@ -1352,9 +1573,6 @@
             return html;
         }
 
-        // ================================================================
-        // RENDER PLAN DE ACCIÓN (con iconos)
-        // ================================================================
         function renderAccion() {
             const counts = contarTipos();
             let html = '<div class="dashboard-container">';
@@ -1389,9 +1607,6 @@
             return html;
         }
 
-        // ================================================================
-        // RENDER MATRIZ DE ESCENARIOS (con iconos en tipologías)
-        // ================================================================
         function renderEscenarios() {
             let html = '<div class="dashboard-container">';
             html += '<div class="breadcrumb"><span class="active-crumb">📌 Matriz de Escenarios</span></div>';
@@ -1426,7 +1641,7 @@
         }
 
         // ================================================================
-        // RENDER EVOLUCIÓN HISTÓRICA (con iconos en los cards)
+        // RENDER EVOLUCIÓN HISTÓRICA
         // ================================================================
         let chartInstance = null;
 
@@ -1578,8 +1793,17 @@
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(el => {
                 const txt = el.textContent.trim().toLowerCase();
-                const map = { 'diagnostico': 'diagnóstico', 'riesgo': 'mapa', 'eficiencia': 'top', 'brecha': 'brecha',
-                    'simulacion': 'simulación', 'accion': 'acción', 'escenarios': 'matriz', 'historico': 'evolución' };
+                const map = {
+                    'ejecutivo': 'vista ejecutiva',
+                    'diagnostico': 'diagnóstico',
+                    'riesgo': 'mapa',
+                    'eficiencia': 'top',
+                    'brecha': 'brecha',
+                    'simulacion': 'simulación',
+                    'accion': 'acción',
+                    'escenarios': 'matriz',
+                    'historico': 'evolución'
+                };
                 if (txt.includes(map[vista] || vista)) el.classList.add('active');
             });
 
@@ -1588,8 +1812,11 @@
             if (donutInstance) { donutInstance.destroy();
                 donutInstance = null; }
 
-            if (vista === 'diagnostico') {
-                document.getElementById('mainContent').innerHTML = renderDiagnostico();
+            let content = '';
+            if (vista === 'ejecutivo') {
+                content = renderEjecutivo();
+            } else if (vista === 'diagnostico') {
+                content = renderDiagnostico();
                 setTimeout(() => {
                     const canvas = document.getElementById('donutChart');
                     if (canvas) {
@@ -1639,6 +1866,7 @@
                 }, 100);
             } else if (vista === 'historico') {
                 renderHistorico();
+                return;
             } else {
                 const map = {
                     'riesgo': renderRiesgo,
@@ -1648,8 +1876,10 @@
                     'accion': renderAccion,
                     'escenarios': renderEscenarios
                 };
-                document.getElementById('mainContent').innerHTML = (map[vista] || renderDiagnostico)();
+                content = (map[vista] || renderDiagnostico)();
             }
+
+            document.getElementById('mainContent').innerHTML = content;
         }
 
         // ================================================================
@@ -1657,7 +1887,7 @@
         // ================================================================
         document.getElementById('dateLabel').textContent = new Date().toLocaleDateString('es-MX', { weekday: 'long',
             year: 'numeric', month: 'long', day: 'numeric' });
-        cambiarVista('diagnostico');
+        cambiarVista('ejecutivo');
     </script>
 </body>
 </html>

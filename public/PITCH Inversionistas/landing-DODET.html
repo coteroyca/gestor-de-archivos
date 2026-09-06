@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DODET - Medicina de Precisión para tu Cadena de Supermercados</title>
     <!-- Tailwind CSS CDN -->
-    <script src="https://tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cloudflare.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script>
         tailwind.config = {
             theme: {
@@ -39,7 +39,7 @@
     <!-- MAIN NAVBAR -->
     <nav class="sticky top-0 bg-white shadow-md z-50 px-6 py-4 flex justify-between items-center">
         <div class="flex items-center space-x-3">
-            <img src="https://gestor-de-archivos.vercel.app/logos/logo-dodet.png" style="width:120px;" alt="DODET Logo" class="h-10 object-contain">
+            <img src="https://gestor-de-archivos.vercel.app/logos/logo-dodet.png" style="width:150px;" alt="DODET Logo" class="h-10 object-contain">
         </div>
         <div class="hidden md:flex space-x-8 font-medium text-gray-600">
             <a href="#propuesta" class="hover:text-brandAccent transition">Propuesta de Valor</a>
@@ -214,9 +214,9 @@
                             <span class="block text-base">De 1 a 5 Tiendas</span>
                             <span class="text-xs text-gray-500 font-normal">Supermercados independientes o cadenas locales</span>
                         </td>
-                        <td class="p-5 text-center font-medium text-gray-700">\$199 <span class="text-xs text-gray-400">/mes</span></td>
-                        <td class="p-5 text-center font-bold text-brandBlue bg-brandMutedGreen/10">\$179 <span class="text-xs text-gray-400">/mes</span></td>
-                        <td class="p-5 text-center font-extrabold text-emerald-600 bg-emerald-50/30">\$159 <span class="text-xs text-gray-500">/mes</span></td>
+                        <td class="p-5 text-center font-medium text-gray-700">$199 <span class="text-xs text-gray-400">/mes</span></td>
+                        <td class="p-5 text-center font-bold text-brandBlue bg-brandMutedGreen/10">$179 <span class="text-xs text-gray-400">/mes</span></td>
+                        <td class="p-5 text-center font-extrabold text-emerald-600 bg-emerald-50/30">$159 <span class="text-xs text-gray-500">/mes</span></td>
                     </tr>
                     <!-- Row 2 -->
                     <tr class="hover:bg-gray-50 transition">
@@ -224,9 +224,9 @@
                             <span class="block text-base">De 5 a 10 Tiendas</span>
                             <span class="text-xs text-gray-500 font-normal">Cadenas regionales en plena expansión</span>
                         </td>
-                        <td class="p-5 text-center font-medium text-gray-700">\$399 <span class="text-xs text-gray-400">/mes</span></td>
-                        <td class="p-5 text-center font-bold text-brandBlue bg-brandMutedGreen/10">\$359 <span class="text-xs text-gray-400">/mes</span></td>
-                        <td class="p-5 text-center font-extrabold text-emerald-600 bg-emerald-50/30">\$319 <span class="text-xs text-gray-500">/mes</span></td>
+                        <td class="p-5 text-center font-medium text-gray-700">$399 <span class="text-xs text-gray-400">/mes</span></td>
+                        <td class="p-5 text-center font-bold text-brandBlue bg-brandMutedGreen/10">$359 <span class="text-xs text-gray-400">/mes</span></td>
+                        <td class="p-5 text-center font-extrabold text-emerald-600 bg-emerald-50/30">$319 <span class="text-xs text-gray-500">/mes</span></td>
                     </tr>
                     <!-- Row 3 -->
                     <tr class="hover:bg-gray-50 transition">
@@ -234,9 +234,9 @@
                             <span class="block text-base">Más de 10 Tiendas (10+)</span>
                             <span class="text-xs text-gray-500 font-normal">Líderes de Retail y Grandes Cadenas Nacionales</span>
                         </td>
-                        <td class="p-5 text-center font-medium text-gray-700">\$699 <span class="text-xs text-gray-400">/mes</span></td>
-                        <td class="p-5 text-center font-bold text-brandBlue bg-brandMutedGreen/10">\$629 <span class="text-xs text-gray-400">/mes</span></td>
-                        <td class="p-5 text-center font-extrabold text-emerald-600 bg-emerald-50/30">\$559 <span class="text-xs text-gray-500">/mes</span></td>
+                        <td class="p-5 text-center font-medium text-gray-700">$699 <span class="text-xs text-gray-400">/mes</span></td>
+                        <td class="p-5 text-center font-bold text-brandBlue bg-brandMutedGreen/10">$629 <span class="text-xs text-gray-400">/mes</span></td>
+                        <td class="p-5 text-center font-extrabold text-emerald-600 bg-emerald-50/30">$559 <span class="text-xs text-gray-500">/mes</span></td>
                     </tr>
                 </tbody>
             </table>
@@ -269,39 +269,30 @@
                     <input type="text" required class="w-full bg-brandDark/50 border border-gray-700 rounded p-2.5 text-white focus:outline-none focus:border-brandAccent text-sm">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold uppercase text-gray-400 mb-1">Email Corporativo</label>
-                    <input type="email" required class="w-full bg-brandDark/50 border border-gray-700 rounded p-2.5 text-white focus:outline-none focus:border-brandAccent text-sm">
+                    <label class="block text-xs font-semibold uppercase text-gray-400 mb-1">Número de Sucursales</label>
+                    <select class="w-full bg-brandDark/50 border border-gray-700 rounded p-2.5 text-gray-300 focus:outline-none focus:border-brandAccent text-sm">
+                        <option>1 a 5 tiendas</option>
+                        <option>5 a 10 tiendas</option>
+                        <option>Más de 10 tiendas</option>
+                    </select>
                 </div>
-            </div>
-            <div>
-                <label class="block text-xs font-semibold uppercase text-gray-400 mb-1">Nombre de la Cadena de Supermercados</label>
-                <input type="text" required class="w-full bg-brandDark/50 border border-gray-700 rounded p-2.5 text-white focus:outline-none focus:border-brandAccent text-sm">
-            </div>
-            <div>
-                <label class="block text-xs font-semibold uppercase text-gray-400 mb-1">Número de Sucursales</label>
-                <select class="w-full bg-brandDark/50 border border-gray-700 rounded p-2.5 text-gray-300 focus:outline-none focus:border-brandAccent text-sm">
-                    <option>1 a 5 tiendas</option>
-                    <option>5 a 10 tiendas</option>
-                    <option>Más de 10 tiendas</option>
-                </select>
-            </div>
-            <button type="submit" class="w-full bg-brandAccent text-white p-3 rounded font-bold shadow-md hover:bg-orange-600 transition tracking-wide text-sm uppercase mt-2">
-                Agendar Llamada Estratégica
-            </button>
-        </form>
-    </div>
-</section>
+                <button type="submit" class="w-full bg-brandAccent text-white p-3 rounded font-bold shadow-md hover:bg-orange-600 transition tracking-wide text-sm uppercase mt-2">
+                    Agendar Llamada Estratégica
+                </button>
+            </form>
+        </div>
+    </section>
 
-<!-- FOOTER -->
-<footer class="bg-gray-900 text-gray-400 py-12 px-6 text-center space-y-4 border-t border-gray-800 text-sm">
-    <div class="flex justify-center items-center space-x-6">
-        <img src="https://gestor-de-archivos.vercel.app/logos/logo-DODET.jpg" style="width:120px;" alt="RetailMind Logo" class="h-6 opacity-60 object-contain">
-        <br><br>
-        <img src="https://gestor-de-archivos.vercel.app/logos/hero-DODET.jpg" style="width:120px;" alt="DODET Logo" class="h-6 opacity-60 object-contain">
-    </div>
-    <p>&copy; 2026 RetailMind Inc. Todos los derechos reservados. DODET y sus módulos analíticos son marcas registradas.</p>
-    <p class="text-xs text-gray-600">Desarrollado para optimización de cadenas de suministro, retail analítico y control de mermas comerciales en América Latina.</p>
-</footer>
+    <!-- FOOTER -->
+    <footer class="bg-gray-900 text-gray-400 py-12 px-6 text-center space-y-4 border-t border-gray-800 text-sm">
+        <div class="flex justify-center items-center space-x-6">
+            <img src="https://gestor-de-archivos.vercel.app/logos/logo-DODET.jpg" style="width:200px;" alt="RetailMind Logo" class="h-6 opacity-60 object-contain">
+            <br><br>
+            <img src="https://gestor-de-archivos.vercel.app/logos/hero-DODET.jpg" style="width:20x;" alt="DODET Logo" class="h-6 opacity-60 object-contain">
+        </div>
+        <p>&copy; 2026 RetailMind Inc. Todos los derechos reservados. DODET y sus módulos analíticos son marcas registradas.</p>
+        <p class="text-xs text-gray-600">Desarrollado para optimización de cadenas de suministro, retail analítico y control de mermas comerciales en América Latina.</p>
+    </footer>
 
 </body>
 </html>

@@ -39,7 +39,7 @@
     <!-- MAIN NAVBAR -->
     <nav class="sticky top-0 bg-white shadow-md z-50 px-6 py-4 flex justify-between items-center">
         <div class="flex items-center space-x-3">
-            <img src="https://gestor-de-archivos.vercel.app/logos/logo-DODET.png" alt="DODET Logo" class="h-24 object-contain">
+            <img src="https://gestor-de-archivos.vercel.app/logos/logo-DODET.png" alt="DODET Logo" class="h-16 object-contain">
         </div>
         <div class="hidden md:flex space-x-8 font-medium text-gray-600">
             <a href="#propuesta" class="hover:text-brandAccent transition">Propuesta de Valor</a>
@@ -108,8 +108,9 @@
     <!-- VALUE PROP FOR OWNERS -->
     <section id="propuesta" class="py-20 px-6 max-w-6xl mx-auto">
         <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
-            <h2 class="text-3xl font-bold text-brandDark">Propuesta de Valor para Dueños de Supermercados</h2>
-            <p class="text-gray-600">Tomar decisiones operativas a ciegas en LATAM cuesta millones. DODET actúa como un panel de control clínico para blindar el futuro de tu rentabilidad.</p>
+            <span class="bg-orange-100 text-brandAccent px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Para Dueños de Supermercados</span>
+            <h2 class="text-3xl font-bold text-brandDark">Tomar decisiones a ciegas en LATAM cuesta millones</h2>
+            <p class="text-gray-600 text-lg">DODET actúa como un panel de control clínico para blindar el futuro de tu rentabilidad. <strong class="text-brandDark">No es una prueba de 1 mes. Es un diagnóstico de 3 meses que transforma tu cadena.</strong></p>
         </div>
         <div class="grid md:grid-cols-3 gap-8">
             <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition space-y-4">
@@ -173,6 +174,9 @@
                         </div>
                     </div>
                 </div>
+                <div class="bg-brandDark/5 p-4 rounded-lg border border-brandDark/10">
+                    <p class="text-sm text-gray-600"><i class="fa-solid fa-clock text-brandAccent mr-2"></i> <strong>¿Por qué mínimo 3 meses?</strong> El retail no se transforma en 30 días. El diagnóstico, la toma de decisiones y los primeros resultados visibles requieren un ciclo completo de 90 días.</p>
+                </div>
             </div>
             
             <div class="bg-white p-8 rounded-xl shadow-md border border-gray-200">
@@ -193,8 +197,12 @@
     <!-- PRICING MATRIX TABLE -->
     <section id="precios" class="py-20 px-6 max-w-6xl mx-auto">
         <div class="text-center max-w-2xl mx-auto mb-16 space-y-4">
-            <h2 class="text-3xl font-bold text-brandDark">Planes Flexibles Adaptados a LATAM</h2>
-            <p class="text-gray-600">Precios transparentes y escalables basados estrictamente en el tamaño de tu cadena de supermercados. Sin costos ocultos de implementación.</p>
+            <span class="bg-orange-100 text-brandAccent px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Inversión con ROI Garantizado</span>
+            <h2 class="text-3xl font-bold text-brandDark">Planes pensados para tu realidad</h2>
+            <p class="text-gray-600">Sin costos ocultos ni permanencias forzadas. Elige el compromiso que mejor se adapte a tu cadena.</p>
+            <div class="bg-brandAccent/10 border border-brandAccent/30 rounded-lg p-3 max-w-lg mx-auto">
+                <p class="text-sm font-semibold text-brandDark"><i class="fa-solid fa-gift text-brandAccent mr-2"></i> Plan Anual: <strong class="text-brandAccent">Implantación GRATIS</strong> (ahorro de $399–$1,599)</p>
+            </div>
         </div>
 
         <div class="overflow-x-auto bg-white rounded-xl shadow-md border border-gray-200">
@@ -202,9 +210,10 @@
                 <thead>
                     <tr class="bg-brandDark text-white">
                         <th class="p-5 font-bold tracking-wide uppercase text-xs sm:text-sm">Tamaño de la Cadena</th>
-                        <th class="p-5 font-bold tracking-wide uppercase text-xs sm:text-sm text-center">Mensual <span class="block text-[10px] font-normal text-gray-400">Pago mes a mes</span></th>
-                        <th class="p-5 font-bold tracking-wide uppercase text-xs sm:text-sm text-center bg-brandBlue">Trimestral <span class="block text-[10px] font-normal text-brandAccent">Ahorro del 10%</span></th>
-                        <th class="p-5 font-bold tracking-wide uppercase text-xs sm:text-sm text-center">Anual <span class="block text-[10px] font-normal text-emerald-400">Ahorro del 20% (Ideal)</span></th>
+                        <th class="p-5 font-bold tracking-wide uppercase text-xs sm:text-sm text-center bg-gray-700">Implantación <span class="block text-[10px] font-normal text-gray-400">(one-time)</span></th>
+                        <th class="p-5 font-bold tracking-wide uppercase text-xs sm:text-sm text-center bg-brandBlue">Trimestral <span class="block text-[10px] font-normal text-brandAccent">3 meses • Diagnóstico completo</span></th>
+                        <th class="p-5 font-bold tracking-wide uppercase text-xs sm:text-sm text-center">Semestral <span class="block text-[10px] font-normal text-gray-400">6 meses • Seguimiento de evolución</span></th>
+                        <th class="p-5 font-bold tracking-wide uppercase text-xs sm:text-sm text-center bg-emerald-700">Anual <span class="block text-[10px] font-normal text-emerald-300">⭐ Implantación GRATIS</span></th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200 text-sm sm:text-base">
@@ -214,9 +223,10 @@
                             <span class="block text-base">De 1 a 5 Tiendas</span>
                             <span class="text-xs text-gray-500 font-normal">Supermercados independientes o cadenas locales</span>
                         </td>
-                        <td class="p-5 text-center font-medium text-gray-700">$199 <span class="text-xs text-gray-400">/mes</span></td>
-                        <td class="p-5 text-center font-bold text-brandBlue bg-brandMutedGreen/10">$179 <span class="text-xs text-gray-400">/mes</span></td>
-                        <td class="p-5 text-center font-extrabold text-emerald-600 bg-emerald-50/30">$159 <span class="text-xs text-gray-500">/mes</span></td>
+                        <td class="p-5 text-center font-bold text-gray-500 bg-gray-50">$399</td>
+                        <td class="p-5 text-center font-extrabold text-brandBlue bg-brandMutedGreen/10">$1,596 <span class="text-xs text-gray-400 block">($532/mes)</span></td>
+                        <td class="p-5 text-center font-medium text-gray-700">$2,793 <span class="text-xs text-gray-400 block">($465/mes)</span></td>
+                        <td class="p-5 text-center font-extrabold text-white bg-emerald-600/90">$4,788 <span class="text-xs text-emerald-200 block">($399/mes) ⭐</span></td>
                     </tr>
                     <!-- Row 2 -->
                     <tr class="hover:bg-gray-50 transition">
@@ -224,9 +234,10 @@
                             <span class="block text-base">De 5 a 10 Tiendas</span>
                             <span class="text-xs text-gray-500 font-normal">Cadenas regionales en plena expansión</span>
                         </td>
-                        <td class="p-5 text-center font-medium text-gray-700">$399 <span class="text-xs text-gray-400">/mes</span></td>
-                        <td class="p-5 text-center font-bold text-brandBlue bg-brandMutedGreen/10">$359 <span class="text-xs text-gray-400">/mes</span></td>
-                        <td class="p-5 text-center font-extrabold text-emerald-600 bg-emerald-50/30">$319 <span class="text-xs text-gray-500">/mes</span></td>
+                        <td class="p-5 text-center font-bold text-gray-500 bg-gray-50">$799</td>
+                        <td class="p-5 text-center font-extrabold text-brandBlue bg-brandMutedGreen/10">$3,196 <span class="text-xs text-gray-400 block">($1,065/mes)</span></td>
+                        <td class="p-5 text-center font-medium text-gray-700">$5,593 <span class="text-xs text-gray-400 block">($932/mes)</span></td>
+                        <td class="p-5 text-center font-extrabold text-white bg-emerald-600/90">$9,588 <span class="text-xs text-emerald-200 block">($799/mes) ⭐</span></td>
                     </tr>
                     <!-- Row 3 -->
                     <tr class="hover:bg-gray-50 transition">
@@ -234,15 +245,17 @@
                             <span class="block text-base">Más de 10 Tiendas (10+)</span>
                             <span class="text-xs text-gray-500 font-normal">Líderes de Retail y Grandes Cadenas Nacionales</span>
                         </td>
-                        <td class="p-5 text-center font-medium text-gray-700">$699 <span class="text-xs text-gray-400">/mes</span></td>
-                        <td class="p-5 text-center font-bold text-brandBlue bg-brandMutedGreen/10">$629 <span class="text-xs text-gray-400">/mes</span></td>
-                        <td class="p-5 text-center font-extrabold text-emerald-600 bg-emerald-50/30">$559 <span class="text-xs text-gray-500">/mes</span></td>
+                        <td class="p-5 text-center font-bold text-gray-500 bg-gray-50">$1,599</td>
+                        <td class="p-5 text-center font-extrabold text-brandBlue bg-brandMutedGreen/10">$6,396 <span class="text-xs text-gray-400 block">($2,132/mes)</span></td>
+                        <td class="p-5 text-center font-medium text-gray-700">$11,193 <span class="text-xs text-gray-400 block">($1,865/mes)</span></td>
+                        <td class="p-5 text-center font-extrabold text-white bg-emerald-600/90">$19,188 <span class="text-xs text-emerald-200 block">($1,599/mes) ⭐</span></td>
                     </tr>
                 </tbody>
             </table>
         </div>
         <div class="mt-6 text-center text-xs text-gray-500">
-            * Valores expresados en USD. Precios ajustados a la realidad corporativa de Latinoamérica. Consultar integraciones a ERPs customizados con soporte técnico.
+            * Valores expresados en USD. Precios ajustados a la realidad corporativa de Latinoamérica. 
+            <span class="block text-gray-400 mt-1">El plan trimestral es el <strong class="text-brandDark">mínimo recomendado</strong>: el tiempo justo para diagnosticar, actuar y medir resultados.</span>
         </div>
     </section>
 
@@ -286,9 +299,8 @@
     <!-- FOOTER -->
     <footer class="bg-gray-900 text-gray-400 py-12 px-6 text-center space-y-4 border-t border-gray-800 text-sm">
         <div class="flex justify-center items-center space-x-6">
-            <img src="https://gestor-de-archivos.vercel.app/logos/logo-DODET.png" alt="RetailMind Logo" class="h-24 opacity-60 object-contain">
-            <br><br>
-            <img src="https://gestor-de-archivos.vercel.app/logos/hero-DODET.png" alt="DODET Logo" class="h-24 opacity-60 object-contain">
+            <img src="https://gestor-de-archivos.vercel.app/logos/logo-DODET.png" alt="DODET Logo" class="h-16 opacity-60 object-contain">
+            <img src="https://gestor-de-archivos.vercel.app/logos/hero-DODET.png" alt="DODET Hero" class="h-16 opacity-60 object-contain">
         </div>
         <p>&copy; 2026 RetailMind 360°. Todos los derechos reservados. RetailMind, DODET y sus módulos analíticos son marcas registradas.</p>
         <p class="text-xs text-gray-600">Desarrollado para optimización de cadenas de suministro, retail analítico y control de mermas comerciales en América Latina.</p>

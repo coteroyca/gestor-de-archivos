@@ -12,8 +12,8 @@ export default async function handler(req, res) {
   }
 
   try {
-    // CAMBIO AQUÍ: Se actualiza el nombre del modelo
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+    // Modelo actualizado a gemini-3.6-flash
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${apiKey}`;
 
     const systemInstruction = `Eres el Asistente Analítico Inteligente de RetailMind 360°, especializado en la metodología Retailding.
     Analiza las métricas y datos proporcionados del dashboard y responde las preguntas del usuario de forma ejecutiva, concisa y precisa.

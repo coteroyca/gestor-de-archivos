@@ -247,7 +247,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- SCRIPT DE INTEGRACIÓN CON LA IA -->
-    <script>
+<script>
         // 1. Extrae los datos actuales directamente del DOM de tu Dashboard
         function obtenerDatosDashboard() {
             return {
@@ -297,6 +297,7 @@
 
             chatMessages.appendChild(messageDiv);
             chatMessages.scrollTop = chatMessages.scrollHeight;
+            return messageDiv;
         }
 
         // 3. Envío de la consulta a la Serverless Function de Vercel (/api/chat)
@@ -312,14 +313,20 @@
             input.disabled = true;
             btnSend.disabled = true;
 
-            // Mostrar el mensaje del usuario en pantalla
+            // Mostrar el mensaje del usuario
             agregarMensajeAlChat('usuario', pregunta);
+
+            // Mostrar indicador visual de carga
+            const mensajeCarga = agregarMensajeAlChat('ia', '<i>Analizando datos con el MESH Engine...</i>');
 
             // Obtener el contexto actual del dashboard
             const datosDashboard = obtenerDatosDashboard();
 
+            // Construir la URL absoluta explícita para evitar problemas con rutas relativas
+            const apiUrl = `${window.location.origin}/api/chat`;
+
             try {
-                const response = await fetch('/api/chat', {
+                const response = await fetch(apiUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -328,18 +335,23 @@
                     })
                 });
 
+                // Remover el mensaje temporal de carga
+                mensajeCarga.remove();
+
                 const data = await response.json();
 
                 if (response.ok) {
-                    agregarMensajeAlChat('ia', data.respuesta);
+                    agregarMensajeAlChat('ia', data.respuesta || 'Análisis completado.');
                 } else {
-                    agregarMensajeAlChat('ia', 'No se pudo procesar la consulta en este momento.');
+                    const mensajeError = data.error || `Error HTTP ${response.status}`;
+                    agregarMensajeAlChat('ia', `⚠️ No se pudo procesar la consulta: ${mensajeError}`);
                 }
             } catch (error) {
                 console.error('Error al conectar con la API:', error);
-                agregarMensajeAlChat('ia', 'Error de conexión con el MESH Engine.');
+                mensajeCarga.remove();
+                agregarMensajeAlChat('ia', '⚠️ Error de conexión al consultar el endpoint /api/chat.');
             } finally {
-                // Reorganizar estados
+                // Reorganizar estados de interfaz
                 input.disabled = false;
                 btnSend.disabled = false;
                 input.focus();

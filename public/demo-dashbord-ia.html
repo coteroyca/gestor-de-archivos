@@ -14,6 +14,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
@@ -272,34 +274,55 @@
         }
 
         // 2. Función para añadir los mensajes visualmente al chat
-        function agregarMensajeAlChat(remitente, texto) {
-            const chatMessages = document.getElementById('chat-messages');
-            const messageDiv = document.createElement('div');
+function agregarMensajeAlChat(remitente, texto) {
+    const chatMessages = document.getElementById('chat-messages');
+    const messageDiv = document.createElement('div');
 
-            if (remitente === 'usuario') {
-                messageDiv.className = 'flex justify-end items-start gap-2';
-                messageDiv.innerHTML = `
-                    <div class="bg-indigo-600 text-white p-3 rounded-2xl rounded-tr-none max-w-[85%] shadow-sm">
-                        <p class="text-xs mb-0">${texto}</p>
-                    </div>
-                `;
+    if (remitente === 'usuario') {
+        messageDiv.className = 'flex justify-end items-start gap-2 mb-3';
+        messageDiv.innerHTML = `
+            <div class="bg-indigo-600 text-white p-3 rounded-2xl rounded-tr-none max-w-[85%] shadow-sm text-xs leading-relaxed">
+                ${texto}
+            </div>
+        `;
+    } else {
+        messageDiv.className = 'flex justify-start items-start gap-2.5 mb-4';
+
+        // Si marked.js está cargado, procesamos el Markdown a HTML
+        let htmlProcesado = typeof marked !== 'undefined' ? marked.parse(texto) : texto;
+
+        messageDiv.innerHTML = `
+            <div class="h-7 w-7 rounded-lg bg-slate-900 text-white flex items-center justify-center font-bold text-xs flex-shrink-0 mt-1 shadow">
+                RM
+            </div>
+            <div class="chat-ia-response bg-white border border-slate-200 p-4 rounded-2xl rounded-tl-none max-w-[88%] shadow-sm text-xs text-slate-800 space-y-2">
+                ${htmlProcesado}
+            </div>
+        `;
+
+        // Aplicar la alternancia de colores a los párrafos generados
+        const párrafos = messageDiv.querySelectorAll('.chat-ia-response p');
+        párrafos.forEach((p, index) => {
+            p.classList.add('p-2', 'rounded-lg', 'leading-relaxed');
+            if (index % 2 === 0) {
+                p.classList.add('bg-slate-50', 'text-slate-900', 'border-l-2', 'border-indigo-500');
             } else {
-                messageDiv.className = 'flex justify-start items-start gap-2.5';
-                messageDiv.innerHTML = `
-                    <div class="h-7 w-7 rounded-lg bg-slate-900 text-white flex items-center justify-center font-bold text-xs flex-shrink-0">
-                        RM
-                    </div>
-                    <div class="bg-white border border-slate-200 p-3.5 rounded-2xl rounded-tl-none max-w-[88%] shadow-sm">
-                        <p class="text-xs text-slate-800 mb-0">${texto.replace(/\n/g, '<br>')}</p>
-                    </div>
-                `;
+                p.classList.add('bg-white', 'text-slate-700');
             }
+        });
 
-            chatMessages.appendChild(messageDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-            return messageDiv;
-        }
+        // Estilizar listas si la respuesta contiene puntos/viñetas
+        const listas = messageDiv.querySelectorAll('.chat-ia-response ul, .chat-ia-response ol');
+        listas.forEach(ul => {
+            ul.classList.add('list-disc', 'list-inside', 'space-y-1', 'my-2', 'pl-2', 'text-slate-700');
+        });
+    }
 
+    chatMessages.appendChild(messageDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    return messageDiv;
+}
+    
         // 3. Envío de la consulta a la Serverless Function de Vercel (/api/chat)
         async function enviarPreguntaIA() {
             const input = document.getElementById('chat-input');

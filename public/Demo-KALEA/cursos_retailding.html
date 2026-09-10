@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RetailMind 360° - Portal Corporativo (Beta)</title>
+    <!-- Favicon Oficial -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://jsdelivr.net" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://tailwindcss.com"></script>
+    <!-- FontAwesome 6 (Icons) -->
+    <link rel="stylesheet" href="https://cloudflare.com">
+    <!-- Google Fonts -->
+    <link href="https://googleapis.com" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .wick { width: 2px; position: absolute; left: 50%; transform: translateX(-50%); }
+        .body-candle { width: 24px; position: absolute; left: 50%; transform: translateX(-50%); border-radius: 2px; }
+        .candle-bull { background-color: #10b981; }
+        .candle-bear { background-color: #ef4444; }
+        .wick-bull { background-color: #10b981; }
+        .wick-bear { background-color: #ef4444; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- TOP NAVBAR (WHITE LABEL) -->
+    <nav class="navbar navbar-expand-lg bg-white border-b border-slate-200 sticky-top py-2 shadow-sm">
+        <div class="container-fluid px-4 flex justify-between items-center">
+            <!-- Brand Logo -->
+            <a class="navbar-brand flex items-center gap-2" href="#">
+                <img src="https://gestor-de-archivos.vercel.app/assets/logos/logo-RetailMind-R-cuadrada.png" alt="RetailMind Logo" class="h-9 w-auto">
+                <span class="text-xs bg-indigo-50 text-indigo-700 px-2 py-1 rounded font-mono border border-indigo-100 font-bold">BETA v0.9</span>
+            </a>
+            
+            <!-- Context Indicators -->
+            <div class="hidden lg:flex items-center gap-4 text-sm text-slate-600">
+                <div class="flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-md border border-slate-200">
+                    <i class="fa-solid fa-store text-indigo-600"></i>
+                    <span>Sucursal: <strong class="text-slate-900">Sucursal Central (A)</strong></span>
+                </div>
+                <div class="flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-md border border-slate-200">
+                    <i class="fa-solid fa-users-viewfinder text-indigo-600"></i>
+                    <span>Segmento RFM: <strong class="text-slate-900">Champions (Clientes AAA)</strong></span>
+                </div>
+            </div>
+
+            <!-- User Profile -->
+            <div class="flex items-center gap-3">
+                <div class="text-end hidden sm:block">
+                    <p class="text-sm font-semibold text-slate-800 mb-0">Alejandro Silva</p>
+                    <p class="text-xs text-indigo-600 font-medium mb-0">Director Comercial</p>
+                </div>
+                <div class="h-10 w-10 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold shadow-sm border-2 border-indigo-500">
+                    AS
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- METRICAS PRINCIPALES Y CHAT COGNITIVO -->
+    <div class="container-fluid px-4 py-4 grid grid-cols-1 xl:grid-cols-12 gap-4 flex-grow">
+        
+        <!-- COLUMNA IZQUIERDA: DASHBOARD MESH & METADATOS DE CONTROL (7 Columnas) -->
+        <main class="xl:col-span-7 flex flex-col gap-4">
+            
+            <!-- CONTENEDOR DE INDICADORES ESTILO IBM PLANNING ANALYTICS -->
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                <div class="flex justify-between items-center mb-3">
+                    <h5 class="text-sm font-bold text-slate-900 flex items-center gap-2 uppercase tracking-wide">
+                        <i class="fa-solid fa-square-poll-vertical text-indigo-600"></i>
+                        Cubo de Metadatos del KPI: RET_TKT_002
+                    </h5>
+                    <span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-20 px-2.5 py-1.5 rounded font-bold text-xs uppercase tracking-wider">
+                        <i class="fa-solid fa-triangle-exclamation"></i> Status: Critical_Poor
+                    </span>
+                </div>
+                
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200">
+                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1">Target Corporativo</p>
+                        <p class="text-base font-bold text-slate-800">$55.00 <span class="text-xs text-slate-400 font-normal">USD</span></p>
+                    </div>
+                    <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200">
+                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1">Tolerancia Limit</p>
+                        <p class="text-base font-bold text-slate-800">5.0% <span class="text-xs text-slate-400 font-normal">(Pct)</span></p>
+                    </div>
+                    <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200">
+                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1">Score Normalizado</p>
+                        <p class="text-base font-bold text-amber-600">-0.85</p>
+                    </div>
+                    <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200">
+                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1">Tendencia de Red</p>
+                        <p class="text-base font-bold text-rose-600 flex items-center gap-1">DOWN <i class="fa-solid fa-arrow-trend-down"></i></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GRAFICO DE VELAS JAPONESAS DEL MESH DE DATOS -->
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex-grow flex flex-col">
+                <div class="flex justify-between items-center mb-4">
+                    <div>
+                        <h5 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                            <i class="fa-solid fa-chart-candle text-indigo-600"></i>
+                            Representación Temporal MESH (OHLC)
+                        </h5>
+                        <p class="text-xs text-slate-500 mt-0.5">Análisis de Volatilidad Horaria: Bloque Matutino vs Vespertino</p>
+                    </div>
+                </div>
+
+                <div class="border border-slate-200 rounded-lg p-4 bg-slate-950 text-slate-400 flex-grow flex flex-col justify-between min-h-[260px]">
+                    <div class="w-full flex justify-between text-[10px] font-mono border-b border-slate-800 pb-2 text-slate-500">
+                        <span>ESTRUCTURA MESH PROPIETARIA</span>
+                        <span>MÉTRICA DE FRICCIÓN COMERCIAL</span>
+                    </div>
+                    
+                    <div class="relative w-full h-40 flex justify-around items-end pt-4">
+                        <div class="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-5">
+                            <div class="border-b border-white w-full"></div>
+                            <div class="border-b border-white w-full"></div>
+                        </div>
+
+                        <!-- Vela 1 -->
+                        <div class="relative w-16 h-full flex flex-col justify-center items-center opacity-50">
+                            <div class="wick wick-bull" style="top: 25%; bottom: 20%;"></div>
+                            <div class="body-candle candle-bull" style="top: 40%; height: 25px;"></div>
+                            <span class="absolute bottom-[-24px] text-[10px] font-mono text-slate-600">08-Sep</span>
+                        </div>
+
+                        <!-- VELA DE ENFOQUE: EL MARTILLO OPERATIVO -->
+                        <div class="relative w-16 h-full flex flex-col justify-center items-center bg-slate-900 bg-opacity-60 rounded border border-dashed border-indigo-900/60 shadow-inner">
+                            <div class="wick wick-bear" style="top: 15%; bottom: 80%;"></div>
+                            <div class="wick wick-bear" style="top: 25%; bottom: 5%;"></div>
+                            <div class="body-candle candle-bull shadow-lg shadow-emerald-500/30" style="top: 22%; height: 10px; z-index: 10;"></div>
+                            
+                            <div class="absolute top-[-5px] text-[9px] bg-amber-400 text-slate-900 font-bold px-1.5 py-0.5 rounded uppercase tracking-wider shadow">
+                                Hammer
+                            </div>
+                            <span class="absolute bottom-[-24px] text-[10px] font-mono text-slate-200 font-bold">09-Sep</span>
+                        </div>
+
+                        <!-- Vela 3 -->
+                        <div class="relative w-16 h-full flex flex-col justify-center items-center opacity-30">
+                            <div class="wick wick-bull" style="top: 10%; bottom: 70%;"></div>
+                            <div class="wick wick-bull" style="top: 25%; bottom: 15%;"></div>
+                            <div class="body-candle candle-bull" style="top: 25%; height: 40px;"></div>
+                            <span class="absolute bottom-[-24px] text-[10px] font-mono text-slate-600">10-Sep (F)</span>
+                        </div>
+                    </div>
+
+                    <!-- Datos Clínicos del Nodo del MESH bajo simulación -->
+                    <div class="grid grid-cols-4 gap-2 text-center text-xs font-mono bg-slate-900 p-2 rounded border border-slate-800 mt-4">
+                        <div><span class="text-slate-500 block text-[9px] uppercase">Open</span><strong class="text-slate-100">$53.90</strong></div>
+                        <div><span class="text-slate-500 block text-[9px] uppercase">High</span><strong class="text-emerald-400">$59.10</strong></div>
+                        <div><span class="text-slate-500 block text-[9px] uppercase">Low</span><strong class="text-rose-400">$42.00</strong></div>
+                        <div><span class="text-slate-500 block text-[9px] uppercase">Close</span><strong class="text-slate-100">$54.50</strong></div>
+                    </div>
+                </div>
+                
+                <!-- KPIs de Soporte de Retailding -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
+                    <div class="flex items-center justify-between p-2.5 rounded-lg border border-slate-200 bg-slate-50">
+                        <span class="text-xs font-medium text-slate-600 flex items-center gap-1.5">
+                            <i class="fa-solid fa-wave-square text-amber-500"></i> Fricción Comercial (Volatilidad)
+                        </span>
+                        <strong class="text-xs font-mono text-slate-800">$17.10 USD</strong>
+                    </div>
+                    <div class="flex items-center justify-between p-2.5 rounded-lg border border-slate-200 bg-slate-50">
+                        <span class="text-xs font-medium text-slate-600 flex items-center gap-1.5">
+                            <i class="fa-solid fa-boxes-packing text-rose-500"></i> Alerta Out-of-Stock Estimada
+                        </span>
+                        <span class="badge bg-danger bg-opacity-10 text-danger text-[10px] uppercase font-bold px-2 py-1">ALTA</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- COLUMNA DERECHA: INTERFAZ MARCA BLANCA DEL ASISTENTE COGNITIVO (5 Columnas) -->
+        <aside class="xl:col-span-5 flex flex-col bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden min-h-[480px]">
+            <div class="p-3 border-b border-slate-200 bg-gradient-to-r from-slate-900 to-indigo-950 text-white flex items-center justify-between shadow-inner">
+                <div class="flex items-center gap-2.5">
+                    <div class="h-8 w-8 rounded-lg bg-indigo-600 flex items-center justify-center shadow-md">
+                        <i class="fa-solid fa-brain text-sm text-white"></i>
+                    </div>
+                    <div>
+                        <h6 class="text-sm font-bold tracking-wide mb-0">Asistente Analítico Corporativo</h6>
+                        <p class="text-[10px] text-indigo-200 mb-0 flex items-center gap-1">
+                            <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-ping"></span> MESH Engine Online
+                        </p>
+                    </div>
+                </div>
+                <i class="fa-solid fa-circle-nodes text-indigo-400"></i>
+            </div>
+
+            <!-- Contenedor del Chat (Resultados e Insights del Prompt Maestro) -->
+            <div class="p-4 flex-grow overflow-y-auto space-y-4 bg-slate-50 bg-opacity-60 max-h-[460px]">
+                <div class="flex justify-end items-start gap-2">
+                    <div class="bg-indigo-600 text-white p-3 rounded-2xl rounded-tr-none max-w-[85%] shadow-sm text-xs">
+                        Analiza el comportamiento del margen en la categoría A para los clientes Champions en el último fin de quincena.
+                    </div>
+                </div>
+
+                <div class="flex justify-start items-start gap-2.5">
+                    <div class="h-7 w-7 rounded-lg bg-slate-900 text-white flex items-center justify-center font-bold text-[10px] flex-shrink-0 border border-slate-700">
+                        RM
+                    </div>
+                    <div class="bg-white border border-slate-200 p-3.5 rounded-2xl rounded-tl-none max-w-[88%] shadow-sm space-y-3">
+                        <div class="border-l-4 border-rose-500 pl-2">
+                            <p class="text-xs text-slate-800 font-bold mb-0">
+                                El margen bruto de la categoría ABC: A en el segmento de clientes Champions ha entrado en un estado Crítico (Poor) durante el último bloque de Fin de Quincena, impulsado por una alta Fricción Comercial.
+                            </p>
+                        </div>
+                        <div class="text-xs text-slate-600 space-y-2">
+                            <p class="mb-1">
+                                Los datos del MESH confirman que el <strong>"Cliente Trader"</strong> ejecutó un arbitraje agresivo. El indicador abrió estable (<span class="font-mono text-slate-800">$53.90</span>) pero experimentó una fuerte presión bajista que perforó la banda, alcanzando un mínimo de <strong class="text-rose-600 font-mono">$42.00 (Low)</strong>.
+                            </p>
+                            <p class="bg-slate-50 p-2 rounded border border-slate-100 italic mb-0">
+                                "El patrón se consolida como un <strong>Martillo Operativo</strong>: este desplome no denota desinterés de compra; coincidió con un cuello de botella de 8.4 minutos en cajas, forzando abandono de carritos antes de lograr una recuperación de cierre en <span class="font-mono">$54.50 (Close)</span>."
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Campo de entrada del Chat -->
+            <div class="p-3 border-t border-slate-200 bg-white mt-auto">
+                <div class="input-group">
+                    <input type="text" class="form-control text-xs py-2 shadow-none border-slate-200 focus:border-indigo-500" placeholder="Pregúntale a RetailMind (ej: Analizar dependencias causales)...">
+                    <button class="btn btn-primary bg-indigo-600 hover:bg-indigo-700 border-none px-3" type="button">
+                        <i class="fa-solid fa-paper-plane text-xs"></i>
+                    </button>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- SECCIÓN COMERCIAL: ESTRUCTURACIÓN SAAS CON PRECIOS BETA -->
+    <section class="container-fluid px-4 py-5 bg-slate-100 border-t border-b border-slate-200">
+        <div class="text-center mb-5">
+            <h2 class="text-xl font-bold text-slate-900 tracking-tight uppercase">Estructura Comercial & Modelos SaaS (Fase Beta)</h2>
+            <p class="text-sm text-slate-500 mt-1">Ecosistema Integrado de Productos para Inteligencia de Consumo Masivo</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-6xl mx-auto">
+            <!-- Tarjeta 1: DODET Core -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm flex flex-col p-4 relative overflow-hidden">
+                <div class="mb-4">
+                    <span class="text-[10px] font-bold tracking-wider text-indigo-600 uppercase bg-indigo-50 px-2 py-0.5 rounded">Core Connector</span>
+                    <h3 class="text-lg font-bold text-slate-800 mt-2">DODET Core Engine</h3>
+                    <p class="text-xs text-slate-400 mt-1">Líneas de refinación, auditoría y control transaccional básico Medallion.</p>
+                </div>
+                <div class="my-3 py-2 border-t border-b border-slate-100 font-mono">
+                    <p class="text-xs text-slate-500">OTF (One-Time Fee): <strong class="text-slate-800">$1,200 USD</strong></p>
+                    <p class="text-sm text-slate-900 mt-1 font-bold">RCh (Recurring Charge): $250 <span class="text-xs font-normal text-slate-400">/ tienda / mes</span></p>
+                </div>
+                <ul class="text-xs text-slate-600 space-y-2 my-3 flex-grow">
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> Refinerías de datos POS e Inventario</li>
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> Arquitectura Medallion (Bronze a Silver)</li>
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> Métricas estándar de control e informes</li>
+                </ul>
+                <button class="btn btn-sm btn-outline-dark w-full mt-4 font-semibold text-xs py-2">Solicitar Acceso Beta</button>
+            </div>
+
+            <!-- Tarjeta 2: RetailMind AI -->
+            <div class="bg-white rounded-xl border-2 border-indigo-600 shadow-md flex flex-col p-4 relative overflow-hidden transform md:-translate-y-2">
+                <div class="absolute top-0 right-0 bg-indigo-600 text-white font-bold text-[9px] uppercase px-3 py-1 tracking-wider rounded-bl">
+                    Most Popular
+                </div>
+                <div class="mb-4">
+                    <span class="text-[10px] font-bold tracking-wider text-amber-600 uppercase bg-amber-50 px-2 py-0.5 rounded">Hipercubo Semántico</span>
+                    <h3 class="text-lg font-bold text-slate-800 mt-2">RetailMind AI 360°</h3>
+                    <p class="text-xs text-slate-400 mt-1">Ecosistema MESH analítico expandido con análisis OHLC, Fricción y Asistente IA.</p>
+                </div>
+                <div class="my-3 py-2 border-t border-b border-slate-100 font-mono">
+                    <p class="text-xs text-slate-500">OTF (One-Time Fee): <strong class="text-slate-800">$3,500 USD</strong></p>
+                    <p class="text-base text-indigo-700 mt-1 font-bold">RCh (Recurring Charge): $650 <span class="text-xs font-normal text-slate-400">/ tienda / mes</span></p>
+                </div>
+                <ul class="text-xs text-slate-600 space-y-2 my-3 flex-grow">
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> Estructura MESH Gold unificada</li>
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> Dimensiones Especiales (RFM / ABC / Horarios)</li>
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> Chat Marca Blanca con Prompt Maestro AI</li>
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> Modelación Causal e Impact Diagrams</li>
+                </ul>
+                <button class="btn btn-sm btn-primary bg-indigo-600 hover:bg-indigo-700 w-full mt-4 font-semibold text-xs py-2 border-none">Desplegar Piloto Beta</button>
+            </div>
+
+            <!-- Tarjeta 3: Academia Retailding -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm flex flex-col p-4 relative overflow-hidden">
+                <div class="mb-4">
+                    <span class="text-[10px] font-bold tracking-wider text-emerald-600 uppercase bg-emerald-50 px-2 py-0.5 rounded">División Educativa</span>
+                    <h3 class="text-lg font-bold text-slate-800 mt-2">Academia Retailding</h3>
+                    <p class="text-xs text-slate-400 mt-1">Capacitación y formación continua en la metodología de intersección Retail-Trading.</p>
+                </div>
+                <div class="my-3 py-2 border-t border-b border-slate-100 font-mono">
+                    <p class="text-xs text-slate-500">Combo Corporativo: <strong class="text-slate-800">Incluido en OTF de Software</strong></p>
+                    <p class="text-sm text-slate-900 mt-1 font-bold">Add-on Recurrente: $150 <span class="text-xs font-normal text-slate-400">/ mes (Cupos ilimitados)</span></p>
+                </div>
+                <ul class="text-xs text-slate-600 space-y-2 my-3 flex-grow">
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-graduation-cap text-emerald-500"></i> Talleres sobre la psicología del "Cliente Trader"</li>
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-graduation-cap text-emerald-500"></i> Formación para interpretación del MESH de datos</li>
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-graduation-cap text-emerald-500"></i> Mitigación de la rotación de analistas</li>
+                </ul>
+                <div class="bg-amber-50 border border-amber-200 rounded p-2 text-[10px] text-amber-800 mb-2 font-medium">
+                    <i class="fa-solid fa-ticket-simple"></i> Próximamente: Talleres ejecutivos gratuitos por invitación en foros de la industria.
+                </div>
+                <button class="btn btn-sm btn-outline-emerald text-emerald-700 border-emerald-600 hover:bg-emerald-50 w-full mt-2 font-semibold text-xs py-2">Ver Cartelera de Talleres</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-slate-200 py-3 text-center text-xs text-slate-400 font-mono mt-auto">
+        &copy; 2026 RetailMind 360° | Potenciado por Metodología Propietaria Retailding. Todos los derechos reservados.
+    </footer>
+
+    <!-- Bootstrap 5 Bundle JS -->
+    <script src="https://jsdelivr.net"></script>
+</body>
+</html>

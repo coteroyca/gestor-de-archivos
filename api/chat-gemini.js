@@ -13,7 +13,7 @@ export default async function handler(req, res) {
   }
 
   const { message, contexto } = req.body;
-  
+
   if (!message) {
     return res.status(400).json({ error: 'Message is required' });
   }
@@ -21,7 +21,7 @@ export default async function handler(req, res) {
   const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
   if (!GEMINI_API_KEY) {
-    return res.status(500).json({ error: 'API key not configured' });
+    return res.status(500).json({ error: 'GEMINI_API_KEY no configurada en Vercel' });
   }
 
   const systemPrompt = `Eres el asistente experto de DODET (Diagrama de Oportunidades con Doble Escenario de Tiendas), un producto de RetailMind 360°.
@@ -35,7 +35,7 @@ Tu conocimiento incluye:
 
 Contexto actual del dashboard: ${contexto || 'Sin contexto específico'}
 
-Responde de forma concisa, profesional y en español. Usa datos concretos cuando los tengas.`;
+Responde de forma concisa, profesional y en español. Usa datos concretos cuando los tengas. Si no sabes algo, dilo claramente.`;
 
   try {
     const response = await fetch(
@@ -61,14 +61,13 @@ Responde de forma concisa, profesional y en español. Usa datos concretos cuando
 
     if (!response.ok) {
       console.error('Gemini API error:', data);
-      return res.status(response.status).json({ 
-        error: data.error?.message || 'Error en Gemini API' 
+      return res.status(response.status).json({
+        error: data.error?.message || 'Error en Gemini API'
       });
     }
 
     const aiText = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Sin respuesta.';
 
-    // Añadir headers CORS a la respuesta
     res.setHeader('Access-Control-Allow-Origin', '*');
     return res.status(200).json({ reply: aiText });
   } catch (error) {

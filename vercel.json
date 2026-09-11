@@ -16,14 +16,8 @@
     }
   ],
   "functions": {
-    "api/chat.js": {
-      "maxDuration": 30
-    },
-    "api/chat-deepseek.js": {
+    "api/**/*.js": {
       "maxDuration": 60
-    },
-    "api/tree.js": {
-      "maxDuration": 30
     }
   }
 }

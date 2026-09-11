@@ -1216,7 +1216,7 @@
             const contexto = 'Escenario X: ' + escenarioXActual + ' | Escenario Y: ' + escenarioYActual;
 
             try {
-                const response = await fetch('/api/chat-deepseek', {
+                const response = await fetch('/api/chat-gemini', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ message: mensaje, contexto: contexto })

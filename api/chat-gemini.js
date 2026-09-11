@@ -49,10 +49,12 @@ Responde de forma concisa, profesional y en español. Usa datos concretos cuando
           contents: [{
             parts: [{ text: systemPrompt + '\n\nPregunta del usuario: ' + message }]
           }],
-          generationConfig: {
-            temperature: 0.7,
-            maxOutputTokens: 1000
-          }
+generationConfig: {
+  temperature: 0.7,
+  maxOutputTokens: 4000,
+  topP: 0.95,
+  topK: 40
+}
         })
       }
     );

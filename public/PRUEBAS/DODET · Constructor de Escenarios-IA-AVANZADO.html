@@ -10,7 +10,11 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        :root {
+        /* ============================================================
+           TEMA EXECUTIVE (default, oscuro)
+           ============================================================ */
+        :root,
+        [data-theme="executive"] {
             --hulk: #008744;
             --hulk-vibrant: #00E676;
             --abyssal: #050B08;
@@ -26,18 +30,44 @@
             --red: #FF4D4D;
             --blue-accent: #29B6F6;
             --orange: #FFA500;
+            --body-bg-image:
+                radial-gradient(circle at 50% 0%, rgba(0, 135, 68, 0.15) 0%, transparent 75%),
+                radial-gradient(circle at 85% 30%, rgba(212, 175, 55, 0.05) 0%, transparent 50%);
+        }
+
+        /* ============================================================
+           TEMA OFFICE (claro)
+           ============================================================ */
+        [data-theme="office"] {
+            --hulk: #008744;
+            --hulk-vibrant: #00A857;
+            --abyssal: #F4F6FB;
+            --surface: #FFFFFF;
+            --surface-card: #FFFFFF;
+            --border-deep: rgba(15, 23, 42, 0.12);
+            --border-glow: rgba(15, 23, 42, 0.2);
+            --rolex-gold: #B8860B;
+            --rolex-gold-light: #7A5800;
+            --steel-light: #0F172A;
+            --steel-muted: #64748B;
+            --steel-silver: #475569;
+            --red: #DC2626;
+            --blue-accent: #0284C7;
+            --orange: #EA580C;
+            --body-bg-image:
+                radial-gradient(circle at 50% 0%, rgba(0, 135, 68, 0.05) 0%, transparent 75%),
+                radial-gradient(circle at 85% 30%, rgba(184, 134, 11, 0.03) 0%, transparent 50%);
         }
 
         body {
             background: var(--abyssal);
-            background-image:
-                radial-gradient(circle at 50% 0%, rgba(0, 135, 68, 0.15) 0%, transparent 75%),
-                radial-gradient(circle at 85% 30%, rgba(212, 175, 55, 0.05) 0%, transparent 50%);
+            background-image: var(--body-bg-image);
             font-family: 'Outfit', -apple-system, sans-serif;
             color: var(--steel-light);
             min-height: 100vh;
             font-size: 13px;
             line-height: 1.5;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         ::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -58,7 +88,7 @@
         /* TOPBAR */
         .topbar {
             grid-column: 1/-1;
-            background: rgba(11, 22, 18, 0.85);
+            background: color-mix(in srgb, var(--surface) 85%, transparent);
             backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border-deep);
             display: flex;
@@ -66,7 +96,8 @@
             padding: 0 1.5rem;
             gap: 1rem;
             z-index: 10;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            transition: background-color 0.3s ease;
         }
         .topbar img { height: 32px; filter: drop-shadow(0 0 8px rgba(0,230,118,0.3)); }
         .topbar-divider {
@@ -76,7 +107,7 @@
         }
         .topbar-title { font-size: 13px; color: var(--steel-muted); letter-spacing: 0.5px; }
         .topbar-badge {
-            background: linear-gradient(135deg, rgba(0,135,68,0.3), rgba(212,175,55,0.15));
+            background: linear-gradient(135deg, color-mix(in srgb, var(--hulk) 30%, transparent), color-mix(in srgb, var(--rolex-gold) 15%, transparent));
             color: var(--rolex-gold-light);
             padding: 3px 14px; border-radius: 20px;
             font-size: 10px; font-weight: 700;
@@ -89,7 +120,7 @@
             width: 30px; height: 30px; border-radius: 50%;
             background: linear-gradient(135deg, var(--rolex-gold), var(--hulk));
             display: flex; align-items: center; justify-content: center;
-            font-size: 11px; font-weight: 800; color: #000;
+            font-size: 11px; font-weight: 800; color: #fff;
             border: 1px solid var(--rolex-gold-light);
         }
 
@@ -99,6 +130,7 @@
             border-right: 1px solid var(--border-deep);
             padding: 1rem 0;
             overflow-y: auto;
+            transition: background-color 0.3s ease;
         }
         .sidebar-section {
             padding: 0.5rem 1.2rem;
@@ -117,15 +149,66 @@
         }
         .nav-item:hover {
             color: var(--steel-light);
-            background: rgba(0,230,118,0.05);
+            background: color-mix(in srgb, var(--hulk-vibrant) 5%, transparent);
             border-left-color: var(--rolex-gold);
         }
         .nav-item.active {
-            color: #fff; border-left-color: var(--rolex-gold);
-            background: linear-gradient(90deg, rgba(0,135,68,0.25) 0%, transparent 100%);
+            color: var(--steel-light); border-left-color: var(--rolex-gold);
+            background: linear-gradient(90deg, color-mix(in srgb, var(--hulk) 25%, transparent) 0%, transparent 100%);
             font-weight: 600;
         }
         .nav-icon { font-size: 14px; width: 18px; text-align: center; }
+
+        /* PANEL DE CONFIGURACIÓN */
+        .theme-settings {
+            margin: 8px 1rem 0;
+            padding: 12px;
+            border: 1px solid var(--border-deep);
+            border-radius: 12px;
+            background: var(--surface-card);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .theme-settings-title {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--rolex-gold);
+            letter-spacing: 0.7px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            font-family: 'Cinzel', serif;
+        }
+        .theme-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 8px;
+            font-size: 12px;
+            color: var(--steel-light);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+        .theme-option:hover {
+            background: color-mix(in srgb, var(--hulk-vibrant) 8%, transparent);
+        }
+        .theme-option input[type="radio"] {
+            accent-color: var(--hulk);
+            cursor: pointer;
+        }
+        .theme-preview {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+            border: 1px solid var(--border-deep);
+            margin-left: auto;
+        }
+        .theme-preview.executive {
+            background: linear-gradient(135deg, #050B08 50%, #D4AF37 50%);
+        }
+        .theme-preview.office {
+            background: linear-gradient(135deg, #FFFFFF 50%, #B8860B 50%);
+        }
 
         /* MAIN */
         .main {
@@ -150,7 +233,7 @@
             border-radius: 14px;
             padding: 1.4rem;
             margin-bottom: 1.2rem;
-            box-shadow: 0 4px 25px rgba(0,0,0,0.4);
+            box-shadow: 0 4px 25px rgba(0,0,0,0.1);
         }
         .selector-title {
             font-size: 11px; font-weight: 700;
@@ -184,14 +267,18 @@
             cursor: pointer;
             transition: all 0.2s;
         }
+        [data-theme="office"] .selector-field select {
+            background: #FFFFFF;
+            color: #0F172A;
+        }
         .selector-field select:hover,
         .selector-field select:focus {
             border-color: var(--rolex-gold);
             outline: none;
-            box-shadow: 0 0 12px rgba(212,175,55,0.2);
+            box-shadow: 0 0 12px color-mix(in srgb, var(--rolex-gold) 20%, transparent);
         }
         .btn-generate {
-            background: linear-gradient(135deg, var(--hulk), #006B34);
+            background: linear-gradient(135deg, var(--hulk), color-mix(in srgb, var(--hulk) 80%, #000));
             color: #fff;
             border: 1px solid var(--rolex-gold);
             border-radius: 8px;
@@ -204,28 +291,26 @@
             font-family: 'Cinzel', serif;
             transition: all 0.2s;
             white-space: nowrap;
-            box-shadow: 0 0 15px rgba(0,135,68,0.3);
+            box-shadow: 0 0 15px color-mix(in srgb, var(--hulk) 30%, transparent);
         }
         .btn-generate:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,135,68,0.5);
+            box-shadow: 0 6px 20px color-mix(in srgb, var(--hulk) 50%, transparent);
         }
 
-        /* ============================================================
-           CHAT PANEL (MOVIDO AL FINAL DEL DASHBOARD)
-           ============================================================ */
+        /* CHAT PANEL */
         .chat-panel {
             background: linear-gradient(145deg, var(--surface-card), var(--surface));
             border: 1px solid var(--border-glow);
             border-radius: 14px;
             margin-bottom: 1.2rem;
-            box-shadow: 0 4px 25px rgba(0,0,0,0.4);
+            box-shadow: 0 4px 25px rgba(0,0,0,0.1);
             overflow: hidden;
             display: flex;
             flex-direction: column;
         }
         .chat-panel-header {
-            background: linear-gradient(135deg, rgba(0,135,68,0.25), rgba(212,175,55,0.1));
+            background: linear-gradient(135deg, color-mix(in srgb, var(--hulk) 25%, transparent), color-mix(in srgb, var(--rolex-gold) 10%, transparent));
             padding: 14px 20px;
             border-bottom: 1px solid var(--border-deep);
             display: flex;
@@ -254,7 +339,7 @@
         }
         .chat-panel-body {
             padding: 16px 20px;
-            background: rgba(0,0,0,0.2);
+            background: color-mix(in srgb, var(--abyssal) 60%, transparent);
             display: flex;
             flex-direction: column;
             gap: 10px;
@@ -284,18 +369,18 @@
             border: 1px solid var(--border-deep);
         }
         .chat-msg-user .chat-msg-avatar {
-            background: rgba(41,182,246,0.15);
+            background: color-mix(in srgb, var(--blue-accent) 15%, transparent);
             color: var(--blue-accent);
-            border-color: rgba(41,182,246,0.3);
+            border-color: color-mix(in srgb, var(--blue-accent) 30%, transparent);
         }
         .chat-msg-ai .chat-msg-avatar {
-            background: rgba(0,230,118,0.15);
+            background: color-mix(in srgb, var(--hulk-vibrant) 15%, transparent);
             color: var(--hulk-vibrant);
-            border-color: rgba(0,230,118,0.3);
+            border-color: color-mix(in srgb, var(--hulk-vibrant) 30%, transparent);
         }
         .chat-msg-content {
             flex: 1;
-            background: rgba(255,255,255,0.03);
+            background: color-mix(in srgb, var(--steel-light) 3%, transparent);
             border-radius: 10px;
             padding: 10px 14px;
             font-size: 12px;
@@ -305,16 +390,16 @@
         }
         .chat-msg-user .chat-msg-content {
             border-left-color: var(--blue-accent);
-            background: rgba(41,182,246,0.05);
+            background: color-mix(in srgb, var(--blue-accent) 5%, transparent);
         }
         .chat-msg-ai .chat-msg-content {
             border-left-color: var(--hulk-vibrant);
-            background: rgba(0,230,118,0.05);
+            background: color-mix(in srgb, var(--hulk-vibrant) 5%, transparent);
             white-space: pre-wrap;
         }
         .chat-msg-typing .chat-msg-content {
             border-left-color: var(--rolex-gold);
-            background: rgba(212,175,55,0.05);
+            background: color-mix(in srgb, var(--rolex-gold) 5%, transparent);
             font-style: italic;
             color: var(--steel-muted);
         }
@@ -350,18 +435,22 @@
             outline: none;
             transition: all 0.2s;
         }
+        [data-theme="office"] .chat-input {
+            background: #FFFFFF;
+            color: #0F172A;
+        }
         .chat-input:focus {
             border-color: var(--rolex-gold);
-            box-shadow: 0 0 10px rgba(212,175,55,0.2);
+            box-shadow: 0 0 10px color-mix(in srgb, var(--rolex-gold) 20%, transparent);
         }
         .chat-input::placeholder { color: var(--steel-muted); }
         .chat-btn {
-            background: linear-gradient(135deg, var(--hulk), #006B34);
+            background: linear-gradient(135deg, var(--hulk), color-mix(in srgb, var(--hulk) 80%, #000));
             border: 1px solid var(--rolex-gold);
             border-radius: 8px;
             padding: 10px 16px;
             cursor: pointer;
-            color: var(--rolex-gold-light);
+            color: #fff;
             font-weight: 700;
             font-size: 12px;
             transition: all 0.2s;
@@ -372,7 +461,7 @@
         }
         .chat-btn:hover {
             transform: translateY(-1px);
-            box-shadow: 0 4px 15px rgba(0,135,68,0.4);
+            box-shadow: 0 4px 15px color-mix(in srgb, var(--hulk) 40%, transparent);
         }
         .chat-btn:disabled {
             opacity: 0.5;
@@ -386,8 +475,8 @@
             margin-top: 4px;
         }
         .chat-suggestion {
-            background: rgba(212,175,55,0.08);
-            border: 1px solid rgba(212,175,55,0.25);
+            background: color-mix(in srgb, var(--rolex-gold) 8%, transparent);
+            border: 1px solid color-mix(in srgb, var(--rolex-gold) 25%, transparent);
             border-radius: 14px;
             padding: 4px 12px;
             font-size: 10px;
@@ -397,11 +486,11 @@
             font-weight: 500;
         }
         .chat-suggestion:hover {
-            background: rgba(212,175,55,0.15);
+            background: color-mix(in srgb, var(--rolex-gold) 15%, transparent);
             transform: translateY(-1px);
         }
 
-        /* MATRIZ + NARRATIVA (NUEVA ESTRUCTURA) */
+        /* TWO-COL */
         .two-col {
             display: grid;
             grid-template-columns: 1.4fr 1fr;
@@ -409,6 +498,7 @@
             margin-bottom: 1.2rem;
         }
 
+        /* MATRIZ */
         .matrix-layout {
             display: grid;
             grid-template-columns: 40px 1fr;
@@ -418,7 +508,7 @@
             border: 1px solid var(--border-deep);
             border-radius: 14px;
             padding: 1.2rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
         }
         .matrix-y-axis {
             grid-row: 1 / 3;
@@ -481,7 +571,7 @@
         }
         .quadrant:hover {
             border-color: var(--q-color, var(--rolex-gold));
-            box-shadow: 0 6px 20px rgba(212,175,55,0.15);
+            box-shadow: 0 6px 20px color-mix(in srgb, var(--rolex-gold) 15%, transparent);
         }
         .q-header {
             display: flex;
@@ -506,7 +596,7 @@
             font-size: 10px;
             color: var(--steel-muted);
             padding: 2px 8px;
-            background: rgba(255,255,255,0.05);
+            background: color-mix(in srgb, var(--steel-light) 5%, transparent);
             border-radius: 10px;
             font-weight: 600;
         }
@@ -532,7 +622,7 @@
             align-items: center;
             gap: 5px;
             padding: 4px 9px;
-            background: rgba(255,255,255,0.05);
+            background: color-mix(in srgb, var(--steel-light) 5%, transparent);
             border: 1px solid var(--q-color, var(--border-deep));
             border-radius: 14px;
             font-size: 10px;
@@ -542,7 +632,7 @@
             transition: all 0.2s;
         }
         .tienda-chip:hover {
-            background: rgba(255,255,255,0.1);
+            background: color-mix(in srgb, var(--steel-light) 10%, transparent);
             transform: translateY(-1px);
         }
         .tienda-chip i {
@@ -573,21 +663,21 @@
             font-size: 9px;
             padding: 2px 8px;
             border-radius: 8px;
-            background: rgba(212,175,55,0.1);
+            background: color-mix(in srgb, var(--rolex-gold) 10%, transparent);
             color: var(--rolex-gold);
-            border: 1px solid rgba(212,175,55,0.3);
+            border: 1px solid color-mix(in srgb, var(--rolex-gold) 30%, transparent);
             font-weight: 600;
             letter-spacing: 0.3px;
         }
 
-        /* NARRATIVA IA (AHORA EN COLUMNA DERECHA) */
+        /* NARRATIVA IA */
         .narrative-box {
-            background: linear-gradient(135deg, rgba(0, 135, 68, 0.12) 0%, rgba(15, 31, 26, 0.8) 100%);
+            background: linear-gradient(135deg, color-mix(in srgb, var(--hulk) 12%, transparent) 0%, color-mix(in srgb, var(--surface) 80%, transparent) 100%);
             border: 1px solid var(--border-glow);
             border-left: 4px solid var(--rolex-gold);
             border-radius: 14px;
             padding: 1.2rem;
-            box-shadow: 0 4px 25px rgba(0,0,0,0.4);
+            box-shadow: 0 4px 25px rgba(0,0,0,0.1);
             display: flex;
             flex-direction: column;
         }
@@ -607,7 +697,7 @@
             color: var(--steel-silver);
             line-height: 1.7;
         }
-        .narr-text strong { color: #fff; font-weight: 600; }
+        .narr-text strong { color: var(--steel-light); font-weight: 600; }
         .narr-recommendation {
             display: grid;
             grid-template-columns: 1fr;
@@ -617,7 +707,7 @@
             border-top: 1px solid var(--border-deep);
         }
         .rec-card {
-            background: rgba(0,0,0,0.2);
+            background: color-mix(in srgb, var(--abyssal) 50%, transparent);
             border-radius: 10px;
             padding: 10px 12px;
             border-left: 3px solid var(--q-color, var(--rolex-gold));
@@ -637,13 +727,13 @@
             line-height: 1.5;
         }
 
-        /* PANELES GENERALES */
+        /* PANELES */
         .panel {
             background: linear-gradient(145deg, var(--surface-card), var(--surface));
             border: 1px solid var(--border-deep);
             border-radius: 14px;
             padding: 1.2rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
         }
         .panel-title {
             font-size: 11px; font-weight: 700;
@@ -680,10 +770,10 @@
             font-size: 10px;
         }
         .matrix-table td { color: var(--steel-silver); }
-        .matrix-table .joya { background: rgba(0,230,118,0.12); color: var(--hulk-vibrant); font-weight: 700; }
-        .matrix-table .apuesta { background: rgba(212,175,55,0.12); color: var(--rolex-gold); font-weight: 700; }
-        .matrix-table .bunker { background: rgba(255,165,0,0.12); color: var(--orange); font-weight: 700; }
-        .matrix-table .lastre { background: rgba(255,77,77,0.12); color: var(--red); font-weight: 700; }
+        .matrix-table .joya { background: color-mix(in srgb, var(--hulk-vibrant) 12%, transparent); color: var(--hulk-vibrant); font-weight: 700; }
+        .matrix-table .apuesta { background: color-mix(in srgb, var(--rolex-gold) 12%, transparent); color: var(--rolex-gold); font-weight: 700; }
+        .matrix-table .bunker { background: color-mix(in srgb, var(--orange) 12%, transparent); color: var(--orange); font-weight: 700; }
+        .matrix-table .lastre { background: color-mix(in srgb, var(--red) 12%, transparent); color: var(--red); font-weight: 700; }
         .matrix-table .tipo-cell { display: inline-flex; align-items: center; gap: 5px; }
 
         /* MAPA SVG */
@@ -705,12 +795,8 @@
         }
         .map-legend-dot {
             width: 10px; height: 10px; border-radius: 50%;
-            border: 1px solid rgba(255,255,255,0.2);
+            border: 1px solid color-mix(in srgb, var(--steel-light) 20%, transparent);
         }
-
-        /* SECCIONES DEL SIDEBAR */
-        .view-section { display: none; }
-        .view-section.active { display: block; }
 
         /* RESPONSIVE */
         @media (max-width: 1100px) {
@@ -762,8 +848,21 @@
                 <span class="nav-icon">📋</span> Plan de Acción
             </div>
             <div class="sidebar-section" style="margin-top:auto;">Sistema</div>
-            <div class="nav-item" data-view="config" onclick="cambiarVista('config')">
+            <div class="nav-item" onclick="toggleThemeSettings()">
                 <span class="nav-icon">⚙️</span> Configuración
+            </div>
+            <div class="theme-settings" id="themeSettings" style="display:none;">
+                <div class="theme-settings-title">Apariencia</div>
+                <label class="theme-option">
+                    <input type="radio" name="rm-theme" value="executive" onchange="setTheme('executive')" checked>
+                    <span>Executive (oscuro)</span>
+                    <span class="theme-preview executive"></span>
+                </label>
+                <label class="theme-option">
+                    <input type="radio" name="rm-theme" value="office" onchange="setTheme('office')">
+                    <span>Office (claro)</span>
+                    <span class="theme-preview office"></span>
+                </label>
             </div>
         </div>
 
@@ -772,6 +871,30 @@
     </div>
 
     <script>
+        // ============================================================
+        // SISTEMA DE TEMAS
+        // ============================================================
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('dodet-theme', theme);
+            // Sincronizar radio buttons
+            document.querySelectorAll('input[name="rm-theme"]').forEach(input => {
+                input.checked = input.value === theme;
+            });
+        }
+
+        function initTheme() {
+            const saved = localStorage.getItem('dodet-theme') || 'executive';
+            setTheme(saved);
+        }
+
+        function toggleThemeSettings() {
+            const el = document.getElementById('themeSettings');
+            if (el) {
+                el.style.display = el.style.display === 'none' ? 'block' : 'none';
+            }
+        }
+
         // ============================================================
         // CATÁLOGO DE ESCENARIOS
         // ============================================================
@@ -971,32 +1094,26 @@
         let vistaActual = 'constructor';
 
         // ============================================================
-        // NAVEGACIÓN DEL SIDEBAR
+        // NAVEGACIÓN
         // ============================================================
         function cambiarVista(vista) {
             vistaActual = vista;
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
             const navActivo = document.querySelector('.nav-item[data-view="' + vista + '"]');
             if (navActivo) navActivo.classList.add('active');
+            // Cerrar panel de tema si está abierto
+            const themePanel = document.getElementById('themeSettings');
+            if (themePanel) themePanel.style.display = 'none';
             renderVistaActual();
         }
 
         function renderVistaActual() {
-            if (vistaActual === 'constructor') {
-                renderConstructor();
-            } else if (vistaActual === 'diagnostico') {
-                renderDiagnostico();
-            } else if (vistaActual === 'riesgo') {
-                renderRiesgo();
-            } else if (vistaActual === 'topbottom') {
-                renderTopBottom();
-            } else if (vistaActual === 'brecha') {
-                renderBrecha();
-            } else if (vistaActual === 'accion') {
-                renderAccion();
-            } else if (vistaActual === 'config') {
-                renderConfig();
-            }
+            if (vistaActual === 'constructor') renderConstructor();
+            else if (vistaActual === 'diagnostico') renderDiagnostico();
+            else if (vistaActual === 'riesgo') renderRiesgo();
+            else if (vistaActual === 'topbottom') renderTopBottom();
+            else if (vistaActual === 'brecha') renderBrecha();
+            else if (vistaActual === 'accion') renderAccion();
         }
 
         // ============================================================
@@ -1036,7 +1153,6 @@
             let html = '<div class="dashboard-container">';
             html += '<div class="breadcrumb"><span class="active-crumb">🎯 Constructor de Escenarios</span></div>';
 
-            // SELECTOR
             html += '<div class="selector-panel">';
             html += '<div class="selector-title"><i class="fas fa-sliders-h"></i> Configura los dos escenarios a cruzar</div>';
             html += '<div class="selector-grid">';
@@ -1062,7 +1178,6 @@
             html += '</div>';
             html += '</div>';
 
-            // KPIs usados
             html += '<div class="panel" style="margin-bottom:1.2rem; padding:1rem 1.2rem;">';
             html += '<div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">';
             html += '<div><div style="font-size:10px;color:var(--steel-muted);text-transform:uppercase;font-weight:700;font-family:\'Cinzel\';margin-bottom:6px;">KPIs del Eje X</div><div style="display:flex;flex-wrap:wrap;gap:4px;">';
@@ -1073,10 +1188,7 @@
             html += '</div></div>';
             html += '</div></div>';
 
-            // TWO-COL: Matriz (izq) + Narrativa (der)
             html += '<div class="two-col">';
-
-            // Columna izquierda: Matriz completa
             html += '<div class="matrix-layout">';
             html += '<div class="matrix-y-axis"><span class="matrix-y-axis-label">↑ ' + nombreY + ' ←→ ' + nombreY + ' ↓</span></div>';
             html += '<div class="matrix-x-axis">';
@@ -1091,7 +1203,6 @@
             html += '</div>';
             html += '</div>';
 
-            // Columna derecha: Narrativa IA
             html += '<div class="narrative-box">';
             html += '<div class="narr-header"><span class="narr-icon">🧠</span><span class="narr-title">Narrativa IA · Análisis del Cruce</span></div>';
             html += '<div class="narr-text">';
@@ -1110,10 +1221,8 @@
             html += renderRecCard('LASTRE', cuadrantes.LASTRE.length, 'Prioridad de cierre o venta. No sobreviven.');
             html += '</div>';
             html += '</div>';
+            html += '</div>';
 
-            html += '</div>'; // cierre two-col
-
-            // Tabla y Mapa
             html += '<div class="two-col" style="grid-template-columns:1fr 1fr;">';
             html += '<div class="panel">';
             html += '<div class="panel-title"><i class="fas fa-table"></i> Clasificación por Escenario</div>';
@@ -1123,7 +1232,7 @@
             tiendasClasificadas.forEach(t => {
                 const config = TIPOLOGIAS[t.tipoCalculado];
                 html += '<tr class="' + t.tipoCalculado.toLowerCase() + '">';
-                html += '<td style="font-weight:600;color:#fff;text-align:left;padding-left:12px;">' + t.nombre + '</td>';
+                html += '<td style="font-weight:600;color:var(--steel-light);text-align:left;padding-left:12px;">' + t.nombre + '</td>';
                 html += '<td style="color:var(--steel-muted);">' + t.ciudad + '</td>';
                 html += '<td>' + t.scoreX.toFixed(2) + '</td>';
                 html += '<td>' + t.scoreY.toFixed(2) + '</td>';
@@ -1139,9 +1248,6 @@
             html += '</div>';
             html += '</div>';
 
-            // ============================================================
-            // CHAT PANEL (AHORA AL FINAL DEL DASHBOARD)
-            // ============================================================
             html += '<div class="chat-panel">';
             html += '<div class="chat-panel-header">';
             html += '<div class="chat-panel-title"><i class="fas fa-comments"></i> Consulta al Asistente DODET</div>';
@@ -1169,13 +1275,13 @@
             html += '</div>';
             html += '</div>';
 
-            html += '</div>'; // cierre dashboard-container
+            html += '</div>';
 
             document.getElementById('mainContent').innerHTML = html;
         }
 
         // ============================================================
-        // VISTAS SECUNDARIAS (simplificadas)
+        // VISTAS SECUNDARIAS
         // ============================================================
         function renderDiagnostico() {
             let html = '<div class="dashboard-container">';
@@ -1186,7 +1292,7 @@
             tiendas.forEach(t => {
                 const config = TIPOLOGIAS[t.tipo];
                 html += '<tr class="' + t.tipo.toLowerCase() + '">';
-                html += '<td style="font-weight:600;color:#fff;text-align:left;padding-left:12px;">' + t.nombre + '</td>';
+                html += '<td style="font-weight:600;color:var(--steel-light);text-align:left;padding-left:12px;">' + t.nombre + '</td>';
                 html += '<td style="color:var(--steel-muted);">' + t.ciudad + '</td>';
                 html += '<td>' + t.salud.toFixed(2) + '</td>';
                 html += '<td>' + t.resiliencia.toFixed(2) + '</td>';
@@ -1248,7 +1354,7 @@
             html += '<div class="panel"><div class="panel-title">Promedios de la Cadena</div>';
             html += '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">';
             ['salud', 'resiliencia', 'potencial', 'exposicion'].forEach(k => {
-                html += '<div style="text-align:center;padding:12px;background:rgba(0,0,0,0.2);border-radius:10px;">';
+                html += '<div style="text-align:center;padding:12px;background:color-mix(in srgb, var(--abyssal) 30%, transparent);border-radius:10px;">';
                 html += '<div style="font-size:10px;color:var(--steel-muted);text-transform:uppercase;">' + k + '</div>';
                 html += '<div style="font-size:24px;font-weight:700;color:var(--hulk-vibrant);">' + avg[k].toFixed(2) + '</div>';
                 html += '</div>';
@@ -1269,7 +1375,7 @@
             html += '<div class="panel"><div class="panel-title">Recomendaciones por Tipología</div>';
             html += '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">';
             Object.entries(TIPOLOGIAS).forEach(([k, v]) => {
-                html += '<div style="text-align:center;padding:16px;background:rgba(0,0,0,0.2);border-radius:10px;border-left:3px solid ' + v.color + ';">';
+                html += '<div style="text-align:center;padding:16px;background:color-mix(in srgb, var(--abyssal) 30%, transparent);border-radius:10px;border-left:3px solid ' + v.color + ';">';
                 html += '<div style="font-size:24px;">' + v.icono + '</div>';
                 html += '<div style="color:' + v.color + ';font-weight:700;margin:6px 0;">' + v.nombre + '</div>';
                 html += '<div style="font-size:20px;font-weight:800;">' + counts[k] + '</div>';
@@ -1277,15 +1383,6 @@
                 html += '</div>';
             });
             html += '</div></div></div>';
-            document.getElementById('mainContent').innerHTML = html;
-        }
-
-        function renderConfig() {
-            let html = '<div class="dashboard-container">';
-            html += '<div class="breadcrumb"><span class="active-crumb">⚙️ Configuración</span></div>';
-            html += '<div class="panel"><div class="panel-title">Configuración del Dashboard</div>';
-            html += '<p style="color:var(--steel-silver);font-size:12px;">Esta sección permite personalizar los parámetros del análisis: prefijo de tiendas, nombres de tipologías, iconos, umbrales de clasificación, entre otros.</p>';
-            html += '</div></div>';
             document.getElementById('mainContent').innerHTML = html;
         }
 
@@ -1347,14 +1444,14 @@
                 grid += '<line x1="20" y1="' + (20 + i * 87) + '" x2="380" y2="' + (20 + i * 87) + '" stroke="rgba(212,175,55,0.06)" stroke-width="1"/>';
             }
 
-            return '<div class="map-container"><svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="300" fill="rgba(11,22,18,0.6)" rx="8"/>' + grid + bubbles + '</svg>' +
+            return '<div class="map-container"><svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="300" fill="var(--abyssal)" rx="8"/>' + grid + bubbles + '</svg>' +
                 '<div class="map-legend">' +
                 Object.entries(TIPOLOGIAS).map(([k, v]) => '<div class="map-legend-item"><div class="map-legend-dot" style="background:' + v.color + ';"></div>' + v.nombre + '</div>').join('') +
                 '</div></div>';
         }
 
         // ============================================================
-        // CHAT: Funciones
+        // CHAT
         // ============================================================
         function setChatInput(texto) {
             const input = document.getElementById('chatInput');
@@ -1436,6 +1533,7 @@
         // ============================================================
         // INICIALIZACIÓN
         // ============================================================
+        initTheme();
         renderVistaActual();
     </script>
 </body>

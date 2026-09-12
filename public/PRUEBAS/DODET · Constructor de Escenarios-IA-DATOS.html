@@ -1,0 +1,1934 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DODET · Constructor de Escenarios</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked@11.0.0/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root,
+        [data-theme="executive"] {
+            --hulk: #008744;
+            --hulk-vibrant: #00E676;
+            --abyssal: #050B08;
+            --surface: #0B1612;
+            --surface-card: #0F1F1A;
+            --border-deep: rgba(212, 175, 55, 0.25);
+            --border-glow: rgba(212, 175, 55, 0.4);
+            --rolex-gold: #D4AF37;
+            --rolex-gold-light: #F3E5AB;
+            --steel-light: #F1F5F9;
+            --steel-muted: #7E998F;
+            --steel-silver: #CBD5E1;
+            --red: #FF4D4D;
+            --blue-accent: #29B6F6;
+            --orange: #FFA500;
+            --body-bg-image:
+                radial-gradient(circle at 50% 0%, rgba(0, 135, 68, 0.15) 0%, transparent 75%),
+                radial-gradient(circle at 85% 30%, rgba(212, 175, 55, 0.05) 0%, transparent 50%);
+            --tab-original-bg: rgba(0, 135, 68, 0.15);
+            --tab-original-active: rgba(0, 230, 118, 0.3);
+            --tab-impacto-bg: rgba(212, 175, 55, 0.15);
+            --tab-impacto-active: rgba(212, 175, 55, 0.3);
+            --kpi-disabled-bg: rgba(127, 127, 127, 0.08);
+            --kpi-disabled-color: rgba(127, 127, 127, 0.5);
+        }
+
+        [data-theme="office"] {
+            --hulk: #008744;
+            --hulk-vibrant: #00A857;
+            --abyssal: #F4F6FB;
+            --surface: #FFFFFF;
+            --surface-card: #FFFFFF;
+            --border-deep: rgba(15, 23, 42, 0.12);
+            --border-glow: rgba(15, 23, 42, 0.2);
+            --rolex-gold: #B8860B;
+            --rolex-gold-light: #7A5800;
+            --steel-light: #0F172A;
+            --steel-muted: #64748B;
+            --steel-silver: #475569;
+            --red: #DC2626;
+            --blue-accent: #0284C7;
+            --orange: #EA580C;
+            --body-bg-image:
+                radial-gradient(circle at 50% 0%, rgba(0, 135, 68, 0.05) 0%, transparent 75%),
+                radial-gradient(circle at 85% 30%, rgba(184, 134, 11, 0.03) 0%, transparent 50%);
+            --tab-original-bg: rgba(212, 237, 184, 0.6);
+            --tab-original-active: rgba(0, 168, 87, 0.25);
+            --tab-impacto-bg: rgba(254, 243, 199, 0.7);
+            --tab-impacto-active: rgba(184, 134, 11, 0.25);
+            --kpi-disabled-bg: rgba(200, 200, 200, 0.15);
+            --kpi-disabled-color: rgba(100, 116, 139, 0.5);
+        }
+
+        body {
+            background: var(--abyssal);
+            background-image: var(--body-bg-image);
+            font-family: 'Outfit', -apple-system, sans-serif;
+            color: var(--steel-light);
+            min-height: 100vh;
+            font-size: 13px;
+            line-height: 1.5;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: var(--abyssal); }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--hulk), var(--rolex-gold));
+            border-radius: 20px;
+        }
+
+        .shell {
+            display: grid;
+            grid-template-rows: 56px 1fr;
+            grid-template-columns: 240px 1fr;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .topbar {
+            grid-column: 1/-1;
+            background: color-mix(in srgb, var(--surface) 85%, transparent);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-deep);
+            display: flex;
+            align-items: center;
+            padding: 0 1.5rem;
+            gap: 1rem;
+            z-index: 10;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        .topbar img { height: 32px; filter: drop-shadow(0 0 8px rgba(0,230,118,0.3)); }
+        .topbar-divider {
+            width: 1px; height: 24px;
+            background: linear-gradient(180deg, transparent, var(--rolex-gold), transparent);
+            margin: 0 0.5rem; opacity: 0.5;
+        }
+        .topbar-title { font-size: 13px; color: var(--steel-muted); letter-spacing: 0.5px; }
+        .topbar-badge {
+            background: linear-gradient(135deg, color-mix(in srgb, var(--hulk) 30%, transparent), color-mix(in srgb, var(--rolex-gold) 15%, transparent));
+            color: var(--rolex-gold-light);
+            padding: 3px 14px; border-radius: 20px;
+            font-size: 10px; font-weight: 700;
+            border: 1px solid var(--rolex-gold);
+            margin-left: auto; letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .topbar-user { display: flex; align-items: center; gap: 8px; margin-left: 1rem; }
+        .avatar {
+            width: 30px; height: 30px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--rolex-gold), var(--hulk));
+            display: flex; align-items: center; justify-content: center;
+            font-size: 11px; font-weight: 800; color: #fff;
+            border: 1px solid var(--rolex-gold-light);
+        }
+
+        .sidebar {
+            background: var(--surface);
+            border-right: 1px solid var(--border-deep);
+            padding: 1rem 0;
+            overflow-y: auto;
+        }
+        .sidebar-section {
+            padding: 0.5rem 1.2rem;
+            font-size: 10px; font-weight: 700;
+            color: var(--rolex-gold);
+            letter-spacing: 1.2px; text-transform: uppercase;
+            margin-top: 0.5rem;
+            font-family: 'Cinzel', serif;
+        }
+        .nav-item {
+            display: flex; align-items: center; gap: 10px;
+            padding: 9px 1.2rem; cursor: pointer;
+            color: var(--steel-muted); font-size: 12px;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+        .nav-item:hover {
+            color: var(--steel-light);
+            background: color-mix(in srgb, var(--hulk-vibrant) 5%, transparent);
+            border-left-color: var(--rolex-gold);
+        }
+        .nav-item.active {
+            color: var(--steel-light); border-left-color: var(--rolex-gold);
+            background: linear-gradient(90deg, color-mix(in srgb, var(--hulk) 25%, transparent) 0%, transparent 100%);
+            font-weight: 600;
+        }
+        .nav-icon { font-size: 14px; width: 18px; text-align: center; }
+
+        .theme-settings {
+            margin: 8px 1rem 0;
+            padding: 12px;
+            border: 1px solid var(--border-deep);
+            border-radius: 12px;
+            background: var(--surface-card);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .theme-settings-title {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--rolex-gold);
+            letter-spacing: 0.7px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            font-family: 'Cinzel', serif;
+        }
+        .theme-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 8px;
+            font-size: 12px;
+            color: var(--steel-light);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+        .theme-option:hover { background: color-mix(in srgb, var(--hulk-vibrant) 8%, transparent); }
+        .theme-option input[type="radio"] { accent-color: var(--hulk); cursor: pointer; }
+        .theme-preview {
+            display: inline-block; width: 16px; height: 16px;
+            border-radius: 4px; border: 1px solid var(--border-deep);
+            margin-left: auto;
+        }
+        .theme-preview.executive { background: linear-gradient(135deg, #050B08 50%, #D4AF37 50%); }
+        .theme-preview.office { background: linear-gradient(135deg, #FFFFFF 50%, #B8860B 50%); }
+
+        .main {
+            overflow-y: auto;
+            padding: 1.5rem;
+            background: transparent;
+        }
+
+        .dashboard-container { display: block; width: 100%; }
+
+        .breadcrumb {
+            display: flex; align-items: center; gap: 6px;
+            font-size: 11px; color: var(--steel-muted);
+            margin-bottom: 1.2rem;
+        }
+        .breadcrumb .active-crumb { color: var(--steel-light); font-weight: 600; }
+
+        /* SELECTOR */
+        .selector-panel {
+            background: linear-gradient(145deg, var(--surface-card), var(--surface));
+            border: 1px solid var(--border-glow);
+            border-radius: 14px;
+            padding: 1.4rem;
+            margin-bottom: 1.2rem;
+            box-shadow: 0 4px 25px rgba(0,0,0,0.1);
+        }
+        .selector-title {
+            font-size: 11px; font-weight: 700;
+            color: var(--rolex-gold);
+            letter-spacing: 1px; text-transform: uppercase;
+            font-family: 'Cinzel', serif;
+            margin-bottom: 16px;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .selector-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 16px;
+            align-items: end;
+        }
+        .selector-field { display: flex; flex-direction: column; gap: 6px; }
+        .selector-field label {
+            font-size: 10px; font-weight: 700;
+            color: var(--steel-muted);
+            letter-spacing: 1px; text-transform: uppercase;
+            font-family: 'Cinzel', serif;
+        }
+        .selector-field select {
+            background: var(--abyssal);
+            border: 1px solid var(--border-deep);
+            border-radius: 8px;
+            padding: 10px 14px;
+            color: var(--steel-light);
+            font-family: 'Outfit', sans-serif;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        [data-theme="office"] .selector-field select { background: #FFFFFF; color: #0F172A; }
+        .selector-field select:hover,
+        .selector-field select:focus {
+            border-color: var(--rolex-gold);
+            outline: none;
+            box-shadow: 0 0 12px color-mix(in srgb, var(--rolex-gold) 20%, transparent);
+        }
+        .btn-generate {
+            background: linear-gradient(135deg, var(--hulk), color-mix(in srgb, var(--hulk) 80%, #000));
+            color: #fff;
+            border: 1px solid var(--rolex-gold);
+            border-radius: 8px;
+            padding: 10px 22px;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-family: 'Cinzel', serif;
+            transition: all 0.2s;
+            white-space: nowrap;
+            box-shadow: 0 0 15px color-mix(in srgb, var(--hulk) 30%, transparent);
+        }
+        .btn-generate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px color-mix(in srgb, var(--hulk) 50%, transparent);
+        }
+
+        /* ============================================================
+           SECCIÓN: MATRIZ KPIs × TIENDAS CON PESTAÑAS
+           ============================================================ */
+        .kpi-matrix-section {
+            margin-bottom: 1.2rem;
+        }
+        .kpi-tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 0;
+            border-bottom: 1px solid var(--border-deep);
+            padding-left: 4px;
+        }
+        .kpi-tab {
+            padding: 10px 24px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            font-family: 'Cinzel', serif;
+            cursor: pointer;
+            border: 1px solid var(--border-deep);
+            border-bottom: none;
+            border-radius: 10px 10px 0 0;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            top: 1px;
+        }
+        .kpi-tab.tab-original {
+            background: var(--tab-original-bg);
+            color: var(--steel-light);
+        }
+        .kpi-tab.tab-original:hover {
+            background: var(--tab-original-active);
+        }
+        .kpi-tab.tab-original.active {
+            background: var(--tab-original-active);
+            border-color: var(--hulk-vibrant);
+            color: var(--steel-light);
+            box-shadow: inset 0 3px 0 var(--hulk-vibrant);
+        }
+        .kpi-tab.tab-impacto {
+            background: var(--tab-impacto-bg);
+            color: var(--steel-light);
+        }
+        .kpi-tab.tab-impacto:hover {
+            background: var(--tab-impacto-active);
+        }
+        .kpi-tab.tab-impacto.active {
+            background: var(--tab-impacto-active);
+            border-color: var(--rolex-gold);
+            color: var(--steel-light);
+            box-shadow: inset 0 3px 0 var(--rolex-gold);
+        }
+        .kpi-tab i { font-size: 14px; }
+        .kpi-tab.tab-original i { color: var(--hulk-vibrant); }
+        .kpi-tab.tab-impacto i { color: var(--rolex-gold); }
+
+        .kpi-tab-panel {
+            background: linear-gradient(145deg, var(--surface-card), var(--surface));
+            border: 1px solid var(--border-glow);
+            border-radius: 0 14px 14px 14px;
+            padding: 1.4rem;
+            box-shadow: 0 4px 25px rgba(0,0,0,0.1);
+        }
+        .kpi-tab-panel.panel-original {
+            border-left: 4px solid var(--hulk-vibrant);
+            background: linear-gradient(145deg,
+                color-mix(in srgb, var(--hulk-vibrant) 6%, var(--surface-card)),
+                var(--surface));
+        }
+        .kpi-tab-panel.panel-impacto {
+            border-left: 4px solid var(--rolex-gold);
+            background: linear-gradient(145deg,
+                color-mix(in srgb, var(--rolex-gold) 8%, var(--surface-card)),
+                var(--surface));
+        }
+        .kpi-tab-content { display: none; }
+        .kpi-tab-content.active { display: block; }
+
+        .kpi-matrix-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--rolex-gold);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-family: 'Cinzel', serif;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .kpi-matrix-subtitle {
+            font-size: 11px;
+            color: var(--steel-muted);
+            margin-bottom: 16px;
+            letter-spacing: 0.3px;
+        }
+
+        /* Leyenda de cambios */
+        .kpi-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 12px;
+            padding: 8px 12px;
+            background: color-mix(in srgb, var(--abyssal) 40%, transparent);
+            border-radius: 8px;
+            border: 1px solid var(--border-deep);
+            font-size: 10px;
+        }
+        .kpi-legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--steel-muted);
+        }
+        .kpi-legend-item .legend-icon {
+            font-weight: 700;
+            font-size: 12px;
+        }
+        .kpi-legend-item .legend-icon.up { color: var(--hulk-vibrant); }
+        .kpi-legend-item .legend-icon.down { color: var(--red); }
+        .kpi-legend-item .legend-icon.eq { color: var(--steel-muted); }
+        .kpi-legend-item .legend-icon.disabled { color: var(--kpi-disabled-color); }
+
+        .kpi-table-wrapper {
+            overflow-x: auto;
+            overflow-y: auto;
+            max-height: 520px;
+            border-radius: 10px;
+            border: 1px solid var(--border-deep);
+            background: color-mix(in srgb, var(--abyssal) 40%, transparent);
+        }
+        .kpi-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11px;
+            min-width: 500px;
+        }
+        .kpi-table thead { position: sticky; top: 0; z-index: 2; }
+        .kpi-table th {
+            background: var(--surface);
+            color: var(--rolex-gold);
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            font-size: 10px;
+            padding: 8px 6px;
+            border: 1px solid var(--border-deep);
+            text-align: center;
+            vertical-align: bottom;
+        }
+        .kpi-table th.kpi-label-header {
+            text-align: left;
+            padding-left: 12px;
+            min-width: 150px;
+            position: sticky;
+            left: 0;
+            background: var(--surface);
+            z-index: 3;
+        }
+        .kpi-table th.tienda-header {
+            min-width: 32px;
+            width: 32px;
+            height: 140px;
+            position: relative;
+            padding: 4px;
+        }
+        .kpi-table th.tienda-header .tienda-nombre-vertical {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--steel-light);
+            letter-spacing: 0.5px;
+            display: inline-block;
+            max-height: 130px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .kpi-table td {
+            padding: 7px 8px;
+            border: 1px solid var(--border-deep);
+            color: var(--steel-silver);
+            text-align: center;
+        }
+        .kpi-table td.kpi-label {
+            text-align: left;
+            padding-left: 12px;
+            font-weight: 600;
+            color: var(--steel-light);
+            background: color-mix(in srgb, var(--abyssal) 30%, transparent);
+            position: sticky;
+            left: 0;
+            z-index: 1;
+            font-size: 11px;
+            white-space: nowrap;
+        }
+        .kpi-table tbody tr:hover td {
+            background: color-mix(in srgb, var(--rolex-gold) 6%, transparent);
+        }
+        .kpi-table tbody tr:hover td.kpi-label {
+            background: color-mix(in srgb, var(--rolex-gold) 12%, transparent);
+        }
+        .kpi-table tbody tr:nth-child(even) td {
+            background: color-mix(in srgb, var(--abyssal) 20%, transparent);
+        }
+        .kpi-table tbody tr:nth-child(even) td.kpi-label {
+            background: color-mix(in srgb, var(--abyssal) 40%, transparent);
+        }
+        .kpi-valor {
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+            font-size: 11px;
+        }
+        .kpi-valor.alto { color: var(--hulk-vibrant); }
+        .kpi-valor.medio { color: var(--rolex-gold); }
+        .kpi-valor.bajo { color: var(--red); }
+
+        /* Estilos para KPIs deshabilitados (no usados) */
+        .kpi-row-disabled td {
+            background: var(--kpi-disabled-bg) !important;
+            color: var(--kpi-disabled-color) !important;
+            opacity: 0.7;
+        }
+        .kpi-row-disabled td.kpi-label {
+            background: var(--kpi-disabled-bg) !important;
+            color: var(--kpi-disabled-color) !important;
+            font-style: italic;
+        }
+        .kpi-row-disabled .kpi-valor {
+            color: var(--kpi-disabled-color) !important;
+            font-style: italic;
+        }
+
+        /* Indicadores de cambio en la tabla de impacto */
+        .kpi-change-indicator {
+            font-size: 9px;
+            font-weight: 700;
+            margin-left: 3px;
+            vertical-align: middle;
+        }
+        .kpi-change-indicator.up { color: var(--hulk-vibrant); }
+        .kpi-change-indicator.down { color: var(--red); }
+        .kpi-change-indicator.eq { color: var(--steel-muted); }
+
+        /* CHAT PANEL */
+        .chat-panel {
+            background: linear-gradient(145deg, var(--surface-card), var(--surface));
+            border: 1px solid var(--border-glow);
+            border-radius: 14px;
+            margin-bottom: 1.2rem;
+            box-shadow: 0 4px 25px rgba(0,0,0,0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .chat-panel-header {
+            background: linear-gradient(135deg, color-mix(in srgb, var(--hulk) 25%, transparent), color-mix(in srgb, var(--rolex-gold) 10%, transparent));
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--border-deep);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .chat-panel-title {
+            display: flex; align-items: center; gap: 10px;
+            font-size: 11px; font-weight: 700;
+            color: var(--rolex-gold);
+            letter-spacing: 1px; text-transform: uppercase;
+            font-family: 'Cinzel', serif;
+        }
+        .chat-panel-title i { font-size: 16px; color: var(--hulk-vibrant); }
+        .chat-panel-subtitle { font-size: 10px; color: var(--steel-muted); letter-spacing: 0.3px; }
+        .chat-panel-body {
+            padding: 16px 20px;
+            background: color-mix(in srgb, var(--abyssal) 60%, transparent);
+            display: flex; flex-direction: column; gap: 10px;
+            max-height: 320px; min-height: 120px;
+            overflow-y: auto;
+        }
+        .chat-msg { display: flex; gap: 10px; align-items: flex-start; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .chat-msg-avatar {
+            width: 28px; height: 28px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; font-size: 12px;
+            border: 1px solid var(--border-deep);
+        }
+        .chat-msg-user .chat-msg-avatar {
+            background: color-mix(in srgb, var(--blue-accent) 15%, transparent);
+            color: var(--blue-accent);
+            border-color: color-mix(in srgb, var(--blue-accent) 30%, transparent);
+        }
+        .chat-msg-ai .chat-msg-avatar {
+            background: color-mix(in srgb, var(--hulk-vibrant) 15%, transparent);
+            color: var(--hulk-vibrant);
+            border-color: color-mix(in srgb, var(--hulk-vibrant) 30%, transparent);
+        }
+        .chat-msg-content {
+            flex: 1;
+            background: color-mix(in srgb, var(--steel-light) 3%, transparent);
+            border-radius: 10px;
+            padding: 10px 14px;
+            font-size: 12px;
+            line-height: 1.6;
+            color: var(--steel-silver);
+            border-left: 3px solid transparent;
+        }
+        .chat-msg-user .chat-msg-content {
+            border-left-color: var(--blue-accent);
+            background: color-mix(in srgb, var(--blue-accent) 5%, transparent);
+        }
+        .chat-msg-ai .chat-msg-content {
+            border-left-color: var(--hulk-vibrant);
+            background: color-mix(in srgb, var(--hulk-vibrant) 5%, transparent);
+        }
+        .chat-msg-ai .chat-msg-content p { margin: 0 0 8px 0; line-height: 1.6; }
+        .chat-msg-ai .chat-msg-content p:last-child { margin-bottom: 0; }
+        .chat-msg-ai .chat-msg-content strong { color: var(--steel-light); font-weight: 700; }
+        .chat-msg-ai .chat-msg-content ul,
+        .chat-msg-ai .chat-msg-content ol { margin: 6px 0 8px 0; padding-left: 20px; }
+        .chat-msg-ai .chat-msg-content li { margin-bottom: 4px; line-height: 1.5; }
+        .chat-msg-ai .chat-msg-content h1,
+        .chat-msg-ai .chat-msg-content h2,
+        .chat-msg-ai .chat-msg-content h3,
+        .chat-msg-ai .chat-msg-content h4 {
+            color: var(--rolex-gold);
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            margin: 10px 0 6px 0;
+        }
+        .chat-msg-ai .chat-msg-content h1 { font-size: 15px; }
+        .chat-msg-ai .chat-msg-content h2 { font-size: 14px; }
+        .chat-msg-ai .chat-msg-content h3 { font-size: 13px; }
+        .chat-msg-ai .chat-msg-content h4 { font-size: 12px; }
+        .chat-msg-ai .chat-msg-content code {
+            background: color-mix(in srgb, var(--abyssal) 60%, transparent);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            color: var(--hulk-vibrant);
+            border: 1px solid var(--border-deep);
+        }
+        .chat-msg-ai .chat-msg-content pre {
+            background: color-mix(in srgb, var(--abyssal) 60%, transparent);
+            padding: 10px 12px;
+            border-radius: 6px;
+            overflow-x: auto;
+            border: 1px solid var(--border-deep);
+            margin: 8px 0;
+        }
+        .chat-msg-ai .chat-msg-content pre code { background: transparent; border: none; padding: 0; }
+        .chat-msg-typing .chat-msg-content {
+            border-left-color: var(--rolex-gold);
+            background: color-mix(in srgb, var(--rolex-gold) 5%, transparent);
+            font-style: italic;
+            color: var(--steel-muted);
+        }
+        .chat-msg-label {
+            font-size: 9px; font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+            font-family: 'Cinzel', serif;
+        }
+        .chat-msg-user .chat-msg-label { color: var(--blue-accent); }
+        .chat-msg-ai .chat-msg-label { color: var(--hulk-vibrant); }
+        .chat-msg-typing .chat-msg-label { color: var(--rolex-gold); }
+
+        .chat-panel-footer {
+            padding: 12px 20px;
+            border-top: 1px solid var(--border-deep);
+            background: var(--surface);
+            display: flex; gap: 10px; align-items: center;
+        }
+        .chat-input {
+            flex: 1;
+            background: var(--abyssal);
+            border: 1px solid var(--border-deep);
+            border-radius: 8px;
+            padding: 10px 14px;
+            color: var(--steel-light);
+            font-family: 'Outfit', sans-serif;
+            font-size: 12px;
+            outline: none;
+            transition: all 0.2s;
+        }
+        [data-theme="office"] .chat-input { background: #FFFFFF; color: #0F172A; }
+        .chat-input:focus {
+            border-color: var(--rolex-gold);
+            box-shadow: 0 0 10px color-mix(in srgb, var(--rolex-gold) 20%, transparent);
+        }
+        .chat-input::placeholder { color: var(--steel-muted); }
+        .chat-btn {
+            background: linear-gradient(135deg, var(--hulk), color-mix(in srgb, var(--hulk) 80%, #000));
+            border: 1px solid var(--rolex-gold);
+            border-radius: 8px;
+            padding: 10px 16px;
+            cursor: pointer;
+            color: #fff;
+            font-weight: 700;
+            font-size: 12px;
+            transition: all 0.2s;
+            display: flex; align-items: center; gap: 6px;
+            white-space: nowrap;
+        }
+        .chat-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px color-mix(in srgb, var(--hulk) 40%, transparent);
+        }
+        .chat-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .chat-suggestions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+        .chat-suggestion {
+            background: color-mix(in srgb, var(--rolex-gold) 8%, transparent);
+            border: 1px solid color-mix(in srgb, var(--rolex-gold) 25%, transparent);
+            border-radius: 14px;
+            padding: 4px 12px;
+            font-size: 10px;
+            color: var(--rolex-gold);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+        .chat-suggestion:hover {
+            background: color-mix(in srgb, var(--rolex-gold) 15%, transparent);
+            transform: translateY(-1px);
+        }
+
+        /* TWO-COL */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr;
+            gap: 12px;
+            margin-bottom: 1.2rem;
+        }
+
+        /* MATRIZ */
+        .matrix-layout {
+            display: grid;
+            grid-template-columns: 40px 1fr;
+            grid-template-rows: auto 1fr;
+            gap: 12px;
+            background: linear-gradient(145deg, var(--surface-card), var(--surface));
+            border: 1px solid var(--border-deep);
+            border-radius: 14px;
+            padding: 1.2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .matrix-y-axis { grid-row: 1 / 3; grid-column: 1; display: flex; align-items: center; justify-content: center; }
+        .matrix-y-axis-label {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            font-size: 11px; font-weight: 700;
+            color: var(--rolex-gold);
+            font-family: 'Cinzel', serif;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+        .matrix-x-axis { grid-row: 1; grid-column: 2; display: flex; justify-content: space-between; padding: 0 4px; }
+        .matrix-x-axis-label {
+            font-size: 11px; font-weight: 700;
+            color: var(--rolex-gold);
+            font-family: 'Cinzel', serif;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+        .matrix-area {
+            grid-row: 2; grid-column: 2;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 8px;
+            aspect-ratio: 16/11;
+            position: relative;
+        }
+        .quadrant {
+            background: linear-gradient(145deg, var(--surface-card), var(--surface));
+            border: 1px solid var(--border-deep);
+            border-radius: 12px;
+            padding: 14px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .quadrant::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: var(--q-color, var(--rolex-gold));
+            opacity: 0.7;
+        }
+        .quadrant:hover {
+            border-color: var(--q-color, var(--rolex-gold));
+            box-shadow: 0 6px 20px color-mix(in srgb, var(--rolex-gold) 15%, transparent);
+        }
+        .q-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 10px; padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-deep);
+        }
+        .q-title {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 13px; font-weight: 700;
+            font-family: 'Cinzel', serif;
+            color: var(--q-color);
+            letter-spacing: 0.5px;
+        }
+        .q-title i { font-size: 1.1rem; }
+        .q-count {
+            font-size: 10px; color: var(--steel-muted);
+            padding: 2px 8px;
+            background: color-mix(in srgb, var(--steel-light) 5%, transparent);
+            border-radius: 10px;
+            font-weight: 600;
+        }
+        .q-signs {
+            position: absolute; top: 8px; right: 10px;
+            font-size: 9px; color: var(--steel-muted);
+            font-family: 'Courier New', monospace;
+            opacity: 0.7;
+        }
+        .q-chips { display: flex; flex-wrap: wrap; gap: 6px; max-height: 140px; overflow-y: auto; padding-right: 4px; }
+        .tienda-chip {
+            display: inline-flex; align-items: center; gap: 5px;
+            padding: 4px 9px;
+            background: color-mix(in srgb, var(--steel-light) 5%, transparent);
+            border: 1px solid var(--q-color, var(--border-deep));
+            border-radius: 14px;
+            font-size: 10px; font-weight: 600;
+            color: var(--steel-silver);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .tienda-chip:hover {
+            background: color-mix(in srgb, var(--steel-light) 10%, transparent);
+            transform: translateY(-1px);
+        }
+        .tienda-chip i { font-size: 9px; color: var(--q-color); }
+        .q-empty { font-size: 10px; color: var(--steel-muted); font-style: italic; padding: 8px 0; }
+
+        .q-joya { --q-color: var(--hulk-vibrant); }
+        .q-apuesta { --q-color: var(--rolex-gold); }
+        .q-bunker { --q-color: var(--orange); }
+        .q-lastre { --q-color: var(--red); }
+
+        .kpi-tags {
+            display: flex; flex-wrap: wrap; gap: 6px;
+            margin-top: 12px; padding-top: 12px;
+            border-top: 1px dashed var(--border-deep);
+        }
+        .kpi-tag {
+            font-size: 9px; padding: 2px 8px;
+            border-radius: 8px;
+            background: color-mix(in srgb, var(--rolex-gold) 10%, transparent);
+            color: var(--rolex-gold);
+            border: 1px solid color-mix(in srgb, var(--rolex-gold) 30%, transparent);
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        /* NARRATIVA IA */
+        .narrative-box {
+            background: linear-gradient(135deg, color-mix(in srgb, var(--hulk) 12%, transparent) 0%, color-mix(in srgb, var(--surface) 80%, transparent) 100%);
+            border: 1px solid var(--border-glow);
+            border-left: 4px solid var(--rolex-gold);
+            border-radius: 14px;
+            padding: 1.2rem;
+            box-shadow: 0 4px 25px rgba(0,0,0,0.1);
+            display: flex; flex-direction: column;
+        }
+        .narr-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+        .narr-icon { font-size: 16px; }
+        .narr-title {
+            font-size: 11px; font-weight: 700;
+            color: var(--rolex-gold);
+            letter-spacing: 1px; text-transform: uppercase;
+            font-family: 'Cinzel', serif;
+        }
+        .narr-text { font-size: 12px; color: var(--steel-silver); line-height: 1.7; }
+        .narr-text strong { color: var(--steel-light); font-weight: 600; }
+        .narr-recommendation {
+            display: grid; grid-template-columns: 1fr; gap: 8px;
+            margin-top: 14px; padding-top: 14px;
+            border-top: 1px solid var(--border-deep);
+        }
+        .rec-card {
+            background: color-mix(in srgb, var(--abyssal) 50%, transparent);
+            border-radius: 10px;
+            padding: 10px 12px;
+            border-left: 3px solid var(--q-color, var(--rolex-gold));
+        }
+        .rec-card-title {
+            font-size: 10px; font-weight: 700;
+            color: var(--q-color);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+            font-family: 'Cinzel', serif;
+        }
+        .rec-card-text { font-size: 11px; color: var(--steel-silver); line-height: 1.5; }
+
+        /* PANELES */
+        .panel {
+            background: linear-gradient(145deg, var(--surface-card), var(--surface));
+            border: 1px solid var(--border-deep);
+            border-radius: 14px;
+            padding: 1.2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .panel-title {
+            font-size: 11px; font-weight: 700;
+            color: var(--rolex-gold);
+            letter-spacing: 1px; text-transform: uppercase;
+            margin-bottom: 14px;
+            font-family: 'Cinzel', serif;
+            display: flex; align-items: center; gap: 8px;
+        }
+
+        /* TABLA CLASIFICACIÓN */
+        .tabla-wrapper { overflow-x: auto; margin-top: 8px; width: 100%; }
+        .matrix-table {
+            width: 100%; border-collapse: collapse;
+            font-size: 12px; min-width: 700px;
+        }
+        .matrix-table th,
+        .matrix-table td {
+            padding: 9px 10px; text-align: center;
+            border: 1px solid var(--border-deep);
+        }
+        .matrix-table th {
+            background: var(--surface);
+            color: var(--rolex-gold);
+            font-family: 'Cinzel', serif;
+            letter-spacing: 0.5px;
+            font-size: 10px;
+        }
+        .matrix-table td { color: var(--steel-silver); }
+        .matrix-table .joya { background: color-mix(in srgb, var(--hulk-vibrant) 12%, transparent); color: var(--hulk-vibrant); font-weight: 700; }
+        .matrix-table .apuesta { background: color-mix(in srgb, var(--rolex-gold) 12%, transparent); color: var(--rolex-gold); font-weight: 700; }
+        .matrix-table .bunker { background: color-mix(in srgb, var(--orange) 12%, transparent); color: var(--orange); font-weight: 700; }
+        .matrix-table .lastre { background: color-mix(in srgb, var(--red) 12%, transparent); color: var(--red); font-weight: 700; }
+        .matrix-table .tipo-cell { display: inline-flex; align-items: center; gap: 5px; }
+
+        /* MAPA SVG */
+        .map-container {
+            background: var(--abyssal);
+            border-radius: 12px;
+            border: 1px solid var(--border-deep);
+            padding: 8px;
+            overflow: hidden;
+        }
+        .map-container svg { width: 100%; height: auto; display: block; }
+        .map-legend {
+            display: flex; gap: 16px; justify-content: center;
+            flex-wrap: wrap; margin-top: 6px;
+        }
+        .map-legend-item {
+            display: flex; align-items: center; gap: 6px;
+            font-size: 9px; color: var(--steel-muted);
+        }
+        .map-legend-dot {
+            width: 10px; height: 10px; border-radius: 50%;
+            border: 1px solid color-mix(in srgb, var(--steel-light) 20%, transparent);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1100px) {
+            .two-col { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 900px) {
+            .shell { grid-template-columns: 1fr; }
+            .sidebar { display: none; }
+            .main { padding: 1rem; }
+            .selector-grid { grid-template-columns: 1fr; }
+            .matrix-area { aspect-ratio: auto; min-height: 500px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="shell">
+
+        <div class="topbar">
+            <img src="https://gestor-de-archivos.vercel.app/logos/logo-retailmind-SVG-000.svg" alt="RetailMind 360°">
+            <div class="topbar-divider"></div>
+            <span class="topbar-title">DODET · Constructor de Escenarios</span>
+            <span class="topbar-badge">Matriz de Doble Impacto</span>
+            <div class="topbar-user">
+                <span style="font-size:11px;color:var(--steel-muted)">Demo Interactiva</span>
+                <div class="avatar">DD</div>
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <div class="sidebar-section">Navegación</div>
+            <div class="nav-item active" data-view="constructor" onclick="cambiarVista('constructor')">
+                <span class="nav-icon">🎯</span> Constructor de Escenarios
+            </div>
+            <div class="nav-item" data-view="diagnostico" onclick="cambiarVista('diagnostico')">
+                <span class="nav-icon">📊</span> Diagnóstico 4×3
+            </div>
+            <div class="nav-item" data-view="riesgo" onclick="cambiarVista('riesgo')">
+                <span class="nav-icon">🗺️</span> Mapa de Riesgo
+            </div>
+            <div class="nav-item" data-view="topbottom" onclick="cambiarVista('topbottom')">
+                <span class="nav-icon">🏆</span> Top/Bottom
+            </div>
+            <div class="nav-item" data-view="brecha" onclick="cambiarVista('brecha')">
+                <span class="nav-icon">📈</span> Análisis de Brecha
+            </div>
+            <div class="nav-item" data-view="accion" onclick="cambiarVista('accion')">
+                <span class="nav-icon">📋</span> Plan de Acción
+            </div>
+            <div class="sidebar-section" style="margin-top:auto;">Sistema</div>
+            <div class="nav-item" onclick="toggleThemeSettings()">
+                <span class="nav-icon">⚙️</span> Configuración
+            </div>
+            <div class="theme-settings" id="themeSettings" style="display:none;">
+                <div class="theme-settings-title">Apariencia</div>
+                <label class="theme-option">
+                    <input type="radio" name="rm-theme" value="executive" onchange="setTheme('executive')" checked>
+                    <span>Executive (oscuro)</span>
+                    <span class="theme-preview executive"></span>
+                </label>
+                <label class="theme-option">
+                    <input type="radio" name="rm-theme" value="office" onchange="setTheme('office')">
+                    <span>Office (claro)</span>
+                    <span class="theme-preview office"></span>
+                </label>
+            </div>
+        </div>
+
+        <div class="main" id="mainContent"></div>
+    </div>
+
+    <script>
+        // ============================================================
+        // CONFIGURACIÓN DE LA CADENA
+        // ============================================================
+        const cadena = "Plaza ";
+
+        // ============================================================
+        // SISTEMA DE TEMAS
+        // ============================================================
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('dodet-theme', theme);
+            document.querySelectorAll('input[name="rm-theme"]').forEach(input => {
+                input.checked = input.value === theme;
+            });
+        }
+        function initTheme() {
+            const saved = localStorage.getItem('dodet-theme') || 'executive';
+            setTheme(saved);
+        }
+        function toggleThemeSettings() {
+            const el = document.getElementById('themeSettings');
+            if (el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // ============================================================
+        // CATÁLOGO DE ESCENARIOS
+        // ============================================================
+        const ESCENARIOS = {
+            macroeconomicos: {
+                nombre: "Macroeconómicos",
+                escenarios: [
+                    { id: 'recuperacion', nombre: 'Recuperación Económica' },
+                    { id: 'recesion', nombre: 'Recesión / Contracción' },
+                    { id: 'estanflacion', nombre: 'Estanflación' },
+                    { id: 'dolarizacion', nombre: 'Dolarización de la Economía' },
+                    { id: 'devaluacion', nombre: 'Devaluación Brusca' },
+                    { id: 'control_precios', nombre: 'Control de Precios / Regulación' }
+                ]
+            },
+            competitivos: {
+                nombre: "Competitivos",
+                escenarios: [
+                    { id: 'walmart', nombre: 'Llegada de Walmart / Global Player' },
+                    { id: 'consolidacion', nombre: 'Consolidación Local' },
+                    { id: 'hard_discount', nombre: 'Auge del Hard Discount' },
+                    { id: 'ecommerce', nombre: 'Auge del E-commerce' },
+                    { id: 'proximidad', nombre: 'Nuevos Formatos de Proximidad' },
+                    { id: 'salida_competidor', nombre: 'Salida de un Competidor Clave' }
+                ]
+            },
+            consumidor: {
+                nombre: "Consumidor",
+                escenarios: [
+                    { id: 'habitos_inflacion', nombre: 'Cambio de Hábitos por Inflación' },
+                    { id: 'premium', nombre: 'Auge del Consumo Premium' },
+                    { id: 'envejecimiento', nombre: 'Envejecimiento Poblacional' },
+                    { id: 'migracion', nombre: 'Migración Masiva' },
+                    { id: 'omnicanal', nombre: 'Consumidor Omnicanal' },
+                    { id: 'saludable', nombre: 'Consumidor Saludable' }
+                ]
+            },
+            operacionales: {
+                nombre: "Operacionales",
+                escenarios: [
+                    { id: 'costos_logisticos', nombre: 'Aumento de Costos Logísticos' },
+                    { id: 'escasez_talento', nombre: 'Escasez de Talento' },
+                    { id: 'automatizacion', nombre: 'Automatización de Tiendas' },
+                    { id: 'renegociacion', nombre: 'Renegociación con Proveedores' },
+                    { id: 'crisis_energetica', nombre: 'Crisis Energética' },
+                    { id: 'ciberseguridad', nombre: 'Ciberseguridad / Fuga de Datos' }
+                ]
+            },
+            geopoliticos: {
+                nombre: "Geopolíticos",
+                escenarios: [
+                    { id: 'apertura', nombre: 'Apertura Comercial' },
+                    { id: 'cierre_fronteras', nombre: 'Cierre de Fronteras' },
+                    { id: 'reformas_fiscales', nombre: 'Reformas Fiscales' },
+                    { id: 'inestabilidad', nombre: 'Inestabilidad Política' },
+                    { id: 'subsidios', nombre: 'Subsidios Gubernamentales' },
+                    { id: 'nacionalizacion', nombre: 'Nacionalización / Expropiación' }
+                ]
+            },
+            estrategicos: {
+                nombre: "Estratégicos",
+                escenarios: [
+                    { id: 'adquisicion', nombre: 'Adquisición por un Competidor' },
+                    { id: 'fusion', nombre: 'Fusión con Cadena Regional' },
+                    { id: 'expansion', nombre: 'Entrada a Nuevo País' },
+                    { id: 'venta_activos', nombre: 'Venta de Activos No Rentables' },
+                    { id: 'marketplace', nombre: 'Alianza con Marketplace' },
+                    { id: 'dark_store', nombre: 'Transformación a Dark Store' }
+                ]
+            }
+        };
+
+        const KPIS_POR_ESCENARIO = {
+            recuperacion: ['MB', 'VM2', 'ROT', 'TKT', 'UD', 'PEN', 'CREC'],
+            recesion: ['MB', 'ROT', 'MIX', 'COV', 'CON', 'LOG'],
+            estanflacion: ['MB', 'ROT', 'COV', 'MIX'],
+            dolarizacion: ['MB', 'VM2', 'MIX', 'SKU', 'COV', 'DIF'],
+            devaluacion: ['MB', 'ROT', 'MIX', 'SKU', 'DIF'],
+            control_precios: ['MB', 'TKT', 'MIX', 'COV'],
+            walmart: ['MIX', 'COV', 'CON', 'DIF', 'DIS', 'ATR', 'LOG'],
+            consolidacion: ['MB', 'VM2', 'DIF', 'DIS'],
+            hard_discount: ['MB', 'MIX', 'SKU', 'DIF', 'DIS', 'TRF'],
+            ecommerce: ['VM2', 'CON', 'NPS', 'DIG', 'LOG'],
+            proximidad: ['UD', 'TRF', 'FRQ', 'DIF'],
+            salida_competidor: ['MB', 'VM2', 'PEN', 'DIS'],
+            habitos_inflacion: ['MB', 'MIX', 'SKU', 'NPS'],
+            premium: ['MB', 'TKT', 'SKU', 'NSE'],
+            envejecimiento: ['UD', 'CREC', 'NSE', 'MIX', 'FRQ'],
+            migracion: ['UD', 'CREC', 'NSE', 'MIX', 'SKU'],
+            omnicanal: ['VM2', 'CON', 'NPS', 'DIG', 'FRQ'],
+            saludable: ['TKT', 'SKU', 'NSE', 'DIF'],
+            costos_logisticos: ['ROT', 'COV', 'LOG'],
+            escasez_talento: ['COV', 'TAL', 'DIG'],
+            automatizacion: ['VM2', 'COV', 'TAL', 'DIG', 'LOG'],
+            renegociacion: ['MB', 'COV', 'LOG'],
+            crisis_energetica: ['COV', 'ENE', 'LOG'],
+            ciberseguridad: ['CON', 'NPS', 'DIG'],
+            apertura: ['MB', 'VM2', 'LOG'],
+            cierre_fronteras: ['MB', 'MIX', 'LOG'],
+            reformas_fiscales: ['MB', 'COV', 'MIX'],
+            inestabilidad: ['MB', 'COV', 'CON'],
+            subsidios: ['MB', 'TKT', 'MIX'],
+            nacionalizacion: ['MB', 'COV', 'MIX', 'DIF'],
+            adquisicion: ['MB', 'VM2', 'ROT', 'UD', 'PEN', 'DIF'],
+            fusion: ['MB', 'VM2', 'CAP', 'LOG'],
+            expansion: ['MB', 'VM2', 'UD', 'CREC', 'NSE'],
+            venta_activos: ['MB', 'ROT', 'DIF'],
+            marketplace: ['VM2', 'DIG', 'LOG'],
+            dark_store: ['VM2', 'CAP', 'DIG', 'LOG']
+        };
+
+        const TIPOLOGIAS = {
+            JOYA: { nombre: 'JOYA', icono: '<i class="fas fa-gem"></i>', color: '#00E676', cuadrante: 'q-joya', signos: '++' },
+            APUESTA: { nombre: 'APUESTA', icono: '<i class="fas fa-dice"></i>', color: '#D4AF37', cuadrante: 'q-apuesta', signos: '+-' },
+            BUNKER: { nombre: 'BUNKER', icono: '<i class="fas fa-shield-halved"></i>', color: '#FFA500', cuadrante: 'q-bunker', signos: '-+' },
+            LASTRE: { nombre: 'LASTRE', icono: '<i class="fas fa-triangle-exclamation"></i>', color: '#FF4D4D', cuadrante: 'q-lastre', signos: '--' }
+        };
+
+        const KPIS_CATALOGO = {
+            MB: 'Margen Bruto',
+            VM2: 'Ventas por m²',
+            ROT: 'Rotación de Inventario',
+            TKT: 'Ticket Promedio',
+            UD: 'Ubicación Demográfica',
+            PEN: 'Penetración de Mercado',
+            CAP: 'Capacidad Ociosa',
+            TRF: 'Tráfico Peatonal',
+            CREC: 'Crecimiento Poblacional',
+            MIX: 'Mix de Categorías Esenciales',
+            COV: 'Costo Operativo / Venta',
+            CON: 'Concentración de Clientes',
+            NPS: 'Satisfacción del Cliente (NPS)',
+            FRQ: 'Frecuencia de Visitas',
+            SKU: 'Mix Premium vs Básico',
+            DIF: 'Diferenciación Local',
+            DIS: 'Distancia a Competidores',
+            ATR: 'Atractivo para Entrantes',
+            NSE: 'Nivel Socioeconómico',
+            TAL: 'Disponibilidad de Talento',
+            ENE: 'Dependencia Energética',
+            DIG: 'Nivel de Digitalización',
+            LOG: 'Eficiencia Logística'
+        };
+
+        const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'];
+
+        const tiendasBase = [
+            { nombre: cadena + 'Norte', ciudad: 'Caracas', lat: 10.5, lng: -66.9, salud: 3.0, resiliencia: 3.0, potencial: 3.0, exposicion: 2.7, tipo: 'JOYA' },
+            { nombre: cadena + 'Centro', ciudad: 'Caracas', lat: 10.48, lng: -66.92, salud: 3.0, resiliencia: 3.0, potencial: 2.9, exposicion: 2.6, tipo: 'JOYA' },
+            { nombre: cadena + 'Este', ciudad: 'Caracas', lat: 10.52, lng: -66.85, salud: 1.5, resiliencia: 1.0, potencial: 2.8, exposicion: 2.5, tipo: 'APUESTA' },
+            { nombre: cadena + 'Maracaibo', ciudad: 'Maracaibo', lat: 10.65, lng: -71.61, salud: 1.2, resiliencia: 1.0, potencial: 3.0, exposicion: 1.3, tipo: 'APUESTA' },
+            { nombre: cadena + 'Valencia', ciudad: 'Valencia', lat: 10.18, lng: -68.00, salud: 1.0, resiliencia: 1.0, potencial: 2.7, exposicion: 1.3, tipo: 'APUESTA' },
+            { nombre: cadena + 'Oeste', ciudad: 'Caracas', lat: 10.46, lng: -66.95, salud: 2.0, resiliencia: 2.8, potencial: 1.7, exposicion: 2.8, tipo: 'BUNKER' },
+            { nombre: cadena + 'Barquisimeto', ciudad: 'Barquisimeto', lat: 10.08, lng: -69.32, salud: 2.0, resiliencia: 3.0, potencial: 1.3, exposicion: 2.0, tipo: 'BUNKER' },
+            { nombre: cadena + 'Maturín', ciudad: 'Maturín', lat: 9.75, lng: -63.18, salud: 2.0, resiliencia: 3.0, potencial: 1.0, exposicion: 2.0, tipo: 'BUNKER' },
+            { nombre: cadena + 'Sur', ciudad: 'Caracas', lat: 10.44, lng: -66.88, salud: 1.0, resiliencia: 1.0, potencial: 1.0, exposicion: 2.9, tipo: 'LASTRE' },
+            { nombre: cadena + 'San Cristóbal', ciudad: 'San Cristóbal', lat: 7.77, lng: -72.22, salud: 1.0, resiliencia: 1.0, potencial: 1.0, exposicion: 3.0, tipo: 'LASTRE' }
+        ];
+
+        function generarHistorico(t, meses) {
+            const historico = [];
+            const seed = t.nombre.length * 7 + t.salud * 3;
+            let vS = t.salud - 0.6 + (seed % 5) * 0.1;
+            let vR = t.resiliencia - 0.5 + (seed % 7) * 0.08;
+            let vP = t.potencial - 0.4 + (seed % 6) * 0.09;
+            let vE = t.exposicion - 0.3 + (seed % 8) * 0.07;
+            for (let i = 0; i < meses.length; i++) {
+                const trend = i / meses.length * 0.4;
+                const noise = (Math.sin(i * 0.8 + seed) * 0.15) + (Math.random() * 0.1 - 0.05);
+                vS = Math.max(0.5, Math.min(3.0, vS + 0.04 * trend + noise * 0.3));
+                vR = Math.max(0.5, Math.min(3.0, vR + 0.03 * trend + noise * 0.25));
+                vP = Math.max(0.5, Math.min(3.0, vP + 0.05 * trend + noise * 0.35));
+                vE = Math.max(0.5, Math.min(3.0, vE + 0.02 * trend + noise * 0.2));
+                historico.push({ mes: meses[i], salud: parseFloat(vS.toFixed(2)), resiliencia: parseFloat(vR.toFixed(2)), potencial: parseFloat(vP.toFixed(2)), exposicion: parseFloat(vE.toFixed(2)) });
+            }
+            return historico;
+        }
+
+        const tiendas = tiendasBase.map(t => {
+            const historico = generarHistorico(t, meses);
+            const ultimo = historico[historico.length - 1];
+            return { ...t, historico, salud: ultimo.salud, resiliencia: ultimo.resiliencia, potencial: ultimo.potencial, exposicion: ultimo.exposicion };
+        });
+
+        function colorTipoHex(tipo) {
+            const map = { JOYA: '#00E676', APUESTA: '#D4AF37', BUNKER: '#FFA500', LASTRE: '#FF4D4D' };
+            return map[tipo] || '#7E998F';
+        }
+
+        function calcularKPIs(tienda) {
+            return {
+                MB: parseFloat((tienda.salud * 0.9).toFixed(2)),
+                VM2: parseFloat(tienda.salud.toFixed(2)),
+                ROT: parseFloat((tienda.salud * 0.85).toFixed(2)),
+                TKT: parseFloat(tienda.salud.toFixed(2)),
+                UD: parseFloat(tienda.potencial.toFixed(2)),
+                PEN: parseFloat((tienda.potencial * 0.9).toFixed(2)),
+                CAP: parseFloat((tienda.potencial * 0.8).toFixed(2)),
+                TRF: parseFloat((tienda.potencial * 0.95).toFixed(2)),
+                CREC: parseFloat(tienda.potencial.toFixed(2)),
+                MIX: parseFloat(tienda.resiliencia.toFixed(2)),
+                COV: parseFloat((tienda.resiliencia * 0.9).toFixed(2)),
+                CON: parseFloat(tienda.resiliencia.toFixed(2)),
+                NPS: parseFloat((tienda.resiliencia * 0.95).toFixed(2)),
+                FRQ: parseFloat(tienda.resiliencia.toFixed(2)),
+                SKU: parseFloat((tienda.resiliencia * 0.85).toFixed(2)),
+                DIF: parseFloat(tienda.exposicion.toFixed(2)),
+                DIS: parseFloat(tienda.exposicion.toFixed(2)),
+                ATR: parseFloat(tienda.exposicion.toFixed(2)),
+                NSE: parseFloat((tienda.potencial * 0.9).toFixed(2)),
+                TAL: parseFloat((tienda.resiliencia * 0.9).toFixed(2)),
+                ENE: parseFloat((tienda.exposicion * 0.8).toFixed(2)),
+                DIG: parseFloat((tienda.resiliencia * 0.85).toFixed(2)),
+                LOG: parseFloat((tienda.resiliencia * 0.9).toFixed(2))
+            };
+        }
+
+        // ============================================================
+        // CÁLCULO DE KPIs IMPACTADOS POR LOS ESCENARIOS
+        // ============================================================
+        function calcularKPIsImpactados(tienda, ejeX, ejeY) {
+            const kpisOriginales = calcularKPIs(tienda);
+            const kpisUsadosX = KPIS_POR_ESCENARIO[ejeX] || [];
+            const kpisUsadosY = KPIS_POR_ESCENARIO[ejeY] || [];
+            const kpisUsados = [...new Set([...kpisUsadosX, ...kpisUsadosY])];
+
+            // Determinar dirección de los escenarios
+            const esNegativoX = ['recesion', 'estanflacion', 'devaluacion', 'control_precios', 'walmart', 'hard_discount', 'habitos_inflacion', 'costos_logisticos', 'escasez_talento', 'crisis_energetica', 'ciberseguridad', 'cierre_fronteras', 'reformas_fiscales', 'inestabilidad', 'nacionalizacion'].includes(ejeX);
+            const esNegativoY = ['recesion', 'estanflacion', 'devaluacion', 'control_precios', 'walmart', 'hard_discount', 'habitos_inflacion', 'costos_logisticos', 'escasez_talento', 'crisis_energetica', 'ciberseguridad', 'cierre_fronteras', 'reformas_fiscales', 'inestabilidad', 'nacionalizacion'].includes(ejeY);
+
+            const resultado = {};
+            Object.keys(kpisOriginales).forEach(kpi => {
+                if (!kpisUsados.includes(kpi)) {
+                    // KPI no usado en ningún escenario → no se impacta
+                    resultado[kpi] = {
+                        valor: kpisOriginales[kpi],
+                        impactado: false,
+                        cambio: 'none'
+                    };
+                } else {
+                    // KPI usado en al menos un escenario → se impacta
+                    let factor = 0;
+                    let contribuciones = 0;
+
+                    if (kpisUsadosX.includes(kpi)) {
+                        // En escenarios negativos, los KPIs de resiliencia tienden a subir (más importantes)
+                        // En escenarios positivos, los KPIs de crecimiento suben
+                        if (esNegativoX) {
+                            factor += (kpi === 'MIX' || kpi === 'COV' || kpi === 'CON' || kpi === 'DIF') ? 0.15 : -0.1;
+                        } else {
+                            factor += (kpi === 'MB' || kpi === 'VM2' || kpi === 'TKT' || kpi === 'UD' || kpi === 'PEN') ? 0.15 : 0.05;
+                        }
+                        contribuciones++;
+                    }
+                    if (kpisUsadosY.includes(kpi)) {
+                        if (esNegativoY) {
+                            factor += (kpi === 'MIX' || kpi === 'COV' || kpi === 'CON' || kpi === 'DIF') ? 0.15 : -0.1;
+                        } else {
+                            factor += (kpi === 'MB' || kpi === 'VM2' || kpi === 'TKT' || kpi === 'UD' || kpi === 'PEN') ? 0.15 : 0.05;
+                        }
+                        contribuciones++;
+                    }
+
+                    const factorPromedio = factor / Math.max(contribuciones, 1);
+                    const valorImpactado = Math.max(0.5, Math.min(3.0, kpisOriginales[kpi] * (1 + factorPromedio)));
+                    const valorFinal = parseFloat(valorImpactado.toFixed(2));
+
+                    let cambio = 'eq';
+                    if (valorFinal > kpisOriginales[kpi] + 0.05) cambio = 'up';
+                    else if (valorFinal < kpisOriginales[kpi] - 0.05) cambio = 'down';
+
+                    resultado[kpi] = {
+                        valor: valorFinal,
+                        original: kpisOriginales[kpi],
+                        impactado: true,
+                        cambio: cambio
+                    };
+                }
+            });
+            return resultado;
+        }
+
+        function clasificarValorKPI(valor) {
+            if (valor >= 2.5) return 'alto';
+            if (valor >= 1.5) return 'medio';
+            return 'bajo';
+        }
+
+        function calcularScorePorEscenario(tienda, escenarioId) {
+            const kpis = KPIS_POR_ESCENARIO[escenarioId] || [];
+            if (kpis.length === 0) return 1.5;
+            const valoresKPI = calcularKPIs(tienda);
+            const valores = kpis.map(k => valoresKPI[k] || 1.5);
+            const promedio = valores.reduce((a, b) => a + b, 0) / valores.length;
+            const esNegativo = ['recesion', 'estanflacion', 'devaluacion', 'control_precios', 'walmart', 'hard_discount', 'habitos_inflacion', 'costos_logisticos', 'escasez_talento', 'crisis_energetica', 'ciberseguridad', 'cierre_fronteras', 'reformas_fiscales', 'inestabilidad', 'nacionalizacion'].includes(escenarioId);
+            if (esNegativo) {
+                return parseFloat(((promedio * 0.6) + (tienda.resiliencia * 0.4)).toFixed(2));
+            }
+            return parseFloat(promedio.toFixed(2));
+        }
+
+        function clasificarTienda(scoreX, scoreY) {
+            const umbral = 2.0;
+            if (scoreX >= umbral && scoreY >= umbral) return 'JOYA';
+            if (scoreX >= umbral && scoreY < umbral) return 'APUESTA';
+            if (scoreX < umbral && scoreY >= umbral) return 'BUNKER';
+            return 'LASTRE';
+        }
+
+        let escenarioXActual = 'recuperacion';
+        let escenarioYActual = 'walmart';
+        let vistaActual = 'constructor';
+        let kpiTabActual = 'original';
+
+        function cambiarVista(vista) {
+            vistaActual = vista;
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            const navActivo = document.querySelector('.nav-item[data-view="' + vista + '"]');
+            if (navActivo) navActivo.classList.add('active');
+            const themePanel = document.getElementById('themeSettings');
+            if (themePanel) themePanel.style.display = 'none';
+            renderVistaActual();
+        }
+
+        function cambiarKpiTab(tab) {
+            kpiTabActual = tab;
+            document.querySelectorAll('.kpi-tab').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.kpi-tab-content').forEach(el => el.classList.remove('active'));
+            const tabActiva = document.querySelector('.kpi-tab-' + tab);
+            const contenidoActivo = document.querySelector('.kpi-tab-content-' + tab);
+            if (tabActiva) tabActiva.classList.add('active');
+            if (contenidoActivo) contenidoActivo.classList.add('active');
+        }
+
+        function renderVistaActual() {
+            if (vistaActual === 'constructor') renderConstructor();
+            else if (vistaActual === 'diagnostico') renderDiagnostico();
+            else if (vistaActual === 'riesgo') renderRiesgo();
+            else if (vistaActual === 'topbottom') renderTopBottom();
+            else if (vistaActual === 'brecha') renderBrecha();
+            else if (vistaActual === 'accion') renderAccion();
+        }
+
+        // ============================================================
+        // NUEVA SECCIÓN: MATRIZ KPIs × TIENDAS CON PESTAÑAS
+        // ============================================================
+        function renderMatrizKPIsConPestanas(ejeX, ejeY) {
+            const kpisOrdenados = Object.keys(KPIS_CATALOGO).sort((a, b) =>
+                KPIS_CATALOGO[a].localeCompare(KPIS_CATALOGO[b], 'es')
+            );
+
+            const kpisUsadosX = KPIS_POR_ESCENARIO[ejeX] || [];
+            const kpisUsadosY = KPIS_POR_ESCENARIO[ejeY] || [];
+            const kpisUsados = [...new Set([...kpisUsadosX, ...kpisUsadosY])];
+
+            let html = '<div class="kpi-matrix-section">';
+
+            // Pestañas
+            html += '<div class="kpi-tabs">';
+            html += '<div class="kpi-tab tab-original' + (kpiTabActual === 'original' ? ' active' : '') + '" onclick="cambiarKpiTab(\'original\')">';
+            html += '<i class="fas fa-database"></i> Original';
+            html += '</div>';
+            html += '<div class="kpi-tab tab-impacto' + (kpiTabActual === 'impacto' ? ' active' : '') + '" onclick="cambiarKpiTab(\'impacto\')">';
+            html += '<i class="fas fa-bolt"></i> Impacto';
+            html += '</div>';
+            html += '</div>';
+
+            // Panel de contenido
+            html += '<div class="kpi-tab-panel panel-' + kpiTabActual + '">';
+
+            // ============ TAB ORIGINAL ============
+            html += '<div class="kpi-tab-content kpi-tab-content-original' + (kpiTabActual === 'original' ? ' active' : '') + '">';
+            html += '<div class="kpi-matrix-title"><i class="fas fa-table-cells"></i> Matriz de KPIs Originales por Tienda</div>';
+            html += '<div class="kpi-matrix-subtitle">Valores iniciales de los 23 KPIs para cada una de las ' + tiendas.length + ' tiendas de la cadena. Colores: <span style="color:var(--hulk-vibrant);">alto (≥2.5)</span>, <span style="color:var(--rolex-gold);">medio (1.5-2.4)</span>, <span style="color:var(--red);">bajo (<1.5)</span>.</div>';
+            html += '<div class="kpi-table-wrapper">';
+            html += '<table class="kpi-table">';
+            html += '<thead><tr><th class="kpi-label-header">KPI</th>';
+            tiendas.forEach(t => {
+                const nombreCorto = t.nombre.replace(cadena, '');
+                html += '<th class="tienda-header"><span class="tienda-nombre-vertical">' + nombreCorto + '</span></th>';
+            });
+            html += '</tr></thead><tbody>';
+            kpisOrdenados.forEach(kpiKey => {
+                html += '<tr>';
+                html += '<td class="kpi-label">' + KPIS_CATALOGO[kpiKey] + ' <span style="color:var(--steel-muted);font-weight:400;font-size:10px;">(' + kpiKey + ')</span></td>';
+                tiendas.forEach(t => {
+                    const valores = calcularKPIs(t);
+                    const valor = valores[kpiKey];
+                    const clase = clasificarValorKPI(valor);
+                    html += '<td><span class="kpi-valor ' + clase + '">' + valor.toFixed(2) + '</span></td>';
+                });
+                html += '</tr>';
+            });
+            html += '</tbody></table></div>';
+            html += '</div>';
+
+            // ============ TAB IMPACTO ============
+            html += '<div class="kpi-tab-content kpi-tab-content-impacto' + (kpiTabActual === 'impacto' ? ' active' : '') + '">';
+            html += '<div class="kpi-matrix-title"><i class="fas fa-bolt"></i> Matriz de KPIs Impactados por los Escenarios</div>';
+            html += '<div class="kpi-matrix-subtitle">Valores resultantes después de aplicar el cruce de <strong>' + kpisUsados.length + ' KPIs usados</strong> en los escenarios seleccionados. Los KPIs no usados se muestran en gris (disabled).</div>';
+
+            // Leyenda
+            html += '<div class="kpi-legend">';
+            html += '<div class="kpi-legend-item"><span class="legend-icon up">↑</span> Mejora</div>';
+            html += '<div class="kpi-legend-item"><span class="legend-icon down">↓</span> Deterioro</div>';
+            html += '<div class="kpi-legend-item"><span class="legend-icon eq">=</span> Sin cambio</div>';
+            html += '<div class="kpi-legend-item"><span class="legend-icon disabled">▪</span> No usado en los escenarios</div>';
+            html += '</div>';
+
+            html += '<div class="kpi-table-wrapper">';
+            html += '<table class="kpi-table">';
+            html += '<thead><tr><th class="kpi-label-header">KPI</th>';
+            tiendas.forEach(t => {
+                const nombreCorto = t.nombre.replace(cadena, '');
+                html += '<th class="tienda-header"><span class="tienda-nombre-vertical">' + nombreCorto + '</span></th>';
+            });
+            html += '</tr></thead><tbody>';
+
+            kpisOrdenados.forEach(kpiKey => {
+                const esUsado = kpisUsados.includes(kpiKey);
+                const rowClass = esUsado ? '' : 'kpi-row-disabled';
+                html += '<tr class="' + rowClass + '">';
+                html += '<td class="kpi-label">' + KPIS_CATALOGO[kpiKey];
+                if (esUsado) {
+                    html += ' <span style="color:var(--hulk-vibrant);font-weight:400;font-size:10px;">(' + kpiKey + ')</span>';
+                } else {
+                    html += ' <span style="font-size:10px;">(' + kpiKey + ')</span>';
+                }
+                html += '</td>';
+                tiendas.forEach(t => {
+                    const kpisImpactados = calcularKPIsImpactados(t, ejeX, ejeY);
+                    const info = kpisImpactados[kpiKey];
+                    if (!info.impactado) {
+                        html += '<td><span class="kpi-valor" style="color:var(--kpi-disabled-color);font-style:italic;">' + info.valor.toFixed(2) + '</span></td>';
+                    } else {
+                        const clase = clasificarValorKPI(info.valor);
+                        let indicador = '';
+                        if (info.cambio === 'up') indicador = '<span class="kpi-change-indicator up">↑</span>';
+                        else if (info.cambio === 'down') indicador = '<span class="kpi-change-indicator down">↓</span>';
+                        else indicador = '<span class="kpi-change-indicator eq">=</span>';
+                        html += '<td><span class="kpi-valor ' + clase + '">' + info.valor.toFixed(2) + '</span>' + indicador + '</td>';
+                    }
+                });
+                html += '</tr>';
+            });
+            html += '</tbody></table></div>';
+            html += '</div>';
+
+            html += '</div>'; // cierre panel
+            html += '</div>'; // cierre section
+
+            return html;
+        }
+
+        // ============================================================
+        // VISTA: CONSTRUCTOR DE ESCENARIOS
+        // ============================================================
+        function renderConstructor() {
+            const ejeX = document.getElementById('selectEjeX')?.value || escenarioXActual;
+            const ejeY = document.getElementById('selectEjeY')?.value || escenarioYActual;
+            escenarioXActual = ejeX;
+            escenarioYActual = ejeY;
+
+            let nombreX = '', nombreY = '';
+            Object.values(ESCENARIOS).forEach(dominio => {
+                dominio.escenarios.forEach(e => {
+                    if (e.id === ejeX) nombreX = e.nombre;
+                    if (e.id === ejeY) nombreY = e.nombre;
+                });
+            });
+
+            const tiendasClasificadas = tiendas.map(t => {
+                const scoreX = calcularScorePorEscenario(t, ejeX);
+                const scoreY = calcularScorePorEscenario(t, ejeY);
+                const tipo = clasificarTienda(scoreX, scoreY);
+                return { ...t, scoreX, scoreY, tipoCalculado: tipo };
+            });
+
+            const cuadrantes = {
+                JOYA: tiendasClasificadas.filter(t => t.tipoCalculado === 'JOYA'),
+                APUESTA: tiendasClasificadas.filter(t => t.tipoCalculado === 'APUESTA'),
+                BUNKER: tiendasClasificadas.filter(t => t.tipoCalculado === 'BUNKER'),
+                LASTRE: tiendasClasificadas.filter(t => t.tipoCalculado === 'LASTRE')
+            };
+
+            const kpisX = KPIS_POR_ESCENARIO[ejeX] || [];
+            const kpisY = KPIS_POR_ESCENARIO[ejeY] || [];
+
+            let html = '<div class="dashboard-container">';
+            html += '<div class="breadcrumb"><span class="active-crumb">🎯 Constructor de Escenarios</span></div>';
+
+            // SELECTOR
+            html += '<div class="selector-panel">';
+            html += '<div class="selector-title"><i class="fas fa-sliders-h"></i> Configura los dos escenarios a cruzar</div>';
+            html += '<div class="selector-grid">';
+            html += '<div class="selector-field"><label>Eje X (Horizontal)</label><select id="selectEjeX" onchange="renderConstructor()">';
+            Object.values(ESCENARIOS).forEach(dominio => {
+                html += '<optgroup label="' + dominio.nombre + '">';
+                dominio.escenarios.forEach(e => {
+                    html += '<option value="' + e.id + '"' + (e.id === ejeX ? ' selected' : '') + '>' + e.nombre + '</option>';
+                });
+                html += '</optgroup>';
+            });
+            html += '</select></div>';
+            html += '<div class="selector-field"><label>Eje Y (Vertical)</label><select id="selectEjeY" onchange="renderConstructor()">';
+            Object.values(ESCENARIOS).forEach(dominio => {
+                html += '<optgroup label="' + dominio.nombre + '">';
+                dominio.escenarios.forEach(e => {
+                    html += '<option value="' + e.id + '"' + (e.id === ejeY ? ' selected' : '') + '>' + e.nombre + '</option>';
+                });
+                html += '</optgroup>';
+            });
+            html += '</select></div>';
+            html += '<button class="btn-generate" onclick="renderConstructor()"><i class="fas fa-sync-alt"></i> Recalcular</button>';
+            html += '</div>';
+            html += '</div>';
+
+            // NUEVA SECCIÓN: MATRIZ KPIs CON PESTAÑAS
+            html += renderMatrizKPIsConPestanas(ejeX, ejeY);
+
+            // KPIs usados
+            html += '<div class="panel" style="margin-bottom:1.2rem; padding:1rem 1.2rem;">';
+            html += '<div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">';
+            html += '<div><div style="font-size:10px;color:var(--steel-muted);text-transform:uppercase;font-weight:700;font-family:\'Cinzel\';margin-bottom:6px;">KPIs del Eje X</div><div style="display:flex;flex-wrap:wrap;gap:4px;">';
+            kpisX.forEach(k => html += '<span class="kpi-tag">' + k + '</span>');
+            html += '</div></div>';
+            html += '<div><div style="font-size:10px;color:var(--steel-muted);text-transform:uppercase;font-weight:700;font-family:\'Cinzel\';margin-bottom:6px;">KPIs del Eje Y</div><div style="display:flex;flex-wrap:wrap;gap:4px;">';
+            kpisY.forEach(k => html += '<span class="kpi-tag">' + k + '</span>');
+            html += '</div></div>';
+            html += '</div></div>';
+
+            // TWO-COL: Matriz + Narrativa
+            html += '<div class="two-col">';
+            html += '<div class="matrix-layout">';
+            html += '<div class="matrix-y-axis"><span class="matrix-y-axis-label">↑ ' + nombreY + ' ←→ ' + nombreY + ' ↓</span></div>';
+            html += '<div class="matrix-x-axis">';
+            html += '<span class="matrix-x-axis-label">← ' + nombreX + '</span>';
+            html += '<span class="matrix-x-axis-label">' + nombreX + ' →</span>';
+            html += '</div>';
+            html += '<div class="matrix-area">';
+            html += renderCuadrante('BUNKER', cuadrantes.BUNKER);
+            html += renderCuadrante('JOYA', cuadrantes.JOYA);
+            html += renderCuadrante('LASTRE', cuadrantes.LASTRE);
+            html += renderCuadrante('APUESTA', cuadrantes.APUESTA);
+            html += '</div>';
+            html += '</div>';
+
+            html += '<div class="narrative-box">';
+            html += '<div class="narr-header"><span class="narr-icon">🧠</span><span class="narr-title">Narrativa IA · Análisis del Cruce</span></div>';
+            html += '<div class="narr-text">';
+            html += 'Al cruzar <strong>' + nombreX + '</strong> (Eje X) con <strong>' + nombreY + '</strong> (Eje Y), se generan 4 cuadrantes que clasifican tu red de tiendas. ';
+            html += 'De un total de <strong>' + tiendas.length + ' tiendas</strong>, se identificaron: ';
+            html += '<strong style="color:var(--hulk-vibrant);">' + cuadrantes.JOYA.length + ' ' + TIPOLOGIAS.JOYA.nombre + '</strong>, ';
+            html += '<strong style="color:var(--rolex-gold);">' + cuadrantes.APUESTA.length + ' ' + TIPOLOGIAS.APUESTA.nombre + '</strong>, ';
+            html += '<strong style="color:var(--orange);">' + cuadrantes.BUNKER.length + ' ' + TIPOLOGIAS.BUNKER.nombre + '</strong> y ';
+            html += '<strong style="color:var(--red);">' + cuadrantes.LASTRE.length + ' ' + TIPOLOGIAS.LASTRE.nombre + '</strong>.';
+            html += '</div>';
+            html += '<div class="narr-recommendation">';
+            html += renderRecCard('JOYA', cuadrantes.JOYA.length, 'Invertir y atacar. Mejor comportamiento en ambos escenarios.');
+            html += renderRecCard('APUESTA', cuadrantes.APUESTA.length, 'Invertir con cautela. Alto potencial si el escenario es favorable.');
+            html += renderRecCard('BUNKER', cuadrantes.BUNKER.length, 'Mantener mínimo. Defendibles pero sin crecimiento.');
+            html += renderRecCard('LASTRE', cuadrantes.LASTRE.length, 'Prioridad de cierre o venta. No sobreviven.');
+            html += '</div>';
+            html += '</div>';
+            html += '</div>';
+
+            // Tabla y Mapa
+            html += '<div class="two-col" style="grid-template-columns:1fr 1fr;">';
+            html += '<div class="panel">';
+            html += '<div class="panel-title"><i class="fas fa-table"></i> Clasificación por Escenario</div>';
+            html += '<div class="tabla-wrapper"><table class="matrix-table">';
+            html += '<thead><tr><th>Tienda</th><th>Ciudad</th><th>Score X</th><th>Score Y</th><th>Tipología</th></tr></thead>';
+            html += '<tbody>';
+            tiendasClasificadas.forEach(t => {
+                const config = TIPOLOGIAS[t.tipoCalculado];
+                html += '<tr class="' + t.tipoCalculado.toLowerCase() + '">';
+                html += '<td style="font-weight:600;color:var(--steel-light);text-align:left;padding-left:12px;">' + t.nombre + '</td>';
+                html += '<td style="color:var(--steel-muted);">' + t.ciudad + '</td>';
+                html += '<td>' + t.scoreX.toFixed(2) + '</td>';
+                html += '<td>' + t.scoreY.toFixed(2) + '</td>';
+                html += '<td><span class="tipo-cell" style="color:' + config.color + ';">' + config.icono + ' ' + config.nombre + '</span></td>';
+                html += '</tr>';
+            });
+            html += '</tbody></table></div>';
+            html += '</div>';
+
+            html += '<div class="panel">';
+            html += '<div class="panel-title"><i class="fas fa-map-location-dot"></i> Ubicación Geográfica</div>';
+            html += renderMapaSVG(tiendasClasificadas);
+            html += '</div>';
+            html += '</div>';
+
+            // CHAT PANEL
+            html += '<div class="chat-panel">';
+            html += '<div class="chat-panel-header">';
+            html += '<div class="chat-panel-title"><i class="fas fa-comments"></i> Consulta al Asistente DODET</div>';
+            html += '<div class="chat-panel-subtitle">Powered by Gemini · Respuestas en tiempo real</div>';
+            html += '</div>';
+            html += '<div class="chat-panel-body" id="chatPanelBody">';
+            html += '<div class="chat-msg chat-msg-ai">';
+            html += '<div class="chat-msg-avatar"><i class="fas fa-robot"></i></div>';
+            html += '<div class="chat-msg-content">';
+            html += '<div class="chat-msg-label">Asistente DODET</div>';
+            html += 'Hola. Estoy aquí para ayudarte a interpretar el análisis del cruce de escenarios. Puedes preguntarme sobre tipologías, KPIs, recomendaciones estratégicas o cualquier concepto del dashboard.';
+            html += '</div></div>';
+            html += '</div>';
+            html += '<div class="chat-panel-footer">';
+            html += '<input type="text" class="chat-input" id="chatInput" placeholder="Escribe tu consulta sobre el análisis..." onkeypress="if(event.key===\'Enter\') enviarConsultaChat()">';
+            html += '<button class="chat-btn" id="chatBtn" onclick="enviarConsultaChat()"><i class="fas fa-paper-plane"></i> Enviar</button>';
+            html += '</div>';
+            html += '<div style="padding: 0 20px 14px 20px; background: var(--surface);">';
+            html += '<div class="chat-suggestions">';
+            html += '<span class="chat-suggestion" onclick="setChatInput(\'¿Qué significa que una tienda sea JOYA?\')">¿Qué significa JOYA?</span>';
+            html += '<span class="chat-suggestion" onclick="setChatInput(\'¿Cómo se calcula la clasificación?\')">¿Cómo se calcula?</span>';
+            html += '<span class="chat-suggestion" onclick="setChatInput(\'¿Qué estrategia recomiendas para las APUESTA?\')">Estrategia APUESTA</span>';
+            html += '<span class="chat-suggestion" onclick="setChatInput(\'Explícame el cuadrante LASTRE\')">Explícame LASTRE</span>';
+            html += '</div>';
+            html += '</div>';
+            html += '</div>';
+
+            html += '</div>';
+
+            document.getElementById('mainContent').innerHTML = html;
+        }
+
+        // ============================================================
+        // VISTAS SECUNDARIAS
+        // ============================================================
+        function renderDiagnostico() {
+            let html = '<div class="dashboard-container">';
+            html += '<div class="breadcrumb"><span class="active-crumb">📊 Diagnóstico 4×3</span></div>';
+            html += '<div class="panel"><div class="panel-title"><i class="fas fa-chart-bar"></i> Diagnóstico de las 4 Dimensiones</div>';
+            html += '<div class="tabla-wrapper"><table class="matrix-table">';
+            html += '<thead><tr><th>Tienda</th><th>Ciudad</th><th>Salud</th><th>Resiliencia</th><th>Potencial</th><th>Exposición</th><th>Tipología</th></tr></thead><tbody>';
+            tiendas.forEach(t => {
+                const config = TIPOLOGIAS[t.tipo];
+                html += '<tr class="' + t.tipo.toLowerCase() + '">';
+                html += '<td style="font-weight:600;color:var(--steel-light);text-align:left;padding-left:12px;">' + t.nombre + '</td>';
+                html += '<td style="color:var(--steel-muted);">' + t.ciudad + '</td>';
+                html += '<td>' + t.salud.toFixed(2) + '</td>';
+                html += '<td>' + t.resiliencia.toFixed(2) + '</td>';
+                html += '<td>' + t.potencial.toFixed(2) + '</td>';
+                html += '<td>' + t.exposicion.toFixed(2) + '</td>';
+                html += '<td><span class="tipo-cell" style="color:' + config.color + ';">' + config.icono + ' ' + config.nombre + '</span></td>';
+                html += '</tr>';
+            });
+            html += '</tbody></table></div></div></div>';
+            document.getElementById('mainContent').innerHTML = html;
+        }
+
+        function renderRiesgo() {
+            let html = '<div class="dashboard-container">';
+            html += '<div class="breadcrumb"><span class="active-crumb">🗺️ Mapa de Riesgo</span></div>';
+            html += '<div class="panel"><div class="panel-title"><i class="fas fa-map-location-dot"></i> Distribución Geográfica</div>';
+            html += renderMapaSVG(tiendas.map(t => ({ ...t, tipoCalculado: t.tipo })));
+            html += '</div></div>';
+            document.getElementById('mainContent').innerHTML = html;
+        }
+
+        function renderTopBottom() {
+            const sorted = [...tiendas].sort((a, b) => (b.salud + b.resiliencia + b.potencial) - (a.salud + a.resiliencia + a.potencial));
+            const top3 = sorted.slice(0, 3);
+            const bottom3 = sorted.slice(-3);
+            let html = '<div class="dashboard-container">';
+            html += '<div class="breadcrumb"><span class="active-crumb">🏆 Top/Bottom Performers</span></div>';
+            html += '<div class="two-col" style="grid-template-columns:1fr 1fr;">';
+            html += '<div class="panel"><div class="panel-title">🏆 Top 3</div>';
+            top3.forEach(t => {
+                const config = TIPOLOGIAS[t.tipo];
+                html += '<div style="padding:10px 0;border-bottom:1px solid var(--border-deep);display:flex;justify-content:space-between;align-items:center;">';
+                html += '<span style="color:' + config.color + ';">' + config.icono + ' ' + t.nombre + '</span>';
+                html += '<strong style="color:var(--hulk-vibrant);">' + ((t.salud + t.resiliencia + t.potencial) / 3).toFixed(2) + '</strong>';
+                html += '</div>';
+            });
+            html += '</div>';
+            html += '<div class="panel"><div class="panel-title">📉 Bottom 3</div>';
+            bottom3.forEach(t => {
+                const config = TIPOLOGIAS[t.tipo];
+                html += '<div style="padding:10px 0;border-bottom:1px solid var(--border-deep);display:flex;justify-content:space-between;align-items:center;">';
+                html += '<span style="color:' + config.color + ';">' + config.icono + ' ' + t.nombre + '</span>';
+                html += '<strong style="color:var(--red);">' + ((t.salud + t.resiliencia + t.potencial) / 3).toFixed(2) + '</strong>';
+                html += '</div>';
+            });
+            html += '</div></div></div>';
+            document.getElementById('mainContent').innerHTML = html;
+        }
+
+        function renderBrecha() {
+            const avg = {
+                salud: tiendas.reduce((s, t) => s + t.salud, 0) / tiendas.length,
+                resiliencia: tiendas.reduce((s, t) => s + t.resiliencia, 0) / tiendas.length,
+                potencial: tiendas.reduce((s, t) => s + t.potencial, 0) / tiendas.length,
+                exposicion: tiendas.reduce((s, t) => s + t.exposicion, 0) / tiendas.length
+            };
+            let html = '<div class="dashboard-container">';
+            html += '<div class="breadcrumb"><span class="active-crumb">📈 Análisis de Brecha</span></div>';
+            html += '<div class="panel"><div class="panel-title">Promedios de la Cadena</div>';
+            html += '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">';
+            ['salud', 'resiliencia', 'potencial', 'exposicion'].forEach(k => {
+                html += '<div style="text-align:center;padding:12px;background:color-mix(in srgb, var(--abyssal) 30%, transparent);border-radius:10px;">';
+                html += '<div style="font-size:10px;color:var(--steel-muted);text-transform:uppercase;">' + k + '</div>';
+                html += '<div style="font-size:24px;font-weight:700;color:var(--hulk-vibrant);">' + avg[k].toFixed(2) + '</div>';
+                html += '</div>';
+            });
+            html += '</div></div></div>';
+            document.getElementById('mainContent').innerHTML = html;
+        }
+
+        function renderAccion() {
+            const counts = {
+                JOYA: tiendas.filter(t => t.tipo === 'JOYA').length,
+                APUESTA: tiendas.filter(t => t.tipo === 'APUESTA').length,
+                BUNKER: tiendas.filter(t => t.tipo === 'BUNKER').length,
+                LASTRE: tiendas.filter(t => t.tipo === 'LASTRE').length
+            };
+            let html = '<div class="dashboard-container">';
+            html += '<div class="breadcrumb"><span class="active-crumb">📋 Plan de Acción</span></div>';
+            html += '<div class="panel"><div class="panel-title">Recomendaciones por Tipología</div>';
+            html += '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">';
+            Object.entries(TIPOLOGIAS).forEach(([k, v]) => {
+                html += '<div style="text-align:center;padding:16px;background:color-mix(in srgb, var(--abyssal) 30%, transparent);border-radius:10px;border-left:3px solid ' + v.color + ';">';
+                html += '<div style="font-size:24px;">' + v.icono + '</div>';
+                html += '<div style="color:' + v.color + ';font-weight:700;margin:6px 0;">' + v.nombre + '</div>';
+                html += '<div style="font-size:20px;font-weight:800;">' + counts[k] + '</div>';
+                html += '<div style="font-size:10px;color:var(--steel-muted);">tiendas</div>';
+                html += '</div>';
+            });
+            html += '</div></div></div>';
+            document.getElementById('mainContent').innerHTML = html;
+        }
+
+        function renderCuadrante(tipo, tiendas) {
+            const config = TIPOLOGIAS[tipo];
+            let html = '<div class="quadrant ' + config.cuadrante + '">';
+            html += '<span class="q-signs">' + config.signos + '</span>';
+            html += '<div class="q-header">';
+            html += '<div class="q-title" style="color:' + config.color + ';">' + config.icono + ' ' + config.nombre + '</div>';
+            html += '<span class="q-count">' + tiendas.length + ' tiendas</span>';
+            html += '</div>';
+            html += '<div class="q-chips">';
+            if (tiendas.length === 0) {
+                html += '<span class="q-empty">Sin tiendas en este cuadrante</span>';
+            } else {
+                tiendas.forEach(t => {
+                    html += '<span class="tienda-chip"><i class="fas fa-store"></i> ' + t.nombre.replace(cadena, '') + '</span>';
+                });
+            }
+            html += '</div></div>';
+            return html;
+        }
+
+        function renderRecCard(tipo, cantidad, texto) {
+            const config = TIPOLOGIAS[tipo];
+            return '<div class="rec-card" style="--q-color:' + config.color + ';">' +
+                '<div class="rec-card-title">' + config.icono + ' ' + config.nombre + ' (' + cantidad + ')</div>' +
+                '<div class="rec-card-text">' + texto + '</div>' +
+                '</div>';
+        }
+
+        function renderMapaSVG(tiendas) {
+            const lats = tiendas.map(t => t.lat);
+            const lngs = tiendas.map(t => t.lng);
+            const minLat = Math.min(...lats) - 0.3;
+            const maxLat = Math.max(...lats) + 0.3;
+            const minLng = Math.min(...lngs) - 0.3;
+            const maxLng = Math.max(...lngs) + 0.3;
+            const toX = (lng) => ((lng - minLng) / (maxLng - minLng)) * 360 + 20;
+            const toY = (lat) => ((maxLat - lat) / (maxLat - minLat)) * 260 + 20;
+
+            let bubbles = '';
+            tiendas.forEach(t => {
+                const cx = toX(t.lng);
+                const cy = toY(t.lat);
+                const r = 10 + (t.salud + t.resiliencia + t.potencial) / 3 * 6;
+                const color = colorTipoHex(t.tipoCalculado);
+                bubbles += '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="' + color + '30" stroke="' + color + '" stroke-width="2"/>';
+                bubbles += '<text x="' + cx + '" y="' + (cy + 2) + '" font-size="7" fill="#fff" font-weight="700" text-anchor="middle">' + t.nombre.replace(cadena, '').split(' ')[0] + '</text>';
+            });
+
+            let grid = '';
+            for (let i = 0; i < 3; i++) {
+                grid += '<line x1="' + (20 + i * 120) + '" y1="20" x2="' + (20 + i * 120) + '" y2="280" stroke="rgba(212,175,55,0.06)" stroke-width="1"/>';
+                grid += '<line x1="20" y1="' + (20 + i * 87) + '" x2="380" y2="' + (20 + i * 87) + '" stroke="rgba(212,175,55,0.06)" stroke-width="1"/>';
+            }
+
+            return '<div class="map-container"><svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="300" fill="var(--abyssal)" rx="8"/>' + grid + bubbles + '</svg>' +
+                '<div class="map-legend">' +
+                Object.entries(TIPOLOGIAS).map(([k, v]) => '<div class="map-legend-item"><div class="map-legend-dot" style="background:' + v.color + ';"></div>' + v.nombre + '</div>').join('') +
+                '</div></div>';
+        }
+
+        // ============================================================
+        // CHAT
+        // ============================================================
+        function setChatInput(texto) {
+            const input = document.getElementById('chatInput');
+            if (input) { input.value = texto; input.focus(); }
+        }
+
+        async function enviarConsultaChat() {
+            const input = document.getElementById('chatInput');
+            const btn = document.getElementById('chatBtn');
+            const body = document.getElementById('chatPanelBody');
+            if (!input || !body) return;
+
+            const mensaje = input.value.trim();
+            if (!mensaje) return;
+
+            const userMsg = document.createElement('div');
+            userMsg.className = 'chat-msg chat-msg-user';
+            userMsg.innerHTML = '<div class="chat-msg-avatar"><i class="fas fa-user"></i></div>' +
+                '<div class="chat-msg-content"><div class="chat-msg-label">Tú</div>' + escapeHtml(mensaje) + '</div>';
+            body.appendChild(userMsg);
+
+            input.value = '';
+            btn.disabled = true;
+            body.scrollTop = body.scrollHeight;
+
+            const typingMsg = document.createElement('div');
+            typingMsg.className = 'chat-msg chat-msg-typing';
+            typingMsg.innerHTML = '<div class="chat-msg-avatar"><i class="fas fa-robot"></i></div>' +
+                '<div class="chat-msg-content"><div class="chat-msg-label">Asistente</div>Pensando...</div>';
+            body.appendChild(typingMsg);
+            body.scrollTop = body.scrollHeight;
+
+            const contexto = 'Escenario X: ' + escenarioXActual + ' | Escenario Y: ' + escenarioYActual;
+
+            try {
+                const response = await fetch('/api/chat-gemini', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: mensaje, contexto: contexto })
+                });
+
+                const data = await response.json();
+                typingMsg.remove();
+
+                const aiMsg = document.createElement('div');
+                aiMsg.className = 'chat-msg chat-msg-ai';
+
+                if (data.reply) {
+                    const htmlFormateado = DOMPurify.sanitize(marked.parse(data.reply));
+                    aiMsg.innerHTML = '<div class="chat-msg-avatar"><i class="fas fa-robot"></i></div>' +
+                        '<div class="chat-msg-content"><div class="chat-msg-label">Asistente DODET</div>' + htmlFormateado + '</div>';
+                } else {
+                    aiMsg.innerHTML = '<div class="chat-msg-avatar"><i class="fas fa-robot"></i></div>' +
+                        '<div class="chat-msg-content"><div class="chat-msg-label">Asistente DODET</div>Error: ' + escapeHtml(data.error || 'desconocido') + '</div>';
+                }
+                body.appendChild(aiMsg);
+            } catch (error) {
+                typingMsg.remove();
+                const errMsg = document.createElement('div');
+                errMsg.className = 'chat-msg chat-msg-typing';
+                errMsg.innerHTML = '<div class="chat-msg-avatar"><i class="fas fa-robot"></i></div>' +
+                    '<div class="chat-msg-content"><div class="chat-msg-label">Sistema</div>Error de conexión. Verifica tu internet.</div>';
+                body.appendChild(errMsg);
+            } finally {
+                btn.disabled = false;
+                body.scrollTop = body.scrollHeight;
+                input.focus();
+            }
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // ============================================================
+        // INICIALIZACIÓN
+        // ============================================================
+        initTheme();
+        renderVistaActual();
+    </script>
+</body>
+</html>

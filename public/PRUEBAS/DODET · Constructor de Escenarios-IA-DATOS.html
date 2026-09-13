@@ -1012,6 +1012,60 @@
             .selector-grid { grid-template-columns: 1fr; }
             .matrix-area { aspect-ratio: auto; min-height: 500px; }
         }
+/* ============================================================
+   TOOLTIP PERSONALIZADO PARA HEADERS DE TIENDA
+   ============================================================ */
+.kpi-table th.tienda-header {
+    position: relative;
+    overflow: visible !important;
+    cursor: help;
+}
+.kpi-table th.tienda-header .tooltip-custom {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-8px);
+    background: var(--surface-card);
+    color: var(--steel-light);
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--rolex-gold);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    font-family: 'Outfit', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 100;
+    /* Evitar que el writing-mode del hijo afecte al tooltip */
+    writing-mode: horizontal-tb;
+}
+.kpi-table th.tienda-header .tooltip-custom::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: var(--rolex-gold);
+}
+.kpi-table th.tienda-header:hover .tooltip-custom {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-4px);
+}
+
+/* Variante por tipología con color de borde */
+.tooltip-custom.joya { border-color: #00E676; }
+.tooltip-custom.joya::after { border-top-color: #00E676; }
+.tooltip-custom.apuesta { border-color: #D4AF37; }
+.tooltip-custom.apuesta::after { border-top-color: #D4AF37; }
+.tooltip-custom.bunker { border-color: #FFA500; }
+.tooltip-custom.bunker::after { border-top-color: #FFA500; }
+.tooltip-custom.lastre { border-color: #FF4D4D; }
+.tooltip-custom.lastre::after { border-top-color: #FF4D4D; }
     </style>
 </head>
 <body>
@@ -1528,8 +1582,10 @@ function renderMatrizKPIsConPestanas(ejeX, ejeY) {
         const nombreCorto = item.tienda.nombre.replace(cadena, '');
         const iconoEstatus = getIconoEstatus(item.tipoOriginal);
         const iconoCambio = '<i class="fas fa-minus icono-cambio eq"></i>';
-        const tooltip = 'Tipología original: ' + item.tipoOriginal;
-        html += '<th class="tienda-header" title="' + tooltip + '">';
+        const tooltipTexto = 'Tipología original: ' + item.tipoOriginal;
+        const tooltipClase = item.tipoOriginal.toLowerCase();
+        html += '<th class="tienda-header">';
+        html += '<div class="tooltip-custom ' + tooltipClase + '">' + tooltipTexto + '</div>';
         html += '<div class="tienda-header-icons">';
         html += '<span class="icono-estatus">' + iconoEstatus + '</span>';
         html += '<span class="icono-cambio">' + iconoCambio + '</span>';
@@ -1572,8 +1628,10 @@ function renderMatrizKPIsConPestanas(ejeX, ejeY) {
         const nombreCorto = item.tienda.nombre.replace(cadena, '');
         const iconoEstatus = getIconoEstatus(item.tipoImpacto);
         const iconoCambio = getIconoCambio(item.tipoOriginal, item.tipoImpacto);
-        const tooltip = 'Original: ' + item.tipoOriginal + ' → Impacto: ' + item.tipoImpacto;
-        html += '<th class="tienda-header" title="' + tooltip + '">';
+        const tooltipTexto = 'Original: ' + item.tipoOriginal + ' → Impacto: ' + item.tipoImpacto;
+        const tooltipClase = item.tipoImpacto.toLowerCase();
+        html += '<th class="tienda-header">';
+        html += '<div class="tooltip-custom ' + tooltipClase + '">' + tooltipTexto + '</div>';
         html += '<div class="tienda-header-icons">';
         html += '<span class="icono-estatus">' + iconoEstatus + '</span>';
         html += '<span class="icono-cambio">' + iconoCambio + '</span>';

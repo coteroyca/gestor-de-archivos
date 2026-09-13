@@ -1446,8 +1446,7 @@ function renderMatrizKPIsConPestanas(ejeX, ejeY) {
         const nombreCorto = item.tienda.nombre.replace(cadena, '');
         const iconoEstatus = getIconoEstatus(item.tipoOriginal);
         const iconoCambio = '<i class="fas fa-minus icono-cambio eq"></i>';
-        const tooltip = 'Tipología original: ' + item.tipoOriginal;
-        html += '<th class="tienda-header" title="' + tooltip + '">';
+        html += '<th class="tienda-header">';
         html += '<div class="tienda-header-icons">';
         html += '<span class="icono-estatus">' + iconoEstatus + '</span>';
         html += '<span class="icono-cambio">' + iconoCambio + '</span>';
@@ -1490,8 +1489,7 @@ function renderMatrizKPIsConPestanas(ejeX, ejeY) {
         const nombreCorto = item.tienda.nombre.replace(cadena, '');
         const iconoEstatus = getIconoEstatus(item.tipoImpacto);
         const iconoCambio = getIconoCambio(item.tipoOriginal, item.tipoImpacto);
-        const tooltip = 'Original: ' + item.tipoOriginal + ' → Impacto: ' + item.tipoImpacto;
-        html += '<th class="tienda-header" title="' + tooltip + '">';
+        html += '<th class="tienda-header">';
         html += '<div class="tienda-header-icons">';
         html += '<span class="icono-estatus">' + iconoEstatus + '</span>';
         html += '<span class="icono-cambio">' + iconoCambio + '</span>';

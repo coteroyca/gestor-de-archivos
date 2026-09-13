@@ -38,7 +38,9 @@
             --tab-impacto-active: rgba(212, 175, 55, 0.3);
             --kpi-disabled-bg: rgba(127, 127, 127, 0.08);
             --kpi-disabled-color: rgba(127, 127, 127, 0.5);
-        }
+--tab-comparativa-bg: rgba(41, 182, 246, 0.12);
+--tab-comparativa-active: rgba(41, 182, 246, 0.25); 
+		}
 
         [data-theme="office"] {
             --hulk: #008744;
@@ -65,6 +67,8 @@
             --tab-impacto-active: rgba(184, 134, 11, 0.25);
             --kpi-disabled-bg: rgba(200, 200, 200, 0.15);
             --kpi-disabled-color: rgba(100, 116, 139, 0.5);
+--tab-comparativa-bg: rgba(219, 234, 254, 0.7);
+--tab-comparativa-active: rgba(2, 132, 199, 0.25);
         }
 
         body {
@@ -368,6 +372,28 @@
         .kpi-tab-content { display: none; }
         .kpi-tab-content.active { display: block; }
 
+.kpi-tab.tab-comparativa {
+    background: rgba(41, 182, 246, 0.12);
+    color: var(--steel-light);
+}
+.kpi-tab.tab-comparativa:hover {
+    background: rgba(41, 182, 246, 0.25);
+}
+.kpi-tab.tab-comparativa.active {
+    background: rgba(41, 182, 246, 0.25);
+    border-color: var(--blue-accent);
+    box-shadow: inset 0 3px 0 var(--blue-accent);
+}
+.kpi-tab.tab-comparativa i { color: var(--blue-accent); }
+
+.kpi-tab-panel.panel-comparativa {
+    border-left: 4px solid var(--blue-accent);
+    background: linear-gradient(145deg,
+        color-mix(in srgb, var(--blue-accent) 6%, var(--surface-card)),
+        var(--surface));
+}
+
+
         .kpi-matrix-title {
             font-size: 11px;
             font-weight: 700;
@@ -470,46 +496,6 @@
             text-overflow: ellipsis;
             white-space: nowrap;
         }
-/* Iconos de estatus y cambio en el header de cada tienda */
-.tienda-header-icons {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    margin-bottom: 6px;
-    padding: 4px 0;
-    border-bottom: 1px dashed var(--border-deep);
-}
-.tienda-header-icons .icono-estatus {
-    font-size: 14px;
-    line-height: 1;
-}
-.tienda-header-icons .icono-cambio {
-    font-size: 11px;
-    line-height: 1;
-    font-weight: 700;
-}
-.tienda-header-icons .icono-cambio.up { color: var(--hulk-vibrant); }
-.tienda-header-icons .icono-cambio.down { color: var(--red); }
-.tienda-header-icons .icono-cambio.eq { color: var(--steel-muted); }
-
-/* Colores de los iconos de estatus */
-.icono-estatus.joya { color: #00E676; }
-.icono-estatus.apuesta { color: #D4AF37; }
-.icono-estatus.bunker { color: #FFA500; }
-.icono-estatus.lastre { color: #FF4D4D; }
-
-/* Ajuste para que quepan los iconos en la columna vertical */
-.kpi-table th.tienda-header {
-    height: 180px;
-    padding-top: 6px;
-}
-.kpi-table th.tienda-header .tienda-nombre-vertical {
-    max-height: 110px;
-}
-
-
-
         .kpi-table td {
             padding: 7px 8px;
             border: 1px solid var(--border-deep);
@@ -1013,59 +999,139 @@
             .matrix-area { aspect-ratio: auto; min-height: 500px; }
         }
 /* ============================================================
-   TOOLTIP PERSONALIZADO PARA HEADERS DE TIENDA
+   FILTRO DE KPIs
    ============================================================ */
-.kpi-table th.tienda-header {
-    position: relative;
-    overflow: visible !important;
-    cursor: help;
-}
-.kpi-table th.tienda-header .tooltip-custom {
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%) translateY(-8px);
-    background: var(--surface-card);
-    color: var(--steel-light);
-    padding: 8px 12px;
-    border-radius: 8px;
-    border: 1px solid var(--rolex-gold);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-    font-family: 'Outfit', sans-serif;
-    font-size: 11px;
+.kpi-filter {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+    background: color-mix(in srgb, var(--abyssal) 50%, transparent);
+    border: 1px solid var(--border-deep);
+    border-radius: 20px;
+    padding: 4px 12px 4px 4px;
+    font-size: 10px;
     font-weight: 600;
-    letter-spacing: 0.3px;
-    white-space: nowrap;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s ease, transform 0.2s ease;
-    z-index: 100;
-    /* Evitar que el writing-mode del hijo afecte al tooltip */
-    writing-mode: horizontal-tb;
+    letter-spacing: 0.5px;
 }
-.kpi-table th.tienda-header .tooltip-custom::after {
-    content: '';
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    border: 6px solid transparent;
-    border-top-color: var(--rolex-gold);
+.kpi-filter-label {
+    color: var(--steel-muted);
+    text-transform: uppercase;
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    padding-left: 8px;
 }
-.kpi-table th.tienda-header:hover .tooltip-custom {
-    opacity: 1;
-    transform: translateX(-50%) translateY(-4px);
+.kpi-filter-btn {
+    background: transparent;
+    border: none;
+    color: var(--steel-muted);
+    padding: 5px 12px;
+    border-radius: 16px;
+    cursor: pointer;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    transition: all 0.2s ease;
+    font-family: 'Outfit', sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.kpi-filter-btn:hover {
+    color: var(--steel-light);
+    background: color-mix(in srgb, var(--steel-light) 8%, transparent);
+}
+.kpi-filter-btn.active {
+    background: linear-gradient(135deg, var(--hulk), color-mix(in srgb, var(--hulk) 80%, #000));
+    color: #fff;
+    box-shadow: 0 2px 8px color-mix(in srgb, var(--hulk) 40%, transparent);
+}
+.kpi-matrix-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
 }
 
-/* Variante por tipología con color de borde */
-.tooltip-custom.joya { border-color: #00E676; }
-.tooltip-custom.joya::after { border-top-color: #00E676; }
-.tooltip-custom.apuesta { border-color: #D4AF37; }
-.tooltip-custom.apuesta::after { border-top-color: #D4AF37; }
-.tooltip-custom.bunker { border-color: #FFA500; }
-.tooltip-custom.bunker::after { border-top-color: #FFA500; }
-.tooltip-custom.lastre { border-color: #FF4D4D; }
-.tooltip-custom.lastre::after { border-top-color: #FF4D4D; }
+/* ============================================================
+   HEADER DE TIENDA CON 3 ELEMENTOS (Comparativa)
+   ============================================================ */
+.tienda-header-3 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 0;
+    height: 100%;
+}
+.tienda-header-3 .icono-top,
+.tienda-header-3 .icono-bottom {
+    font-size: 14px;
+    line-height: 1;
+    flex-shrink: 0;
+}
+.tienda-header-3 .nombre-central {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--steel-light);
+    letter-spacing: 0.5px;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 80px;
+}
+
+/* ============================================================
+   CELDAS DE COMPARATIVA (3 líneas)
+   ============================================================ */
+.celda-comparativa {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    align-items: center;
+    padding: 3px 0;
+}
+.celda-linea-1 {
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    color: var(--steel-muted);
+    font-weight: 600;
+}
+.celda-linea-2 {
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+.celda-linea-2.up { color: var(--hulk-vibrant); }
+.celda-linea-2.down { color: var(--red); }
+.celda-linea-2.eq { color: var(--rolex-gold); }
+.celda-linea-3 {
+    font-family: 'Courier New', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 8px;
+}
+.celda-linea-3.positivo {
+    color: var(--hulk-vibrant);
+    background: color-mix(in srgb, var(--hulk-vibrant) 12%, transparent);
+}
+.celda-linea-3.negativo {
+    color: var(--red);
+    background: color-mix(in srgb, var(--red) 12%, transparent);
+}
+.celda-linea-3.neutro {
+    color: var(--steel-muted);
+    background: color-mix(in srgb, var(--steel-muted) 12%, transparent);
+}
     </style>
 </head>
 <body>
@@ -1458,52 +1524,11 @@
             return 'LASTRE';
         }
 
-
-
-function calcularTipologiaOriginal(tienda) {
-    const scoreX = calcularScorePorEscenario(tienda, escenarioXActual);
-    const scoreY = calcularScorePorEscenario(tienda, escenarioYActual);
-    return clasificarTienda(scoreX, scoreY);
-}
-
-function getTipologiaOriginalBase(tienda) {
-    // Tipología de la tienda según sus valores base (sin escenarios)
-    if (tienda.resiliencia >= 2.5 && tienda.potencial >= 2.5) return 'JOYA';
-    if (tienda.resiliencia >= 2.5 && tienda.potencial < 2.5) return 'BUNKER';
-    if (tienda.resiliencia < 2.5 && tienda.potencial >= 2.5) return 'APUESTA';
-    return 'LASTRE';
-}
-
-function getIconoEstatus(tipo) {
-    const iconos = {
-        JOYA: '<i class="fas fa-gem icono-estatus joya"></i>',
-        APUESTA: '<i class="fas fa-dice icono-estatus apuesta"></i>',
-        BUNKER: '<i class="fas fa-shield-halved icono-estatus bunker"></i>',
-        LASTRE: '<i class="fas fa-triangle-exclamation icono-estatus lastre"></i>'
-    };
-    return iconos[tipo] || '';
-}
-
-function getIconoCambio(tipologiaOriginal, tipologiaImpacto) {
-    const orden = { LASTRE: 0, BUNKER: 1, APUESTA: 2, JOYA: 3 };
-    const orig = orden[tipologiaOriginal] ?? 0;
-    const imp = orden[tipologiaImpacto] ?? 0;
-    
-    if (imp > orig) {
-        return '<i class="fas fa-arrow-up icono-cambio up"></i>';
-    } else if (imp < orig) {
-        return '<i class="fas fa-arrow-down icono-cambio down"></i>';
-    } else {
-        return '<i class="fas fa-equals icono-cambio eq"></i>';
-    }
-}
-
-
-
         let escenarioXActual = 'recuperacion';
         let escenarioYActual = 'walmart';
         let vistaActual = 'constructor';
         let kpiTabActual = 'original';
+let kpiFiltroActual = 'todos'; // 'todos' | 'afectados'
 
         function cambiarVista(vista) {
             vistaActual = vista;
@@ -1515,15 +1540,30 @@ function getIconoCambio(tipologiaOriginal, tipologiaImpacto) {
             renderVistaActual();
         }
 
-        function cambiarKpiTab(tab) {
-            kpiTabActual = tab;
-            document.querySelectorAll('.kpi-tab').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.kpi-tab-content').forEach(el => el.classList.remove('active'));
-            const tabActiva = document.querySelector('.kpi-tab-' + tab);
-            const contenidoActivo = document.querySelector('.kpi-tab-content-' + tab);
-            if (tabActiva) tabActiva.classList.add('active');
-            if (contenidoActivo) contenidoActivo.classList.add('active');
-        }
+function cambiarKpiTab(tab) {
+    kpiTabActual = tab;
+    document.querySelectorAll('.kpi-tab').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.kpi-tab-content').forEach(el => el.classList.remove('active'));
+    const tabActiva = document.querySelector('.kpi-tab-' + tab);
+    const contenidoActivo = document.querySelector('.kpi-tab-content-' + tab);
+    if (tabActiva) tabActiva.classList.add('active');
+    if (contenidoActivo) contenidoActivo.classList.add('active');
+}
+
+function cambiarKpiFiltro(filtro) {
+    kpiFiltroActual = filtro;
+    // Re-renderizar toda la sección de KPIs con el nuevo filtro
+    renderConstructor();
+}
+
+function cambiarKpiFiltro(filtro) {
+    kpiFiltroActual = filtro;
+    // Re-renderizar solo el contenido de la pestaña activa sin recargar todo
+    const kpiTabContent = document.querySelector('.kpi-tab-content-' + kpiTabActual);
+    if (kpiTabContent) {
+        renderContenidoKpiTab(kpiTabActual);
+    }
+}
 
         function renderVistaActual() {
             if (vistaActual === 'constructor') renderConstructor();
@@ -1566,116 +1606,248 @@ function renderMatrizKPIsConPestanas(ejeX, ejeY) {
     html += '<div class="kpi-tab tab-impacto' + (kpiTabActual === 'impacto' ? ' active' : '') + '" onclick="cambiarKpiTab(\'impacto\')">';
     html += '<i class="fas fa-bolt"></i> Impacto';
     html += '</div>';
+    html += '<div class="kpi-tab tab-comparativa' + (kpiTabActual === 'comparativa' ? ' active' : '') + '" onclick="cambiarKpiTab(\'comparativa\')">';
+    html += '<i class="fas fa-code-compare"></i> Comparativa';
+    html += '</div>';
     html += '</div>';
 
     // Panel de contenido
     html += '<div class="kpi-tab-panel panel-' + kpiTabActual + '">';
 
-    // ============ TAB ORIGINAL ============
-    html += '<div class="kpi-tab-content kpi-tab-content-original' + (kpiTabActual === 'original' ? ' active' : '') + '">';
-    html += '<div class="kpi-matrix-title"><i class="fas fa-table-cells"></i> Matriz de KPIs Originales por Tienda</div>';
-    html += '<div class="kpi-matrix-subtitle">Valores iniciales de los 23 KPIs. Colores: <span style="color:var(--hulk-vibrant);">alto (≥2.5)</span>, <span style="color:var(--rolex-gold);">medio (1.5-2.4)</span>, <span style="color:var(--red);">bajo (<1.5)</span>.</div>';
-    html += '<div class="kpi-table-wrapper">';
-    html += '<table class="kpi-table">';
-    html += '<thead><tr><th class="kpi-label-header">KPI</th>';
-    tipologiasPorTienda.forEach(item => {
-        const nombreCorto = item.tienda.nombre.replace(cadena, '');
-        const iconoEstatus = getIconoEstatus(item.tipoOriginal);
-        const iconoCambio = '<i class="fas fa-minus icono-cambio eq"></i>';
-        const tooltipTexto = 'Tipología original: ' + item.tipoOriginal;
-        const tooltipClase = item.tipoOriginal.toLowerCase();
-        html += '<th class="tienda-header">';
-        html += '<div class="tooltip-custom ' + tooltipClase + '">' + tooltipTexto + '</div>';
-        html += '<div class="tienda-header-icons">';
-        html += '<span class="icono-estatus">' + iconoEstatus + '</span>';
-        html += '<span class="icono-cambio">' + iconoCambio + '</span>';
-        html += '</div>';
-        html += '<span class="tienda-nombre-vertical">' + nombreCorto + '</span>';
-        html += '</th>';
-    });
-    html += '</tr></thead><tbody>';
-    kpisOrdenados.forEach(kpiKey => {
-        html += '<tr>';
-        html += '<td class="kpi-label">' + KPIS_CATALOGO[kpiKey] + ' <span style="color:var(--steel-muted);font-weight:400;font-size:10px;">(' + kpiKey + ')</span></td>';
-        tiendas.forEach(t => {
-            const valores = calcularKPIs(t);
-            const valor = valores[kpiKey];
-            const clase = clasificarValorKPI(valor);
-            html += '<td><span class="kpi-valor ' + clase + '">' + valor.toFixed(2) + '</span></td>';
-        });
-        html += '</tr>';
-    });
-    html += '</tbody></table></div>';
-    html += '</div>';
-
-    // ============ TAB IMPACTO ============
-    html += '<div class="kpi-tab-content kpi-tab-content-impacto' + (kpiTabActual === 'impacto' ? ' active' : '') + '">';
-    html += '<div class="kpi-matrix-title"><i class="fas fa-bolt"></i> Matriz de KPIs Impactados por los Escenarios</div>';
-    html += '<div class="kpi-matrix-subtitle">Valores resultantes después de aplicar el cruce de <strong>' + kpisUsados.length + ' KPIs</strong> en los escenarios seleccionados. Los KPIs no usados se muestran en gris.</div>';
-
-    // Leyenda
-    html += '<div class="kpi-legend">';
-    html += '<div class="kpi-legend-item"><span class="legend-icon up">↑</span> Mejora</div>';
-    html += '<div class="kpi-legend-item"><span class="legend-icon down">↓</span> Deterioro</div>';
-    html += '<div class="kpi-legend-item"><span class="legend-icon eq">=</span> Sin cambio</div>';
-    html += '<div class="kpi-legend-item"><span class="legend-icon disabled">▪</span> No usado en los escenarios</div>';
-    html += '</div>';
-
-    html += '<div class="kpi-table-wrapper">';
-    html += '<table class="kpi-table">';
-    html += '<thead><tr><th class="kpi-label-header">KPI</th>';
-    tipologiasPorTienda.forEach(item => {
-        const nombreCorto = item.tienda.nombre.replace(cadena, '');
-        const iconoEstatus = getIconoEstatus(item.tipoImpacto);
-        const iconoCambio = getIconoCambio(item.tipoOriginal, item.tipoImpacto);
-        const tooltipTexto = 'Original: ' + item.tipoOriginal + ' → Impacto: ' + item.tipoImpacto;
-        const tooltipClase = item.tipoImpacto.toLowerCase();
-        html += '<th class="tienda-header">';
-        html += '<div class="tooltip-custom ' + tooltipClase + '">' + tooltipTexto + '</div>';
-        html += '<div class="tienda-header-icons">';
-        html += '<span class="icono-estatus">' + iconoEstatus + '</span>';
-        html += '<span class="icono-cambio">' + iconoCambio + '</span>';
-        html += '</div>';
-        html += '<span class="tienda-nombre-vertical">' + nombreCorto + '</span>';
-        html += '</th>';
-    });
-    html += '</tr></thead><tbody>';
-
-    kpisOrdenados.forEach(kpiKey => {
-        const esUsado = kpisUsados.includes(kpiKey);
-        const rowClass = esUsado ? '' : 'kpi-row-disabled';
-        html += '<tr class="' + rowClass + '">';
-        html += '<td class="kpi-label">' + KPIS_CATALOGO[kpiKey];
-        if (esUsado) {
-            html += ' <span style="color:var(--hulk-vibrant);font-weight:400;font-size:10px;">(' + kpiKey + ')</span>';
-        } else {
-            html += ' <span style="font-size:10px;">(' + kpiKey + ')</span>';
-        }
-        html += '</td>';
-        tiendas.forEach(t => {
-            const kpisImpactados = calcularKPIsImpactados(t, ejeX, ejeY);
-            const info = kpisImpactados[kpiKey];
-            if (!info.impactado) {
-                html += '<td><span class="kpi-valor" style="color:var(--kpi-disabled-color);font-style:italic;">' + info.valor.toFixed(2) + '</span></td>';
-            } else {
-                const clase = clasificarValorKPI(info.valor);
-                let indicador = '';
-                if (info.cambio === 'up') indicador = '<span class="kpi-change-indicator up">↑</span>';
-                else if (info.cambio === 'down') indicador = '<span class="kpi-change-indicator down">↓</span>';
-                else indicador = '<span class="kpi-change-indicator eq">=</span>';
-                html += '<td><span class="kpi-valor ' + clase + '">' + info.valor.toFixed(2) + '</span>' + indicador + '</td>';
-            }
-        });
-        html += '</tr>';
-    });
-    html += '</tbody></table></div>';
-    html += '</div>';
+    // Renderizar el contenido de las 3 pestañas
+    html += renderContenidoKpiTab('original', kpisOrdenados, kpisUsados, tipologiasPorTienda);
+    html += renderContenidoKpiTab('impacto', kpisOrdenados, kpisUsados, tipologiasPorTienda);
+    html += renderContenidoKpiTab('comparativa', kpisOrdenados, kpisUsados, tipologiasPorTienda);
 
     html += '</div>';
     html += '</div>';
 
     return html;
 }
+
+// ============================================================
+// FILTRO DE KPIs (aplica sobre las 3 pestañas)
+// ============================================================
+function renderFiltroKPIs(tabId) {
+    const activos = kpiFiltroActual;
+    return '<div class="kpi-filter">' +
+        '<span class="kpi-filter-label">Mostrar:</span>' +
+        '<button class="kpi-filter-btn' + (activos === 'todos' ? ' active' : '') + '" onclick="cambiarKpiFiltro(\'todos\')">' +
+            '<i class="fas fa-list"></i> Todos' +
+        '</button>' +
+        '<button class="kpi-filter-btn' + (activos === 'afectados' ? ' active' : '') + '" onclick="cambiarKpiFiltro(\'afectados\')">' +
+            '<i class="fas fa-filter"></i> Solo afectados' +
+        '</button>' +
+    '</div>';
+}
+
+// ============================================================
+// RENDER DE CADA PESTAÑA
+// ============================================================
+function renderContenidoKpiTab(tab, kpisOrdenados, kpisUsados, tipologiasPorTienda) {
+    const activo = kpiTabActual === tab ? ' active' : '';
+
+    // Aplicar filtro
+    let kpisFiltrados = kpisOrdenados;
+    if (kpiFiltroActual === 'afectados') {
+        kpisFiltrados = kpisOrdenados.filter(k => kpisUsados.includes(k));
+    }
+
+    // ============ TAB ORIGINAL ============
+    if (tab === 'original') {
+        let html = '<div class="kpi-tab-content kpi-tab-content-original' + activo + '">';
+        html += '<div class="kpi-matrix-header-row">';
+        html += '<div>';
+        html += '<div class="kpi-matrix-title"><i class="fas fa-table-cells"></i> Matriz de KPIs Originales por Tienda</div>';
+        html += '<div class="kpi-matrix-subtitle">Valores iniciales. Colores: <span style="color:var(--hulk-vibrant);">alto (≥2.5)</span>, <span style="color:var(--rolex-gold);">medio (1.5-2.4)</span>, <span style="color:var(--red);">bajo (<1.5)</span>.</div>';
+        html += '</div>';
+        html += renderFiltroKPIs('original');
+        html += '</div>';
+        html += '<div class="kpi-table-wrapper">';
+        html += '<table class="kpi-table">';
+        html += '<thead><tr><th class="kpi-label-header">KPI</th>';
+        tipologiasPorTienda.forEach(item => {
+            const nombreCorto = item.tienda.nombre.replace(cadena, '');
+            const iconoEstatus = getIconoEstatus(item.tipoOriginal);
+            const iconoCambio = '<i class="fas fa-minus icono-cambio eq"></i>';
+            html += '<th class="tienda-header">';
+            html += '<div class="tienda-header-icons">';
+            html += '<span class="icono-estatus">' + iconoEstatus + '</span>';
+            html += '<span class="icono-cambio">' + iconoCambio + '</span>';
+            html += '</div>';
+            html += '<span class="tienda-nombre-vertical">' + nombreCorto + '</span>';
+            html += '</th>';
+        });
+        html += '</tr></thead><tbody>';
+        kpisFiltrados.forEach(kpiKey => {
+            html += '<tr>';
+            html += '<td class="kpi-label">' + KPIS_CATALOGO[kpiKey] + ' <span style="color:var(--steel-muted);font-weight:400;font-size:10px;">(' + kpiKey + ')</span></td>';
+            tiendas.forEach(t => {
+                const valores = calcularKPIs(t);
+                const valor = valores[kpiKey];
+                const clase = clasificarValorKPI(valor);
+                html += '<td><span class="kpi-valor ' + clase + '">' + valor.toFixed(2) + '</span></td>';
+            });
+            html += '</tr>';
+        });
+        html += '</tbody></table></div>';
+        html += '</div>';
+        return html;
+    }
+
+    // ============ TAB IMPACTO ============
+    if (tab === 'impacto') {
+        let html = '<div class="kpi-tab-content kpi-tab-content-impacto' + activo + '">';
+        html += '<div class="kpi-matrix-header-row">';
+        html += '<div>';
+        html += '<div class="kpi-matrix-title"><i class="fas fa-bolt"></i> Matriz de KPIs Impactados por los Escenarios</div>';
+        html += '<div class="kpi-matrix-subtitle">Valores resultantes después de aplicar el cruce de <strong>' + kpisUsados.length + ' KPIs</strong>. Los KPIs no usados se muestran en gris.</div>';
+        html += '</div>';
+        html += renderFiltroKPIs('impacto');
+        html += '</div>';
+
+        html += '<div class="kpi-legend">';
+        html += '<div class="kpi-legend-item"><span class="legend-icon up">↑</span> Mejora</div>';
+        html += '<div class="kpi-legend-item"><span class="legend-icon down">↓</span> Deterioro</div>';
+        html += '<div class="kpi-legend-item"><span class="legend-icon eq">=</span> Sin cambio</div>';
+        html += '<div class="kpi-legend-item"><span class="legend-icon disabled">▪</span> No usado</div>';
+        html += '</div>';
+
+        html += '<div class="kpi-table-wrapper">';
+        html += '<table class="kpi-table">';
+        html += '<thead><tr><th class="kpi-label-header">KPI</th>';
+        tipologiasPorTienda.forEach(item => {
+            const nombreCorto = item.tienda.nombre.replace(cadena, '');
+            const iconoEstatus = getIconoEstatus(item.tipoImpacto);
+            const iconoCambio = getIconoCambio(item.tipoOriginal, item.tipoImpacto);
+            html += '<th class="tienda-header">';
+            html += '<div class="tienda-header-icons">';
+            html += '<span class="icono-estatus">' + iconoEstatus + '</span>';
+            html += '<span class="icono-cambio">' + iconoCambio + '</span>';
+            html += '</div>';
+            html += '<span class="tienda-nombre-vertical">' + nombreCorto + '</span>';
+            html += '</th>';
+        });
+        html += '</tr></thead><tbody>';
+
+        kpisFiltrados.forEach(kpiKey => {
+            const esUsado = kpisUsados.includes(kpiKey);
+            const rowClass = esUsado ? '' : 'kpi-row-disabled';
+            html += '<tr class="' + rowClass + '">';
+            html += '<td class="kpi-label">' + KPIS_CATALOGO[kpiKey];
+            if (esUsado) {
+                html += ' <span style="color:var(--hulk-vibrant);font-weight:400;font-size:10px;">(' + kpiKey + ')</span>';
+            } else {
+                html += ' <span style="font-size:10px;">(' + kpiKey + ')</span>';
+            }
+            html += '</td>';
+            tiendas.forEach(t => {
+                const kpisImpactados = calcularKPIsImpactados(t, escenarioXActual, escenarioYActual);
+                const info = kpisImpactados[kpiKey];
+                if (!info.impactado) {
+                    html += '<td><span class="kpi-valor" style="color:var(--kpi-disabled-color);font-style:italic;">' + info.valor.toFixed(2) + '</span></td>';
+                } else {
+                    const clase = clasificarValorKPI(info.valor);
+                    let indicador = '';
+                    if (info.cambio === 'up') indicador = '<span class="kpi-change-indicator up">↑</span>';
+                    else if (info.cambio === 'down') indicador = '<span class="kpi-change-indicator down">↓</span>';
+                    else indicador = '<span class="kpi-change-indicator eq">=</span>';
+                    html += '<td><span class="kpi-valor ' + clase + '">' + info.valor.toFixed(2) + '</span>' + indicador + '</td>';
+                }
+            });
+            html += '</tr>';
+        });
+        html += '</tbody></table></div>';
+        html += '</div>';
+        return html;
+    }
+
+    // ============ TAB COMPARATIVA ============
+    if (tab === 'comparativa') {
+        // Solo KPIs impactados (siempre, sin importar el filtro)
+        const kpisImpactadosLista = kpisOrdenados.filter(k => kpisUsados.includes(k));
+
+        let html = '<div class="kpi-tab-content kpi-tab-content-comparativa' + activo + '">';
+        html += '<div class="kpi-matrix-header-row">';
+        html += '<div>';
+        html += '<div class="kpi-matrix-title"><i class="fas fa-code-compare"></i> Matriz Comparativa: Original vs Impacto</div>';
+        html += '<div class="kpi-matrix-subtitle">Solo se muestran los <strong>' + kpisImpactadosLista.length + ' KPIs impactados</strong>. Cada celda muestra: valor original (arriba), valor impactado (medio, con indicador) y diferencia (abajo).</div>';
+        html += '</div>';
+        html += '</div>';
+
+        html += '<div class="kpi-legend">';
+        html += '<div class="kpi-legend-item"><span class="legend-icon up">↑</span> Mejora</div>';
+        html += '<div class="kpi-legend-item"><span class="legend-icon down">↓</span> Deterioro</div>';
+        html += '<div class="kpi-legend-item"><span class="legend-icon eq">=</span> Sin cambio</div>';
+        html += '<div class="kpi-legend-item"><strong style="color:var(--hulk-vibrant);">+</strong> Diferencia positiva</div>';
+        html += '<div class="kpi-legend-item"><strong style="color:var(--red);">−</strong> Diferencia negativa</div>';
+        html += '</div>';
+
+        html += '<div class="kpi-table-wrapper">';
+        html += '<table class="kpi-table">';
+        html += '<thead><tr><th class="kpi-label-header">KPI</th>';
+
+        // Header con 3 elementos: icono original (arriba), nombre vertical, icono impacto (abajo)
+        tipologiasPorTienda.forEach(item => {
+            const nombreCorto = item.tienda.nombre.replace(cadena, '');
+            const iconoOriginal = getIconoEstatus(item.tipoOriginal);
+            const iconoImpacto = getIconoEstatus(item.tipoImpacto);
+            html += '<th class="tienda-header">';
+            html += '<div class="tienda-header-3">';
+            html += '<span class="icono-top">' + iconoOriginal + '</span>';
+            html += '<span class="nombre-central">' + nombreCorto + '</span>';
+            html += '<span class="icono-bottom">' + iconoImpacto + '</span>';
+            html += '</div>';
+            html += '</th>';
+        });
+        html += '</tr></thead><tbody>';
+
+        kpisImpactadosLista.forEach(kpiKey => {
+            html += '<tr>';
+            html += '<td class="kpi-label">' + KPIS_CATALOGO[kpiKey] + ' <span style="color:var(--hulk-vibrant);font-weight:400;font-size:10px;">(' + kpiKey + ')</span></td>';
+            tiendas.forEach(t => {
+                const kpisImpactados = calcularKPIsImpactados(t, escenarioXActual, escenarioYActual);
+                const info = kpisImpactados[kpiKey];
+                const original = info.original;
+                const impactado = info.valor;
+                const diferencia = impactado - original;
+
+                let cambioClase = 'eq';
+                let indicador = '=';
+                if (info.cambio === 'up') { cambioClase = 'up'; indicador = '↑'; }
+                else if (info.cambio === 'down') { cambioClase = 'down'; indicador = '↓'; }
+
+                let difClase = 'neutro';
+                let difTexto = '=';
+                if (diferencia > 0.05) {
+                    difClase = 'positivo';
+                    difTexto = '+' + diferencia.toFixed(2);
+                } else if (diferencia < -0.05) {
+                    difClase = 'negativo';
+                    difTexto = diferencia.toFixed(2);
+                } else {
+                    difTexto = '0.00';
+                }
+
+                html += '<td>';
+                html += '<div class="celda-comparativa">';
+                html += '<span class="celda-linea-1">' + original.toFixed(2) + '</span>';
+                html += '<span class="celda-linea-2 ' + cambioClase + '">' + impactado.toFixed(2) + ' ' + indicador + '</span>';
+                html += '<span class="celda-linea-3 ' + difClase + '">' + difTexto + '</span>';
+                html += '</div>';
+                html += '</td>';
+            });
+            html += '</tr>';
+        });
+        html += '</tbody></table></div>';
+        html += '</div>';
+        return html;
+    }
+
+    return '';
+}
+
+
         // ============================================================
         // VISTA: CONSTRUCTOR DE ESCENARIOS
         // ============================================================

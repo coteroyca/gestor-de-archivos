@@ -36,6 +36,8 @@
             --tab-original-active: rgba(0, 230, 118, 0.3);
             --tab-impacto-bg: rgba(212, 175, 55, 0.15);
             --tab-impacto-active: rgba(212, 175, 55, 0.3);
+            --tab-comparativa-bg: rgba(41, 182, 246, 0.12);
+            --tab-comparativa-active: rgba(41, 182, 246, 0.25);
             --kpi-disabled-bg: rgba(127, 127, 127, 0.08);
             --kpi-disabled-color: rgba(127, 127, 127, 0.5);
         }
@@ -63,6 +65,8 @@
             --tab-original-active: rgba(0, 168, 87, 0.25);
             --tab-impacto-bg: rgba(254, 243, 199, 0.7);
             --tab-impacto-active: rgba(184, 134, 11, 0.25);
+            --tab-comparativa-bg: rgba(219, 234, 254, 0.7);
+            --tab-comparativa-active: rgba(2, 132, 199, 0.25);
             --kpi-disabled-bg: rgba(200, 200, 200, 0.15);
             --kpi-disabled-color: rgba(100, 116, 139, 0.5);
         }
@@ -216,7 +220,6 @@
         }
         .breadcrumb .active-crumb { color: var(--steel-light); font-weight: 600; }
 
-        /* SELECTOR */
         .selector-panel {
             background: linear-gradient(145deg, var(--surface-card), var(--surface));
             border: 1px solid var(--border-glow);
@@ -285,12 +288,7 @@
             box-shadow: 0 6px 20px color-mix(in srgb, var(--hulk) 50%, transparent);
         }
 
-        /* ============================================================
-           SECCIÓN: MATRIZ KPIs × TIENDAS CON PESTAÑAS
-           ============================================================ */
-        .kpi-matrix-section {
-            margin-bottom: 1.2rem;
-        }
+        .kpi-matrix-section { margin-bottom: 1.2rem; }
         .kpi-tabs {
             display: flex;
             gap: 4px;
@@ -316,35 +314,31 @@
             position: relative;
             top: 1px;
         }
-        .kpi-tab.tab-original {
-            background: var(--tab-original-bg);
-            color: var(--steel-light);
-        }
-        .kpi-tab.tab-original:hover {
-            background: var(--tab-original-active);
-        }
+        .kpi-tab.tab-original { background: var(--tab-original-bg); color: var(--steel-light); }
+        .kpi-tab.tab-original:hover { background: var(--tab-original-active); }
         .kpi-tab.tab-original.active {
             background: var(--tab-original-active);
             border-color: var(--hulk-vibrant);
-            color: var(--steel-light);
             box-shadow: inset 0 3px 0 var(--hulk-vibrant);
         }
-        .kpi-tab.tab-impacto {
-            background: var(--tab-impacto-bg);
-            color: var(--steel-light);
-        }
-        .kpi-tab.tab-impacto:hover {
-            background: var(--tab-impacto-active);
-        }
+        .kpi-tab.tab-impacto { background: var(--tab-impacto-bg); color: var(--steel-light); }
+        .kpi-tab.tab-impacto:hover { background: var(--tab-impacto-active); }
         .kpi-tab.tab-impacto.active {
             background: var(--tab-impacto-active);
             border-color: var(--rolex-gold);
-            color: var(--steel-light);
             box-shadow: inset 0 3px 0 var(--rolex-gold);
+        }
+        .kpi-tab.tab-comparativa { background: var(--tab-comparativa-bg); color: var(--steel-light); }
+        .kpi-tab.tab-comparativa:hover { background: var(--tab-comparativa-active); }
+        .kpi-tab.tab-comparativa.active {
+            background: var(--tab-comparativa-active);
+            border-color: var(--blue-accent);
+            box-shadow: inset 0 3px 0 var(--blue-accent);
         }
         .kpi-tab i { font-size: 14px; }
         .kpi-tab.tab-original i { color: var(--hulk-vibrant); }
         .kpi-tab.tab-impacto i { color: var(--rolex-gold); }
+        .kpi-tab.tab-comparativa i { color: var(--blue-accent); }
 
         .kpi-tab-panel {
             background: linear-gradient(145deg, var(--surface-card), var(--surface));
@@ -355,15 +349,15 @@
         }
         .kpi-tab-panel.panel-original {
             border-left: 4px solid var(--hulk-vibrant);
-            background: linear-gradient(145deg,
-                color-mix(in srgb, var(--hulk-vibrant) 6%, var(--surface-card)),
-                var(--surface));
+            background: linear-gradient(145deg, color-mix(in srgb, var(--hulk-vibrant) 6%, var(--surface-card)), var(--surface));
         }
         .kpi-tab-panel.panel-impacto {
             border-left: 4px solid var(--rolex-gold);
-            background: linear-gradient(145deg,
-                color-mix(in srgb, var(--rolex-gold) 8%, var(--surface-card)),
-                var(--surface));
+            background: linear-gradient(145deg, color-mix(in srgb, var(--rolex-gold) 8%, var(--surface-card)), var(--surface));
+        }
+        .kpi-tab-panel.panel-comparativa {
+            border-left: 4px solid var(--blue-accent);
+            background: linear-gradient(145deg, color-mix(in srgb, var(--blue-accent) 6%, var(--surface-card)), var(--surface));
         }
         .kpi-tab-content { display: none; }
         .kpi-tab-content.active { display: block; }
@@ -386,8 +380,62 @@
             margin-bottom: 16px;
             letter-spacing: 0.3px;
         }
+        .kpi-matrix-header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 6px;
+            flex-wrap: wrap;
+        }
 
-        /* Leyenda de cambios */
+        /* Filtro de KPIs */
+        .kpi-filter {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: auto;
+            background: color-mix(in srgb, var(--abyssal) 50%, transparent);
+            border: 1px solid var(--border-deep);
+            border-radius: 20px;
+            padding: 4px 12px 4px 4px;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        .kpi-filter-label {
+            color: var(--steel-muted);
+            text-transform: uppercase;
+            font-family: 'Cinzel', serif;
+            font-size: 9px;
+            padding-left: 8px;
+        }
+        .kpi-filter-btn {
+            background: transparent;
+            border: none;
+            color: var(--steel-muted);
+            padding: 5px 12px;
+            border-radius: 16px;
+            cursor: pointer;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            transition: all 0.2s ease;
+            font-family: 'Outfit', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .kpi-filter-btn:hover {
+            color: var(--steel-light);
+            background: color-mix(in srgb, var(--steel-light) 8%, transparent);
+        }
+        .kpi-filter-btn.active {
+            background: linear-gradient(135deg, var(--hulk), color-mix(in srgb, var(--hulk) 80%, #000));
+            color: #fff;
+            box-shadow: 0 2px 8px color-mix(in srgb, var(--hulk) 40%, transparent);
+        }
+
         .kpi-legend {
             display: flex;
             flex-wrap: wrap;
@@ -509,7 +557,6 @@
         .kpi-valor.medio { color: var(--rolex-gold); }
         .kpi-valor.bajo { color: var(--red); }
 
-        /* Estilos para KPIs deshabilitados (no usados) */
         .kpi-row-disabled td {
             background: var(--kpi-disabled-bg) !important;
             color: var(--kpi-disabled-color) !important;
@@ -525,7 +572,6 @@
             font-style: italic;
         }
 
-        /* Indicadores de cambio en la tabla de impacto */
         .kpi-change-indicator {
             font-size: 9px;
             font-weight: 700;
@@ -535,6 +581,71 @@
         .kpi-change-indicator.up { color: var(--hulk-vibrant); }
         .kpi-change-indicator.down { color: var(--red); }
         .kpi-change-indicator.eq { color: var(--steel-muted); }
+
+        /* Header de 3 elementos (Comparativa) */
+        .tienda-header-3 {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 6px 0;
+            height: 100%;
+        }
+        .tienda-header-3 .icono-top,
+        .tienda-header-3 .icono-bottom {
+            font-size: 14px;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+        .tienda-header-3 .nombre-central {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--steel-light);
+            letter-spacing: 0.5px;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 80px;
+        }
+
+        /* Celdas comparativa (3 líneas) */
+        .celda-comparativa {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            align-items: center;
+            padding: 3px 0;
+        }
+        .celda-linea-1 {
+            font-family: 'Courier New', monospace;
+            font-size: 10px;
+            color: var(--steel-muted);
+            font-weight: 600;
+        }
+        .celda-linea-2 {
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+        .celda-linea-2.up { color: var(--hulk-vibrant); }
+        .celda-linea-2.down { color: var(--red); }
+        .celda-linea-2.eq { color: var(--rolex-gold); }
+        .celda-linea-3 {
+            font-family: 'Courier New', monospace;
+            font-size: 9px;
+            font-weight: 700;
+            padding: 1px 6px;
+            border-radius: 8px;
+        }
+        .celda-linea-3.positivo { color: var(--hulk-vibrant); background: color-mix(in srgb, var(--hulk-vibrant) 12%, transparent); }
+        .celda-linea-3.negativo { color: var(--red); background: color-mix(in srgb, var(--red) 12%, transparent); }
+        .celda-linea-3.neutro { color: var(--steel-muted); background: color-mix(in srgb, var(--steel-muted) 12%, transparent); }
 
         /* CHAT PANEL */
         .chat-panel {
@@ -723,7 +834,6 @@
             transform: translateY(-1px);
         }
 
-        /* TWO-COL */
         .two-col {
             display: grid;
             grid-template-columns: 1.4fr 1fr;
@@ -731,7 +841,6 @@
             margin-bottom: 1.2rem;
         }
 
-        /* MATRIZ */
         .matrix-layout {
             display: grid;
             grid-template-columns: 40px 1fr;
@@ -856,7 +965,6 @@
             letter-spacing: 0.3px;
         }
 
-        /* NARRATIVA IA */
         .narrative-box {
             background: linear-gradient(135deg, color-mix(in srgb, var(--hulk) 12%, transparent) 0%, color-mix(in srgb, var(--surface) 80%, transparent) 100%);
             border: 1px solid var(--border-glow);
@@ -897,7 +1005,6 @@
         }
         .rec-card-text { font-size: 11px; color: var(--steel-silver); line-height: 1.5; }
 
-        /* PANELES */
         .panel {
             background: linear-gradient(145deg, var(--surface-card), var(--surface));
             border: 1px solid var(--border-deep);
@@ -914,7 +1021,6 @@
             display: flex; align-items: center; gap: 8px;
         }
 
-        /* TABLA CLASIFICACIÓN */
         .tabla-wrapper { overflow-x: auto; margin-top: 8px; width: 100%; }
         .matrix-table {
             width: 100%; border-collapse: collapse;
@@ -939,7 +1045,6 @@
         .matrix-table .lastre { background: color-mix(in srgb, var(--red) 12%, transparent); color: var(--red); font-weight: 700; }
         .matrix-table .tipo-cell { display: inline-flex; align-items: center; gap: 5px; }
 
-        /* MAPA SVG */
         .map-container {
             background: var(--abyssal);
             border-radius: 12px;
@@ -961,7 +1066,6 @@
             border: 1px solid color-mix(in srgb, var(--steel-light) 20%, transparent);
         }
 
-        /* RESPONSIVE */
         @media (max-width: 1100px) {
             .two-col { grid-template-columns: 1fr; }
         }
@@ -1272,36 +1376,24 @@
             };
         }
 
-        // ============================================================
-        // CÁLCULO DE KPIs IMPACTADOS POR LOS ESCENARIOS
-        // ============================================================
         function calcularKPIsImpactados(tienda, ejeX, ejeY) {
             const kpisOriginales = calcularKPIs(tienda);
             const kpisUsadosX = KPIS_POR_ESCENARIO[ejeX] || [];
             const kpisUsadosY = KPIS_POR_ESCENARIO[ejeY] || [];
             const kpisUsados = [...new Set([...kpisUsadosX, ...kpisUsadosY])];
 
-            // Determinar dirección de los escenarios
             const esNegativoX = ['recesion', 'estanflacion', 'devaluacion', 'control_precios', 'walmart', 'hard_discount', 'habitos_inflacion', 'costos_logisticos', 'escasez_talento', 'crisis_energetica', 'ciberseguridad', 'cierre_fronteras', 'reformas_fiscales', 'inestabilidad', 'nacionalizacion'].includes(ejeX);
             const esNegativoY = ['recesion', 'estanflacion', 'devaluacion', 'control_precios', 'walmart', 'hard_discount', 'habitos_inflacion', 'costos_logisticos', 'escasez_talento', 'crisis_energetica', 'ciberseguridad', 'cierre_fronteras', 'reformas_fiscales', 'inestabilidad', 'nacionalizacion'].includes(ejeY);
 
             const resultado = {};
             Object.keys(kpisOriginales).forEach(kpi => {
                 if (!kpisUsados.includes(kpi)) {
-                    // KPI no usado en ningún escenario → no se impacta
-                    resultado[kpi] = {
-                        valor: kpisOriginales[kpi],
-                        impactado: false,
-                        cambio: 'none'
-                    };
+                    resultado[kpi] = { valor: kpisOriginales[kpi], impactado: false, cambio: 'none' };
                 } else {
-                    // KPI usado en al menos un escenario → se impacta
                     let factor = 0;
                     let contribuciones = 0;
 
                     if (kpisUsadosX.includes(kpi)) {
-                        // En escenarios negativos, los KPIs de resiliencia tienden a subir (más importantes)
-                        // En escenarios positivos, los KPIs de crecimiento suben
                         if (esNegativoX) {
                             factor += (kpi === 'MIX' || kpi === 'COV' || kpi === 'CON' || kpi === 'DIF') ? 0.15 : -0.1;
                         } else {
@@ -1326,12 +1418,7 @@
                     if (valorFinal > kpisOriginales[kpi] + 0.05) cambio = 'up';
                     else if (valorFinal < kpisOriginales[kpi] - 0.05) cambio = 'down';
 
-                    resultado[kpi] = {
-                        valor: valorFinal,
-                        original: kpisOriginales[kpi],
-                        impactado: true,
-                        cambio: cambio
-                    };
+                    resultado[kpi] = { valor: valorFinal, original: kpisOriginales[kpi], impactado: true, cambio: cambio };
                 }
             });
             return resultado;
@@ -1364,10 +1451,41 @@
             return 'LASTRE';
         }
 
+        // ============================================================
+        // FUNCIONES AUXILIARES (iconos y tipología base)
+        // ============================================================
+        function getTipologiaOriginalBase(tienda) {
+            if (tienda.resiliencia >= 2.5 && tienda.potencial >= 2.5) return 'JOYA';
+            if (tienda.resiliencia >= 2.5 && tienda.potencial < 2.5) return 'BUNKER';
+            if (tienda.resiliencia < 2.5 && tienda.potencial >= 2.5) return 'APUESTA';
+            return 'LASTRE';
+        }
+
+        function getIconoEstatus(tipo) {
+            const iconos = {
+                JOYA: '<i class="fas fa-gem" style="color:#00E676;"></i>',
+                APUESTA: '<i class="fas fa-dice" style="color:#D4AF37;"></i>',
+                BUNKER: '<i class="fas fa-shield-halved" style="color:#FFA500;"></i>',
+                LASTRE: '<i class="fas fa-triangle-exclamation" style="color:#FF4D4D;"></i>'
+            };
+            return iconos[tipo] || '';
+        }
+
+        function getIconoCambio(tipologiaOriginal, tipologiaImpacto) {
+            const orden = { LASTRE: 0, BUNKER: 1, APUESTA: 2, JOYA: 3 };
+            const orig = orden[tipologiaOriginal] ?? 0;
+            const imp = orden[tipologiaImpacto] ?? 0;
+
+            if (imp > orig) return '<i class="fas fa-arrow-up kpi-change-indicator up"></i>';
+            if (imp < orig) return '<i class="fas fa-arrow-down kpi-change-indicator down"></i>';
+            return '<i class="fas fa-equals kpi-change-indicator eq"></i>';
+        }
+
         let escenarioXActual = 'recuperacion';
         let escenarioYActual = 'walmart';
         let vistaActual = 'constructor';
         let kpiTabActual = 'original';
+        let kpiFiltroActual = 'todos'; // 'todos' | 'afectados'
 
         function cambiarVista(vista) {
             vistaActual = vista;
@@ -1389,6 +1507,11 @@
             if (contenidoActivo) contenidoActivo.classList.add('active');
         }
 
+        function cambiarKpiFiltro(filtro) {
+            kpiFiltroActual = filtro;
+            renderConstructor();
+        }
+
         function renderVistaActual() {
             if (vistaActual === 'constructor') renderConstructor();
             else if (vistaActual === 'diagnostico') renderDiagnostico();
@@ -1399,7 +1522,7 @@
         }
 
         // ============================================================
-        // NUEVA SECCIÓN: MATRIZ KPIs × TIENDAS CON PESTAÑAS
+        // RENDER DE LA SECCIÓN DE KPIs CON 3 PESTAÑAS Y FILTRO
         // ============================================================
         function renderMatrizKPIsConPestanas(ejeX, ejeY) {
             const kpisOrdenados = Object.keys(KPIS_CATALOGO).sort((a, b) =>
@@ -1410,9 +1533,17 @@
             const kpisUsadosY = KPIS_POR_ESCENARIO[ejeY] || [];
             const kpisUsados = [...new Set([...kpisUsadosX, ...kpisUsadosY])];
 
+            const tipologiasPorTienda = tiendas.map(t => {
+                const tipoOriginal = getTipologiaOriginalBase(t);
+                const tipoImpacto = clasificarTienda(
+                    calcularScorePorEscenario(t, ejeX),
+                    calcularScorePorEscenario(t, ejeY)
+                );
+                return { tienda: t, tipoOriginal, tipoImpacto };
+            });
+
             let html = '<div class="kpi-matrix-section">';
 
-            // Pestañas
             html += '<div class="kpi-tabs">';
             html += '<div class="kpi-tab tab-original' + (kpiTabActual === 'original' ? ' active' : '') + '" onclick="cambiarKpiTab(\'original\')">';
             html += '<i class="fas fa-database"></i> Original';
@@ -1420,93 +1551,203 @@
             html += '<div class="kpi-tab tab-impacto' + (kpiTabActual === 'impacto' ? ' active' : '') + '" onclick="cambiarKpiTab(\'impacto\')">';
             html += '<i class="fas fa-bolt"></i> Impacto';
             html += '</div>';
+            html += '<div class="kpi-tab tab-comparativa' + (kpiTabActual === 'comparativa' ? ' active' : '') + '" onclick="cambiarKpiTab(\'comparativa\')">';
+            html += '<i class="fas fa-code-compare"></i> Comparativa';
+            html += '</div>';
             html += '</div>';
 
-            // Panel de contenido
             html += '<div class="kpi-tab-panel panel-' + kpiTabActual + '">';
 
-            // ============ TAB ORIGINAL ============
-            html += '<div class="kpi-tab-content kpi-tab-content-original' + (kpiTabActual === 'original' ? ' active' : '') + '">';
-            html += '<div class="kpi-matrix-title"><i class="fas fa-table-cells"></i> Matriz de KPIs Originales por Tienda</div>';
-            html += '<div class="kpi-matrix-subtitle">Valores iniciales de los 23 KPIs para cada una de las ' + tiendas.length + ' tiendas de la cadena. Colores: <span style="color:var(--hulk-vibrant);">alto (≥2.5)</span>, <span style="color:var(--rolex-gold);">medio (1.5-2.4)</span>, <span style="color:var(--red);">bajo (<1.5)</span>.</div>';
-            html += '<div class="kpi-table-wrapper">';
-            html += '<table class="kpi-table">';
-            html += '<thead><tr><th class="kpi-label-header">KPI</th>';
-            tiendas.forEach(t => {
-                const nombreCorto = t.nombre.replace(cadena, '');
-                html += '<th class="tienda-header"><span class="tienda-nombre-vertical">' + nombreCorto + '</span></th>';
-            });
-            html += '</tr></thead><tbody>';
-            kpisOrdenados.forEach(kpiKey => {
-                html += '<tr>';
-                html += '<td class="kpi-label">' + KPIS_CATALOGO[kpiKey] + ' <span style="color:var(--steel-muted);font-weight:400;font-size:10px;">(' + kpiKey + ')</span></td>';
-                tiendas.forEach(t => {
-                    const valores = calcularKPIs(t);
-                    const valor = valores[kpiKey];
-                    const clase = clasificarValorKPI(valor);
-                    html += '<td><span class="kpi-valor ' + clase + '">' + valor.toFixed(2) + '</span></td>';
-                });
-                html += '</tr>';
-            });
-            html += '</tbody></table></div>';
+            html += renderContenidoKpiTab('original', kpisOrdenados, kpisUsados, tipologiasPorTienda);
+            html += renderContenidoKpiTab('impacto', kpisOrdenados, kpisUsados, tipologiasPorTienda);
+            html += renderContenidoKpiTab('comparativa', kpisOrdenados, kpisUsados, tipologiasPorTienda);
+
             html += '</div>';
-
-            // ============ TAB IMPACTO ============
-            html += '<div class="kpi-tab-content kpi-tab-content-impacto' + (kpiTabActual === 'impacto' ? ' active' : '') + '">';
-            html += '<div class="kpi-matrix-title"><i class="fas fa-bolt"></i> Matriz de KPIs Impactados por los Escenarios</div>';
-            html += '<div class="kpi-matrix-subtitle">Valores resultantes después de aplicar el cruce de <strong>' + kpisUsados.length + ' KPIs usados</strong> en los escenarios seleccionados. Los KPIs no usados se muestran en gris (disabled).</div>';
-
-            // Leyenda
-            html += '<div class="kpi-legend">';
-            html += '<div class="kpi-legend-item"><span class="legend-icon up">↑</span> Mejora</div>';
-            html += '<div class="kpi-legend-item"><span class="legend-icon down">↓</span> Deterioro</div>';
-            html += '<div class="kpi-legend-item"><span class="legend-icon eq">=</span> Sin cambio</div>';
-            html += '<div class="kpi-legend-item"><span class="legend-icon disabled">▪</span> No usado en los escenarios</div>';
             html += '</div>';
-
-            html += '<div class="kpi-table-wrapper">';
-            html += '<table class="kpi-table">';
-            html += '<thead><tr><th class="kpi-label-header">KPI</th>';
-            tiendas.forEach(t => {
-                const nombreCorto = t.nombre.replace(cadena, '');
-                html += '<th class="tienda-header"><span class="tienda-nombre-vertical">' + nombreCorto + '</span></th>';
-            });
-            html += '</tr></thead><tbody>';
-
-            kpisOrdenados.forEach(kpiKey => {
-                const esUsado = kpisUsados.includes(kpiKey);
-                const rowClass = esUsado ? '' : 'kpi-row-disabled';
-                html += '<tr class="' + rowClass + '">';
-                html += '<td class="kpi-label">' + KPIS_CATALOGO[kpiKey];
-                if (esUsado) {
-                    html += ' <span style="color:var(--hulk-vibrant);font-weight:400;font-size:10px;">(' + kpiKey + ')</span>';
-                } else {
-                    html += ' <span style="font-size:10px;">(' + kpiKey + ')</span>';
-                }
-                html += '</td>';
-                tiendas.forEach(t => {
-                    const kpisImpactados = calcularKPIsImpactados(t, ejeX, ejeY);
-                    const info = kpisImpactados[kpiKey];
-                    if (!info.impactado) {
-                        html += '<td><span class="kpi-valor" style="color:var(--kpi-disabled-color);font-style:italic;">' + info.valor.toFixed(2) + '</span></td>';
-                    } else {
-                        const clase = clasificarValorKPI(info.valor);
-                        let indicador = '';
-                        if (info.cambio === 'up') indicador = '<span class="kpi-change-indicator up">↑</span>';
-                        else if (info.cambio === 'down') indicador = '<span class="kpi-change-indicator down">↓</span>';
-                        else indicador = '<span class="kpi-change-indicator eq">=</span>';
-                        html += '<td><span class="kpi-valor ' + clase + '">' + info.valor.toFixed(2) + '</span>' + indicador + '</td>';
-                    }
-                });
-                html += '</tr>';
-            });
-            html += '</tbody></table></div>';
-            html += '</div>';
-
-            html += '</div>'; // cierre panel
-            html += '</div>'; // cierre section
-
             return html;
+        }
+
+        function renderFiltroKPIs() {
+            return '<div class="kpi-filter">' +
+                '<span class="kpi-filter-label">Mostrar:</span>' +
+                '<button class="kpi-filter-btn' + (kpiFiltroActual === 'todos' ? ' active' : '') + '" onclick="cambiarKpiFiltro(\'todos\')">' +
+                    '<i class="fas fa-list"></i> Todos' +
+                '</button>' +
+                '<button class="kpi-filter-btn' + (kpiFiltroActual === 'afectados' ? ' active' : '') + '" onclick="cambiarKpiFiltro(\'afectados\')">' +
+                    '<i class="fas fa-filter"></i> Solo afectados' +
+                '</button>' +
+            '</div>';
+        }
+
+        function renderContenidoKpiTab(tab, kpisOrdenados, kpisUsados, tipologiasPorTienda) {
+            const activo = kpiTabActual === tab ? ' active' : '';
+
+            let kpisFiltrados = kpisOrdenados;
+            if (kpiFiltroActual === 'afectados') {
+                kpisFiltrados = kpisOrdenados.filter(k => kpisUsados.includes(k));
+            }
+
+            if (tab === 'original') {
+                let html = '<div class="kpi-tab-content kpi-tab-content-original' + activo + '">';
+                html += '<div class="kpi-matrix-header-row">';
+                html += '<div>';
+                html += '<div class="kpi-matrix-title"><i class="fas fa-table-cells"></i> Matriz de KPIs Originales por Tienda</div>';
+                html += '<div class="kpi-matrix-subtitle">Valores iniciales. Colores: <span style="color:var(--hulk-vibrant);">alto (≥2.5)</span>, <span style="color:var(--rolex-gold);">medio (1.5-2.4)</span>, <span style="color:var(--red);">bajo (<1.5)</span>.</div>';
+                html += '</div>';
+                html += renderFiltroKPIs();
+                html += '</div>';
+                html += '<div class="kpi-table-wrapper">';
+                html += '<table class="kpi-table">';
+                html += '<thead><tr><th class="kpi-label-header">KPI</th>';
+                tipologiasPorTienda.forEach(item => {
+                    const nombreCorto = item.tienda.nombre.replace(cadena, '');
+                    html += '<th class="tienda-header"><span class="tienda-nombre-vertical">' + nombreCorto + '</span></th>';
+                });
+                html += '</tr></thead><tbody>';
+                kpisFiltrados.forEach(kpiKey => {
+                    html += '<tr>';
+                    html += '<td class="kpi-label">' + KPIS_CATALOGO[kpiKey] + ' <span style="color:var(--steel-muted);font-weight:400;font-size:10px;">(' + kpiKey + ')</span></td>';
+                    tiendas.forEach(t => {
+                        const valores = calcularKPIs(t);
+                        const valor = valores[kpiKey];
+                        const clase = clasificarValorKPI(valor);
+                        html += '<td><span class="kpi-valor ' + clase + '">' + valor.toFixed(2) + '</span></td>';
+                    });
+                    html += '</tr>';
+                });
+                html += '</tbody></table></div>';
+                html += '</div>';
+                return html;
+            }
+
+            if (tab === 'impacto') {
+                let html = '<div class="kpi-tab-content kpi-tab-content-impacto' + activo + '">';
+                html += '<div class="kpi-matrix-header-row">';
+                html += '<div>';
+                html += '<div class="kpi-matrix-title"><i class="fas fa-bolt"></i> Matriz de KPIs Impactados por los Escenarios</div>';
+                html += '<div class="kpi-matrix-subtitle">Valores resultantes tras aplicar <strong>' + kpisUsados.length + ' KPIs</strong>. Los no usados aparecen en gris.</div>';
+                html += '</div>';
+                html += renderFiltroKPIs();
+                html += '</div>';
+
+                html += '<div class="kpi-legend">';
+                html += '<div class="kpi-legend-item"><span class="legend-icon up">↑</span> Mejora</div>';
+                html += '<div class="kpi-legend-item"><span class="legend-icon down">↓</span> Deterioro</div>';
+                html += '<div class="kpi-legend-item"><span class="legend-icon eq">=</span> Sin cambio</div>';
+                html += '<div class="kpi-legend-item"><span class="legend-icon disabled">▪</span> No usado</div>';
+                html += '</div>';
+
+                html += '<div class="kpi-table-wrapper">';
+                html += '<table class="kpi-table">';
+                html += '<thead><tr><th class="kpi-label-header">KPI</th>';
+                tipologiasPorTienda.forEach(item => {
+                    const nombreCorto = item.tienda.nombre.replace(cadena, '');
+                    html += '<th class="tienda-header"><span class="tienda-nombre-vertical">' + nombreCorto + '</span></th>';
+                });
+                html += '</tr></thead><tbody>';
+
+                kpisFiltrados.forEach(kpiKey => {
+                    const esUsado = kpisUsados.includes(kpiKey);
+                    const rowClass = esUsado ? '' : 'kpi-row-disabled';
+                    html += '<tr class="' + rowClass + '">';
+                    html += '<td class="kpi-label">' + KPIS_CATALOGO[kpiKey];
+                    html += esUsado
+                        ? ' <span style="color:var(--hulk-vibrant);font-weight:400;font-size:10px;">(' + kpiKey + ')</span>'
+                        : ' <span style="font-size:10px;">(' + kpiKey + ')</span>';
+                    html += '</td>';
+                    tiendas.forEach(t => {
+                        const kpisImpactados = calcularKPIsImpactados(t, escenarioXActual, escenarioYActual);
+                        const info = kpisImpactados[kpiKey];
+                        if (!info.impactado) {
+                            html += '<td><span class="kpi-valor" style="color:var(--kpi-disabled-color);font-style:italic;">' + info.valor.toFixed(2) + '</span></td>';
+                        } else {
+                            const clase = clasificarValorKPI(info.valor);
+                            let indicador = '';
+                            if (info.cambio === 'up') indicador = '<span class="kpi-change-indicator up">↑</span>';
+                            else if (info.cambio === 'down') indicador = '<span class="kpi-change-indicator down">↓</span>';
+                            else indicador = '<span class="kpi-change-indicator eq">=</span>';
+                            html += '<td><span class="kpi-valor ' + clase + '">' + info.valor.toFixed(2) + '</span>' + indicador + '</td>';
+                        }
+                    });
+                    html += '</tr>';
+                });
+                html += '</tbody></table></div>';
+                html += '</div>';
+                return html;
+            }
+
+            if (tab === 'comparativa') {
+                const kpisImpactadosLista = kpisOrdenados.filter(k => kpisUsados.includes(k));
+
+                let html = '<div class="kpi-tab-content kpi-tab-content-comparativa' + activo + '">';
+                html += '<div class="kpi-matrix-header-row">';
+                html += '<div>';
+                html += '<div class="kpi-matrix-title"><i class="fas fa-code-compare"></i> Matriz Comparativa: Original vs Impacto</div>';
+                html += '<div class="kpi-matrix-subtitle">Solo los <strong>' + kpisImpactadosLista.length + ' KPIs impactados</strong>. Cada celda muestra: valor original (arriba), valor impactado + indicador (medio) y diferencia (abajo).</div>';
+                html += '</div>';
+                html += '</div>';
+
+                html += '<div class="kpi-legend">';
+                html += '<div class="kpi-legend-item"><span class="legend-icon up">↑</span> Mejora</div>';
+                html += '<div class="kpi-legend-item"><span class="legend-icon down">↓</span> Deterioro</div>';
+                html += '<div class="kpi-legend-item"><span class="legend-icon eq">=</span> Sin cambio</div>';
+                html += '<div class="kpi-legend-item"><strong style="color:var(--hulk-vibrant);">+</strong> Diferencia positiva</div>';
+                html += '<div class="kpi-legend-item"><strong style="color:var(--red);">−</strong> Diferencia negativa</div>';
+                html += '</div>';
+
+                html += '<div class="kpi-table-wrapper">';
+                html += '<table class="kpi-table">';
+                html += '<thead><tr><th class="kpi-label-header">KPI</th>';
+                tipologiasPorTienda.forEach(item => {
+                    const nombreCorto = item.tienda.nombre.replace(cadena, '');
+                    const iconoOriginal = getIconoEstatus(item.tipoOriginal);
+                    const iconoImpacto = getIconoEstatus(item.tipoImpacto);
+                    html += '<th class="tienda-header">';
+                    html += '<div class="tienda-header-3">';
+                    html += '<span class="icono-top">' + iconoOriginal + '</span>';
+                    html += '<span class="nombre-central">' + nombreCorto + '</span>';
+                    html += '<span class="icono-bottom">' + iconoImpacto + '</span>';
+                    html += '</div>';
+                    html += '</th>';
+                });
+                html += '</tr></thead><tbody>';
+
+                kpisImpactadosLista.forEach(kpiKey => {
+                    html += '<tr>';
+                    html += '<td class="kpi-label">' + KPIS_CATALOGO[kpiKey] + ' <span style="color:var(--hulk-vibrant);font-weight:400;font-size:10px;">(' + kpiKey + ')</span></td>';
+                    tiendas.forEach(t => {
+                        const kpisImpactados = calcularKPIsImpactados(t, escenarioXActual, escenarioYActual);
+                        const info = kpisImpactados[kpiKey];
+                        const original = info.original;
+                        const impactado = info.valor;
+                        const diferencia = impactado - original;
+
+                        let cambioClase = 'eq';
+                        let indicador = '=';
+                        if (info.cambio === 'up') { cambioClase = 'up'; indicador = '↑'; }
+                        else if (info.cambio === 'down') { cambioClase = 'down'; indicador = '↓'; }
+
+                        let difClase = 'neutro';
+                        let difTexto = '0.00';
+                        if (diferencia > 0.05) { difClase = 'positivo'; difTexto = '+' + diferencia.toFixed(2); }
+                        else if (diferencia < -0.05) { difClase = 'negativo'; difTexto = diferencia.toFixed(2); }
+
+                        html += '<td>';
+                        html += '<div class="celda-comparativa">';
+                        html += '<span class="celda-linea-1">' + original.toFixed(2) + '</span>';
+                        html += '<span class="celda-linea-2 ' + cambioClase + '">' + impactado.toFixed(2) + ' ' + indicador + '</span>';
+                        html += '<span class="celda-linea-3 ' + difClase + '">' + difTexto + '</span>';
+                        html += '</div>';
+                        html += '</td>';
+                    });
+                    html += '</tr>';
+                });
+                html += '</tbody></table></div>';
+                html += '</div>';
+                return html;
+            }
+
+            return '';
         }
 
         // ============================================================
@@ -1546,7 +1787,6 @@
             let html = '<div class="dashboard-container">';
             html += '<div class="breadcrumb"><span class="active-crumb">🎯 Constructor de Escenarios</span></div>';
 
-            // SELECTOR
             html += '<div class="selector-panel">';
             html += '<div class="selector-title"><i class="fas fa-sliders-h"></i> Configura los dos escenarios a cruzar</div>';
             html += '<div class="selector-grid">';
@@ -1572,10 +1812,8 @@
             html += '</div>';
             html += '</div>';
 
-            // NUEVA SECCIÓN: MATRIZ KPIs CON PESTAÑAS
             html += renderMatrizKPIsConPestanas(ejeX, ejeY);
 
-            // KPIs usados
             html += '<div class="panel" style="margin-bottom:1.2rem; padding:1rem 1.2rem;">';
             html += '<div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">';
             html += '<div><div style="font-size:10px;color:var(--steel-muted);text-transform:uppercase;font-weight:700;font-family:\'Cinzel\';margin-bottom:6px;">KPIs del Eje X</div><div style="display:flex;flex-wrap:wrap;gap:4px;">';
@@ -1586,7 +1824,6 @@
             html += '</div></div>';
             html += '</div></div>';
 
-            // TWO-COL: Matriz + Narrativa
             html += '<div class="two-col">';
             html += '<div class="matrix-layout">';
             html += '<div class="matrix-y-axis"><span class="matrix-y-axis-label">↑ ' + nombreY + ' ←→ ' + nombreY + ' ↓</span></div>';
@@ -1621,7 +1858,6 @@
             html += '</div>';
             html += '</div>';
 
-            // Tabla y Mapa
             html += '<div class="two-col" style="grid-template-columns:1fr 1fr;">';
             html += '<div class="panel">';
             html += '<div class="panel-title"><i class="fas fa-table"></i> Clasificación por Escenario</div>';
@@ -1647,7 +1883,6 @@
             html += '</div>';
             html += '</div>';
 
-            // CHAT PANEL
             html += '<div class="chat-panel">';
             html += '<div class="chat-panel-header">';
             html += '<div class="chat-panel-title"><i class="fas fa-comments"></i> Consulta al Asistente DODET</div>';

@@ -1401,139 +1401,114 @@
         // ============================================================
         // NUEVA SECCIÓN: MATRIZ KPIs × TIENDAS CON PESTAÑAS
         // ============================================================
-function renderMatrizKPIsConPestanas(ejeX, ejeY) {
-    const kpisOrdenados = Object.keys(KPIS_CATALOGO).sort((a, b) =>
-        KPIS_CATALOGO[a].localeCompare(KPIS_CATALOGO[b], 'es')
-    );
+        function renderMatrizKPIsConPestanas(ejeX, ejeY) {
+            const kpisOrdenados = Object.keys(KPIS_CATALOGO).sort((a, b) =>
+                KPIS_CATALOGO[a].localeCompare(KPIS_CATALOGO[b], 'es')
+            );
 
-    const kpisUsadosX = KPIS_POR_ESCENARIO[ejeX] || [];
-    const kpisUsadosY = KPIS_POR_ESCENARIO[ejeY] || [];
-    const kpisUsados = [...new Set([...kpisUsadosX, ...kpisUsadosY])];
+            const kpisUsadosX = KPIS_POR_ESCENARIO[ejeX] || [];
+            const kpisUsadosY = KPIS_POR_ESCENARIO[ejeY] || [];
+            const kpisUsados = [...new Set([...kpisUsadosX, ...kpisUsadosY])];
 
-    // Calcular tipologías por tienda
-    const tipologiasPorTienda = tiendas.map(t => {
-        const tipoOriginal = getTipologiaOriginalBase(t);
-        const tipoImpacto = clasificarTienda(
-            calcularScorePorEscenario(t, ejeX),
-            calcularScorePorEscenario(t, ejeY)
-        );
-        return { tienda: t, tipoOriginal, tipoImpacto };
-    });
+            let html = '<div class="kpi-matrix-section">';
 
-    let html = '<div class="kpi-matrix-section">';
+            // Pestañas
+            html += '<div class="kpi-tabs">';
+            html += '<div class="kpi-tab tab-original' + (kpiTabActual === 'original' ? ' active' : '') + '" onclick="cambiarKpiTab(\'original\')">';
+            html += '<i class="fas fa-database"></i> Original';
+            html += '</div>';
+            html += '<div class="kpi-tab tab-impacto' + (kpiTabActual === 'impacto' ? ' active' : '') + '" onclick="cambiarKpiTab(\'impacto\')">';
+            html += '<i class="fas fa-bolt"></i> Impacto';
+            html += '</div>';
+            html += '</div>';
 
-    // Pestañas
-    html += '<div class="kpi-tabs">';
-    html += '<div class="kpi-tab tab-original' + (kpiTabActual === 'original' ? ' active' : '') + '" onclick="cambiarKpiTab(\'original\')">';
-    html += '<i class="fas fa-database"></i> Original';
-    html += '</div>';
-    html += '<div class="kpi-tab tab-impacto' + (kpiTabActual === 'impacto' ? ' active' : '') + '" onclick="cambiarKpiTab(\'impacto\')">';
-    html += '<i class="fas fa-bolt"></i> Impacto';
-    html += '</div>';
-    html += '</div>';
+            // Panel de contenido
+            html += '<div class="kpi-tab-panel panel-' + kpiTabActual + '">';
 
-    // Panel de contenido
-    html += '<div class="kpi-tab-panel panel-' + kpiTabActual + '">';
+            // ============ TAB ORIGINAL ============
+            html += '<div class="kpi-tab-content kpi-tab-content-original' + (kpiTabActual === 'original' ? ' active' : '') + '">';
+            html += '<div class="kpi-matrix-title"><i class="fas fa-table-cells"></i> Matriz de KPIs Originales por Tienda</div>';
+            html += '<div class="kpi-matrix-subtitle">Valores iniciales de los 23 KPIs para cada una de las ' + tiendas.length + ' tiendas de la cadena. Colores: <span style="color:var(--hulk-vibrant);">alto (≥2.5)</span>, <span style="color:var(--rolex-gold);">medio (1.5-2.4)</span>, <span style="color:var(--red);">bajo (<1.5)</span>.</div>';
+            html += '<div class="kpi-table-wrapper">';
+            html += '<table class="kpi-table">';
+            html += '<thead><tr><th class="kpi-label-header">KPI</th>';
+            tiendas.forEach(t => {
+                const nombreCorto = t.nombre.replace(cadena, '');
+                html += '<th class="tienda-header"><span class="tienda-nombre-vertical">' + nombreCorto + '</span></th>';
+            });
+            html += '</tr></thead><tbody>';
+            kpisOrdenados.forEach(kpiKey => {
+                html += '<tr>';
+                html += '<td class="kpi-label">' + KPIS_CATALOGO[kpiKey] + ' <span style="color:var(--steel-muted);font-weight:400;font-size:10px;">(' + kpiKey + ')</span></td>';
+                tiendas.forEach(t => {
+                    const valores = calcularKPIs(t);
+                    const valor = valores[kpiKey];
+                    const clase = clasificarValorKPI(valor);
+                    html += '<td><span class="kpi-valor ' + clase + '">' + valor.toFixed(2) + '</span></td>';
+                });
+                html += '</tr>';
+            });
+            html += '</tbody></table></div>';
+            html += '</div>';
 
-    // ============ TAB ORIGINAL ============
-    html += '<div class="kpi-tab-content kpi-tab-content-original' + (kpiTabActual === 'original' ? ' active' : '') + '">';
-    html += '<div class="kpi-matrix-title"><i class="fas fa-table-cells"></i> Matriz de KPIs Originales por Tienda</div>';
-    html += '<div class="kpi-matrix-subtitle">Valores iniciales de los 23 KPIs. Colores: <span style="color:var(--hulk-vibrant);">alto (≥2.5)</span>, <span style="color:var(--rolex-gold);">medio (1.5-2.4)</span>, <span style="color:var(--red);">bajo (<1.5)</span>.</div>';
-    html += '<div class="kpi-table-wrapper">';
-    html += '<table class="kpi-table">';
-    html += '<thead><tr><th class="kpi-label-header">KPI</th>';
-    tipologiasPorTienda.forEach(item => {
-        const nombreCorto = item.tienda.nombre.replace(cadena, '');
-        const iconoEstatus = getIconoEstatus(item.tipoOriginal);
-        const iconoCambio = '<i class="fas fa-minus icono-cambio eq"></i>';
-        html += '<th class="tienda-header">';
-        html += '<div class="tienda-header-icons">';
-        html += '<span class="icono-estatus">' + iconoEstatus + '</span>';
-        html += '<span class="icono-cambio">' + iconoCambio + '</span>';
-        html += '</div>';
-        html += '<span class="tienda-nombre-vertical">' + nombreCorto + '</span>';
-        html += '</th>';
-    });
-    html += '</tr></thead><tbody>';
-    kpisOrdenados.forEach(kpiKey => {
-        html += '<tr>';
-        html += '<td class="kpi-label">' + KPIS_CATALOGO[kpiKey] + ' <span style="color:var(--steel-muted);font-weight:400;font-size:10px;">(' + kpiKey + ')</span></td>';
-        tiendas.forEach(t => {
-            const valores = calcularKPIs(t);
-            const valor = valores[kpiKey];
-            const clase = clasificarValorKPI(valor);
-            html += '<td><span class="kpi-valor ' + clase + '">' + valor.toFixed(2) + '</span></td>';
-        });
-        html += '</tr>';
-    });
-    html += '</tbody></table></div>';
-    html += '</div>';
+            // ============ TAB IMPACTO ============
+            html += '<div class="kpi-tab-content kpi-tab-content-impacto' + (kpiTabActual === 'impacto' ? ' active' : '') + '">';
+            html += '<div class="kpi-matrix-title"><i class="fas fa-bolt"></i> Matriz de KPIs Impactados por los Escenarios</div>';
+            html += '<div class="kpi-matrix-subtitle">Valores resultantes después de aplicar el cruce de <strong>' + kpisUsados.length + ' KPIs usados</strong> en los escenarios seleccionados. Los KPIs no usados se muestran en gris (disabled).</div>';
 
-    // ============ TAB IMPACTO ============
-    html += '<div class="kpi-tab-content kpi-tab-content-impacto' + (kpiTabActual === 'impacto' ? ' active' : '') + '">';
-    html += '<div class="kpi-matrix-title"><i class="fas fa-bolt"></i> Matriz de KPIs Impactados por los Escenarios</div>';
-    html += '<div class="kpi-matrix-subtitle">Valores resultantes después de aplicar el cruce de <strong>' + kpisUsados.length + ' KPIs</strong> en los escenarios seleccionados. Los KPIs no usados se muestran en gris.</div>';
+            // Leyenda
+            html += '<div class="kpi-legend">';
+            html += '<div class="kpi-legend-item"><span class="legend-icon up">↑</span> Mejora</div>';
+            html += '<div class="kpi-legend-item"><span class="legend-icon down">↓</span> Deterioro</div>';
+            html += '<div class="kpi-legend-item"><span class="legend-icon eq">=</span> Sin cambio</div>';
+            html += '<div class="kpi-legend-item"><span class="legend-icon disabled">▪</span> No usado en los escenarios</div>';
+            html += '</div>';
 
-    // Leyenda
-    html += '<div class="kpi-legend">';
-    html += '<div class="kpi-legend-item"><span class="legend-icon up">↑</span> Mejora</div>';
-    html += '<div class="kpi-legend-item"><span class="legend-icon down">↓</span> Deterioro</div>';
-    html += '<div class="kpi-legend-item"><span class="legend-icon eq">=</span> Sin cambio</div>';
-    html += '<div class="kpi-legend-item"><span class="legend-icon disabled">▪</span> No usado en los escenarios</div>';
-    html += '</div>';
+            html += '<div class="kpi-table-wrapper">';
+            html += '<table class="kpi-table">';
+            html += '<thead><tr><th class="kpi-label-header">KPI</th>';
+            tiendas.forEach(t => {
+                const nombreCorto = t.nombre.replace(cadena, '');
+                html += '<th class="tienda-header"><span class="tienda-nombre-vertical">' + nombreCorto + '</span></th>';
+            });
+            html += '</tr></thead><tbody>';
 
-    html += '<div class="kpi-table-wrapper">';
-    html += '<table class="kpi-table">';
-    html += '<thead><tr><th class="kpi-label-header">KPI</th>';
-    tipologiasPorTienda.forEach(item => {
-        const nombreCorto = item.tienda.nombre.replace(cadena, '');
-        const iconoEstatus = getIconoEstatus(item.tipoImpacto);
-        const iconoCambio = getIconoCambio(item.tipoOriginal, item.tipoImpacto);
-        html += '<th class="tienda-header">';
-        html += '<div class="tienda-header-icons">';
-        html += '<span class="icono-estatus">' + iconoEstatus + '</span>';
-        html += '<span class="icono-cambio">' + iconoCambio + '</span>';
-        html += '</div>';
-        html += '<span class="tienda-nombre-vertical">' + nombreCorto + '</span>';
-        html += '</th>';
-    });
-    html += '</tr></thead><tbody>';
+            kpisOrdenados.forEach(kpiKey => {
+                const esUsado = kpisUsados.includes(kpiKey);
+                const rowClass = esUsado ? '' : 'kpi-row-disabled';
+                html += '<tr class="' + rowClass + '">';
+                html += '<td class="kpi-label">' + KPIS_CATALOGO[kpiKey];
+                if (esUsado) {
+                    html += ' <span style="color:var(--hulk-vibrant);font-weight:400;font-size:10px;">(' + kpiKey + ')</span>';
+                } else {
+                    html += ' <span style="font-size:10px;">(' + kpiKey + ')</span>';
+                }
+                html += '</td>';
+                tiendas.forEach(t => {
+                    const kpisImpactados = calcularKPIsImpactados(t, ejeX, ejeY);
+                    const info = kpisImpactados[kpiKey];
+                    if (!info.impactado) {
+                        html += '<td><span class="kpi-valor" style="color:var(--kpi-disabled-color);font-style:italic;">' + info.valor.toFixed(2) + '</span></td>';
+                    } else {
+                        const clase = clasificarValorKPI(info.valor);
+                        let indicador = '';
+                        if (info.cambio === 'up') indicador = '<span class="kpi-change-indicator up">↑</span>';
+                        else if (info.cambio === 'down') indicador = '<span class="kpi-change-indicator down">↓</span>';
+                        else indicador = '<span class="kpi-change-indicator eq">=</span>';
+                        html += '<td><span class="kpi-valor ' + clase + '">' + info.valor.toFixed(2) + '</span>' + indicador + '</td>';
+                    }
+                });
+                html += '</tr>';
+            });
+            html += '</tbody></table></div>';
+            html += '</div>';
 
-    kpisOrdenados.forEach(kpiKey => {
-        const esUsado = kpisUsados.includes(kpiKey);
-        const rowClass = esUsado ? '' : 'kpi-row-disabled';
-        html += '<tr class="' + rowClass + '">';
-        html += '<td class="kpi-label">' + KPIS_CATALOGO[kpiKey];
-        if (esUsado) {
-            html += ' <span style="color:var(--hulk-vibrant);font-weight:400;font-size:10px;">(' + kpiKey + ')</span>';
-        } else {
-            html += ' <span style="font-size:10px;">(' + kpiKey + ')</span>';
+            html += '</div>'; // cierre panel
+            html += '</div>'; // cierre section
+
+            return html;
         }
-        html += '</td>';
-        tiendas.forEach(t => {
-            const kpisImpactados = calcularKPIsImpactados(t, ejeX, ejeY);
-            const info = kpisImpactados[kpiKey];
-            if (!info.impactado) {
-                html += '<td><span class="kpi-valor" style="color:var(--kpi-disabled-color);font-style:italic;">' + info.valor.toFixed(2) + '</span></td>';
-            } else {
-                const clase = clasificarValorKPI(info.valor);
-                let indicador = '';
-                if (info.cambio === 'up') indicador = '<span class="kpi-change-indicator up">↑</span>';
-                else if (info.cambio === 'down') indicador = '<span class="kpi-change-indicator down">↓</span>';
-                else indicador = '<span class="kpi-change-indicator eq">=</span>';
-                html += '<td><span class="kpi-valor ' + clase + '">' + info.valor.toFixed(2) + '</span>' + indicador + '</td>';
-            }
-        });
-        html += '</tr>';
-    });
-    html += '</tbody></table></div>';
-    html += '</div>';
 
-    html += '</div>';
-    html += '</div>';
-
-    return html;
-}
         // ============================================================
         // VISTA: CONSTRUCTOR DE ESCENARIOS
         // ============================================================

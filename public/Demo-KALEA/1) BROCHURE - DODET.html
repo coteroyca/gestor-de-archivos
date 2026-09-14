@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Planalitica · RetailMind 360° — Mapa de Impacto, Riesgo y Oportunidad de la Red de Tiendas</title>
+<style>
+/* ============================================================
+   CONFIGURACIÓN DE IMPRESIÓN Y RESET
+   ============================================================ */
+@page {
+    size: A4;
+    margin: 0;
+}
+* { box-sizing: border-box; }
+html, body {
+    margin: 0;
+    padding: 0;
+}
+body {
+    background: #dfe4e8;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #102334;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+/* ============================================================
+   PÁGINAS
+   ============================================================ */
+.page {
+    width: 210mm;
+    height: 297mm;
+    margin: 0 auto 8mm;
+    background: #ffffff;
+    position: relative;
+    overflow: hidden;
+    page-break-after: always;
+}
+.page:last-child {
+    page-break-after: auto;
+}
+
+/* ============================================================
+   FONDO OSCURO (con degradado y destellos)
+   ============================================================ */
+.dark {
+    background:
+        radial-gradient(circle at 88% 12%, rgba(24,214,232,.12), transparent 27%),
+        radial-gradient(circle at 10% 85%, rgba(24,214,232,.05), transparent 25%),
+        linear-gradient(145deg, #061321, #0b2032 60%, #123149);
+    color: #f5fbff;
+}
+
+/* ============================================================
+   CONTENEDOR INTERNO
+   ============================================================ */
+.inner {
+    height: 100%;
+    padding: 18mm 18mm 17mm 18mm;
+    position: relative;
+}
+
+/* ============================================================
+   MARCA / LOGO
+   ============================================================ */
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: .6px;
+    text-transform: uppercase;
+}
+.brand-logo {
+    width: 34px;
+    height: 34px;
+    object-fit: contain;
+    border-radius: 8px;
+}
+.brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+}
+.brand-text .top {
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: #18d6e8;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+.brand-text .bottom {
+    font-size: 15px;
+    font-weight: 900;
+    color: inherit;
+}
+.dark .brand-text .bottom { color: #ffffff; }
+
+/* ============================================================
+   TIPOGRAFÍA
+   ============================================================ */
+.eyebrow {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 800;
+    color: #18d6e8;
+}
+h1 {
+    font-size: 39px;
+    line-height: 1.03;
+    letter-spacing: -1.6px;
+    margin: 13mm 0 6mm;
+}
+h2 {
+    font-size: 28px;
+    line-height: 1.1;
+    letter-spacing: -.8px;
+    margin: 0 0 6mm;
+}
+h3 {
+    font-size: 16px;
+    margin: 0 0 3mm;
+}
+p {
+    font-size: 12px;
+    line-height: 1.55;
+    margin: 0 0 4mm;
+}
+.lead {
+    font-size: 17px;
+    line-height: 1.45;
+    color: #d8e8ef;
+    max-width: 165mm;
+}
+.cyan { color: #18d6e8; }
+
+/* ============================================================
+   LÍNEA DECORATIVA
+   ============================================================ */
+.hero-line {
+    width: 105mm;
+    height: 2px;
+    background: linear-gradient(90deg, #18d6e8, transparent);
+    margin: 7mm 0;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer {
+    position: absolute;
+    bottom: 7mm;
+    left: 18mm;
+    right: 18mm;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 8.5px;
+    color: #8da2b1;
+}
+.footer .footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.footer .footer-logo {
+    width: 14px;
+    height: 14px;
+    object-fit: contain;
+}
+
+/* ============================================================
+   GRIDS
+   ============================================================ */
+.grid2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 7mm;
+}
+.grid3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5mm;
+}
+
+/* ============================================================
+   CARDS
+   ============================================================ */
+.card {
+    border: 1px solid #d7e1e7;
+    border-radius: 12px;
+    padding: 6mm;
+    background: #ffffff;
+}
+.dark .card {
+    background: rgba(255,255,255,.035);
+    border-color: #294458;
+}
+.num {
+    font-size: 27px;
+    font-weight: 900;
+    color: #18d6e8;
+    margin-bottom: 4mm;
+}
+.card p { color: #526675; }
+.dark .card p { color: #b9cad5; }
+
+/* ============================================================
+   FRASE DESTACADA (quote)
+   ============================================================ */
+.quote {
+    border-left: 4px solid #18d6e8;
+    padding: 5mm 6mm;
+    background: #f0f7f9;
+    border-radius: 0 10px 10px 0;
+    font-size: 18px;
+    line-height: 1.35;
+    font-weight: 800;
+}
+.dark .quote {
+    background: rgba(255,255,255,.05);
+    color: #eef8fb;
+}
+
+/* ============================================================
+   PILLS (etiquetas)
+   ============================================================ */
+.pill {
+    display: inline-block;
+    border-radius: 99px;
+    padding: 2mm 4mm;
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+.pill-green { background: #ddf7ed; color: #147653; }
+.pill-yellow { background: #fff0c5; color: #806300; }
+.pill-red { background: #ffe0e5; color: #a72d40; }
+
+/* ============================================================
+   FLOW (pasos)
+   ============================================================ */
+.flow {
+    display: flex;
+    align-items: center;
+    gap: 3mm;
+    margin: 8mm 0;
+}
+.flow-box {
+    flex: 1;
+    text-align: center;
+    padding: 5mm 2mm;
+    border: 1px solid #d7e1e7;
+    background: #f2f6f8;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 800;
+    color: #102334;
+}
+.flow-box small {
+    display: inline-block;
+    margin-top: 1mm;
+    color: #617482;
+    font-size: 8px;
+    font-weight: 600;
+}
+/* Forzamos el texto oscuro incluso dentro de .dark */
+.dark .flow-box {
+    background: #f2f6f8;
+    border-color: #d7e1e7;
+    color: #102334;
+}
+.dark .flow-box small { color: #617482; }
+
+.flow-arrow {
+    font-size: 18px;
+    font-weight: 700;
+    color: #8296a4;
+}
+.dark .flow-arrow { color: #9bb2c0; }
+
+/* ============================================================
+   ESCENARIOS
+   ============================================================ */
+.scenario {
+    border-radius: 15px;
+    padding: 7mm;
+    min-height: 64mm;
+}
+.scenario-a { background: #e9fbfd; border: 1px solid #bcecf1; }
+.scenario-b { background: #eef0ff; border: 1px solid #cbd1ff; }
+.scenario .big {
+    font-size: 25px;
+    font-weight: 900;
+    margin: 4mm 0;
+}
+.scenario p { color: #526675; }
+.scenario ul {
+    color: #526675;
+    font-size: 11px;
+    line-height: 1.6;
+    padding-left: 5mm;
+    margin: 3mm 0;
+}
+
+/* ============================================================
+   MAPA
+   ============================================================ */
+.map {
+    height: 116mm;
+    border-radius: 18px;
+    background:
+        radial-gradient(circle at 80% 20%, rgba(24,214,232,.08), transparent 28%),
+        linear-gradient(135deg, #071522, #102d43);
+    border: 1px solid #2b485d;
+    position: relative;
+    padding: 9mm;
+    overflow: hidden;
+}
+.map::before {
+    content: "";
+    position: absolute;
+    width: 145mm;
+    height: 145mm;
+    border: 1px solid rgba(24,214,232,.14);
+    border-radius: 50%;
+    right: -65mm;
+    top: -60mm;
+}
+.map-title {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #18d6e8;
+    font-weight: 800;
+}
+.store-grid {
+    position: absolute;
+    left: 12mm;
+    right: 12mm;
+    top: 30mm;
+    bottom: 12mm;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 5mm;
+    align-items: center;
+}
+.store {
+    height: 24mm;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 900;
+    position: relative;
+    border: 1px solid rgba(255,255,255,.15);
+    color: #ffffff;
+}
+.store small {
+    position: absolute;
+    bottom: 2mm;
+    font-size: 6.5px;
+    opacity: .7;
+}
+.store-green { background: rgba(71,215,160,.18); }
+.store-yellow { background: rgba(255,209,102,.18); }
+.store-red { background: rgba(255,102,120,.18); }
+
+.legend {
+    display: flex;
+    gap: 8mm;
+    margin-top: 5mm;
+    color: #cbd8df;
+    font-size: 9px;
+}
+.legend i {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 2mm;
+}
+
+/* ============================================================
+   CHECKLIST
+   ============================================================ */
+.check {
+    display: flex;
+    gap: 3mm;
+    margin: 4mm 0;
+    font-size: 12px;
+    line-height: 1.4;
+}
+.check b {
+    color: #18d6e8;
+    font-size: 14px;
+}
+
+/* ============================================================
+   CTA
+   ============================================================ */
+.cta {
+    margin-top: 9mm;
+    padding: 9mm;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #081725, #12344a);
+    color: #ffffff;
+    text-align: center;
+}
+.cta .big {
+    font-size: 24px;
+    font-weight: 900;
+    margin-bottom: 3mm;
+}
+.cta p { color: #c6d6df; }
+.button {
+    display: inline-block;
+    margin-top: 3mm;
+    padding: 4mm 8mm;
+    border-radius: 99px;
+    background: #18d6e8;
+    color: #06202b;
+    font-weight: 900;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    text-decoration: none;
+}
+
+/* ============================================================
+   GPS VISUAL (portada)
+   ============================================================ */
+.gps {
+    width: 76mm;
+    height: 76mm;
+    margin: 0 auto;
+    border: 1px solid rgba(24,214,232,.3);
+    border-radius: 50%;
+    position: relative;
+    background:
+        radial-gradient(circle, rgba(24,214,232,.14) 0%, rgba(24,214,232,.05) 28%, transparent 29%),
+        radial-gradient(circle, transparent 0%, transparent 46%, rgba(24,214,232,.13) 47%, rgba(24,214,232,.13) 48%, transparent 49%),
+        radial-gradient(circle, transparent 0%, transparent 69%, rgba(24,214,232,.1) 70%, rgba(24,214,232,.1) 71%, transparent 72%);
+}
+.gps::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 8%;
+    right: 8%;
+    height: 1px;
+    background: rgba(24,214,232,.2);
+}
+.gps::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 8%;
+    bottom: 8%;
+    width: 1px;
+    background: rgba(24,214,232,.2);
+}
+.gps-center {
+    position: absolute;
+    width: 17mm;
+    height: 17mm;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    border-radius: 50%;
+    background: #18d6e8;
+    box-shadow: 0 0 0 8px rgba(24,214,232,.12), 0 0 30px rgba(24,214,232,.35);
+}
+.gps-center::after {
+    content: "";
+    position: absolute;
+    width: 5mm;
+    height: 5mm;
+    background: #06202c;
+    border-radius: 50%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+}
+.gps-point {
+    position: absolute;
+    width: 9mm;
+    height: 9mm;
+    border-radius: 50%;
+    border: 2px solid #18d6e8;
+    background: #0b2032;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #18d6e8;
+    font-size: 7px;
+    font-weight: 900;
+}
+.gps-p1 { top: 18%; left: 22%; }
+.gps-p2 { top: 25%; right: 15%; }
+.gps-p3 { bottom: 20%; left: 17%; }
+.gps-p4 { bottom: 14%; right: 23%; }
+
+/* ============================================================
+   ESTADÍSTICAS / NÚMEROS
+   ============================================================ */
+.stat { font-size: 24px; font-weight: 900; }
+.small { font-size: 9px; color: #6c7f8d; }
+
+/* ============================================================
+   IMPRESIÓN
+   ============================================================ */
+@media print {
+    body { background: #ffffff; }
+    .page { margin: 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     PÁGINA 1 — PORTADA
+     ============================================================ -->
+<section class="page dark">
+<div class="inner">
+
+    <div class="brand">
+        <img class="brand-logo"
+             src="https://gestor-de-archivos.vercel.app/logos/logo-RetailMind-R-cuadrada.png"
+             alt="RetailMind">
+        <div class="brand-text">
+            <span class="top">Planalitica</span>
+            <span class="bottom">RetailMind 360°</span>
+        </div>
+    </div>
+
+    <div style="margin-top:24mm;">
+        <div class="eyebrow">Diagnóstico estratégico basado en datos</div>
+        <h1>
+            Mapa de<br>
+            <span class="cyan">Impacto, Riesgo</span><br>
+            y Oportunidad<br>
+            de la <span class="cyan">Red de Tiendas</span>
+        </h1>
+        <div class="hero-line"></div>
+        <p class="lead">
+            <strong>Su Red de Tiendas necesita un GPS.</strong><br>
+            Un mapa inteligente que muestra dónde aparecen las oportunidades,
+            dónde se concentra el impacto y dónde conviene protegerse frente a
+            <strong>2 escenarios económicos posibles.</strong>
+        </p>
+    </div>
+
+    <!-- GPS visual -->
+    <div style="position:absolute; right:17mm; bottom:39mm; width:78mm;">
+        <div class="gps">
+            <div class="gps-center"></div>
+            <div class="gps-point gps-p1">T1</div>
+            <div class="gps-point gps-p2">T2</div>
+            <div class="gps-point gps-p3">T3</div>
+            <div class="gps-point gps-p4">T4</div>
+        </div>
+    </div>
+
+    <div style="position:absolute; left:18mm; bottom:31mm; width:91mm;">
+        <div style="font-size:22px; line-height:1.15; font-weight:900;">
+            <span class="cyan">¿Dónde invertir?</span><br>
+            ¿Dónde proteger?
+        </div>
+    </div>
+
+    <div class="footer">
+        <span class="footer-brand">
+            <img class="footer-logo"
+                 src="https://gestor-de-archivos.vercel.app/logos/logo-RetailMind-R-cuadrada.png"
+                 alt="RetailMind">
+            Planalitica · RetailMind 360°
+        </span>
+        <span>Mapa de Impacto, Riesgo y Oportunidad</span>
+    </div>
+</div>
+</section>
+
+<!-- ============================================================
+     PÁGINA 2 — EL PROBLEMA
+     ============================================================ -->
+<section class="page">
+<div class="inner">
+
+    <div class="eyebrow">El problema</div>
+
+    <h2>
+        La misma realidad económica<br>
+        no afecta igual a todas las tiendas.
+    </h2>
+
+    <p style="font-size:14px; max-width:166mm;">
+        Una Red de Tiendas puede parecer saludable cuando se observa como un promedio.
+        Pero cuando se analiza tienda por tienda, pueden aparecer diferencias importantes
+        en desempeño, comportamiento y exposición.
+    </p>
+
+    <div class="grid2" style="margin-top:9mm;">
+        <div class="card">
+            <div class="num">01</div>
+            <h3>El promedio puede ocultar diferencias</h3>
+            <p>Dos tiendas pueden presentar resultados similares hoy y, sin embargo, encontrarse en posiciones muy diferentes ante un cambio del entorno.</p>
+        </div>
+        <div class="card">
+            <div class="num">02</div>
+            <h3>El pasado no es suficiente</h3>
+            <p>Conocer lo que ocurrió es necesario, pero no basta para evaluar qué podría significar un cambio de condiciones para cada tienda.</p>
+        </div>
+        <div class="card">
+            <div class="num">03</div>
+            <h3>La red necesita una lectura</h3>
+            <p>La dirección necesita identificar diferencias, concentraciones, oportunidades y puntos de atención dentro de la red.</p>
+        </div>
+        <div class="card">
+            <div class="num">04</div>
+            <h3>Decidir requiere contexto</h3>
+            <p>Invertir, proteger, priorizar o profundizar un análisis exige saber dónde está el impacto.</p>
+        </div>
+    </div>
+
+    <div class="quote" style="margin-top:10mm;">
+        La pregunta no es solamente <span class="cyan">“¿cómo está la empresa?”</span><br>
+        La pregunta es: <span class="cyan">“¿cómo está cada tienda dentro de la red?”</span>
+    </div>
+
+    <div class="footer">
+        <span class="footer-brand">
+            <img class="footer-logo"
+                 src="https://gestor-de-archivos.vercel.app/logos/logo-RetailMind-R-cuadrada.png"
+                 alt="RetailMind">
+            Planalitica · RetailMind 360°
+        </span>
+        <span>02</span>
+    </div>
+</div>
+</section>
+
+<!-- ============================================================
+     PÁGINA 3 — LA PROPUESTA
+     ============================================================ -->
+<section class="page dark">
+<div class="inner">
+
+    <div class="eyebrow">La propuesta</div>
+
+    <h2>
+        Poner a prueba la Red de Tiendas<br>
+        frente a dos futuros posibles.
+    </h2>
+
+    <p class="lead" style="font-size:14px;">
+        Utilizamos información suministrada por el supermercado para construir
+        una lectura de la posición relativa de sus tiendas frente a los escenarios
+        económicos definidos.
+    </p>
+
+    <div class="grid3" style="margin-top:10mm;">
+        <div class="card">
+            <span class="pill pill-green">Oportunidad</span>
+            <div style="font-size:28px; font-weight:900; margin:7mm 0 3mm;">CRECER</div>
+            <p>Tiendas que presentan una posición relativa favorable y que merecen ser consideradas como focos de oportunidad.</p>
+        </div>
+        <div class="card">
+            <span class="pill pill-yellow">Impacto</span>
+            <div style="font-size:28px; font-weight:900; margin:7mm 0 3mm;">ATENDER</div>
+            <p>Tiendas cuya posición merece seguimiento y análisis para comprender mejor el impacto.</p>
+        </div>
+        <div class="card">
+            <span class="pill pill-red">Riesgo</span>
+            <div style="font-size:28px; font-weight:900; margin:7mm 0 3mm;">PROTEGER</div>
+            <p>Tiendas cuya posición relativa indica una mayor exposición y requiere especial atención.</p>
+        </div>
+    </div>
+
+    <div class="flow" style="margin-top:10mm;">
+        <div class="flow-box">DATOS<br><small>de la operación</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">ESCENARIOS<br><small>económicos</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">IMPACTO<br><small>por tienda</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">MAPA<br><small>de la red</small></div>
+    </div>
+
+    <div class="quote" style="margin-top:10mm;">
+        El objetivo no es predecir exactamente el futuro.<br>
+        Es conocer <span class="cyan">qué tan preparada está su Red de Tiendas</span>
+        ante futuros diferentes.
+    </div>
+
+    <div class="footer">
+        <span class="footer-brand">
+            <img class="footer-logo"
+                 src="https://gestor-de-archivos.vercel.app/logos/logo-RetailMind-R-cuadrada.png"
+                 alt="RetailMind">
+            Planalitica · RetailMind 360°
+        </span>
+        <span>03</span>
+    </div>
+</div>
+</section>
+
+<!-- ============================================================
+     PÁGINA 4 — LOS 2 ESCENARIOS
+     ============================================================ -->
+<section class="page">
+<div class="inner">
+
+    <div class="eyebrow">Los dos escenarios</div>
+
+    <h2>
+        No necesitamos saber cuál futuro ocurrirá<br>
+        para prepararnos para ambos.
+    </h2>
+
+    <p style="font-size:14px;">
+        El análisis utiliza dos escenarios macroeconómicos para evaluar
+        cómo cambia la posición de la <strong>Red de Tiendas</strong>
+        bajo cada uno de ellos.
+    </p>
+
+    <div class="grid2" style="margin-top:10mm;">
+        <!-- Escenario 1 -->
+        <div class="scenario scenario-a">
+            <div class="eyebrow">Escenario 01</div>
+            <h3 style="font-size:19px;">🔮 Crecimiento acelerado</h3>
+            <div class="big">¿Qué tiendas capturan el crecimiento?</div>
+            <ul>
+                <li>Economía en auge, consumo alto</li>
+                <li>Crédito barato, expansión urbana</li>
+                <li>Mayor competencia por capturar nuevos clientes</li>
+            </ul>
+            <p style="margin-top:4mm;"><strong>Pregunta clave:</strong> ¿Qué tiendas pueden crecer y ganar cuota de mercado?</p>
+        </div>
+
+        <!-- Escenario 2 -->
+        <div class="scenario scenario-b">
+            <div class="eyebrow">Escenario 02</div>
+            <h3 style="font-size:19px;">🐻 Recesión profunda</h3>
+            <div class="big">¿Qué tiendas sobreviven?</div>
+            <ul>
+                <li>Caída de ventas, consumidor sensible al precio</li>
+                <li>Contracción de crédito</li>
+                <li>Posible entrada de grandes competidores (ej. Walmart)</li>
+            </ul>
+            <p style="margin-top:4mm;"><strong>Pregunta clave:</strong> ¿Qué tiendas tienen resiliencia para aguantar?</p>
+        </div>
+    </div>
+
+    <div style="text-align:center; margin:8mm 0 6mm; font-size:10px; color:#718492; font-weight:800; letter-spacing:.4px;">
+        UNA RED &nbsp; • &nbsp; DOS ESCENARIOS &nbsp; • &nbsp; DIFERENTES POSICIONES
+    </div>
+
+    <div class="card">
+        <div class="eyebrow" style="color:#6e8190;">La idea central</div>
+        <h3 style="font-size:20px;">La incertidumbre no desaparece. Pero puede hacerse visible.</h3>
+        <p style="font-size:13px;">
+            Al comparar los dos escenarios, podemos identificar qué tiendas
+            mantienen una posición favorable, cuáles cambian significativamente
+            y cuáles concentran mayor exposición.
+        </p>
+    </div>
+
+    <div class="grid3" style="margin-top:8mm;">
+        <div><div class="stat">01</div><div class="small">escenario</div></div>
+        <div><div class="stat">02</div><div class="small">escenarios comparados</div></div>
+        <div><div class="stat">Red</div><div class="small">visión por tienda</div></div>
+    </div>
+
+    <div class="footer">
+        <span class="footer-brand">
+            <img class="footer-logo"
+                 src="https://gestor-de-archivos.vercel.app/logos/logo-RetailMind-R-cuadrada.png"
+                 alt="RetailMind">
+            Planalitica · RetailMind 360°
+        </span>
+        <span>04</span>
+    </div>
+</div>
+</section>
+
+<!-- ============================================================
+     PÁGINA 5 — EL MAPA
+     ============================================================ -->
+<section class="page dark">
+<div class="inner">
+
+    <div class="eyebrow">El resultado</div>
+
+    <h2>
+        Un mapa para descubrir<br>
+        dónde está parada la red.
+    </h2>
+
+    <p class="lead" style="font-size:14px;">
+        El resultado transforma los datos de la operación en una lectura
+        visual de la posición relativa de las tiendas.
+    </p>
+
+    <div class="map" style="margin-top:9mm;">
+        <div class="map-title">Mapa de Impacto, Riesgo y Oportunidad — Ejemplo conceptual</div>
+        <div class="store-grid">
+            <div class="store store-green">T-01<small>OPORTUNIDAD</small></div>
+            <div class="store store-yellow">T-02<small>IMPACTO</small></div>
+            <div class="store store-green">T-03<small>OPORTUNIDAD</small></div>
+            <div class="store store-red">T-04<small>RIESGO</small></div>
+            <div class="store store-yellow">T-05<small>IMPACTO</small></div>
+            <div class="store store-green">T-06<small>OPORTUNIDAD</small></div>
+            <div class="store store-yellow">T-07<small>IMPACTO</small></div>
+            <div class="store store-red">T-08<small>RIESGO</small></div>
+            <div class="store store-green">T-09<small>OPORTUNIDAD</small></div>
+            <div class="store store-green">T-10<small>OPORTUNIDAD</small></div>
+            <div class="store store-red">T-11<small>RIESGO</small></div>
+            <div class="store store-yellow">T-12<small>IMPACTO</small></div>
+        </div>
+    </div>
+
+    <div class="legend">
+        <span><i style="background:#47d7a0;"></i>Oportunidad</span>
+        <span><i style="background:#ffd166;"></i>Impacto / Atención</span>
+        <span><i style="background:#ff6678;"></i>Riesgo / Protección</span>
+    </div>
+
+    <div class="grid2" style="margin-top:9mm;">
+        <div>
+            <h3>Una lectura ejecutiva</h3>
+            <p>El mapa permite identificar rápidamente dónde se concentra la oportunidad, el impacto y el riesgo dentro de la red.</p>
+        </div>
+        <div>
+            <h3>Una red no es homogénea</h3>
+            <p>Las diferencias entre tiendas se convierten en información para priorizar conversaciones y decisiones.</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        <span class="footer-brand">
+            <img class="footer-logo"
+                 src="https://gestor-de-archivos.vercel.app/logos/logo-RetailMind-R-cuadrada.png"
+                 alt="RetailMind">
+            Planalitica · RetailMind 360°
+        </span>
+        <span>05</span>
+    </div>
+</div>
+</section>
+
+<!-- ============================================================
+     PÁGINA 6 — CÓMO FUNCIONA
+     ============================================================ -->
+<section class="page">
+<div class="inner">
+
+    <div class="eyebrow">Cómo funciona</div>
+
+    <h2>
+        El supermercado aporta los datos.<br>
+        RetailMind construye la lectura.
+    </h2>
+
+    <div class="grid2" style="margin-top:9mm;">
+        <div>
+            <div class="check"><b>✓</b> <span>Recibimos un conjunto de datos suministrado por el supermercado.</span></div>
+            <div class="check"><b>✓</b> <span>Revisamos la información disponible y su capacidad para soportar el análisis.</span></div>
+            <div class="check"><b>✓</b> <span>Aplicamos los supuestos de los dos escenarios económicos.</span></div>
+            <div class="check"><b>✓</b> <span>Evaluamos la posición relativa de cada tienda.</span></div>
+            <div class="check"><b>✓</b> <span>Identificamos oportunidades, impactos y riesgos.</span></div>
+            <div class="check"><b>✓</b> <span>Construimos el mapa y el ranking de la Red de Tiendas.</span></div>
+            <div class="check"><b>✓</b> <span>Presentamos los principales hallazgos a la dirección.</span></div>
+        </div>
+
+        <div class="card" style="background:#f4f8fa;">
+            <div class="eyebrow" style="color:#6e8190;">Enfoque</div>
+            <h3 style="font-size:20px; line-height:1.2;">Corto.<br>Concreto.<br>Basado en datos.</h3>
+            <p style="margin-top:5mm;">El objetivo es generar una primera respuesta útil para la dirección, sin convertir el diagnóstico en un proyecto largo de consultoría.</p>
+            <hr style="border:0; border-top:1px solid #d7e2e8; margin:6mm 0;">
+            <div class="eyebrow" style="color:#6e8190;">Flujo</div>
+            <p><strong>Datos → Escenarios → Impacto → Mapa</strong></p>
+        </div>
+    </div>
+
+    <div class="quote" style="margin-top:10mm;">
+        No necesitamos transformar toda su operación para empezar.<br>
+        <span class="cyan">Empezamos con los datos que ya tiene su Red de Tiendas.</span>
+    </div>
+
+    <h3 style="margin-top:10mm; font-size:19px;">¿Qué información necesitamos?</h3>
+    <p>El conjunto exacto depende de las características de la empresa y de la disponibilidad de información. Antes de iniciar el análisis se define el alcance de los datos necesarios.</p>
+
+    <div class="footer">
+        <span class="footer-brand">
+            <img class="footer-logo"
+                 src="https://gestor-de-archivos.vercel.app/logos/logo-RetailMind-R-cuadrada.png"
+                 alt="RetailMind">
+            Planalitica · RetailMind 360°
+        </span>
+        <span>06</span>
+    </div>
+</div>
+</section>
+
+<!-- ============================================================
+     PÁGINA 7 — QUÉ RECIBE EL CLIENTE
+     ============================================================ -->
+<section class="page dark">
+<div class="inner">
+
+    <div class="eyebrow">Qué recibe</div>
+
+    <h2>
+        Un diagnóstico para<br>
+        conversar y decidir.
+    </h2>
+
+    <p class="lead" style="font-size:14px;">
+        El estudio está diseñado para entregar una visión ejecutiva
+        de la posición de la <strong>Red de Tiendas</strong>.
+    </p>
+
+    <div class="grid2" style="margin-top:9mm;">
+        <div class="card">
+            <div class="num">01</div>
+            <h3>Diagnóstico de la red</h3>
+            <p>Una lectura general de la posición de la Red de Tiendas frente a los escenarios evaluados.</p>
+        </div>
+        <div class="card">
+            <div class="num">02</div>
+            <h3>Mapa de Impacto, Riesgo y Oportunidad</h3>
+            <p>Visualización de la posición relativa de las tiendas y sus principales zonas de atención.</p>
+        </div>
+        <div class="card">
+            <div class="num">03</div>
+            <h3>Ranking de tiendas</h3>
+            <p>Identificación de las tiendas que destacan por oportunidad, impacto o riesgo.</p>
+        </div>
+        <div class="card">
+            <div class="num">04</div>
+            <h3>Lectura ejecutiva</h3>
+            <p>Principales hallazgos e implicaciones para orientar la conversación gerencial.</p>
+        </div>
+    </div>
+
+    <div class="card" style="margin-top:8mm; text-align:center; padding:8mm;">
+        <div class="eyebrow" style="color:#8fa6b5;">La pregunta que debe quedar respondida</div>
+        <div style="font-size:25px; font-weight:900; margin:4mm 0; color:#ffffff;">
+            ¿Dónde invertir y dónde proteger?
+        </div>
+        <p>Con evidencia construida a partir de los propios datos de su Red de Tiendas.</p>
+    </div>
+
+    <div style="margin-top:9mm; text-align:center;">
+        <div class="eyebrow">Importante</div>
+        <p style="max-width:150mm; margin:4mm auto; font-size:13px; color:#d3e2e9;">
+            El diagnóstico no sustituye la decisión gerencial. Su función es hacer visibles
+            las diferencias de la red para que la decisión pueda apoyarse en mejor contexto.
+        </p>
+    </div>
+
+    <div class="footer">
+        <span class="footer-brand">
+            <img class="footer-logo"
+                 src="https://gestor-de-archivos.vercel.app/logos/logo-RetailMind-R-cuadrada.png"
+                 alt="RetailMind">
+            Planalitica · RetailMind 360°
+        </span>
+        <span>07</span>
+    </div>
+</div>
+</section>
+
+<!-- ============================================================
+     PÁGINA 8 — CIERRE + CTA
+     ============================================================ -->
+<section class="page">
+<div class="inner">
+
+    <div class="eyebrow">El primer paso</div>
+
+    <h2>
+        Descubra dónde está parada<br>
+        su Red de Tiendas.
+    </h2>
+
+    <p style="font-size:15px; max-width:165mm;">
+        Antes de emprender grandes decisiones, conozca cómo podría comportarse su red
+        ante dos futuros económicos posibles.
+    </p>
+
+    <div class="flow" style="margin-top:11mm;">
+        <div class="flow-box">DATOS</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">DOS<br>ESCENARIOS</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">IMPACTO<br>POR TIENDA</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">MAPA<br>DE LA RED</div>
+    </div>
+
+    <div style="display:grid; grid-template-columns:1.15fr .85fr; gap:9mm; margin-top:11mm;">
+        <div>
+            <div class="eyebrow" style="color:#6e8190;">Una primera experiencia con RetailMind</div>
+            <h3 style="font-size:23px; line-height:1.2;">De los datos de su operación a una visión diferente de su Red de Tiendas.</h3>
+            <p style="margin-top:5mm;">El diagnóstico permite descubrir dónde se encuentran las principales diferencias dentro de la red y qué áreas merecen atención.</p>
+            <p>Es un primer paso hacia una forma más amplia de entender la operación: <strong>transformar datos en contexto para decidir.</strong></p>
+        </div>
+        <div class="card">
+            <div class="eyebrow" style="color:#6e8190;">La pregunta inicial</div>
+            <p style="font-size:16px; margin-top:3mm;"><strong>¿Dónde está parada mi Red de Tiendas?</strong></p>
+            <hr style="border:0; border-top:1px solid #d9e3e9; margin:6mm 0;">
+            <div class="eyebrow" style="color:#6e8190;">La pregunta siguiente</div>
+            <p style="font-size:15px; margin-top:3mm;"><strong>¿Dónde debería concentrar mi atención?</strong></p>
+        </div>
+    </div>
+
+    <div class="cta">
+        <div class="big">Deje de mirar su Red de Tiendas por el retrovisor.<br><span style="color:#18d6e8;">Empiece a navegarla.</span></div>
+        <p>Solicite el diagnóstico de su Red de Tiendas.</p>
+        <div class="button">Solicitar diagnóstico</div>
+    </div>
+
+    <div style="margin-top:12mm; text-align:center;">
+        <div style="font-size:19px; font-weight:900;">Planalitica</div>
+        <div style="font-size:8px; color:#7f95a5; letter-spacing:1.5px; text-transform:uppercase; margin-top:1mm;">
+            Powered by RetailMind 360°
+        </div>
+    </div>
+
+    <div class="footer">
+        <span class="footer-brand">
+            <img class="footer-logo"
+                 src="https://gestor-de-archivos.vercel.app/logos/logo-RetailMind-R-cuadrada.png"
+                 alt="RetailMind">
+            Planalitica · RetailMind 360°
+        </span>
+        <span>08</span>
+    </div>
+</div>
+</section>
+
+</body>
+</html>

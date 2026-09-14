@@ -106,7 +106,7 @@
             align-items: center;
             padding: 0 1.5rem;
             gap: 1rem;
-            z-index: 10;
+            z-index: 100;
             box-shadow: 0 4px 20px rgba(0,0,0,0.15);
         }
         .topbar img { height: 32px; filter: drop-shadow(0 0 8px rgba(0,230,118,0.3)); }
@@ -207,33 +207,33 @@
 
         .main {
             overflow-y: auto;
-            padding: 1.5rem;
+            padding: 0;
             background: transparent;
+            display: flex;
+            flex-direction: column;
         }
 
-        .dashboard-container { display: block; width: 100%; }
-
-        .breadcrumb {
-            display: flex; align-items: center; gap: 6px;
-            font-size: 11px; color: var(--steel-muted);
-            margin-bottom: 1.2rem;
+        .selector-panel-sticky {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border-glow);
+            padding: 1rem 1.5rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(12px);
+            flex-shrink: 0;
         }
-        .breadcrumb .active-crumb { color: var(--steel-light); font-weight: 600; }
-
-        .selector-panel {
-            background: linear-gradient(145deg, var(--surface-card), var(--surface));
-            border: 1px solid var(--border-glow);
-            border-radius: 14px;
-            padding: 1.4rem;
-            margin-bottom: 1.2rem;
-            box-shadow: 0 4px 25px rgba(0,0,0,0.1);
+        [data-theme="office"] .selector-panel-sticky {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
         }
         .selector-title {
             font-size: 11px; font-weight: 700;
             color: var(--rolex-gold);
             letter-spacing: 1px; text-transform: uppercase;
             font-family: 'Cinzel', serif;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
             display: flex; align-items: center; gap: 8px;
         }
         .selector-grid {
@@ -287,6 +287,13 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 20px color-mix(in srgb, var(--hulk) 50%, transparent);
         }
+
+        .vista-contenido {
+            padding: 1.5rem;
+            flex: 1;
+        }
+
+        .dashboard-container { display: block; width: 100%; }
 
         .kpi-matrix-section { margin-bottom: 1.2rem; }
         .kpi-tabs {
@@ -389,7 +396,6 @@
             flex-wrap: wrap;
         }
 
-        /* Filtro de KPIs */
         .kpi-filter {
             display: inline-flex;
             align-items: center;
@@ -582,7 +588,6 @@
         .kpi-change-indicator.down { color: var(--red); }
         .kpi-change-indicator.eq { color: var(--steel-muted); }
 
-        /* Header de 3 elementos (Comparativa) */
         .tienda-header-3 {
             display: flex;
             flex-direction: column;
@@ -611,7 +616,6 @@
             min-height: 80px;
         }
 
-        /* Celdas comparativa (3 líneas) */
         .celda-comparativa {
             display: flex;
             flex-direction: column;
@@ -647,7 +651,6 @@
         .celda-linea-3.negativo { color: var(--red); background: color-mix(in srgb, var(--red) 12%, transparent); }
         .celda-linea-3.neutro { color: var(--steel-muted); background: color-mix(in srgb, var(--steel-muted) 12%, transparent); }
 
-        /* CHAT PANEL */
         .chat-panel {
             background: linear-gradient(145deg, var(--surface-card), var(--surface));
             border: 1px solid var(--border-glow);
@@ -1045,6 +1048,41 @@
         .matrix-table .lastre { background: color-mix(in srgb, var(--red) 12%, transparent); color: var(--red); font-weight: 700; }
         .matrix-table .tipo-cell { display: inline-flex; align-items: center; gap: 5px; }
 
+        .tipo-original { color: var(--steel-muted); font-size: 10px; }
+        .tipo-impacto { font-weight: 700; }
+        .flecha-cambio { font-size: 11px; margin: 0 4px; }
+        .flecha-cambio.up { color: var(--hulk-vibrant); }
+        .flecha-cambio.down { color: var(--red); }
+        .flecha-cambio.eq { color: var(--steel-muted); }
+
+        .bloque-original {
+            border-left: 3px solid var(--hulk-vibrant);
+            background: color-mix(in srgb, var(--hulk-vibrant) 4%, transparent);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 12px;
+        }
+        .bloque-impacto {
+            border-left: 3px solid var(--rolex-gold);
+            background: color-mix(in srgb, var(--rolex-gold) 4%, transparent);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 12px;
+        }
+        .bloque-label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-family: 'Cinzel', serif;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .bloque-original .bloque-label { color: var(--hulk-vibrant); }
+        .bloque-impacto .bloque-label { color: var(--rolex-gold); }
+
         .map-container {
             background: var(--abyssal);
             border-radius: 12px;
@@ -1072,7 +1110,7 @@
         @media (max-width: 900px) {
             .shell { grid-template-columns: 1fr; }
             .sidebar { display: none; }
-            .main { padding: 1rem; }
+            .vista-contenido { padding: 1rem; }
             .selector-grid { grid-template-columns: 1fr; }
             .matrix-area { aspect-ratio: auto; min-height: 500px; }
         }
@@ -1131,7 +1169,23 @@
             </div>
         </div>
 
-        <div class="main" id="mainContent"></div>
+        <div class="main" id="mainContent">
+            <div class="selector-panel-sticky">
+                <div class="selector-title"><i class="fas fa-sliders-h"></i> Configura los dos escenarios a cruzar</div>
+                <div class="selector-grid">
+                    <div class="selector-field">
+                        <label>Eje X (Horizontal)</label>
+                        <select id="selectEjeX" onchange="renderVistaActual()"></select>
+                    </div>
+                    <div class="selector-field">
+                        <label>Eje Y (Vertical)</label>
+                        <select id="selectEjeY" onchange="renderVistaActual()"></select>
+                    </div>
+                    <button class="btn-generate" onclick="renderVistaActual()"><i class="fas fa-sync-alt"></i> Recalcular</button>
+                </div>
+            </div>
+            <div class="vista-contenido" id="vistaContenido"></div>
+        </div>
     </div>
 
     <script>
@@ -1443,6 +1497,18 @@
             return parseFloat(promedio.toFixed(2));
         }
 
+        // Calcula el score considerando los KPIs ya impactados (usando factor de impacto)
+        function calcularScoreImpactado(tienda, ejeX, ejeY) {
+            const kpisImpactados = calcularKPIsImpactados(tienda, ejeX, ejeY);
+            const kpisUsadosX = KPIS_POR_ESCENARIO[ejeX] || [];
+            const kpisUsadosY = KPIS_POR_ESCENARIO[ejeY] || [];
+            const todos = [...new Set([...kpisUsadosX, ...kpisUsadosY])];
+            if (todos.length === 0) return 1.5;
+            const valores = todos.map(k => kpisImpactados[k].valor);
+            const promedio = valores.reduce((a, b) => a + b, 0) / valores.length;
+            return parseFloat(promedio.toFixed(2));
+        }
+
         function clasificarTienda(scoreX, scoreY) {
             const umbral = 2.0;
             if (scoreX >= umbral && scoreY >= umbral) return 'JOYA';
@@ -1452,7 +1518,7 @@
         }
 
         // ============================================================
-        // FUNCIONES AUXILIARES (iconos y tipología base)
+        // FUNCIONES AUXILIARES
         // ============================================================
         function getTipologiaOriginalBase(tienda) {
             if (tienda.resiliencia >= 2.5 && tienda.potencial >= 2.5) return 'JOYA';
@@ -1481,11 +1547,20 @@
             return '<i class="fas fa-equals kpi-change-indicator eq"></i>';
         }
 
+        function getFlechaCambio(orig, imp) {
+            const orden = { LASTRE: 0, BUNKER: 1, APUESTA: 2, JOYA: 3 };
+            const a = orden[orig] ?? 0;
+            const b = orden[imp] ?? 0;
+            if (b > a) return '<span class="flecha-cambio up">↑</span>';
+            if (b < a) return '<span class="flecha-cambio down">↓</span>';
+            return '<span class="flecha-cambio eq">=</span>';
+        }
+
         let escenarioXActual = 'recuperacion';
         let escenarioYActual = 'walmart';
         let vistaActual = 'constructor';
         let kpiTabActual = 'original';
-        let kpiFiltroActual = 'todos'; // 'todos' | 'afectados'
+        let kpiFiltroActual = 'todos';
 
         function cambiarVista(vista) {
             vistaActual = vista;
@@ -1499,30 +1574,73 @@
 
         function cambiarKpiTab(tab) {
             kpiTabActual = tab;
-            document.querySelectorAll('.kpi-tab').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.kpi-tab-content').forEach(el => el.classList.remove('active'));
-            const tabActiva = document.querySelector('.kpi-tab-' + tab);
-            const contenidoActivo = document.querySelector('.kpi-tab-content-' + tab);
-            if (tabActiva) tabActiva.classList.add('active');
-            if (contenidoActivo) contenidoActivo.classList.add('active');
+            renderVistaActual();
         }
 
         function cambiarKpiFiltro(filtro) {
             kpiFiltroActual = filtro;
-            renderConstructor();
-        }
-
-        function renderVistaActual() {
-            if (vistaActual === 'constructor') renderConstructor();
-            else if (vistaActual === 'diagnostico') renderDiagnostico();
-            else if (vistaActual === 'riesgo') renderRiesgo();
-            else if (vistaActual === 'topbottom') renderTopBottom();
-            else if (vistaActual === 'brecha') renderBrecha();
-            else if (vistaActual === 'accion') renderAccion();
+            renderVistaActual();
         }
 
         // ============================================================
-        // RENDER DE LA SECCIÓN DE KPIs CON 3 PESTAÑAS Y FILTRO
+        // INICIALIZACIÓN DE LOS DROPDOWNS
+        // ============================================================
+        function inicializarSelectores() {
+            const selX = document.getElementById('selectEjeX');
+            const selY = document.getElementById('selectEjeY');
+            if (!selX || !selY) return;
+
+            selX.innerHTML = '';
+            selY.innerHTML = '';
+
+            Object.values(ESCENARIOS).forEach(dominio => {
+                const groupX = document.createElement('optgroup');
+                groupX.label = dominio.nombre;
+                const groupY = document.createElement('optgroup');
+                groupY.label = dominio.nombre;
+                dominio.escenarios.forEach(e => {
+                    const optX = document.createElement('option');
+                    optX.value = e.id;
+                    optX.textContent = e.nombre;
+                    if (e.id === escenarioXActual) optX.selected = true;
+                    groupX.appendChild(optX);
+
+                    const optY = document.createElement('option');
+                    optY.value = e.id;
+                    optY.textContent = e.nombre;
+                    if (e.id === escenarioYActual) optY.selected = true;
+                    groupY.appendChild(optY);
+                });
+                selX.appendChild(groupX);
+                selY.appendChild(groupY);
+            });
+        }
+
+        // ============================================================
+        // RENDER DE LA VISTA ACTIVA
+        // ============================================================
+        function renderVistaActual() {
+            const selX = document.getElementById('selectEjeX');
+            const selY = document.getElementById('selectEjeY');
+            if (selX) escenarioXActual = selX.value;
+            if (selY) escenarioYActual = selY.value;
+
+            const contenedor = document.getElementById('vistaContenido');
+            if (!contenedor) return;
+
+            let html = '';
+            if (vistaActual === 'constructor') html = renderConstructor();
+            else if (vistaActual === 'diagnostico') html = renderDiagnostico();
+            else if (vistaActual === 'riesgo') html = renderRiesgo();
+            else if (vistaActual === 'topbottom') html = renderTopBottom();
+            else if (vistaActual === 'brecha') html = renderBrecha();
+            else if (vistaActual === 'accion') html = renderAccion();
+
+            contenedor.innerHTML = html;
+        }
+
+        // ============================================================
+        // KPIs × TIENDAS (3 PESTAÑAS + FILTRO)
         // ============================================================
         function renderMatrizKPIsConPestanas(ejeX, ejeY) {
             const kpisOrdenados = Object.keys(KPIS_CATALOGO).sort((a, b) =>
@@ -1683,7 +1801,7 @@
                 html += '<div class="kpi-matrix-header-row">';
                 html += '<div>';
                 html += '<div class="kpi-matrix-title"><i class="fas fa-code-compare"></i> Matriz Comparativa: Original vs Impacto</div>';
-                html += '<div class="kpi-matrix-subtitle">Solo los <strong>' + kpisImpactadosLista.length + ' KPIs impactados</strong>. Cada celda muestra: valor original (arriba), valor impactado + indicador (medio) y diferencia (abajo).</div>';
+                html += '<div class="kpi-matrix-subtitle">Solo los <strong>' + kpisImpactadosLista.length + ' KPIs impactados</strong>. Cada celda: valor original (arriba), valor impactado + indicador (medio) y diferencia (abajo).</div>';
                 html += '</div>';
                 html += '</div>';
 
@@ -1754,10 +1872,8 @@
         // VISTA: CONSTRUCTOR DE ESCENARIOS
         // ============================================================
         function renderConstructor() {
-            const ejeX = document.getElementById('selectEjeX')?.value || escenarioXActual;
-            const ejeY = document.getElementById('selectEjeY')?.value || escenarioYActual;
-            escenarioXActual = ejeX;
-            escenarioYActual = ejeY;
+            const ejeX = escenarioXActual;
+            const ejeY = escenarioYActual;
 
             let nombreX = '', nombreY = '';
             Object.values(ESCENARIOS).forEach(dominio => {
@@ -1785,33 +1901,6 @@
             const kpisY = KPIS_POR_ESCENARIO[ejeY] || [];
 
             let html = '<div class="dashboard-container">';
-            html += '<div class="breadcrumb"><span class="active-crumb">🎯 Constructor de Escenarios</span></div>';
-
-            html += '<div class="selector-panel">';
-            html += '<div class="selector-title"><i class="fas fa-sliders-h"></i> Configura los dos escenarios a cruzar</div>';
-            html += '<div class="selector-grid">';
-            html += '<div class="selector-field"><label>Eje X (Horizontal)</label><select id="selectEjeX" onchange="renderConstructor()">';
-            Object.values(ESCENARIOS).forEach(dominio => {
-                html += '<optgroup label="' + dominio.nombre + '">';
-                dominio.escenarios.forEach(e => {
-                    html += '<option value="' + e.id + '"' + (e.id === ejeX ? ' selected' : '') + '>' + e.nombre + '</option>';
-                });
-                html += '</optgroup>';
-            });
-            html += '</select></div>';
-            html += '<div class="selector-field"><label>Eje Y (Vertical)</label><select id="selectEjeY" onchange="renderConstructor()">';
-            Object.values(ESCENARIOS).forEach(dominio => {
-                html += '<optgroup label="' + dominio.nombre + '">';
-                dominio.escenarios.forEach(e => {
-                    html += '<option value="' + e.id + '"' + (e.id === ejeY ? ' selected' : '') + '>' + e.nombre + '</option>';
-                });
-                html += '</optgroup>';
-            });
-            html += '</select></div>';
-            html += '<button class="btn-generate" onclick="renderConstructor()"><i class="fas fa-sync-alt"></i> Recalcular</button>';
-            html += '</div>';
-            html += '</div>';
-
             html += renderMatrizKPIsConPestanas(ejeX, ejeY);
 
             html += '<div class="panel" style="margin-bottom:1.2rem; padding:1rem 1.2rem;">';
@@ -1912,115 +2001,275 @@
 
             html += '</div>';
 
-            document.getElementById('mainContent').innerHTML = html;
+            return html;
         }
 
         // ============================================================
-        // VISTAS SECUNDARIAS
+        // VISTAS SECUNDARIAS SINCRONIZADAS
         // ============================================================
         function renderDiagnostico() {
+            const ejeX = escenarioXActual;
+            const ejeY = escenarioYActual;
+
             let html = '<div class="dashboard-container">';
-            html += '<div class="breadcrumb"><span class="active-crumb">📊 Diagnóstico 4×3</span></div>';
-            html += '<div class="panel"><div class="panel-title"><i class="fas fa-chart-bar"></i> Diagnóstico de las 4 Dimensiones</div>';
+            html += '<div class="panel">';
+            html += '<div class="panel-title"><i class="fas fa-chart-bar"></i> Diagnóstico de las 4 Dimensiones · Original vs Impacto</div>';
             html += '<div class="tabla-wrapper"><table class="matrix-table">';
-            html += '<thead><tr><th>Tienda</th><th>Ciudad</th><th>Salud</th><th>Resiliencia</th><th>Potencial</th><th>Exposición</th><th>Tipología</th></tr></thead><tbody>';
+            html += '<thead><tr><th>Tienda</th><th>Ciudad</th><th>Salud</th><th>Resiliencia</th><th>Potencial</th><th>Exposición</th><th>Tipología Original</th><th>Tipología Impacto</th><th>Cambio</th></tr></thead>';
+            html += '<tbody>';
             tiendas.forEach(t => {
-                const config = TIPOLOGIAS[t.tipo];
-                html += '<tr class="' + t.tipo.toLowerCase() + '">';
+                const tipoOriginal = getTipologiaOriginalBase(t);
+                const scoreX = calcularScorePorEscenario(t, ejeX);
+                const scoreY = calcularScorePorEscenario(t, ejeY);
+                const tipoImpacto = clasificarTienda(scoreX, scoreY);
+                const configOrig = TIPOLOGIAS[tipoOriginal];
+                const configImp = TIPOLOGIAS[tipoImpacto];
+                const flecha = getFlechaCambio(tipoOriginal, tipoImpacto);
+
+                html += '<tr class="' + tipoImpacto.toLowerCase() + '">';
                 html += '<td style="font-weight:600;color:var(--steel-light);text-align:left;padding-left:12px;">' + t.nombre + '</td>';
                 html += '<td style="color:var(--steel-muted);">' + t.ciudad + '</td>';
                 html += '<td>' + t.salud.toFixed(2) + '</td>';
                 html += '<td>' + t.resiliencia.toFixed(2) + '</td>';
                 html += '<td>' + t.potencial.toFixed(2) + '</td>';
                 html += '<td>' + t.exposicion.toFixed(2) + '</td>';
-                html += '<td><span class="tipo-cell" style="color:' + config.color + ';">' + config.icono + ' ' + config.nombre + '</span></td>';
+                html += '<td><span class="tipo-original">' + configOrig.icono + ' ' + configOrig.nombre + '</span></td>';
+                html += '<td><span class="tipo-impacto" style="color:' + configImp.color + ';">' + configImp.icono + ' ' + configImp.nombre + '</span></td>';
+                html += '<td>' + flecha + '</td>';
                 html += '</tr>';
             });
             html += '</tbody></table></div></div></div>';
-            document.getElementById('mainContent').innerHTML = html;
+            return html;
         }
 
         function renderRiesgo() {
+            const ejeX = escenarioXActual;
+            const ejeY = escenarioYActual;
+
+            // Recalcular tipologías según escenarios
+            const tiendasClasificadas = tiendas.map(t => {
+                const scoreX = calcularScorePorEscenario(t, ejeX);
+                const scoreY = calcularScorePorEscenario(t, ejeY);
+                const tipoCalculado = clasificarTienda(scoreX, scoreY);
+                return { ...t, tipoCalculado };
+            });
+
             let html = '<div class="dashboard-container">';
-            html += '<div class="breadcrumb"><span class="active-crumb">🗺️ Mapa de Riesgo</span></div>';
-            html += '<div class="panel"><div class="panel-title"><i class="fas fa-map-location-dot"></i> Distribución Geográfica</div>';
-            html += renderMapaSVG(tiendas.map(t => ({ ...t, tipoCalculado: t.tipo })));
+            html += '<div class="panel">';
+            html += '<div class="panel-title"><i class="fas fa-map-location-dot"></i> Distribución Geográfica · Tipologías según Escenarios</div>';
+            html += renderMapaSVG(tiendasClasificadas);
             html += '</div></div>';
-            document.getElementById('mainContent').innerHTML = html;
+            return html;
         }
 
         function renderTopBottom() {
-            const sorted = [...tiendas].sort((a, b) => (b.salud + b.resiliencia + b.potencial) - (a.salud + a.resiliencia + a.potencial));
-            const top3 = sorted.slice(0, 3);
-            const bottom3 = sorted.slice(-3);
+            const ejeX = escenarioXActual;
+            const ejeY = escenarioYActual;
+
+            // Calcular puntaje con KPIs impactados
+            const tiendasConScore = tiendas.map(t => {
+                const kpisImpactados = calcularKPIsImpactados(t, ejeX, ejeY);
+                const kpisUsadosX = KPIS_POR_ESCENARIO[ejeX] || [];
+                const kpisUsadosY = KPIS_POR_ESCENARIO[ejeY] || [];
+                const todos = [...new Set([...kpisUsadosX, ...kpisUsadosY])];
+                const valores = todos.map(k => kpisImpactados[k].valor);
+                const puntajeImpactado = valores.length > 0 ? (valores.reduce((a, b) => a + b, 0) / valores.length) : 0;
+                const puntajeOriginal = (t.salud + t.resiliencia + t.potencial) / 3;
+                return { ...t, puntajeOriginal, puntajeImpactado };
+            });
+
+            const sortedOrig = [...tiendasConScore].sort((a, b) => b.puntajeOriginal - a.puntajeOriginal);
+            const sortedImp = [...tiendasConScore].sort((a, b) => b.puntajeImpactado - a.puntajeImpactado);
+
+            const top3Orig = sortedOrig.slice(0, 3);
+            const bottom3Orig = sortedOrig.slice(-3);
+            const top3Imp = sortedImp.slice(0, 3);
+            const bottom3Imp = sortedImp.slice(-3);
+
             let html = '<div class="dashboard-container">';
-            html += '<div class="breadcrumb"><span class="active-crumb">🏆 Top/Bottom Performers</span></div>';
+
+            // Top/Bottom Original
+            html += '<div class="bloque-original">';
+            html += '<div class="bloque-label"><i class="fas fa-database"></i> Top/Bottom · Original</div>';
             html += '<div class="two-col" style="grid-template-columns:1fr 1fr;">';
-            html += '<div class="panel"><div class="panel-title">🏆 Top 3</div>';
-            top3.forEach(t => {
-                const config = TIPOLOGIAS[t.tipo];
-                html += '<div style="padding:10px 0;border-bottom:1px solid var(--border-deep);display:flex;justify-content:space-between;align-items:center;">';
+            html += '<div class="panel"><div class="panel-title">🏆 Top 3 Original</div>';
+            top3Orig.forEach(t => {
+                const config = TIPOLOGIAS[getTipologiaOriginalBase(t)];
+                html += '<div style="padding:8px 0;border-bottom:1px solid var(--border-deep);display:flex;justify-content:space-between;align-items:center;">';
                 html += '<span style="color:' + config.color + ';">' + config.icono + ' ' + t.nombre + '</span>';
-                html += '<strong style="color:var(--hulk-vibrant);">' + ((t.salud + t.resiliencia + t.potencial) / 3).toFixed(2) + '</strong>';
+                html += '<strong style="color:var(--hulk-vibrant);">' + t.puntajeOriginal.toFixed(2) + '</strong>';
                 html += '</div>';
             });
             html += '</div>';
-            html += '<div class="panel"><div class="panel-title">📉 Bottom 3</div>';
-            bottom3.forEach(t => {
-                const config = TIPOLOGIAS[t.tipo];
-                html += '<div style="padding:10px 0;border-bottom:1px solid var(--border-deep);display:flex;justify-content:space-between;align-items:center;">';
+            html += '<div class="panel"><div class="panel-title">📉 Bottom 3 Original</div>';
+            bottom3Orig.forEach(t => {
+                const config = TIPOLOGIAS[getTipologiaOriginalBase(t)];
+                html += '<div style="padding:8px 0;border-bottom:1px solid var(--border-deep);display:flex;justify-content:space-between;align-items:center;">';
                 html += '<span style="color:' + config.color + ';">' + config.icono + ' ' + t.nombre + '</span>';
-                html += '<strong style="color:var(--red);">' + ((t.salud + t.resiliencia + t.potencial) / 3).toFixed(2) + '</strong>';
+                html += '<strong style="color:var(--red);">' + t.puntajeOriginal.toFixed(2) + '</strong>';
                 html += '</div>';
             });
             html += '</div></div></div>';
-            document.getElementById('mainContent').innerHTML = html;
+
+            // Top/Bottom Impacto
+            html += '<div class="bloque-impacto">';
+            html += '<div class="bloque-label"><i class="fas fa-bolt"></i> Top/Bottom · Impactado por Escenarios</div>';
+            html += '<div class="two-col" style="grid-template-columns:1fr 1fr;">';
+            html += '<div class="panel"><div class="panel-title">🏆 Top 3 Impactado</div>';
+            top3Imp.forEach(t => {
+                const tipoImp = clasificarTienda(
+                    calcularScorePorEscenario(t, ejeX),
+                    calcularScorePorEscenario(t, ejeY)
+                );
+                const config = TIPOLOGIAS[tipoImp];
+                html += '<div style="padding:8px 0;border-bottom:1px solid var(--border-deep);display:flex;justify-content:space-between;align-items:center;">';
+                html += '<span style="color:' + config.color + ';">' + config.icono + ' ' + t.nombre + '</span>';
+                html += '<strong style="color:var(--hulk-vibrant);">' + t.puntajeImpactado.toFixed(2) + '</strong>';
+                html += '</div>';
+            });
+            html += '</div>';
+            html += '<div class="panel"><div class="panel-title">📉 Bottom 3 Impactado</div>';
+            bottom3Imp.forEach(t => {
+                const tipoImp = clasificarTienda(
+                    calcularScorePorEscenario(t, ejeX),
+                    calcularScorePorEscenario(t, ejeY)
+                );
+                const config = TIPOLOGIAS[tipoImp];
+                html += '<div style="padding:8px 0;border-bottom:1px solid var(--border-deep);display:flex;justify-content:space-between;align-items:center;">';
+                html += '<span style="color:' + config.color + ';">' + config.icono + ' ' + t.nombre + '</span>';
+                html += '<strong style="color:var(--red);">' + t.puntajeImpactado.toFixed(2) + '</strong>';
+                html += '</div>';
+            });
+            html += '</div></div></div>';
+
+            html += '</div>';
+            return html;
         }
 
         function renderBrecha() {
-            const avg = {
+            const ejeX = escenarioXActual;
+            const ejeY = escenarioYActual;
+
+            // Promedios originales
+            const avgOrig = {
                 salud: tiendas.reduce((s, t) => s + t.salud, 0) / tiendas.length,
                 resiliencia: tiendas.reduce((s, t) => s + t.resiliencia, 0) / tiendas.length,
                 potencial: tiendas.reduce((s, t) => s + t.potencial, 0) / tiendas.length,
                 exposicion: tiendas.reduce((s, t) => s + t.exposicion, 0) / tiendas.length
             };
+
+            // Promedios impactados (usando KPIs impactados agrupados por dimensión)
+            const dims = ['salud', 'resiliencia', 'potencial', 'exposicion'];
+            const mapDims = {
+                salud: ['MB', 'VM2', 'ROT', 'TKT'],
+                resiliencia: ['MIX', 'COV', 'CON', 'NPS', 'FRQ', 'SKU'],
+                potencial: ['UD', 'PEN', 'CAP', 'TRF', 'CREC'],
+                exposicion: ['DIF', 'DIS', 'ATR', 'ENE']
+            };
+
+            const avgImp = {};
+            dims.forEach(dim => {
+                let suma = 0;
+                tiendas.forEach(t => {
+                    const kpisImpactados = calcularKPIsImpactados(t, ejeX, ejeY);
+                    const valores = mapDims[dim].map(k => kpisImpactados[k].valor);
+                    suma += valores.reduce((a, b) => a + b, 0) / valores.length;
+                });
+                avgImp[dim] = suma / tiendas.length;
+            });
+
             let html = '<div class="dashboard-container">';
-            html += '<div class="breadcrumb"><span class="active-crumb">📈 Análisis de Brecha</span></div>';
-            html += '<div class="panel"><div class="panel-title">Promedios de la Cadena</div>';
+
+            html += '<div class="bloque-original">';
+            html += '<div class="bloque-label"><i class="fas fa-database"></i> Promedios de la Cadena · Original</div>';
             html += '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">';
-            ['salud', 'resiliencia', 'potencial', 'exposicion'].forEach(k => {
+            dims.forEach(k => {
                 html += '<div style="text-align:center;padding:12px;background:color-mix(in srgb, var(--abyssal) 30%, transparent);border-radius:10px;">';
                 html += '<div style="font-size:10px;color:var(--steel-muted);text-transform:uppercase;">' + k + '</div>';
-                html += '<div style="font-size:24px;font-weight:700;color:var(--hulk-vibrant);">' + avg[k].toFixed(2) + '</div>';
+                html += '<div style="font-size:24px;font-weight:700;color:var(--hulk-vibrant);">' + avgOrig[k].toFixed(2) + '</div>';
                 html += '</div>';
             });
-            html += '</div></div></div>';
-            document.getElementById('mainContent').innerHTML = html;
+            html += '</div></div>';
+
+            html += '<div class="bloque-impacto">';
+            html += '<div class="bloque-label"><i class="fas fa-bolt"></i> Promedios de la Cadena · Impactado por Escenarios</div>';
+            html += '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">';
+            dims.forEach(k => {
+                const dif = avgImp[k] - avgOrig[k];
+                const color = dif >= 0.05 ? 'var(--hulk-vibrant)' : (dif <= -0.05 ? 'var(--red)' : 'var(--rolex-gold)');
+                const flecha = dif >= 0.05 ? '↑' : (dif <= -0.05 ? '↓' : '=');
+                html += '<div style="text-align:center;padding:12px;background:color-mix(in srgb, var(--abyssal) 30%, transparent);border-radius:10px;">';
+                html += '<div style="font-size:10px;color:var(--steel-muted);text-transform:uppercase;">' + k + '</div>';
+                html += '<div style="font-size:24px;font-weight:700;color:' + color + ';">' + avgImp[k].toFixed(2) + ' <span style="font-size:14px;">' + flecha + '</span></div>';
+                html += '<div style="font-size:10px;color:var(--steel-muted);margin-top:2px;">' + (dif >= 0 ? '+' : '') + dif.toFixed(2) + ' vs original</div>';
+                html += '</div>';
+            });
+            html += '</div></div>';
+
+            html += '</div>';
+            return html;
         }
 
         function renderAccion() {
-            const counts = {
-                JOYA: tiendas.filter(t => t.tipo === 'JOYA').length,
-                APUESTA: tiendas.filter(t => t.tipo === 'APUESTA').length,
-                BUNKER: tiendas.filter(t => t.tipo === 'BUNKER').length,
-                LASTRE: tiendas.filter(t => t.tipo === 'LASTRE').length
+            const ejeX = escenarioXActual;
+            const ejeY = escenarioYActual;
+
+            // Conteo original
+            const countsOrig = {
+                JOYA: tiendas.filter(t => getTipologiaOriginalBase(t) === 'JOYA').length,
+                APUESTA: tiendas.filter(t => getTipologiaOriginalBase(t) === 'APUESTA').length,
+                BUNKER: tiendas.filter(t => getTipologiaOriginalBase(t) === 'BUNKER').length,
+                LASTRE: tiendas.filter(t => getTipologiaOriginalBase(t) === 'LASTRE').length
             };
+
+            // Conteo impactado
+            const countsImp = { JOYA: 0, APUESTA: 0, BUNKER: 0, LASTRE: 0 };
+            tiendas.forEach(t => {
+                const tipoImp = clasificarTienda(
+                    calcularScorePorEscenario(t, ejeX),
+                    calcularScorePorEscenario(t, ejeY)
+                );
+                countsImp[tipoImp]++;
+            });
+
             let html = '<div class="dashboard-container">';
-            html += '<div class="breadcrumb"><span class="active-crumb">📋 Plan de Acción</span></div>';
-            html += '<div class="panel"><div class="panel-title">Recomendaciones por Tipología</div>';
+
+            html += '<div class="bloque-original">';
+            html += '<div class="bloque-label"><i class="fas fa-database"></i> Recomendaciones por Tipología · Original</div>';
             html += '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">';
             Object.entries(TIPOLOGIAS).forEach(([k, v]) => {
                 html += '<div style="text-align:center;padding:16px;background:color-mix(in srgb, var(--abyssal) 30%, transparent);border-radius:10px;border-left:3px solid ' + v.color + ';">';
                 html += '<div style="font-size:24px;">' + v.icono + '</div>';
                 html += '<div style="color:' + v.color + ';font-weight:700;margin:6px 0;">' + v.nombre + '</div>';
-                html += '<div style="font-size:20px;font-weight:800;">' + counts[k] + '</div>';
+                html += '<div style="font-size:20px;font-weight:800;">' + countsOrig[k] + '</div>';
                 html += '<div style="font-size:10px;color:var(--steel-muted);">tiendas</div>';
                 html += '</div>';
             });
-            html += '</div></div></div>';
-            document.getElementById('mainContent').innerHTML = html;
+            html += '</div></div>';
+
+            html += '<div class="bloque-impacto">';
+            html += '<div class="bloque-label"><i class="fas fa-bolt"></i> Recomendaciones por Tipología · Impactado por Escenarios</div>';
+            html += '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">';
+            Object.entries(TIPOLOGIAS).forEach(([k, v]) => {
+                const dif = countsImp[k] - countsOrig[k];
+                const color = dif > 0 ? 'var(--hulk-vibrant)' : (dif < 0 ? 'var(--red)' : 'var(--steel-muted)');
+                const flecha = dif > 0 ? '↑' : (dif < 0 ? '↓' : '=');
+                html += '<div style="text-align:center;padding:16px;background:color-mix(in srgb, var(--abyssal) 30%, transparent);border-radius:10px;border-left:3px solid ' + v.color + ';">';
+                html += '<div style="font-size:24px;">' + v.icono + '</div>';
+                html += '<div style="color:' + v.color + ';font-weight:700;margin:6px 0;">' + v.nombre + '</div>';
+                html += '<div style="font-size:20px;font-weight:800;">' + countsImp[k] + ' <span style="font-size:12px;color:' + color + ';">' + flecha + '</span></div>';
+                html += '<div style="font-size:10px;color:' + color + ';">' + (dif > 0 ? '+' : '') + dif + ' vs original</div>';
+                html += '</div>';
+            });
+            html += '</div></div>';
+
+            html += '</div>';
+            return html;
         }
 
+        // ============================================================
+        // CUADRANTES Y MAPA
+        // ============================================================
         function renderCuadrante(tipo, tiendas) {
             const config = TIPOLOGIAS[tipo];
             let html = '<div class="quadrant ' + config.cuadrante + '">';
@@ -2163,6 +2412,7 @@
         // INICIALIZACIÓN
         // ============================================================
         initTheme();
+        inicializarSelectores();
         renderVistaActual();
     </script>
 </body>

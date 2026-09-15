@@ -8,6 +8,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked@11.0.0/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
     
     <!-- ============================================ -->
     <!-- PALETA "ROLEX TIFFANY" - Estilos Globales    -->
@@ -51,12 +53,16 @@
         ::-webkit-scrollbar-track { background: var(--obsidian); }
         ::-webkit-scrollbar-thumb { background: var(--tiffany); border-radius: 20px; }
 
+        /* ============================================================
+           FIX: .shell ya NO encierra el layout en el viewport.
+           Antes: height:100vh + overflow:hidden → el chat quedaba oculto.
+           Ahora: min-height:100vh sin overflow → scroll natural de página.
+           ============================================================ */
         .shell {
             display: grid;
             grid-template-rows: 56px 1fr;
             grid-template-columns: 220px 1fr;
-            height: 100vh;
-            overflow: hidden;
+            min-height: 100vh;
         }
 
         .topbar {
@@ -67,7 +73,8 @@
             align-items: center;
             padding: 0 1.5rem;
             gap: 1rem;
-            position: relative;
+            position: sticky;
+            top: 0;
             z-index: 10;
         }
         .topbar img { height: 28px; filter: brightness(0) invert(1); }
@@ -232,11 +239,17 @@
             box-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
         }
 
+        /* ============================================================
+           SIDEBAR STICKY (para que acompañe el scroll natural)
+           ============================================================ */
         .sidebar {
             background: var(--carbon);
             border-right: 1px solid rgba(212, 175, 55, 0.15);
             padding: 1rem 0;
             overflow-y: auto;
+            position: sticky;
+            top: 56px;
+            height: calc(100vh - 56px);
         }
         .sidebar-section {
             padding: 0.5rem 1rem;
@@ -265,6 +278,35 @@
             background: rgba(0, 196, 179, 0.08);
         }
         .nav-icon { font-size: 14px; width: 18px; text-align: center; }
+
+        /* ============================================================
+           TOGGLE SWITCH CHAT IA
+           ============================================================ */
+        .nav-toggle{
+            margin-left:auto;
+            position:relative;
+            display:inline-block;
+            width:34px;
+            height:18px;
+            flex-shrink:0;
+        }
+        .nav-toggle input{opacity:0;width:0;height:0}
+        .nav-toggle .slider{
+            position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;
+            background:rgba(255,255,255,0.12);
+            transition:.3s;border-radius:18px;
+            border:1px solid var(--gold);
+        }
+        .nav-toggle .slider:before{
+            position:absolute;content:"";height:12px;width:12px;left:3px;bottom:2px;
+            background:var(--steel-muted);transition:.3s;border-radius:50%;
+        }
+        .nav-toggle input:checked + .slider{
+            background:linear-gradient(135deg,var(--tiffany),var(--gold));
+        }
+        .nav-toggle input:checked + .slider:before{
+            transform:translateX(16px);background:#fff;
+        }
 
         .menu-toggle {
             display: none;
@@ -296,7 +338,7 @@
         }
 
         @media (max-width: 720px) {
-            .shell { grid-template-columns: 1fr; grid-template-rows: 56px 1fr; }
+            .shell { grid-template-columns: 1fr; grid-template-rows: 56px 1fr; min-height: 100vh; }
             .topbar { padding: 0 0.75rem; gap: 0.6rem; }
             .topbar img { height: 22px; max-width: 130px; object-fit: contain; }
             .topbar-badge, .topbar-user, .topbar-date { display: none; }
@@ -306,6 +348,7 @@
                 z-index: 20; transform: translateX(-105%);
                 transition: transform 0.22s ease;
                 box-shadow: 18px 0 40px rgba(0,0,0,0.6);
+                height: auto; /* Sobrescribe el sticky del desktop */
             }
             body.mobile-menu-open .sidebar { transform: translateX(0); }
             body.mobile-menu-open .sidebar-overlay { display: block; opacity: 1; pointer-events: auto; }
@@ -313,11 +356,14 @@
             .kpi-row { grid-template-columns: repeat(2, 1fr); }
             .state-grid { grid-template-columns: 1fr; }
             .two-col { grid-template-columns: 1fr; }
+            .candle-grid { grid-template-columns: 1fr; }
             .drill-tabs { overflow-x: auto; width: 100%; padding-bottom: 2px; }
         }
 
+        /* ============================================================
+           MAIN sin overflow-y (el scroll lo maneja la página)
+           ============================================================ */
         .main {
-            overflow-y: auto;
             padding: 1.5rem;
             display: flex;
             flex-direction: column;
@@ -690,6 +736,229 @@
             background: rgba(212, 175, 55, 0.05);
             box-shadow: 0 0 40px rgba(212, 175, 55, 0.12);
         }
+
+        /* ============================================================
+           CHAT PANEL IA (adaptado al theme Rolex Tiffany del COO)
+           ============================================================ */
+        .chat-panel{
+            background:var(--carbon);
+            border:1.5px solid rgba(212,175,55,0.25);
+            border-radius:14px;
+            box-shadow:0 4px 25px rgba(0,0,0,0.5), 0 0 30px rgba(0,196,179,0.04);
+            overflow:hidden;
+            display:none;
+            flex-direction:column;
+            margin-bottom:0.2rem;
+        }
+        .chat-panel.visible{display:flex;animation:fadeIn 0.35s ease}
+        @keyframes fadeIn{
+            from{opacity:0;transform:translateY(-8px)}
+            to{opacity:1;transform:translateY(0)}
+        }
+        .chat-panel-header{
+            background:linear-gradient(135deg,rgba(0,196,179,0.18),rgba(212,175,55,0.10));
+            padding:14px 20px;
+            border-bottom:1px solid rgba(212,175,55,0.2);
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:10px;
+        }
+        .chat-panel-title{
+            display:flex;
+            align-items:center;
+            gap:10px;
+            font-size:12px;
+            font-weight:700;
+            color:var(--tiffany-light);
+            letter-spacing:0.5px;
+            text-transform:uppercase;
+        }
+        .chat-panel-title i{font-size:16px}
+        .chat-panel-subtitle{font-size:10px;color:var(--steel-muted);letter-spacing:0.3px;margin-left:auto}
+        .chat-panel-close{
+            background:transparent;
+            border:1px solid var(--gold);
+            color:var(--steel-muted);
+            width:30px;
+            height:30px;
+            border-radius:8px;
+            cursor:pointer;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            transition:all 0.15s;
+        }
+        .chat-panel-close:hover{color:var(--red);border-color:var(--red)}
+        .chat-panel-body{
+            padding:16px 20px;
+            background:rgba(0,0,0,0.25);
+            display:flex;
+            flex-direction:column;
+            gap:10px;
+            max-height:340px;
+            min-height:130px;
+            overflow-y:auto;
+        }
+        .chat-msg{display:flex;gap:10px;align-items:flex-start;animation:msgIn 0.3s ease}
+        @keyframes msgIn{
+            from{opacity:0;transform:translateY(6px)}
+            to{opacity:1;transform:translateY(0)}
+        }
+        .chat-msg-avatar{
+            width:28px;height:28px;border-radius:50%;
+            display:flex;align-items:center;justify-content:center;
+            flex-shrink:0;font-size:12px;
+            border:1px solid var(--gold);
+        }
+        .chat-msg-user .chat-msg-avatar{
+            background:rgba(59,130,246,0.15);
+            color:var(--blue);
+            border-color:var(--gold);
+        }
+        .chat-msg-ai .chat-msg-avatar{
+            background:rgba(0,196,179,0.15);
+            color:var(--tiffany-light);
+            border-color:var(--gold);
+        }
+        .chat-msg-content{
+            flex:1;
+            background:rgba(255,255,255,0.03);
+            border-radius:10px;
+            padding:10px 14px;
+            font-size:12px;
+            line-height:1.6;
+            color:var(--platinum);
+            border-left:3px solid transparent;
+        }
+        .chat-msg-user .chat-msg-content{
+            border-left-color:var(--blue);
+            background:rgba(59,130,246,0.06);
+        }
+        .chat-msg-ai .chat-msg-content{
+            border-left-color:var(--tiffany);
+            background:rgba(0,196,179,0.05);
+        }
+        .chat-msg-ai .chat-msg-content p{margin:0 0 8px 0;line-height:1.6}
+        .chat-msg-ai .chat-msg-content p:last-child{margin-bottom:0}
+        .chat-msg-ai .chat-msg-content strong{color:var(--platinum);font-weight:700}
+        .chat-msg-ai .chat-msg-content ul,
+        .chat-msg-ai .chat-msg-content ol{margin:6px 0 8px 0;padding-left:20px}
+        .chat-msg-ai .chat-msg-content li{margin-bottom:4px;line-height:1.5}
+        .chat-msg-ai .chat-msg-content h1,
+        .chat-msg-ai .chat-msg-content h2,
+        .chat-msg-ai .chat-msg-content h3,
+        .chat-msg-ai .chat-msg-content h4{
+            color:var(--tiffany-light);
+            font-weight:700;
+            margin:10px 0 6px 0;
+        }
+        .chat-msg-ai .chat-msg-content h1{font-size:15px}
+        .chat-msg-ai .chat-msg-content h2{font-size:14px}
+        .chat-msg-ai .chat-msg-content h3{font-size:13px}
+        .chat-msg-ai .chat-msg-content h4{font-size:12px}
+        .chat-msg-ai .chat-msg-content code{
+            background:rgba(0,0,0,0.4);
+            padding:2px 6px;
+            border-radius:4px;
+            font-family:'Courier New',monospace;
+            font-size:11px;
+            color:var(--tiffany-light);
+            border:1px solid rgba(212,175,55,0.2);
+        }
+        .chat-msg-ai .chat-msg-content pre{
+            background:rgba(0,0,0,0.4);
+            padding:10px 12px;
+            border-radius:6px;
+            overflow-x:auto;
+            border:1px solid rgba(212,175,55,0.2);
+            margin:8px 0;
+        }
+        .chat-msg-typing .chat-msg-content{
+            border-left-color:var(--gold);
+            background:rgba(212,175,55,0.06);
+            font-style:italic;
+            color:var(--steel-muted);
+        }
+        .chat-msg-label{
+            font-size:9px;
+            font-weight:700;
+            text-transform:uppercase;
+            letter-spacing:0.5px;
+            margin-bottom:4px;
+        }
+        .chat-msg-user .chat-msg-label{color:var(--blue)}
+        .chat-msg-ai .chat-msg-label{color:var(--tiffany-light)}
+        .chat-msg-typing .chat-msg-label{color:var(--gold-light)}
+
+        .chat-panel-footer{
+            padding:12px 20px;
+            border-top:1px solid rgba(212,175,55,0.15);
+            background:var(--carbon);
+            display:flex;
+            gap:10px;
+            align-items:center;
+        }
+        .chat-input{
+            flex:1;
+            background:rgba(0,0,0,0.3);
+            border:1px solid rgba(212,175,55,0.25);
+            border-radius:8px;
+            padding:10px 14px;
+            color:var(--platinum);
+            font-family:inherit;
+            font-size:12px;
+            outline:none;
+            transition:all 0.2s;
+        }
+        .chat-input:focus{
+            border-color:var(--tiffany);
+            box-shadow:0 0 10px rgba(0,196,179,0.25);
+        }
+        .chat-input::placeholder{color:var(--steel-muted)}
+        .chat-btn{
+            background:linear-gradient(135deg,var(--tiffany-dark),var(--tiffany));
+            border:1.5px solid var(--gold);
+            border-radius:8px;
+            padding:10px 16px;
+            cursor:pointer;
+            color:#fff;
+            font-weight:700;
+            font-size:12px;
+            transition:all 0.2s;
+            display:flex;
+            align-items:center;
+            gap:6px;
+            white-space:nowrap;
+            font-family:inherit;
+        }
+        .chat-btn:hover{
+            transform:translateY(-1px);
+            box-shadow:0 4px 15px rgba(0,196,179,0.4);
+        }
+        .chat-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none}
+        .chat-suggestions{
+            display:flex;
+            flex-wrap:wrap;
+            gap:6px;
+            padding:0 20px 14px 20px;
+            background:var(--carbon);
+        }
+        .chat-suggestion{
+            background:rgba(0,196,179,0.08);
+            border:1px solid rgba(0,196,179,0.3);
+            border-radius:14px;
+            padding:4px 12px;
+            font-size:10px;
+            color:var(--tiffany-light);
+            cursor:pointer;
+            transition:all 0.2s;
+            font-weight:600;
+        }
+        .chat-suggestion:hover{
+            background:rgba(0,196,179,0.15);
+            transform:translateY(-1px);
+        }
     </style>
 <style>
     /* ========================================
@@ -931,7 +1200,14 @@
             <div class="nav-item" onclick="setLevel('cliente')" id="nav-cli"><span class="nav-icon">👥</span> Clientes / RFM</div>
 
             <div class="sidebar-section">Inteligencia</div>
-            <div class="nav-item"><span class="nav-icon">🧠</span> Narrativa IA</div>
+            <div class="nav-item" id="navNarrativa" onclick="toggleChatIA()">
+                <span class="nav-icon">🧠</span>
+                <span>Narrativa IA</span>
+                <label class="nav-toggle">
+                    <input type="checkbox" id="chatToggle" onchange="toggleChatIA(true)">
+                    <span class="slider"></span>
+                </label>
+            </div>
             <div class="nav-item"><span class="nav-icon">📡</span> Order Flow</div>
             <div class="nav-item"><span class="nav-icon">📈</span> Predicciones</div>
 
@@ -994,6 +1270,129 @@
         function closeMobileMenu() {
             document.body.classList.remove('mobile-menu-open');
             document.querySelector('.menu-toggle')?.setAttribute('aria-expanded', 'false');
+        }
+
+        // ============================================================
+        // TOGGLE CHAT IA
+        // ============================================================
+        function toggleChatIA(desdeSwitch) {
+            const toggle = document.getElementById('chatToggle');
+            const panel = document.getElementById('chatPanelIA');
+            if (!toggle || !panel) return;
+
+            if (!desdeSwitch) {
+                toggle.checked = !toggle.checked;
+            }
+
+            if (toggle.checked) {
+                panel.classList.add('visible');
+                setTimeout(() => {
+                    const input = document.getElementById('chatInput');
+                    if (input) input.focus();
+                }, 100);
+            } else {
+                panel.classList.remove('visible');
+            }
+        }
+
+        // ============================================================
+        // CHAT IA
+        // ============================================================
+        function setChatInput(texto) {
+            const input = document.getElementById('chatInput');
+            if (input) { input.value = texto; input.focus(); }
+        }
+
+        async function enviarConsultaChat() {
+            const input = document.getElementById('chatInput');
+            const btn = document.getElementById('chatBtn');
+            const body = document.getElementById('chatPanelBody');
+            if (!input || !body) return;
+
+            const mensaje = input.value.trim();
+            if (!mensaje) return;
+
+            const userMsg = document.createElement('div');
+            userMsg.className = 'chat-msg chat-msg-user';
+            userMsg.innerHTML = '<div class="chat-msg-avatar"><i class="fas fa-user"></i></div>' +
+                '<div class="chat-msg-content"><div class="chat-msg-label">Tú</div>' + escapeHtml(mensaje) + '</div>';
+            body.appendChild(userMsg);
+
+            input.value = '';
+            btn.disabled = true;
+            body.scrollTop = body.scrollHeight;
+
+            const typingMsg = document.createElement('div');
+            typingMsg.className = 'chat-msg chat-msg-typing';
+            typingMsg.innerHTML = '<div class="chat-msg-avatar"><i class="fas fa-robot"></i></div>' +
+                '<div class="chat-msg-content"><div class="chat-msg-label">Asistente</div>Pensando...</div>';
+            body.appendChild(typingMsg);
+            body.scrollTop = body.scrollHeight;
+
+            // Contexto enriquecido con velas OHLC
+            const d = data[currentLevel];
+            const velasFill = candleData.fillRate.map(v =>
+                `${v.label}: O=${v.o} H=${v.h} L=${v.l} C=${v.c}`
+            ).join(' | ');
+            const velasMerma = candleData.merma.map(v =>
+                `${v.label}: O=${v.o} H=${v.h} L=${v.l} C=${v.c}`
+            ).join(' | ');
+
+            const contexto = `
+Vista actual: ${levelLabels[currentLevel]}
+KPIs visibles: ${d.kpis.map(k => k.label + ': ' + k.value + ' (' + k.delta + ')').join(' | ')}
+Estados operacionales activos: ${d.states.map(s => s.domain + ': ' + s.state + ' (' + s.badge + ')').join(' | ')}
+Narrativa IA actual: ${d.narrative.replace(/<[^>]*>/g, '')}
+
+VELAS JAPONESAS - Fill Rate Diario (%) :
+${velasFill}
+
+VELAS JAPONESAS - Merma Diaria (%) :
+${velasMerma}
+
+CEDI: CEDI Norte 96.2% (+2.1pp), CEDI Centro 91.8% (-1.2pp), CEDI Sur 94.3% (+0.8pp). Fill Rate Promedio CEDI: 94.1%. Tiempo Promedio Entrega: 2.3 días.
+`.trim();
+
+            try {
+                const response = await fetch('/api/chat-retailmind-coo', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: mensaje, contexto: contexto })
+                });
+
+                const resData = await response.json();
+                typingMsg.remove();
+
+                const aiMsg = document.createElement('div');
+                aiMsg.className = 'chat-msg chat-msg-ai';
+
+                if (resData.reply) {
+                    const htmlFormateado = DOMPurify.sanitize(marked.parse(resData.reply));
+                    aiMsg.innerHTML = '<div class="chat-msg-avatar"><i class="fas fa-robot"></i></div>' +
+                        '<div class="chat-msg-content"><div class="chat-msg-label">Asistente RetailMind COO</div>' + htmlFormateado + '</div>';
+                } else {
+                    aiMsg.innerHTML = '<div class="chat-msg-avatar"><i class="fas fa-robot"></i></div>' +
+                        '<div class="chat-msg-content"><div class="chat-msg-label">Asistente RetailMind COO</div>Error: ' + escapeHtml(resData.error || 'desconocido') + '</div>';
+                }
+                body.appendChild(aiMsg);
+            } catch (error) {
+                typingMsg.remove();
+                const errMsg = document.createElement('div');
+                errMsg.className = 'chat-msg chat-msg-typing';
+                errMsg.innerHTML = '<div class="chat-msg-avatar"><i class="fas fa-robot"></i></div>' +
+                    '<div class="chat-msg-content"><div class="chat-msg-label">Sistema</div>Error de conexión. Verifica tu internet.</div>';
+                body.appendChild(errMsg);
+            } finally {
+                btn.disabled = false;
+                body.scrollTop = body.scrollHeight;
+                input.focus();
+            }
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
         }
 
         const levels = ['holding', 'sucursal', 'categoria', 'producto', 'cliente'];
@@ -1566,8 +1965,44 @@
                 chartInstance = null;
             }
 
+            // Preservar estado del chat
+            const chatToggle = document.getElementById('chatToggle');
+            const chatActivo = chatToggle && chatToggle.checked;
+
             main.innerHTML = `
                 <h2 class="sr-only">Centro de Control Operacional – vista ${levelLabels[currentLevel]}</h2>
+
+                <!-- CHAT IA -->
+                <div class="chat-panel ${chatActivo ? 'visible' : ''}" id="chatPanelIA">
+                    <div class="chat-panel-header">
+                        <div class="chat-panel-title">
+                            <i class="fas fa-robot"></i> Asistente RetailMind COO
+                        </div>
+                        <div class="chat-panel-subtitle">Powered by Gemini · Contexto: ${levelLabels[currentLevel]}</div>
+                        <button class="chat-panel-close" onclick="toggleChatIA()" title="Cerrar">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="chat-panel-body" id="chatPanelBody">
+                        <div class="chat-msg chat-msg-ai">
+                            <div class="chat-msg-avatar"><i class="fas fa-robot"></i></div>
+                            <div class="chat-msg-content">
+                                <div class="chat-msg-label">Asistente RetailMind COO</div>
+                                Hola. Soy tu asistente operacional. Puedo ayudarte a interpretar los estados de la vista <strong>${levelLabels[currentLevel]}</strong>. Pregúntame sobre Fill Rate, merma, rotación, OOS, CEDI, o sobre los patrones de las velas japonesas (martillos, shooting stars, dojis).
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-panel-footer">
+                        <input type="text" class="chat-input" id="chatInput" placeholder="Escribe tu consulta operacional..." onkeypress="if(event.key==='Enter') enviarConsultaChat()">
+                        <button class="chat-btn" id="chatBtn" onclick="enviarConsultaChat()"><i class="fas fa-paper-plane"></i> Enviar</button>
+                    </div>
+                    <div class="chat-suggestions">
+                        <span class="chat-suggestion" onclick="setChatInput('¿Cuál es el estado operativo general del holding?')">Estado general</span>
+                        <span class="chat-suggestion" onclick="setChatInput('¿Qué sucursales presentan problemas de Fill Rate?')">Sucursales críticas</span>
+                        <span class="chat-suggestion" onclick="setChatInput('¿Cuántos martillos hay en el gráfico de velas del Fill Rate?')">Martillos en velas</span>
+                        <span class="chat-suggestion" onclick="setChatInput('¿Qué acciones operativas recomiendas esta semana?')">Recomendaciones</span>
+                    </div>
+                </div>
 
                 <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
                     <div class="breadcrumb">
@@ -1687,6 +2122,13 @@
                     </div>
                 </div>
             `;
+
+            // Sincronizar estado del chat
+            if (chatActivo) {
+                const panel = document.getElementById('chatPanelIA');
+                if (panel) panel.classList.add('visible');
+                if (chatToggle) chatToggle.checked = true;
+            }
 
             setTimeout(() => {
                 renderChart();
@@ -1876,26 +2318,26 @@
             drawCandles('fillCandleChart', candleData.fillRate, { suffix: '%', decimals: 1 });
             drawCandles('mermaCandleChart', candleData.merma, { suffix: '%', decimals: 1 });
 
-            const fcfFirst = candleData.fillRate[0].o;
-            const fcfLast = candleData.fillRate[candleData.fillRate.length - 1].c;
-            const fcfDelta = fcfLast - fcfFirst;
-            const fcfPct = (fcfDelta / fcfFirst * 100);
+            const fillFirst = candleData.fillRate[0].o;
+            const fillLast = candleData.fillRate[candleData.fillRate.length - 1].c;
+            const fillDelta = fillLast - fillFirst;
+            const fillPct = (fillDelta / fillFirst * 100);
 
-            const marginFirst = candleData.merma[0].o;
-            const marginLast = candleData.merma[candleData.merma.length - 1].c;
-            const marginDelta = marginLast - marginFirst;
-            const marginPct = (marginDelta / marginFirst * 100);
+            const mermaFirst = candleData.merma[0].o;
+            const mermaLast = candleData.merma[candleData.merma.length - 1].c;
+            const mermaDelta = mermaLast - mermaFirst;
+            const mermaPct = (mermaDelta / mermaFirst * 100);
 
             document.getElementById('fillCandleSummary').innerHTML = `
-                <span class="candle-pill">Inicio: ${fcfFirst.toFixed(1)}%</span>
-                <span class="candle-pill">Cierre: ${fcfLast.toFixed(1)}%</span>
-                <span class="candle-pill ${fcfDelta>=0?'up':'down'}">${fcfDelta>=0?'▲':'▼'} ${Math.abs(fcfDelta).toFixed(1)}% (${fcfPct>=0?'+':''}${fcfPct.toFixed(1)}%)</span>
+                <span class="candle-pill">Inicio: ${fillFirst.toFixed(1)}%</span>
+                <span class="candle-pill">Cierre: ${fillLast.toFixed(1)}%</span>
+                <span class="candle-pill ${fillDelta>=0?'up':'down'}">${fillDelta>=0?'▲':'▼'} ${Math.abs(fillDelta).toFixed(1)}% (${fillPct>=0?'+':''}${fillPct.toFixed(1)}%)</span>
             `;
 
             document.getElementById('mermaCandleSummary').innerHTML = `
-                <span class="candle-pill">Inicio: ${marginFirst.toFixed(1)}%</span>
-                <span class="candle-pill">Cierre: ${marginLast.toFixed(1)}%</span>
-                <span class="candle-pill ${marginDelta<=0?'up':'down'}">${marginDelta<=0?'▼':'▲'} ${Math.abs(marginDelta).toFixed(1)}% (${marginPct<=0?'':'-'}${Math.abs(marginPct).toFixed(1)}%)</span>
+                <span class="candle-pill">Inicio: ${mermaFirst.toFixed(1)}%</span>
+                <span class="candle-pill">Cierre: ${mermaLast.toFixed(1)}%</span>
+                <span class="candle-pill ${mermaDelta<=0?'up':'down'}">${mermaDelta<=0?'▼':'▲'} ${Math.abs(mermaDelta).toFixed(1)}% (${mermaPct<=0?'':'-'}${Math.abs(mermaPct).toFixed(1)}%)</span>
             `;
         }
 

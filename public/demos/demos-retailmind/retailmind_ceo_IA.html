@@ -733,7 +733,7 @@ async function enviarConsultaChat() {
   const contexto = 'Vista: ' + (levelLabels[currentLevel] || currentLevel) + ' | Dashboard: Centro de Estados Operacionales de RetailMind 360°';
 
   try {
-    const response = await fetch('/api/chat-gemini', {
+    const response = await fetch('/api/chat-retailmind-ceo', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ message: mensaje, contexto: contexto })

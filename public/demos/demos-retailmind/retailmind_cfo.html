@@ -66,13 +66,14 @@
             border-radius: 20px;
         }
 
-        .shell {
-            display: grid;
-            grid-template-rows: 56px 1fr;
-            grid-template-columns: 230px 1fr;
-            height: 100vh;
-            overflow: hidden;
-        }
+.shell {
+    display: grid;
+    grid-template-rows: 56px 1fr;
+    grid-template-columns: 230px 1fr;
+    min-height: 100vh;
+    /* height: 100vh;      ← eliminado */
+    /* overflow: hidden;   ← eliminado */
+}
 
         /* TOPBAR ROLEX LUXURY */
         .topbar {
@@ -121,12 +122,15 @@
         }
 
         /* SIDEBAR */
-        .sidebar {
-            background: var(--surface);
-            border-right: 1px solid var(--border-deep);
-            padding: 1rem 0;
-            overflow-y: auto;
-        }
+.sidebar {
+    background: var(--surface);
+    border-right: 1px solid var(--border-deep);
+    padding: 1rem 0;
+    overflow-y: auto;
+    position: sticky;
+    top: 56px;
+    height: calc(100vh - 56px);
+}
         .sidebar-section {
             padding: 0.5rem 1.2rem;
             font-size: 10px;
@@ -214,8 +218,8 @@
         }
 
         @media (max-width: 720px) {
-            .shell { grid-template-columns: 1fr; grid-template-rows: 56px 1fr; }
-            .topbar { padding: 0 0.75rem; gap: 0.6rem; }
+    .shell { grid-template-columns: 1fr; grid-template-rows: 56px 1fr; min-height: 100vh; }
+			.topbar { padding: 0 0.75rem; gap: 0.6rem; }
             .topbar img { height: 22px; max-width: 130px; object-fit: contain; }
             .topbar-badge, .topbar-user, .topbar-date { display: none; }
             .menu-toggle { display: flex; }
@@ -232,14 +236,14 @@
             .drill-tabs { overflow-x: auto; width: 100%; padding-bottom: 2px; }
         }
 
-        .main {
-            overflow-y: auto;
-            padding: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1.2rem;
-            background: transparent;
-        }
+.main {
+    /* overflow-y: auto;   ← eliminado (ya no hace falta) */
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    background: transparent;
+}
 
         /* BREADCRUMB */
         .breadcrumb { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--steel-muted); }

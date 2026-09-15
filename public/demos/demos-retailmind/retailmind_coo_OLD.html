@@ -1,0 +1,1978 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RetailMind · COO · Centro de Control Operacional</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <!-- ============================================ -->
+    <!-- PALETA "ROLEX TIFFANY" - Estilos Globales    -->
+    <!-- ============================================ -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* === PALETA ROLEX TIFFANY === */
+            --tiffany: #00C4B3;
+            --tiffany-light: #80E5DA;
+            --tiffany-dark: #008A7E;
+            --gold: #D4AF37;
+            --gold-light: #F3E5AB;
+            --gold-dark: #997A15;
+            --obsidian: #111315;
+            --carbon: #212529;
+            --platinum: #E2E8F0;
+            --steel-muted: #94A3B8;
+            --steel-dark: #64748B;
+            --red: #EF4444;
+            --green: #00C4B3;
+            --yellow: #F59E0B;
+            --blue: #3B82F6;
+        }
+
+        body {
+            background: var(--obsidian);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--platinum);
+            min-height: 100vh;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: var(--obsidian); }
+        ::-webkit-scrollbar-thumb { background: var(--tiffany); border-radius: 20px; }
+
+        .shell {
+            display: grid;
+            grid-template-rows: 56px 1fr;
+            grid-template-columns: 220px 1fr;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .topbar {
+            grid-column: 1/-1;
+            background: var(--carbon);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            display: flex;
+            align-items: center;
+            padding: 0 1.5rem;
+            gap: 1rem;
+            position: relative;
+            z-index: 10;
+        }
+        .topbar img { height: 28px; filter: brightness(0) invert(1); }
+        .topbar-divider { 
+            width: 1px; 
+            height: 24px; 
+            background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+            margin: 0 0.5rem; 
+        }
+        .topbar-date { font-size: 11px; color: var(--steel-muted); }
+        
+        /* ======================================== */
+        /* BADGE CON BORDE DORADO (estilo Rolex)    */
+        /* ======================================== */
+        .topbar-badge {
+            background: rgba(0, 196, 179, 0.12);
+            color: var(--tiffany-light);
+            padding: 2px 14px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            border: 1.5px solid var(--gold);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.15), inset 0 0 15px rgba(212, 175, 55, 0.05);
+            margin-left: auto;
+            text-shadow: 0 0 10px rgba(0, 196, 179, 0.1);
+        }
+
+        /* ======================================== */
+        /* BADGES DE ESTADO CON BORDE DORADO        */
+        /* ======================================== */
+        .sc-status {
+            font-size: 9px;
+            padding: 2px 10px;
+            border-radius: 10px;
+            font-weight: 600;
+            border: 1px solid var(--gold);
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.08);
+        }
+        .s-green { 
+            background: rgba(0, 196, 179, 0.15); 
+            color: var(--tiffany-light);
+            border-color: var(--gold);
+        }
+        .s-red { 
+            background: rgba(239, 68, 68, 0.15); 
+            color: var(--red);
+            border-color: var(--gold);
+        }
+        .s-yellow { 
+            background: rgba(245, 158, 11, 0.15); 
+            color: var(--gold-light);
+            border-color: var(--gold);
+        }
+        .s-blue { 
+            background: rgba(59, 130, 246, 0.15); 
+            color: var(--blue);
+            border-color: var(--gold);
+        }
+        .s-gold { 
+            background: rgba(212, 175, 55, 0.15); 
+            color: var(--gold-light);
+            border-color: var(--gold);
+        }
+
+        /* ======================================== */
+        /* BOTONES CON BORDE DORADO                 */
+        /* ======================================== */
+        .btn-gold-border {
+            border: 1.5px solid var(--gold);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.08);
+            transition: all 0.3s ease;
+        }
+        .btn-gold-border:hover {
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
+            border-color: var(--gold-light);
+        }
+
+        /* Badge de navegación con borde dorado */
+        .nav-badge {
+            margin-left: auto;
+            padding: 1px 8px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 600;
+            border: 1px solid var(--gold);
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.06);
+        }
+        .nav-badge.green { 
+            background: rgba(0, 196, 179, 0.15); 
+            color: var(--tiffany-light);
+            border-color: var(--gold);
+        }
+        .nav-badge.gold { 
+            background: rgba(212, 175, 55, 0.15); 
+            color: var(--gold-light);
+            border-color: var(--gold);
+        }
+        .nav-badge.red { 
+            background: rgba(239, 68, 68, 0.15); 
+            color: var(--red);
+            border-color: var(--gold);
+        }
+
+        /* ======================================== */
+        /* BOTÓN COO BADGE (versión especial)       */
+        /* ======================================== */
+        .coo-role-badge {
+            background: linear-gradient(135deg, rgba(0, 196, 179, 0.15), rgba(212, 175, 55, 0.10));
+            color: var(--tiffany-light);
+            padding: 2px 14px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: 1.5px solid var(--gold);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.12), inset 0 0 20px rgba(212, 175, 55, 0.04);
+            text-shadow: 0 0 12px rgba(0, 196, 179, 0.08);
+        }
+
+        /* ======================================== */
+        /* BOTONES DE ACCIÓN (Demo / Contacto)      */
+        /* ======================================== */
+        .btn-action {
+            border: 1.5px solid var(--gold);
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.10);
+            transition: all 0.3s ease;
+            background: var(--carbon);
+            color: var(--platinum);
+            padding: 0.6rem 1.8rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-action:hover {
+            box-shadow: 0 0 40px rgba(212, 175, 55, 0.25);
+            border-color: var(--gold-light);
+            transform: translateY(-2px);
+            background: rgba(212, 175, 55, 0.05);
+        }
+        .btn-action-primary {
+            background: linear-gradient(135deg, var(--tiffany-dark), var(--tiffany));
+            color: #fff;
+            border-color: var(--gold);
+        }
+        .btn-action-primary:hover {
+            background: linear-gradient(135deg, var(--tiffany), var(--tiffany-light));
+            box-shadow: 0 0 40px rgba(0, 196, 179, 0.25);
+        }
+
+        .topbar-user { display: flex; align-items: center; gap: 8px; margin-left: 1rem; }
+        .avatar {
+            width: 28px; height: 28px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--tiffany), var(--gold));
+            display: flex; align-items: center; justify-content: center;
+            font-size: 10px; font-weight: 700; color: var(--obsidian);
+            border: 1px solid var(--gold);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
+        }
+
+        .sidebar {
+            background: var(--carbon);
+            border-right: 1px solid rgba(212, 175, 55, 0.15);
+            padding: 1rem 0;
+            overflow-y: auto;
+        }
+        .sidebar-section {
+            padding: 0.5rem 1rem;
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--steel-muted);
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            margin-top: 0.5rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 1rem;
+            cursor: pointer;
+            color: var(--steel-muted);
+            font-size: 12px;
+            transition: all 0.15s;
+            border-left: 3px solid transparent;
+        }
+        .nav-item:hover { color: var(--platinum); background: rgba(255,255,255,0.03); }
+        .nav-item.active {
+            color: var(--tiffany-light);
+            border-left-color: var(--tiffany);
+            background: rgba(0, 196, 179, 0.08);
+        }
+        .nav-icon { font-size: 14px; width: 18px; text-align: center; }
+
+        .menu-toggle {
+            display: none;
+            width: 36px; height: 36px;
+            border: 1.5px solid var(--gold);
+            border-radius: 10px;
+            background: transparent;
+            color: var(--platinum);
+            font-size: 18px;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.06);
+        }
+        .menu-toggle:hover { 
+            background: rgba(212, 175, 55, 0.05);
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.12);
+        }
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 56px 0 0 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 19;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            pointer-events: none;
+        }
+
+        @media (max-width: 720px) {
+            .shell { grid-template-columns: 1fr; grid-template-rows: 56px 1fr; }
+            .topbar { padding: 0 0.75rem; gap: 0.6rem; }
+            .topbar img { height: 22px; max-width: 130px; object-fit: contain; }
+            .topbar-badge, .topbar-user, .topbar-date { display: none; }
+            .menu-toggle { display: flex; }
+            .sidebar {
+                position: fixed; top: 56px; bottom: 0; left: 0; width: 260px;
+                z-index: 20; transform: translateX(-105%);
+                transition: transform 0.22s ease;
+                box-shadow: 18px 0 40px rgba(0,0,0,0.6);
+            }
+            body.mobile-menu-open .sidebar { transform: translateX(0); }
+            body.mobile-menu-open .sidebar-overlay { display: block; opacity: 1; pointer-events: auto; }
+            .main { grid-column: 1; padding: 1rem; gap: 1rem; }
+            .kpi-row { grid-template-columns: repeat(2, 1fr); }
+            .state-grid { grid-template-columns: 1fr; }
+            .two-col { grid-template-columns: 1fr; }
+            .drill-tabs { overflow-x: auto; width: 100%; padding-bottom: 2px; }
+        }
+
+        .main {
+            overflow-y: auto;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            background: var(--obsidian);
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            color: var(--steel-muted);
+        }
+        .breadcrumb span { cursor: pointer; transition: color 0.15s; }
+        .breadcrumb span:hover { color: var(--platinum); }
+        .breadcrumb .active-crumb { color: var(--platinum); font-weight: 500; }
+        .breadcrumb .sep { color: rgba(212, 175, 55, 0.3); }
+
+        .drill-tabs { display: flex; gap: 6px; }
+        .drill-tab {
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+            border: 1.5px solid var(--gold);
+            color: var(--steel-muted);
+            background: transparent;
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.04);
+        }
+        .drill-tab:hover { 
+            color: var(--platinum); 
+            border-color: var(--gold-light);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.12);
+        }
+        .drill-tab.active { 
+            background: linear-gradient(135deg, var(--tiffany), var(--tiffany-dark));
+            border-color: var(--gold);
+            color: #fff;
+            box-shadow: 0 0 25px rgba(0, 196, 179, 0.15);
+        }
+
+        .kpi-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        .kpi {
+            background: var(--carbon);
+            border: 1.5px solid rgba(212, 175, 55, 0.15);
+            border-radius: 12px;
+            padding: 1rem 1.1rem;
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+        .kpi::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--tiffany), var(--gold), var(--tiffany));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .kpi:hover { 
+            border-color: var(--gold);
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.06);
+        }
+        .kpi:hover::before { opacity: 1; }
+        .kpi-label {
+            font-size: 10px;
+            color: var(--steel-muted);
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+        }
+        .kpi-value {
+            font-size: 22px;
+            font-weight: 700;
+            margin: 4px 0 2px;
+            letter-spacing: -0.5px;
+            color: var(--platinum);
+        }
+        .kpi-delta { font-size: 11px; font-weight: 500; }
+        .up { color: var(--tiffany-light); }
+        .down { color: var(--red); }
+        .flat { color: var(--gold-light); }
+
+        .state-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+        .state-card {
+            background: var(--carbon);
+            border: 1.5px solid rgba(212, 175, 55, 0.15);
+            border-radius: 14px;
+            padding: 1.1rem 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .state-card:hover { 
+            border-color: var(--gold); 
+            transform: translateY(-2px); 
+            box-shadow: 0 8px 30px rgba(0, 196, 179, 0.06), 0 8px 30px rgba(212, 175, 55, 0.06);
+        }
+        .state-card.selected { 
+            border-color: var(--tiffany); 
+            background: rgba(0, 196, 179, 0.04);
+            box-shadow: 0 0 30px rgba(0, 196, 179, 0.06);
+        }
+        .sc-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+        .sc-domain {
+            font-size: 9px;
+            font-weight: 600;
+            color: var(--steel-muted);
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+        }
+        .sc-state { font-size: 15px; font-weight: 700; margin-bottom: 6px; color: var(--platinum); }
+        .sc-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 3px 0;
+            font-size: 11px;
+            color: var(--steel-muted);
+        }
+        .sc-row strong { color: var(--platinum); font-weight: 500; }
+        .sc-conf {
+            font-size: 10px;
+            color: var(--steel-muted);
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(212, 175, 55, 0.15);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .conf-bar {
+            height: 4px;
+            border-radius: 2px;
+            background: rgba(212, 175, 55, 0.15);
+            overflow: hidden;
+            flex: 1;
+            margin: 0 8px;
+            align-self: center;
+        }
+        .conf-fill { height: 100%; border-radius: 2px; }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .panel {
+            background: var(--carbon);
+            border: 1.5px solid rgba(212, 175, 55, 0.15);
+            border-radius: 14px;
+            padding: 1.1rem 1.2rem;
+        }
+        .panel-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--steel-muted);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .hier-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.08);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .hier-item:last-child { border-bottom: none; }
+        .hier-item:hover .hi-name { color: var(--tiffany-light); }
+        .hi-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; border: 1px solid var(--gold); }
+        .hi-name { font-size: 12px; font-weight: 500; flex: 1; color: var(--platinum); }
+        .hi-state {
+            font-size: 10px;
+            padding: 1px 9px;
+            border-radius: 8px;
+            font-weight: 600;
+            border: 1px solid var(--gold);
+        }
+        .hi-delta { font-size: 11px; font-weight: 600; min-width: 50px; text-align: right; }
+        .hi-arrow { color: var(--steel-muted); font-size: 14px; }
+
+        .alert-item {
+            display: flex;
+            gap: 10px;
+            padding: 9px 0;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.08);
+        }
+        .alert-item:last-child { border-bottom: none; }
+        .alert-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; border: 1px solid var(--gold); }
+        .alert-body { flex: 1; }
+        .alert-title { font-size: 12px; font-weight: 500; color: var(--platinum); margin-bottom: 2px; }
+        .alert-sub { font-size: 10px; color: var(--steel-muted); }
+        .alert-time { font-size: 10px; color: var(--steel-muted); flex-shrink: 0; }
+
+        .narrative-box {
+            background: rgba(0, 196, 179, 0.04);
+            border: 1.5px solid rgba(212, 175, 55, 0.2);
+            border-radius: 14px;
+            padding: 1.1rem 1.2rem;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.03);
+        }
+        .narr-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+        .narr-icon { font-size: 14px; }
+        .narr-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--tiffany-light);
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+        }
+        .narr-text { font-size: 12px; color: var(--steel-muted); line-height: 1.7; }
+        .narr-text strong { color: var(--platinum); font-weight: 500; }
+
+        .chart-wrap { position: relative; height: 180px; margin-top: 8px; }
+
+        .candle-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .candle-panel {
+            background: var(--carbon);
+            border: 1.5px solid rgba(212, 175, 55, 0.15);
+            border-radius: 14px;
+            padding: 1.1rem 1.2rem;
+        }
+        .candle-head {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+        .candle-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--steel-muted);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        .candle-note {
+            font-size: 10px;
+            color: var(--steel-muted);
+            line-height: 1.4;
+            text-align: right;
+            max-width: 210px;
+        }
+        .candle-wrap {
+            height: 170px;
+            position: relative;
+            margin-top: 8px;
+        }
+        .candle-wrap canvas {
+            width: 100% !important;
+            height: 100% !important;
+            display: block;
+        }
+        .candle-tooltip {
+            position: fixed;
+            z-index: 50;
+            pointer-events: none;
+            background: var(--carbon);
+            border: 1.5px solid var(--gold);
+            border-radius: 10px;
+            padding: 8px 10px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.7), 0 0 30px rgba(212, 175, 55, 0.05);
+            font-size: 11px;
+            color: var(--platinum);
+            min-width: 145px;
+            display: none;
+        }
+        .candle-tooltip-title { font-weight: 700; color: var(--tiffany-light); margin-bottom: 5px; }
+        .candle-tooltip-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            line-height: 1.55;
+            color: var(--steel-muted);
+        }
+        .candle-tooltip-row strong { color: var(--platinum); font-weight: 600; }
+        .candle-summary {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+            font-size: 10px;
+            color: var(--steel-muted);
+        }
+        .candle-pill {
+            border: 1.5px solid rgba(212, 175, 55, 0.2);
+            border-radius: 999px;
+            padding: 3px 10px;
+            background: rgba(255,255,255,0.02);
+        }
+
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 11px;
+            color: var(--steel-muted);
+        }
+        .legend-dot { width: 8px; height: 8px; border-radius: 2px; border: 1px solid var(--gold); }
+
+        .coo-accent { border-left: 3px solid var(--gold); }
+        .coo-badge {
+            background: linear-gradient(135deg, var(--tiffany-dark), var(--tiffany));
+            color: #fff;
+            padding: 2px 12px;
+            border-radius: 12px;
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: 1.5px solid var(--gold);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.10);
+        }
+
+        .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+
+        /* ======================================== */
+        /* BOTÓN DE ACCIÓN "PROBAR" / "AGENDAR"    */
+        /* ======================================== */
+        .btn-hero {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            border-radius: 12px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 1.5px solid var(--gold);
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.08);
+            background: linear-gradient(135deg, var(--tiffany-dark), var(--tiffany));
+            color: #fff;
+        }
+        .btn-hero:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 50px rgba(212, 175, 55, 0.2), 0 8px 30px rgba(0, 196, 179, 0.15);
+            border-color: var(--gold-light);
+        }
+        .btn-hero-outline {
+            background: transparent;
+            color: var(--platinum);
+            border: 1.5px solid var(--gold);
+        }
+        .btn-hero-outline:hover {
+            background: rgba(212, 175, 55, 0.05);
+            box-shadow: 0 0 40px rgba(212, 175, 55, 0.12);
+        }
+    </style>
+<style>
+    /* ========================================
+       BOTÓN FLOTANTE + MENÚ ABANICO
+       (Extraído de RetailMind 360°)
+       ======================================== */
+
+    .floating-wrapper {
+        position: fixed;
+        right: 2rem;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 99999;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 0.75rem;
+    }
+
+    .floating-btn {
+        background: white;
+        color: #1e3a8a;
+        padding: 0.75rem 1.5rem;
+        border-radius: 1rem;
+        font-weight: 700;
+        text-align: center;
+        transition: all 0.3s ease;
+        border: 1px solid #cbd5e1;
+        box-shadow: 0 10px 40px rgba(30, 58, 138, 0.2);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        white-space: nowrap;
+        font-size: 1rem;
+        font-family: inherit;
+        line-height: 1.5;
+    }
+
+    .floating-btn:hover {
+        transform: translateX(-8px);
+        box-shadow: 0 15px 50px rgba(30, 58, 138, 0.3);
+    }
+
+    .floating-btn.active {
+        color: #dc2626;
+        border-color: #dc2626;
+    }
+
+    .floating-btn i {
+        font-size: 1.2rem;
+        transition: transform 0.3s ease;
+    }
+
+    .floating-btn.active i {
+        transform: rotate(90deg);
+    }
+
+    /* Menú abanico (desplegable hacia la izquierda) */
+    .fan-menu {
+        position: absolute;
+        right: calc(100% + 1rem);
+        top: 50%;
+        transform: translateY(-50%) scale(0.9);
+        transform-origin: right center;
+        background: white;
+        border-radius: 1.25rem;
+        padding: 1.25rem 1.5rem;
+        min-width: 240px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        border: 1px solid #e2e8f0;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        pointer-events: none;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .fan-menu.open {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(-50%) scale(1);
+        pointer-events: auto;
+    }
+
+    .fan-menu .group-label {
+        font-size: 0.6rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-top: 0.25rem;
+        padding: 0.2rem 0.4rem;
+        border-radius: 0.25rem;
+        display: inline-block;
+        background: #f1f5f9;
+        color: #334155;
+    }
+
+    .fan-menu .group-label:first-of-type {
+        margin-top: 0;
+    }
+
+    .fan-menu a {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.4rem 0.6rem;
+        border-radius: 0.5rem;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #1e293b;
+        transition: background 0.15s, color 0.15s;
+        text-decoration: none;
+        border-left: 3px solid transparent;
+    }
+
+    .fan-menu a:hover {
+        background: #f1f5f9;
+        color: #0f172a;
+    }
+
+    .fan-menu a i {
+        width: 1.2rem;
+        text-align: center;
+        font-size: 0.8rem;
+    }
+
+    /* Colores por nivel (borde izquierdo e icono) */
+    .fan-menu a.strategic { border-left-color: #1e3a8a; }
+    .fan-menu a.strategic i { color: #1e3a8a; }
+
+    .fan-menu a.tactical { border-left-color: #475569; }
+    .fan-menu a.tactical i { color: #475569; }
+
+    .fan-menu a.realtime { border-left-color: #10b981; }
+    .fan-menu a.realtime i { color: #10b981; }
+
+    /* separador entre grupos */
+    .fan-menu .divider {
+        height: 1px;
+        background: #e2e8f0;
+        margin: 0.25rem 0;
+    }
+
+    /* ========================================
+       RESPONSIVE: ocultar texto en móvil,
+       solo mostrar icono
+       ======================================== */
+    @media (max-width: 640px) {
+        .floating-wrapper {
+            right: 1rem;
+        }
+        .floating-btn {
+            padding: 0.75rem 1rem !important;
+            font-size: 0;
+        }
+        .floating-btn span {
+            display: none;
+        }
+        .floating-btn i {
+            margin: 0;
+            font-size: 1.4rem;
+        }
+        .fan-menu {
+            min-width: 200px;
+            right: calc(100% + 0.75rem);
+            padding: 1rem;
+        }
+        .fan-menu a {
+            font-size: 0.7rem;
+            padding: 0.3rem 0.5rem;
+        }
+    }
+</style></head>
+<body>
+    <!-- BOTÓN FLOTANTE + MENÚ ABANICO (sustituye al antiguo <a>) -->
+    <div class="floating-wrapper" id="floatingWrapper">
+        <!-- Menú desplegable (abanico) -->
+        <div class="fan-menu" id="fanMenu">
+            <!-- Nivel 1: Estratégico -->
+            <span class="group-label"><i class="fas fa-chess-queen mr-1" style="color:#1e3a8a;"></i> Estratégico</span>
+            <a href="https://gestor-de-archivos.vercel.app/demos/demos-retailmind/retailmind_ceo.html" class="strategic"><i class="fas fa-user-tie"></i> Vista del CEO</a>
+            <a href="https://gestor-de-archivos.vercel.app/demos/demos-retailmind/retailmind_cfo.html" class="strategic"><i class="fas fa-coins"></i> Vista del CFO</a>
+            <a href="https://gestor-de-archivos.vercel.app/demos/demos-retailmind/retailmind_coo.html" class="strategic"><i class="fas fa-truck-ramp-box"></i> Vista del COO</a>
+
+            <div class="divider"></div>
+
+            <!-- Nivel 2: Táctico -->
+            <span class="group-label"><i class="fas fa-chess-knight mr-1" style="color:#475569;"></i> Táctico</span>
+            <a href="https://gestor-de-archivos.vercel.app/demos/demos-retailmind/demo-gemini.html" class="tactical"><i class="fas fa-shop"></i> Gerente de Tienda</a>
+            <a href="https://gestor-de-archivos.vercel.app/demos/demos-retailmind/demo_deepseek.html" class="tactical"><i class="fas fa-tags"></i> Gerente de Categorías</a>
+            <a href="https://gestor-de-archivos.vercel.app/demos/demos-retailmind/demo-qwen.html" class="tactical"><i class="fas fa-shield-halved"></i> Prevención de Pérdidas</a>
+
+            <div class="divider"></div>
+
+            <!-- Nivel 3: Tiempo Real -->
+            <span class="group-label"><i class="fas fa-clock mr-1" style="color:#10b981;"></i> Tiempo Real</span>
+            <a href="https://gestor-de-archivos.vercel.app/demos/demos-retailmind/demo-perplexity.html" class="realtime"><i class="fas fa-cash-register"></i> Panel de Supervisión de Cajas</a>
+            <a href="https://gestor-de-archivos.vercel.app/demos/demos-retailmind/demo-chat-gpt.html" class="realtime"><i class="fas fa-layer-group"></i> Panel de Control de Pasillos</a>
+            <a href="https://gestor-de-archivos.vercel.app/demos/demos-retailmind/Controller-Vista-Financiera-Corporativa.html" class="realtime"><i class="fas fa-layer-group"></i> Controller Vista Financiera Corporativa</a>
+        </div>
+
+        <!-- Botón disparador (antes era un <a>, ahora es <button>) -->
+        <button class="floating-btn" id="floatingBtn" title="Ver Módulos">
+            <i class="fas fa-cube" id="btnIcon"></i>
+            <span id="btnText">Ver Otros Demos</span>
+        </button>
+    </div>
+
+    <div class="shell">
+
+        <!-- TOPBAR -->
+        <div class="topbar">
+            <button class="menu-toggle" type="button" aria-label="Abrir menú" aria-expanded="false" onclick="toggleMobileMenu()">☰</button>
+            <img src="https://gestor-de-archivos.vercel.app/assets/logos/logo-RetailMind-fondo-negro-1447x352.png" alt="RetailMind" style="filter:brightness(0) invert(1);">
+            <div class="topbar-divider"></div>
+            <span style="font-size:11px;color:var(--steel-muted)">Centro de Control Operacional</span>
+            <!-- BADGE CON BORDE DORADO -->
+            <span class="topbar-badge">COO · Vista Corporativa</span>
+            <div class="topbar-divider"></div>
+            <span class="topbar-date" id="dateLabel">jueves, 23 de julio de 2026</span>
+            <div class="topbar-user" style="margin-left:auto">
+                <span style="font-size:11px;color:var(--steel-muted)">Director de Operaciones</span>
+                <div class="avatar">CO</div>
+            </div>
+        </div>
+
+        <div class="sidebar-overlay" onclick="closeMobileMenu()"></div>
+
+        <!-- SIDEBAR -->
+        <div class="sidebar" id="sidebarMenu">
+            <div class="sidebar-section">Navegación</div>
+            <div class="nav-item active" onclick="setLevel('holding')"><span class="nav-icon">🏢</span> Holding</div>
+            <div class="nav-item" onclick="setLevel('sucursal')" id="nav-suc"><span class="nav-icon">🏪</span> Sucursales <span class="nav-badge green">10</span></div>
+            <div class="nav-item" onclick="setLevel('categoria')" id="nav-cat"><span class="nav-icon">📦</span> Categorías</div>
+            <div class="nav-item" onclick="setLevel('producto')" id="nav-prod"><span class="nav-icon">🏷️</span> Productos</div>
+            <div class="nav-item" onclick="setLevel('cliente')" id="nav-cli"><span class="nav-icon">👥</span> Clientes / RFM</div>
+
+            <div class="sidebar-section">Inteligencia</div>
+            <div class="nav-item"><span class="nav-icon">🧠</span> Narrativa IA</div>
+            <div class="nav-item"><span class="nav-icon">📡</span> Order Flow</div>
+            <div class="nav-item"><span class="nav-icon">📈</span> Predicciones</div>
+
+            <div class="sidebar-section">Alertas</div>
+            <div class="nav-item"><span class="nav-icon">⚡</span> Críticas <span class="nav-badge red">3</span></div>
+            <div class="nav-item"><span class="nav-icon">🔔</span> Monitoreo <span class="nav-badge gold">6</span></div>
+
+            <div class="sidebar-section" style="margin-top:auto">Sistema</div>
+            <div class="nav-item" onclick="toggleThemeSettings()"><span class="nav-icon">⚙️</span> Configuración</div>
+            <div class="theme-settings" id="themeSettings" style="display:none;margin:8px 1rem 0;padding:10px;border:1.5px solid rgba(212,175,55,0.2);border-radius:12px;">
+                <div style="font-size:10px;font-weight:700;color:var(--steel-muted);letter-spacing:0.7px;text-transform:uppercase;margin-bottom:8px;">Apariencia</div>
+                <label style="display:flex;align-items:center;gap:8px;padding:4px 0;font-size:12px;color:var(--platinum);cursor:pointer;">
+                    <input type="radio" name="rm-theme" value="executive" checked onchange="setTheme('executive')"> Executive
+                </label>
+                <label style="display:flex;align-items:center;gap:8px;padding:4px 0;font-size:12px;color:var(--platinum);cursor:pointer;">
+                    <input type="radio" name="rm-theme" value="office" onchange="setTheme('office')"> Office
+                </label>
+            </div>
+        </div>
+
+        <!-- MAIN -->
+        <div class="main" id="mainContent">
+            <!-- El contenido se renderiza dinámicamente -->
+        </div>
+    </div>
+
+    <div id="candleTooltip" class="candle-tooltip"></div>
+
+    <script>
+        document.getElementById('dateLabel').textContent = new Date().toLocaleDateString('es-MX', { weekday: 'long', year: 'numeric',
+            month: 'long', day: 'numeric' });
+
+        function setTheme(theme) {
+            const isOffice = theme === 'office';
+            document.body.style.setProperty('--obsidian', isOffice ? '#f4f6fb' : '#111315');
+            document.body.style.setProperty('--carbon', isOffice ? '#ffffff' : '#212529');
+            document.body.style.setProperty('--platinum', isOffice ? '#172033' : '#E2E8F0');
+            document.body.style.setProperty('--steel-muted', isOffice ? '#64748b' : '#94A3B8');
+            document.body.style.setProperty('--steel-dark', isOffice ? '#475569' : '#64748B');
+            localStorage.setItem('rm-theme', theme);
+            document.querySelectorAll('input[name="rm-theme"]').forEach(input => {
+                input.checked = input.value === theme;
+            });
+        }
+
+        function initTheme() {
+            setTheme(localStorage.getItem('rm-theme') || 'executive');
+        }
+
+        function toggleThemeSettings() {
+            const el = document.getElementById('themeSettings');
+            el.style.display = el.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function toggleMobileMenu() {
+            const isOpen = document.body.classList.toggle('mobile-menu-open');
+            document.querySelector('.menu-toggle')?.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        }
+
+        function closeMobileMenu() {
+            document.body.classList.remove('mobile-menu-open');
+            document.querySelector('.menu-toggle')?.setAttribute('aria-expanded', 'false');
+        }
+
+        const levels = ['holding', 'sucursal', 'categoria', 'producto', 'cliente'];
+        const levelLabels = { 'holding': 'Holding', 'sucursal': 'Sucursales', 'categoria': 'Categorías', 'producto': 'Productos',
+            'cliente': 'Clientes / RFM' };
+
+        // DATOS COO
+        const data = {
+            holding: {
+                kpis: [
+                    { label: 'Fill Rate Promedio', value: '93.4%', delta: '+1.2pp', dir: 'up' },
+                    { label: 'Merma Total', value: '2.8%', delta: '-0.4pp', dir: 'up' },
+                    { label: 'Rotación Inventario', value: '8.2x', delta: '+0.6x', dir: 'up' },
+                    { label: 'Sucursales Operando', value: '10', delta: '+1 vs Q1', dir: 'up' },
+                ],
+                states: [{
+                        domain: 'Fill Rate',
+                        icon: '📦',
+                        state: 'Sobre meta',
+                        status: 's-green',
+                        badge: 'Excelente',
+                        conf: 0.94,
+                        rows: [
+                            ['CEDI Norte', '96.2% ▲ +2.1pp'],
+                            ['CEDI Centro', '91.8% ▼ −1.2pp']
+                        ],
+                        color: 'var(--tiffany)'
+                    },
+                    {
+                        domain: 'Merma',
+                        icon: '⚠️',
+                        state: 'Controlada',
+                        status: 's-green',
+                        badge: 'Bajo control',
+                        conf: 0.89,
+                        rows: [
+                            ['Merma total', '2.8% ▼ −0.4pp'],
+                            ['Merma frescos', '4.2% ▲ +0.3pp']
+                        ],
+                        color: 'var(--tiffany)'
+                    },
+                    {
+                        domain: 'Rotación Inventario',
+                        icon: '🔄',
+                        state: 'Mejorando',
+                        status: 's-green',
+                        badge: 'Positivo',
+                        conf: 0.87,
+                        rows: [
+                            ['Rotación', '8.2x ▲ +0.6x'],
+                            ['Días inventario', '44.5 días']
+                        ],
+                        color: 'var(--tiffany)'
+                    },
+                    {
+                        domain: 'Sucursales',
+                        icon: '🏪',
+                        state: 'Expansión controlada',
+                        status: 's-gold',
+                        badge: '10 tiendas',
+                        conf: 0.91,
+                        rows: [
+                            ['Cobertura nacional', '5 regiones'],
+                            ['Apertura Q3', '1 tienda']
+                        ],
+                        color: 'var(--gold)'
+                    },
+                    {
+                        domain: 'CEDI / Logística',
+                        icon: '🚚',
+                        state: 'Eficiencia alta',
+                        status: 's-green',
+                        badge: 'Óptimo',
+                        conf: 0.86,
+                        rows: [
+                            ['CEDI fill rate', '94.1%'],
+                            ['Tiempo entrega', '2.3 días']
+                        ],
+                        color: 'var(--tiffany)'
+                    },
+                    {
+                        domain: 'Quiebres de Stock',
+                        icon: '🛒',
+                        state: 'Bajo monitoreo',
+                        status: 's-yellow',
+                        badge: 'Vigilancia',
+                        conf: 0.79,
+                        rows: [
+                            ['OOS Nacional', '3.2%'],
+                            ['Frescos OOS', '5.8% ▲']
+                        ],
+                        color: 'var(--gold-light)'
+                    },
+                ],
+                narrative: `El <strong>Fill Rate promedio del holding se mantiene en 93.4%</strong>, superando la meta del 92%. El CEDI Norte lidera con 96.2%, mientras que el Centro requiere atención con 91.8%. La <strong>merma total se redujo a 2.8%</strong>, aunque frescos sigue siendo un punto crítico con 4.2%. La <strong>rotación de inventario mejoró a 8.2x</strong>, reflejando una gestión más eficiente. Se recomienda revisar el quiebre de stock en la categoría de frescos durante los fines de semana.`,
+            },
+            sucursal: {
+                kpis: [
+                    { label: 'Fill Rate Prom.', value: '92.8%', delta: '+0.9pp', dir: 'up' },
+                    { label: 'Merma Promedio', value: '3.1%', delta: '-0.3pp', dir: 'up' },
+                    { label: 'Sucursales Top', value: '7', delta: '+2 vs Q1', dir: 'up' },
+                    { label: 'OOS Promedio', value: '3.4%', delta: '+0.2pp', dir: 'down' },
+                ],
+                states: [{
+                        domain: 'Sucursal Norte',
+                        icon: '🏆',
+                        state: 'Fill Rate 96.2%',
+                        status: 's-green',
+                        badge: 'Excelente',
+                        conf: 0.95,
+                        rows: [
+                            ['Merma', '2.1%'],
+                            ['OOS', '1.8%']
+                        ],
+                        color: 'var(--tiffany)'
+                    },
+                    {
+                        domain: 'Sucursal Oeste',
+                        icon: '🌟',
+                        state: 'Fill Rate 94.8%',
+                        status: 's-green',
+                        badge: 'Excelente',
+                        conf: 0.92,
+                        rows: [
+                            ['Merma', '2.4%'],
+                            ['OOS', '2.1%']
+                        ],
+                        color: 'var(--tiffany)'
+                    },
+                    {
+                        domain: 'Sucursal Centro',
+                        icon: '⚠️',
+                        state: 'Fill Rate 89.2%',
+                        status: 's-red',
+                        badge: 'Alerta',
+                        conf: 0.78,
+                        rows: [
+                            ['Merma', '4.8% ▲'],
+                            ['OOS', '5.2% ▲']
+                        ],
+                        color: 'var(--red)'
+                    },
+                    {
+                        domain: 'Sucursal Este',
+                        icon: '📊',
+                        state: 'Fill Rate 91.4%',
+                        status: 's-yellow',
+                        badge: 'Monitoreo',
+                        conf: 0.82,
+                        rows: [
+                            ['Merma', '3.6%'],
+                            ['OOS', '3.8%']
+                        ],
+                        color: 'var(--gold-light)'
+                    },
+                    {
+                        domain: 'Sucursal Sur A',
+                        icon: '✅',
+                        state: 'Fill Rate 93.6%',
+                        status: 's-green',
+                        badge: 'Bueno',
+                        conf: 0.88,
+                        rows: [
+                            ['Merma', '2.9%'],
+                            ['OOS', '2.4%']
+                        ],
+                        color: 'var(--tiffany)'
+                    },
+                    {
+                        domain: 'Sucursal Sur B',
+                        icon: '✅',
+                        state: 'Fill Rate 92.1%',
+                        status: 's-blue',
+                        badge: 'Estable',
+                        conf: 0.84,
+                        rows: [
+                            ['Merma', '3.2%'],
+                            ['OOS', '3.1%']
+                        ],
+                        color: 'var(--blue)'
+                    },
+                ],
+                narrative: `El <strong>desempeño operativo de las sucursales es polarizado</strong>. Norte y Oeste mantienen fill rates superiores al 94% con mermas controladas. Sin embargo, la <strong>sucursal Centro requiere atención urgente</strong> con fill rate de 89.2% y merma en aumento (4.8%). Este muestra signos de mejora pero aún está por debajo del promedio nacional.`,
+            },
+            categoria: {
+                kpis: [
+                    { label: 'Fill Rate Prom.', value: '92.1%', delta: '+0.7pp', dir: 'up' },
+                    { label: 'Merma Promedio', value: '3.6%', delta: '-0.2pp', dir: 'up' },
+                    { label: 'Categorías Críticas', value: '3', delta: '+1 vs Q1', dir: 'down' },
+                    { label: 'Rotación Promedio', value: '7.4x', delta: '+0.3x', dir: 'up' },
+                ],
+                states: [{
+                        domain: 'Abarrotes',
+                        icon: '📦',
+                        state: 'Fill Rate 94.8%',
+                        status: 's-green',
+                        badge: 'Excelente',
+                        conf: 0.91,
+                        rows: [
+                            ['Merma', '2.3%'],
+                            ['Rotación', '9.1x']
+                        ],
+                        color: 'var(--tiffany)'
+                    },
+                    {
+                        domain: 'Bebidas',
+                        icon: '🥤',
+                        state: 'Fill Rate 93.2%',
+                        status: 's-green',
+                        badge: 'Bueno',
+                        conf: 0.88,
+                        rows: [
+                            ['Merma', '2.8%'],
+                            ['Rotación', '8.4x']
+                        ],
+                        color: 'var(--tiffany)'
+                    },
+                    {
+                        domain: 'Frescos',
+                        icon: '🥬',
+                        state: 'Fill Rate 86.4%',
+                        status: 's-red',
+                        badge: 'Crítico',
+                        conf: 0.74,
+                        rows: [
+                            ['Merma', '6.8% ▲'],
+                            ['OOS', '7.2% ▲']
+                        ],
+                        color: 'var(--red)'
+                    },
+                    {
+                        domain: 'Lácteos',
+                        icon: '🧀',
+                        state: 'Fill Rate 89.7%',
+                        status: 's-yellow',
+                        badge: 'Monitoreo',
+                        conf: 0.79,
+                        rows: [
+                            ['Merma', '4.2%'],
+                            ['Rotación', '6.8x']
+                        ],
+                        color: 'var(--gold-light)'
+                    },
+                    {
+                        domain: 'Limpieza',
+                        icon: '🧹',
+                        state: 'Fill Rate 95.1%',
+                        status: 's-green',
+                        badge: 'Excelente',
+                        conf: 0.93,
+                        rows: [
+                            ['Merma', '1.9%'],
+                            ['Rotación', '8.7x']
+                        ],
+                        color: 'var(--tiffany)'
+                    },
+                    {
+                        domain: 'Congelados',
+                        icon: '❄️',
+                        state: 'Fill Rate 91.8%',
+                        status: 's-blue',
+                        badge: 'Estable',
+                        conf: 0.83,
+                        rows: [
+                            ['Merma', '3.1%'],
+                            ['Rotación', '5.9x']
+                        ],
+                        color: 'var(--blue)'
+                    },
+                ],
+                narrative: `La <strong>categoría de frescos es el principal desafío operacional</strong> con un fill rate de solo 86.4% y merma del 6.8%. Se recomienda revisar la cadena de frío y los procesos de reposición. Abarrotes y Limpieza mantienen los mejores indicadores con fill rates superiores al 94% y mermas controladas.`,
+            },
+            producto: {
+                kpis: [
+                    { label: 'SKUs con OOS Crítico', value: '12', delta: '+3 vs Q1', dir: 'down' },
+                    { label: 'SKUs con Alta Merma', value: '8', delta: '+2 vs Q1', dir: 'down' },
+                    { label: 'SKUs con Bajo Fill Rate', value: '24', delta: '+5 vs Q1', dir: 'down' },
+                    { label: 'SKUs Estrella (Alto Fill)', value: '156', delta: '+18 vs Q1', dir: 'up' },
+                ],
+                states: [{
+                        domain: 'SKU 4512 Arroz',
+                        icon: '📦',
+                        state: 'Fill Rate 97.2%',
+                        status: 's-green',
+                        badge: 'Excelente',
+                        conf: 0.93,
+                        rows: [
+                            ['Merma', '1.2%'],
+                            ['Rotación', '12.4x']
+                        ],
+                        color: 'var(--tiffany)'
+                    },
+                    {
+                        domain: 'SKU 2341 FruVer',
+                        icon: '🥬',
+                        state: 'Fill Rate 78.4%',
+                        status: 's-red',
+                        badge: 'Crítico',
+                        conf: 0.69,
+                        rows: [
+                            ['Merma', '8.7% ▲'],
+                            ['OOS', '9.2%']
+                        ],
+                        color: 'var(--red)'
+                    },
+                    {
+                        domain: 'SKU 7883 Refresco',
+                        icon: '🥤',
+                        state: 'Fill Rate 94.6%',
+                        status: 's-green',
+                        badge: 'Bueno',
+                        conf: 0.89,
+                        rows: [
+                            ['Merma', '2.1%'],
+                            ['Rotación', '9.8x']
+                        ],
+                        color: 'var(--tiffany)'
+                    },
+                    {
+                        domain: 'SKU 0891 Leche',
+                        icon: '🧀',
+                        state: 'Fill Rate 87.3%',
+                        status: 's-yellow',
+                        badge: 'Monitoreo',
+                        conf: 0.77,
+                        rows: [
+                            ['Merma', '4.6%'],
+                            ['OOS', '5.1%']
+                        ],
+                        color: 'var(--gold-light)'
+                    },
+                    {
+                        domain: 'SKU 3302 Detergente',
+                        icon: '🧹',
+                        state: 'Fill Rate 96.8%',
+                        status: 's-green',
+                        badge: 'Excelente',
+                        conf: 0.94,
+                        rows: [
+                            ['Merma', '1.4%'],
+                            ['Rotación', '10.2x']
+                        ],
+                        color: 'var(--tiffany)'
+                    },
+                    {
+                        domain: 'SKU 5590 Congelado',
+                        icon: '❄️',
+                        state: 'Fill Rate 92.1%',
+                        status: 's-blue',
+                        badge: 'Estable',
+                        conf: 0.84,
+                        rows: [
+                            ['Merma', '2.8%'],
+                            ['Rotación', '6.2x']
+                        ],
+                        color: 'var(--blue)'
+                    },
+                ],
+                narrative: `El <strong>SKU 2341 (FruVer) concentra el mayor riesgo operacional</strong> con fill rate de solo 78.4% y merma del 8.7%. Se recomienda revisar la cadena de suministro de productos frescos. En contraste, los SKUs de abarrotes y limpieza mantienen fill rates superiores al 94%.`,
+            },
+            cliente: {
+                kpis: [
+                    { label: 'Clientes Activos', value: '48.2K', delta: '+3.1K MTD', dir: 'up' },
+                    { label: 'Ticket Promedio', value: '$348', delta: '+6.7%', dir: 'up' },
+                    { label: 'Frecuencia Compra', value: '2.4 visitas/mes', delta: '+0.2', dir: 'up' },
+                    { label: 'Satisfacción (NPS)', value: '72', delta: '+4 pts', dir: 'up' },
+                ],
+                states: [{
+                        domain: 'Champions',
+                        icon: '🏆',
+                        state: 'Alta frecuencia',
+                        status: 's-green',
+                        badge: 'Leales',
+                        conf: 0.92,
+                        rows: [
+                            ['Ticket', '$612 ▲ +17%'],
+                            ['Frecuencia', '4.8 visitas/mes']
+                        ],
+                        color: 'var(--tiffany)'
+                    },
+                    {
+                        domain: 'Leales',
+                        icon: '💚',
+                        state: 'Crecimiento',
+                        status: 's-green',
+                        badge: 'Positivo',
+                        conf: 0.88,
+                        rows: [
+                            ['Ticket', '$412 ▲ +9%'],
+                            ['Frecuencia', '3.2 visitas/mes']
+                        ],
+                        color: 'var(--tiffany)'
+                    },
+                    {
+                        domain: 'Prometedores',
+                        icon: '📈',
+                        state: 'Recuperación',
+                        status: 's-blue',
+                        badge: 'Potencial',
+                        conf: 0.77,
+                        rows: [
+                            ['Ticket', '$298 ▲ +4%'],
+                            ['Frecuencia', '1.8 visitas/mes']
+                        ],
+                        color: 'var(--blue)'
+                    },
+                    {
+                        domain: 'Ocasionales',
+                        icon: '⚠️',
+                        state: 'Baja frecuencia',
+                        status: 's-yellow',
+                        badge: 'Monitoreo',
+                        conf: 0.73,
+                        rows: [
+                            ['Ticket', '$148 →'],
+                            ['Frecuencia', '1.2 visitas/mes']
+                        ],
+                        color: 'var(--gold-light)'
+                    },
+                    {
+                        domain: 'Hibernando',
+                        icon: '❄️',
+                        state: 'Abandono',
+                        status: 's-red',
+                        badge: 'Crítico',
+                        conf: 0.81,
+                        rows: [
+                            ['Recencia', '> 90 días'],
+                            ['Reactivación', '<12%']
+                        ],
+                        color: 'var(--red)'
+                    },
+                ],
+                narrative: `Los <strong>clientes Champions y Leales representan el 34% del ticket</strong> con frecuencias de compra superiores a 3 visitas mensuales. El NPS mejoró a 72 puntos, reflejando una mayor satisfacción. Sin embargo, el <strong>segmento Hibernando supera los 90 días de inactividad</strong> con baja tasa de reactivación.`,
+            },
+        };
+
+        let currentLevel = 'holding';
+        let chartInstance = null;
+
+        function setLevel(level) {
+            currentLevel = level;
+            closeMobileMenu();
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            const navMap = { holding: 0, sucursal: 1, categoria: 2, producto: 3, cliente: 4 };
+            const items = document.querySelectorAll('.nav-item');
+            if (items[navMap[level]]) items[navMap[level]].classList.add('active');
+            render();
+        }
+
+        // DATOS PARA VELAS - COO KPIs
+        const candleData = {
+            fillRate: [
+                { label: 'Lun', o: 92.4, h: 93.8, l: 91.6, c: 93.2 },
+                { label: 'Mar', o: 93.2, h: 94.5, l: 92.4, c: 93.8 },
+                { label: 'Mié', o: 93.8, h: 94.9, l: 92.8, c: 93.4 },
+                { label: 'Jue', o: 93.4, h: 94.2, l: 92.0, c: 93.6 },
+                { label: 'Vie', o: 93.6, h: 95.1, l: 93.0, c: 94.8 },
+                { label: 'Sáb', o: 94.8, h: 95.6, l: 93.8, c: 94.2 },
+                { label: 'Dom', o: 94.2, h: 95.0, l: 93.2, c: 93.4 },
+            ],
+            merma: [
+                { label: 'Lun', o: 3.2, h: 3.5, l: 2.9, c: 3.1 },
+                { label: 'Mar', o: 3.1, h: 3.4, l: 2.8, c: 3.0 },
+                { label: 'Mié', o: 3.0, h: 3.3, l: 2.7, c: 2.9 },
+                { label: 'Jue', o: 2.9, h: 3.2, l: 2.6, c: 2.8 },
+                { label: 'Vie', o: 2.8, h: 3.1, l: 2.5, c: 2.7 },
+                { label: 'Sáb', o: 2.7, h: 3.0, l: 2.4, c: 2.6 },
+                { label: 'Dom', o: 2.6, h: 2.9, l: 2.3, c: 2.8 },
+            ]
+        };
+
+        function drawCandles(canvasId, rows, opts) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) {
+                setTimeout(() => drawCandles(canvasId, rows, opts), 100);
+                return;
+            }
+
+            const parent = canvas.parentElement;
+            const rect = parent.getBoundingClientRect();
+            if (rect.width === 0 || rect.height === 0) {
+                setTimeout(() => drawCandles(canvasId, rows, opts), 100);
+                return;
+            }
+
+            const dpr = window.devicePixelRatio || 1;
+            const w = rect.width;
+            const h = rect.height;
+
+            canvas.width = Math.max(1, Math.floor(w * dpr));
+            canvas.height = Math.max(1, Math.floor(h * dpr));
+            canvas.style.width = w + 'px';
+            canvas.style.height = h + 'px';
+
+            const ctx = canvas.getContext('2d');
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+            const pad = { l: 42, r: 10, t: 12, b: 28 };
+            const vals = rows.flatMap(r => [r.h, r.l]);
+            const min = Math.min(...vals);
+            const max = Math.max(...vals);
+            const span = (max - min) || 1;
+
+            const y = v => pad.t + (max - v) / span * (h - pad.t - pad.b);
+
+            const upColor = getComputedStyle(document.body).getPropertyValue('--tiffany-light').trim() || '#80E5DA';
+            const downColor = getComputedStyle(document.body).getPropertyValue('--red').trim() || '#EF4444';
+            const mutedColor = getComputedStyle(document.body).getPropertyValue('--steel-muted').trim() || '#94A3B8';
+            const gridColor = 'rgba(212, 175, 55, 0.12)';
+
+            ctx.clearRect(0, 0, w, h);
+
+            ctx.font = '10px Inter, sans-serif';
+            ctx.strokeStyle = gridColor;
+            ctx.lineWidth = 1;
+            for (let i = 0; i < 4; i++) {
+                const yy = pad.t + i * (h - pad.t - pad.b) / 3;
+                ctx.beginPath();
+                ctx.moveTo(pad.l, yy);
+                ctx.lineTo(w - pad.r, yy);
+                ctx.stroke();
+                const val = max - i * span / 3;
+                ctx.fillStyle = mutedColor;
+                ctx.textAlign = 'right';
+                if (opts.suffix) {
+                    ctx.fillText(val.toFixed(opts.decimals || 1) + opts.suffix, pad.l - 6, yy + 3);
+                } else {
+                    ctx.fillText(val.toFixed(1) + '%', pad.l - 6, yy + 3);
+                }
+            }
+
+            const step = (w - pad.l - pad.r) / rows.length;
+            const bodyW = Math.min(18, step * 0.45);
+
+            rows.forEach((r, i) => {
+                const x = pad.l + step * i + step / 2;
+                const isUp = r.c >= r.o;
+                const color = isUp ? upColor : downColor;
+
+                ctx.strokeStyle = color;
+                ctx.fillStyle = color;
+                ctx.lineWidth = 2;
+
+                ctx.beginPath();
+                ctx.moveTo(x, y(r.h));
+                ctx.lineTo(x, y(r.l));
+                ctx.stroke();
+
+                const top = y(Math.max(r.o, r.c));
+                const bot = y(Math.min(r.o, r.c));
+                const bh = Math.max(3, bot - top);
+                ctx.globalAlpha = 0.92;
+                ctx.fillRect(x - bodyW / 2, top, bodyW, bh);
+                ctx.globalAlpha = 1;
+
+                ctx.fillStyle = mutedColor;
+                ctx.textAlign = 'center';
+                ctx.fillText(r.label, x, h - 8);
+            });
+        }
+
+        function render() {
+            const d = data[currentLevel];
+            const crumbLevels = levels.slice(0, levels.indexOf(currentLevel) + 1);
+            const main = document.getElementById('mainContent');
+
+            if (chartInstance) {
+                chartInstance.destroy();
+                chartInstance = null;
+            }
+
+            main.innerHTML = `
+                <h2 class="sr-only">Centro de Control Operacional – vista ${levelLabels[currentLevel]}</h2>
+
+                <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+                    <div class="breadcrumb">
+                        ${crumbLevels.map((l,i)=>`
+                            <span class="${i===crumbLevels.length-1?'active-crumb':''}" onclick="setLevel('${l}')">${levelLabels[l]}</span>
+                            ${i<crumbLevels.length-1?'<span class="sep">›</span>':''}
+                        `).join('')}
+                    </div>
+                    <div class="drill-tabs">
+                        ${levels.map(l=>`<div class="drill-tab ${l===currentLevel?'active':''}" onclick="setLevel('${l}')">${levelLabels[l]}</div>`).join('')}
+                    </div>
+                </div>
+
+                <div class="kpi-row">
+                    ${d.kpis.map(k=>`
+                        <div class="kpi">
+                            <div class="kpi-label">${k.label}</div>
+                            <div class="kpi-value">${k.value}</div>
+                            <div class="kpi-delta ${k.dir}">${k.dir==='up'?'▲':k.dir==='down'?'▼':'→'} ${k.delta}</div>
+                        </div>
+                    `).join('')}
+                </div>
+
+                <div class="narrative-box">
+                    <div class="narr-header">
+                        <span class="narr-icon">🧠</span>
+                        <span class="narr-title">Narrativa IA · COO</span>
+                        <span style="margin-left:auto;font-size:10px;color:var(--steel-muted)">Motor analítico + LLM</span>
+                    </div>
+                    <div class="narr-text">${d.narrative}</div>
+                </div>
+
+                <div style="font-size:10px;font-weight:600;color:var(--steel-muted);letter-spacing:0.8px;text-transform:uppercase;margin-bottom:4px">Estados Operacionales · ${levelLabels[currentLevel]}</div>
+                <div class="state-grid">
+                    ${d.states.map(s=>`
+                        <div class="state-card" onclick="this.classList.toggle('selected')">
+                            <div class="sc-header">
+                                <span class="sc-domain">${s.domain}</span>
+                                <span class="sc-status ${s.status}">${s.badge}</span>
+                            </div>
+                            <div class="sc-state">${s.icon} ${s.state}</div>
+                            ${s.rows.map(r=>`<div class="sc-row"><span>${r[0]}</span><strong>${r[1]}</strong></div>`).join('')}
+                            <div class="sc-conf">
+                                <span>Confianza</span>
+                                <div class="conf-bar"><div class="conf-fill" style="width:${s.conf*100}%;background:${s.color}"></div></div>
+                                <span style="color:${s.color};font-weight:600">${Math.round(s.conf*100)}%</span>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+
+                <div class="two-col">
+                    <div class="panel">
+                        <div class="panel-title">Sucursales · Rendimiento Operativo</div>
+                        ${getHierItems()}
+                    </div>
+                    <div class="panel">
+                        <div class="panel-title">Alertas Operacionales</div>
+                        ${getAlerts()}
+                    </div>
+                </div>
+
+                <div class="panel coo-accent">
+                    <div class="panel-title" style="display:flex;justify-content:space-between;align-items:center;">
+                        <span>Estado de Centros de Distribución (CEDI)</span>
+                        <span class="coo-badge">Actualizado</span>
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:8px;">
+                        <div style="background:var(--obsidian);border-radius:10px;padding:0.8rem 1rem;border:1.5px solid rgba(212,175,55,0.15);text-align:center;">
+                            <div style="font-size:9px;text-transform:uppercase;letter-spacing:0.5px;color:var(--steel-muted);">CEDI Norte</div>
+                            <div style="font-size:20px;font-weight:700;margin-top:4px;color:var(--tiffany-light);">96.2%</div>
+                            <div style="font-size:10px;color:var(--tiffany-light);">▲ +2.1pp</div>
+                        </div>
+                        <div style="background:var(--obsidian);border-radius:10px;padding:0.8rem 1rem;border:1.5px solid rgba(212,175,55,0.15);text-align:center;">
+                            <div style="font-size:9px;text-transform:uppercase;letter-spacing:0.5px;color:var(--steel-muted);">CEDI Centro</div>
+                            <div style="font-size:20px;font-weight:700;margin-top:4px;color:var(--gold-light);">91.8%</div>
+                            <div style="font-size:10px;color:var(--red);">▼ -1.2pp</div>
+                        </div>
+                        <div style="background:var(--obsidian);border-radius:10px;padding:0.8rem 1rem;border:1.5px solid rgba(212,175,55,0.15);text-align:center;">
+                            <div style="font-size:9px;text-transform:uppercase;letter-spacing:0.5px;color:var(--steel-muted);">CEDI Sur</div>
+                            <div style="font-size:20px;font-weight:700;margin-top:4px;color:var(--tiffany-light);">94.3%</div>
+                            <div style="font-size:10px;color:var(--tiffany-light);">▲ +0.8pp</div>
+                        </div>
+                    </div>
+                    <div style="margin-top:12px;display:flex;justify-content:space-between;font-size:11px;color:var(--steel-muted);border-top:1px solid rgba(212,175,55,0.15);padding-top:12px;">
+                        <span><strong style="color:var(--platinum)">Fill Rate Promedio CEDI:</strong> 94.1%</span>
+                        <span><strong style="color:var(--platinum)">Tiempo Promedio Entrega:</strong> 2.3 días</span>
+                        <span><strong style="color:var(--platinum)">Sucursales Abastecidas:</strong> 10</span>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-title">Tendencia 30 días · Fill Rate & Merma</div>
+                    <div class="legend">
+                        <div class="legend-item"><div class="legend-dot" style="background:var(--tiffany)"></div>Fill Rate (%)</div>
+                        <div class="legend-item"><div class="legend-dot" style="background:var(--gold);border-radius:2px;border:2px dashed var(--gold);background:transparent"></div>Merma (%)</div>
+                    </div>
+                    <div class="chart-wrap"><canvas id="trendChart"></canvas></div>
+                </div>
+
+                <div class="candle-grid">
+                    <div class="candle-panel">
+                        <div class="candle-head">
+                            <div class="candle-title">Velas japonesas · Fill Rate Diario (%)</div>
+                            <div class="candle-note">OHLC demo para evolución diaria del fill rate.</div>
+                        </div>
+                        <div class="candle-wrap"><canvas id="fillCandleChart"></canvas></div>
+                        <div class="candle-summary" id="fillCandleSummary"></div>
+                    </div>
+                    <div class="candle-panel">
+                        <div class="candle-head">
+                            <div class="candle-title">Velas japonesas · Merma Diaria (%)</div>
+                            <div class="candle-note">OHLC demo para evolución diaria de la merma.</div>
+                        </div>
+                        <div class="candle-wrap"><canvas id="mermaCandleChart"></canvas></div>
+                        <div class="candle-summary" id="mermaCandleSummary"></div>
+                    </div>
+                </div>
+            `;
+
+            setTimeout(() => {
+                renderChart();
+                renderCandlesticks();
+            }, 50);
+        }
+
+        function getHierItems() {
+            const items = {
+                holding: [
+                    { name: 'Sucursal Norte', state: 'Fill 96.2%', sc: 's-green', delta: '+2.1pp', color: 'var(--tiffany)' },
+                    { name: 'Sucursal Oeste', state: 'Fill 94.8%', sc: 's-green', delta: '+1.7pp', color: 'var(--tiffany)' },
+                    { name: 'Sucursal Sur A', state: 'Fill 93.6%', sc: 's-green', delta: '+0.9pp', color: 'var(--tiffany)' },
+                    { name: 'Sucursal Sur B', state: 'Fill 92.1%', sc: 's-blue', delta: '+0.3pp', color: 'var(--blue)' },
+                    { name: 'Sucursal Este', state: 'Fill 91.4%', sc: 's-yellow', delta: '-0.8pp', color: 'var(--gold-light)' },
+                    { name: 'Sucursal Centro', state: 'Fill 89.2%', sc: 's-red', delta: '-2.1pp', color: 'var(--red)' },
+                ],
+                sucursal: [
+                    { name: 'Norte', state: 'Fill 96.2%', sc: 's-green', delta: '+2.1pp', color: 'var(--tiffany)' },
+                    { name: 'Oeste', state: 'Fill 94.8%', sc: 's-green', delta: '+1.7pp', color: 'var(--tiffany)' },
+                    { name: 'Sur A', state: 'Fill 93.6%', sc: 's-green', delta: '+0.9pp', color: 'var(--tiffany)' },
+                    { name: 'Sur B', state: 'Fill 92.1%', sc: 's-blue', delta: '+0.3pp', color: 'var(--blue)' },
+                    { name: 'Este', state: 'Fill 91.4%', sc: 's-yellow', delta: '-0.8pp', color: 'var(--gold-light)' },
+                    { name: 'Centro', state: 'Fill 89.2%', sc: 's-red', delta: '-2.1pp', color: 'var(--red)' },
+                ],
+                categoria: [
+                    { name: 'Abarrotes', state: 'Fill 94.8%', sc: 's-green', delta: '+0.7pp', color: 'var(--tiffany)' },
+                    { name: 'Limpieza', state: 'Fill 95.1%', sc: 's-green', delta: '+0.9pp', color: 'var(--tiffany)' },
+                    { name: 'Bebidas', state: 'Fill 93.2%', sc: 's-green', delta: '+0.4pp', color: 'var(--tiffany)' },
+                    { name: 'Congelados', state: 'Fill 91.8%', sc: 's-blue', delta: '-0.2pp', color: 'var(--blue)' },
+                    { name: 'Lácteos', state: 'Fill 89.7%', sc: 's-yellow', delta: '-1.4pp', color: 'var(--gold-light)' },
+                    { name: 'Frescos', state: 'Fill 86.4%', sc: 's-red', delta: '-3.2pp', color: 'var(--red)' },
+                ],
+                producto: [
+                    { name: 'SKU 3302 Deterg.', state: 'Fill 96.8%', sc: 's-green', delta: '+1.2pp', color: 'var(--tiffany)' },
+                    { name: 'SKU 4512 Arroz', state: 'Fill 97.2%', sc: 's-green', delta: '+0.8pp', color: 'var(--tiffany)' },
+                    { name: 'SKU 7883 Refresco', state: 'Fill 94.6%', sc: 's-green', delta: '+0.4pp', color: 'var(--tiffany)' },
+                    { name: 'SKU 5590 Cong.', state: 'Fill 92.1%', sc: 's-blue', delta: '-0.1pp', color: 'var(--blue)' },
+                    { name: 'SKU 0891 Leche', state: 'Fill 87.3%', sc: 's-yellow', delta: '-2.4pp', color: 'var(--gold-light)' },
+                    { name: 'SKU 2341 FruVer', state: 'Fill 78.4%', sc: 's-red', delta: '-5.8pp', color: 'var(--red)' },
+                ],
+                cliente: [
+                    { name: 'Champions', state: 'Alta frecuencia', sc: 's-green', delta: '+17%', color: 'var(--tiffany)' },
+                    { name: 'Leales', state: 'Crecimiento', sc: 's-green', delta: '+9%', color: 'var(--tiffany)' },
+                    { name: 'Prometedores', state: 'Recuperación', sc: 's-blue', delta: '+4%', color: 'var(--blue)' },
+                    { name: 'Ocasionales', state: 'Baja frecuencia', sc: 's-yellow', delta: '→ 0%', color: 'var(--gold-light)' },
+                    { name: 'Hibernando', state: 'Abandono', sc: 's-red', delta: '−22%', color: 'var(--red)' },
+                ],
+            };
+            return (items[currentLevel] || []).map(it => `
+                <div class="hier-item" onclick="drillDown()">
+                    <div class="hi-dot" style="background:${it.color}"></div>
+                    <span class="hi-name">${it.name}</span>
+                    <span class="hi-state ${it.sc}">${it.state}</span>
+                    <span class="hi-delta ${it.delta.includes('+')?'up':it.delta.includes('-')?'down':'flat'}">${it.delta}</span>
+                    <span class="hi-arrow">›</span>
+                </div>
+            `).join('');
+        }
+
+        function getAlerts() {
+            const alerts = {
+                holding: [
+                    { color: 'var(--red)', title: 'Fill Rate Crítico - Frescos', sub: '86.4% · Merma 6.8%', time: 'hace 1h' },
+                    { color: 'var(--red)', title: 'Sucursal Centro: Fill Rate 89.2%', sub: 'Caída de 2.1pp vs semana ant.', time: 'hace 2h' },
+                    { color: 'var(--gold-light)', title: 'OOS Nacional: 3.2%', sub: 'Frescos concentra el 58%', time: 'hace 4h' },
+                    { color: 'var(--tiffany)', title: 'CEDI Norte: Fill Rate 96.2%', sub: 'Mejora de 2.1pp', time: 'hace 6h' },
+                ],
+                sucursal: [
+                    { color: 'var(--red)', title: 'Centro: Fill Rate 89.2%', sub: 'Merma 4.8% · OOS 5.2%', time: 'hace 1h' },
+                    { color: 'var(--gold-light)', title: 'Este: Monitoreo', sub: 'Fill Rate 91.4% · Merma 3.6%', time: 'hace 3h' },
+                    { color: 'var(--tiffany)', title: 'Norte: Excelente', sub: 'Fill Rate 96.2% · Merma 2.1%', time: 'hace 5h' },
+                ],
+                categoria: [
+                    { color: 'var(--red)', title: 'Frescos: Crítico', sub: 'Fill Rate 86.4% · Merma 6.8%', time: 'hace 1h' },
+                    { color: 'var(--gold-light)', title: 'Lácteos: Monitoreo', sub: 'Fill Rate 89.7% · Merma 4.2%', time: 'hace 3h' },
+                    { color: 'var(--tiffany)', title: 'Limpieza: Excelente', sub: 'Fill Rate 95.1% · Merma 1.9%', time: 'hace 5h' },
+                ],
+                producto: [
+                    { color: 'var(--red)', title: 'SKU 2341 FruVer: Crítico', sub: 'Fill Rate 78.4% · Merma 8.7%', time: 'hace 1h' },
+                    { color: 'var(--gold-light)', title: 'SKU 0891 Leche: Monitoreo', sub: 'Fill Rate 87.3% · OOS 5.1%', time: 'hace 3h' },
+                    { color: 'var(--tiffany)', title: 'SKU 4512 Arroz: Excelente', sub: 'Fill Rate 97.2% · Merma 1.2%', time: 'hace 5h' },
+                ],
+                cliente: [
+                    { color: 'var(--red)', title: 'Hibernando >90 días', sub: 'Tasa reactivación <12%', time: 'hace 2h' },
+                    { color: 'var(--gold-light)', title: 'Ocasionales: Baja frecuencia', sub: '1.2 visitas/mes', time: 'hace 4h' },
+                    { color: 'var(--tiffany)', title: 'Champions: Máximo histórico', sub: 'Ticket $612 · +17%', time: 'hace 6h' },
+                ],
+            };
+            return (alerts[currentLevel] || []).map(a => `
+                <div class="alert-item">
+                    <div class="alert-dot" style="background:${a.color}"></div>
+                    <div class="alert-body">
+                        <div class="alert-title">${a.title}</div>
+                        <div class="alert-sub">${a.sub}</div>
+                    </div>
+                    <span class="alert-time">${a.time}</span>
+                </div>
+            `).join('');
+        }
+
+        function drillDown() {
+            const next = levels[levels.indexOf(currentLevel) + 1];
+            if (next) setLevel(next);
+        }
+
+        function renderChart() {
+            const ctx = document.getElementById('trendChart');
+            if (!ctx) return;
+
+            const labels = Array.from({ length: 30 }, (_, i) => {
+                const d = new Date();
+                d.setDate(d.getDate() - 29 + i);
+                return d.toLocaleDateString('es-MX', { month: 'short', day: 'numeric' });
+            }).filter((_, i) => i % 4 === 0 || i === 29);
+            const idxs = Array.from({ length: 30 }, (_, i) => i).filter(i => i % 4 === 0 || i === 29);
+
+            const fillData = [88.2, 89.1, 87.8, 90.4, 91.2, 89.6, 90.8, 92.1, 91.4, 92.8, 91.6, 90.9, 92.4, 93.1, 92.6, 93.8, 94.2,
+                93.6, 94.8, 94.1, 95.2, 94.6, 95.8, 95.2, 96.1, 95.6, 96.8, 96.2, 96.4, 95.8
+            ];
+            const mermaData = [4.8, 4.6, 4.9, 4.4, 4.2, 4.5, 4.3, 4.0, 4.1, 3.8, 3.9, 3.6, 3.4, 3.2, 3.3, 3.0, 2.8, 2.9, 2.6,
+                2.7, 2.4, 2.5, 2.2, 2.3, 2.0, 2.1, 1.8, 1.9, 1.6, 2.0
+            ];
+
+            const filtFill = idxs.map(i => fillData[i]);
+            const filtMerma = idxs.map(i => mermaData[i]);
+            const filtLabels = idxs.map(i => labels[idxs.indexOf(i)]);
+
+            chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: filtLabels,
+                    datasets: [{
+                        label: 'Fill Rate',
+                        data: filtFill,
+                        borderColor: '#00C4B3',
+                        backgroundColor: 'rgba(0, 196, 179, 0.08)',
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 3,
+                        pointBackgroundColor: '#00C4B3',
+                        yAxisID: 'y'
+                    }, {
+                        label: 'Merma',
+                        data: filtMerma,
+                        borderColor: '#D4AF37',
+                        borderDash: [5, 3],
+                        backgroundColor: 'transparent',
+                        fill: false,
+                        tension: 0.4,
+                        pointRadius: 3,
+                        pointBackgroundColor: '#D4AF37',
+                        yAxisID: 'y'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            backgroundColor: '#212529',
+                            borderColor: 'rgba(212, 175, 55, 0.3)',
+                            borderWidth: 1,
+                            titleColor: '#E2E8F0',
+                            bodyColor: '#94A3B8'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: { color: '#94A3B8', font: { size: 10 } },
+                            grid: { color: 'rgba(212, 175, 55, 0.06)' }
+                        },
+                        y: {
+                            position: 'left',
+                            ticks: { color: '#94A3B8', font: { size: 10 }, callback: v => v + '%' },
+                            grid: { color: 'rgba(212, 175, 55, 0.06)' }
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderCandlesticks() {
+            drawCandles('fillCandleChart', candleData.fillRate, { suffix: '%', decimals: 1 });
+            drawCandles('mermaCandleChart', candleData.merma, { suffix: '%', decimals: 1 });
+
+            const fcfFirst = candleData.fillRate[0].o;
+            const fcfLast = candleData.fillRate[candleData.fillRate.length - 1].c;
+            const fcfDelta = fcfLast - fcfFirst;
+            const fcfPct = (fcfDelta / fcfFirst * 100);
+
+            const marginFirst = candleData.merma[0].o;
+            const marginLast = candleData.merma[candleData.merma.length - 1].c;
+            const marginDelta = marginLast - marginFirst;
+            const marginPct = (marginDelta / marginFirst * 100);
+
+            document.getElementById('fillCandleSummary').innerHTML = `
+                <span class="candle-pill">Inicio: ${fcfFirst.toFixed(1)}%</span>
+                <span class="candle-pill">Cierre: ${fcfLast.toFixed(1)}%</span>
+                <span class="candle-pill ${fcfDelta>=0?'up':'down'}">${fcfDelta>=0?'▲':'▼'} ${Math.abs(fcfDelta).toFixed(1)}% (${fcfPct>=0?'+':''}${fcfPct.toFixed(1)}%)</span>
+            `;
+
+            document.getElementById('mermaCandleSummary').innerHTML = `
+                <span class="candle-pill">Inicio: ${marginFirst.toFixed(1)}%</span>
+                <span class="candle-pill">Cierre: ${marginLast.toFixed(1)}%</span>
+                <span class="candle-pill ${marginDelta<=0?'up':'down'}">${marginDelta<=0?'▼':'▲'} ${Math.abs(marginDelta).toFixed(1)}% (${marginPct<=0?'':'-'}${Math.abs(marginPct).toFixed(1)}%)</span>
+            `;
+        }
+
+        initTheme();
+        render();
+
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                if (document.getElementById('fillCandleChart')) {
+                    renderCandlesticks();
+                }
+            }, 200);
+        });
+    </script>
+<script>
+    (function() {
+        const btn = document.getElementById('floatingBtn');
+        const menu = document.getElementById('fanMenu');
+        const btnIcon = document.getElementById('btnIcon');
+        const btnText = document.getElementById('btnText');
+
+        // Estado del menú
+        let isOpen = false;
+
+        function toggleMenu(e) {
+            e.stopPropagation();
+            isOpen = !isOpen;
+            if (isOpen) {
+                menu.classList.add('open');
+                btn.classList.add('active');
+                btnIcon.className = 'fas fa-times'; // icono cerrar
+                btnText.textContent = 'Cerrar';
+            } else {
+                menu.classList.remove('open');
+                btn.classList.remove('active');
+                btnIcon.className = 'fas fa-cube'; // restaurar
+                btnText.textContent = 'Ver Módulos';
+            }
+        }
+
+        // click en el botón
+        btn.addEventListener('click', toggleMenu);
+
+        // Cerrar menú al hacer click en un enlace
+        const links = menu.querySelectorAll('a');
+        links.forEach(link => {
+            link.addEventListener('click', function(e) {
+                // Si el enlace tiene href "#" o es vacío, prevenimos comportamiento por defecto (demo)
+                // pero mantenemos el cierre del menú
+                if (this.getAttribute('href') === '#') {
+                    e.preventDefault();
+                }
+                // Cerramos el menú
+                if (isOpen) {
+                    menu.classList.remove('open');
+                    btn.classList.remove('active');
+                    btnIcon.className = 'fas fa-cube';
+                    btnText.textContent = 'Ver Módulos';
+                    isOpen = false;
+                }
+            });
+        });
+
+        // Cerrar menú si se hace clic fuera del wrapper
+        document.addEventListener('click', function(e) {
+            const wrapper = document.getElementById('floatingWrapper');
+            if (isOpen && !wrapper.contains(e.target)) {
+                menu.classList.remove('open');
+                btn.classList.remove('active');
+                btnIcon.className = 'fas fa-cube';
+                btnText.textContent = 'Ver Módulos';
+                isOpen = false;
+            }
+        });
+    })();
+</script>
+</body>
+</html>

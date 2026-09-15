@@ -1,0 +1,1396 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RetailMind · CEO · Estados Operacionales</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked@11.0.0/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#080d1a;
+  --bg2:#0d1528;
+  --bg3:#111c33;
+  --border:rgba(255,255,255,0.07);
+  --border2:rgba(255,255,255,0.12);
+  --text:#e8eeff;
+  --muted:#8a96b8;
+  --accent:#ff6b35;
+  --accent2:#ff8c5a;
+  --green:#2ed88a;
+  --red:#ff5c5c;
+  --yellow:#ffb347;
+  --blue:#5b9cf6;
+  --purple:#a78bfa;
+}
+body{background:var(--bg);font-family:'Inter',sans-serif;color:var(--text);min-height:100vh;font-size:13px}
+body.theme-office{
+  --bg:#f4f6fb;
+  --bg2:#ffffff;
+  --bg3:#eef2f8;
+  --border:rgba(15,23,42,0.10);
+  --border2:rgba(15,23,42,0.18);
+  --text:#172033;
+  --muted:#64748b;
+  --accent:#2563eb;
+  --accent2:#3b82f6;
+  --green:#16a34a;
+  --red:#dc2626;
+  --yellow:#d97706;
+  --blue:#2563eb;
+  --purple:#7c3aed;
+}
+.shell{display:grid;grid-template-rows:56px 1fr;grid-template-columns:220px 1fr;height:100vh;overflow:hidden}
+
+/* TOPBAR */
+.topbar{grid-column:1/-1;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 1.5rem;gap:1rem;position:relative;z-index:10}
+.topbar img{height:28px}
+.topbar-divider{width:1px;height:24px;background:var(--border2);margin:0 0.5rem}
+.topbar-date{font-size:11px;color:var(--muted)}
+.topbar-badge{background:rgba(255,107,53,0.12);color:var(--accent2);padding:2px 10px;border-radius:20px;font-size:10px;font-weight:600;border:1px solid rgba(255,107,53,0.2);margin-left:auto}
+.topbar-user{display:flex;align-items:center;gap:8px;margin-left:1rem}
+.avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#ff6b35,#a855f7);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff}
+
+/* SIDEBAR */
+.sidebar{background:var(--bg2);border-right:1px solid var(--border);padding:1rem 0;overflow-y:auto}
+.sidebar-section{padding:0.5rem 1rem;font-size:10px;font-weight:600;color:var(--muted);letter-spacing:0.8px;text-transform:uppercase;margin-top:0.5rem}
+.nav-item{display:flex;align-items:center;gap:10px;padding:8px 1rem;cursor:pointer;color:var(--muted);font-size:12px;transition:all 0.15s;border-left:3px solid transparent}
+.nav-item:hover{color:var(--text);background:rgba(255,255,255,0.03)}
+.nav-item.active{color:var(--accent);border-left-color:var(--accent);background:rgba(255,107,53,0.06)}
+.nav-icon{font-size:14px;width:18px;text-align:center}
+.nav-badge{margin-left:auto;background:rgba(255,92,92,0.15);color:var(--red);border-radius:10px;padding:1px 7px;font-size:10px;font-weight:600}
+.nav-badge.green{background:rgba(46,216,138,0.15);color:var(--green)}
+
+/* TOGGLE SWITCH */
+.nav-toggle{margin-left:auto;position:relative;display:inline-block;width:34px;height:18px;flex-shrink:0}
+.nav-toggle input{opacity:0;width:0;height:0}
+.nav-toggle .slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:rgba(255,255,255,0.15);transition:.3s;border-radius:18px}
+.nav-toggle .slider:before{position:absolute;content:"";height:12px;width:12px;left:3px;bottom:3px;background:var(--text);transition:.3s;border-radius:50%}
+.nav-toggle input:checked + .slider{background:var(--accent)}
+.nav-toggle input:checked + .slider:before{transform:translateX(16px);background:#fff}
+body.theme-office .nav-toggle .slider{background:rgba(15,23,42,0.15)}
+
+.menu-toggle{display:none;width:36px;height:36px;border:1px solid var(--border2);border-radius:10px;background:transparent;color:var(--text);font-size:18px;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
+.menu-toggle:hover{background:rgba(255,255,255,0.05)}
+.sidebar-overlay{display:none;position:fixed;inset:56px 0 0 0;background:rgba(0,0,0,0.45);z-index:19;opacity:0;transition:opacity 0.2s ease;pointer-events:none}
+.theme-settings{margin:8px 1rem 0;padding:10px;border:1px solid var(--border);border-radius:12px;background:rgba(255,255,255,0.03);display:none}
+.theme-settings.open{display:block}
+.theme-settings-title{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:0.7px;text-transform:uppercase;margin-bottom:8px}
+.theme-option{display:flex;align-items:center;gap:8px;padding:6px 0;font-size:12px;color:var(--text);cursor:pointer}
+.theme-option input{accent-color:var(--accent)}
+@media (max-width: 720px){
+  .shell{grid-template-columns:1fr;grid-template-rows:56px 1fr}
+  .topbar{padding:0 0.75rem;gap:0.6rem}
+  .topbar img{height:22px;max-width:130px;object-fit:contain}
+  .topbar-badge,.topbar-user,.topbar-date{display:none}
+  .menu-toggle{display:flex}
+  .sidebar{position:fixed;top:56px;bottom:0;left:0;width:260px;z-index:20;transform:translateX(-105%);transition:transform 0.22s ease;box-shadow:18px 0 40px rgba(0,0,0,0.35)}
+  body.mobile-menu-open .sidebar{transform:translateX(0)}
+  body.mobile-menu-open .sidebar-overlay{display:block;opacity:1;pointer-events:auto}
+  .main{grid-column:1;padding:1rem;gap:1rem}
+  .kpi-row{grid-template-columns:repeat(2,1fr)}
+  .state-grid{grid-template-columns:1fr}
+  .two-col{grid-template-columns:1fr}
+  .drill-tabs{overflow-x:auto;width:100%;padding-bottom:2px}
+}
+
+/* MAIN */
+.main{overflow-y:auto;padding:1.5rem;display:flex;flex-direction:column;gap:1.2rem}
+
+/* BREADCRUMB */
+.breadcrumb{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted)}
+.breadcrumb span{cursor:pointer;transition:color 0.15s}
+.breadcrumb span:hover{color:var(--text)}
+.breadcrumb .active-crumb{color:var(--text);font-weight:500}
+.breadcrumb .sep{color:var(--border2)}
+
+/* DRILL TABS */
+.drill-tabs{display:flex;gap:6px}
+.drill-tab{padding:5px 14px;border-radius:20px;font-size:11px;font-weight:500;cursor:pointer;transition:all 0.15s;border:1px solid var(--border2);color:var(--muted);background:transparent}
+.drill-tab:hover{color:var(--text);border-color:var(--border2)}
+.drill-tab.active{background:var(--accent);border-color:var(--accent);color:#fff}
+
+/* KPI ROW */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.kpi{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1rem 1.1rem}
+.kpi-label{font-size:10px;color:var(--muted);font-weight:500;letter-spacing:0.3px;text-transform:uppercase}
+.kpi-value{font-size:22px;font-weight:700;margin:4px 0 2px;letter-spacing:-0.5px}
+.kpi-delta{font-size:11px;font-weight:500}
+.up{color:var(--green)}.down{color:var(--red)}.flat{color:var(--yellow)}
+
+/* STATE GRID */
+.state-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.state-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1.1rem 1.2rem;cursor:pointer;transition:all 0.2s}
+.state-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.state-card.selected{border-color:var(--accent);background:rgba(255,107,53,0.05)}
+.sc-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.sc-domain{font-size:9px;font-weight:600;color:var(--muted);letter-spacing:0.8px;text-transform:uppercase}
+.sc-status{font-size:9px;padding:2px 8px;border-radius:10px;font-weight:600}
+.s-green{background:rgba(46,216,138,0.12);color:var(--green)}
+.s-red{background:rgba(255,92,92,0.12);color:var(--red)}
+.s-yellow{background:rgba(255,179,71,0.12);color:var(--yellow)}
+.s-blue{background:rgba(91,156,246,0.12);color:var(--blue)}
+.s-purple{background:rgba(167,139,250,0.12);color:var(--purple)}
+.sc-state{font-size:15px;font-weight:700;margin-bottom:6px}
+.sc-row{display:flex;justify-content:space-between;align-items:center;margin:3px 0;font-size:11px;color:var(--muted)}
+.sc-row strong{color:var(--text);font-weight:500}
+.sc-conf{font-size:10px;color:var(--muted);margin-top:8px;padding-top:8px;border-top:1px solid var(--border);display:flex;justify-content:space-between}
+.conf-bar{height:4px;border-radius:2px;background:var(--border2);overflow:hidden;flex:1;margin:0 8px;align-self:center}
+.conf-fill{height:100%;border-radius:2px}
+
+/* TWO COL */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.panel{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1.1rem 1.2rem}
+.panel-title{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:12px}
+
+/* HIERARCHY LIST */
+.hier-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:all 0.15s}
+.hier-item:last-child{border-bottom:none}
+.hier-item:hover .hi-name{color:var(--accent)}
+.hi-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.hi-name{font-size:12px;font-weight:500;flex:1}
+.hi-state{font-size:10px;padding:1px 7px;border-radius:8px;font-weight:600}
+.hi-delta{font-size:11px;font-weight:600;min-width:50px;text-align:right}
+.hi-arrow{color:var(--muted);font-size:14px}
+
+/* ALERTS */
+.alert-item{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)}
+.alert-item:last-child{border-bottom:none}
+.alert-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.alert-body{flex:1}
+.alert-title{font-size:12px;font-weight:500;margin-bottom:2px}
+.alert-sub{font-size:10px;color:var(--muted)}
+.alert-time{font-size:10px;color:var(--muted);flex-shrink:0}
+
+/* AI NARRATIVE */
+.narrative-box{background:rgba(255,107,53,0.04);border:1px solid rgba(255,107,53,0.2);border-radius:14px;padding:1.1rem 1.2rem}
+.narr-header{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.narr-icon{font-size:14px}
+.narr-title{font-size:11px;font-weight:600;color:var(--accent);letter-spacing:0.3px;text-transform:uppercase}
+.narr-text{font-size:12px;color:var(--muted);line-height:1.7}
+.narr-text strong{color:var(--text);font-weight:500}
+
+/* CHART WRAP */
+.chart-wrap{position:relative;height:180px;margin-top:8px}
+
+/* CANDLESTICK DEMOS */
+.candle-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.candle-panel{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1.1rem 1.2rem}
+.candle-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:8px}
+.candle-title{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:0.5px;text-transform:uppercase}
+.candle-note{font-size:10px;color:var(--muted);line-height:1.4;text-align:right;max-width:210px}
+.candle-wrap{height:170px;position:relative;margin-top:8px}
+.candle-wrap canvas{width:100%;height:100%;display:block}
+.candle-tooltip{position:fixed;z-index:50;pointer-events:none;background:var(--bg2);border:1px solid var(--border2);border-radius:10px;padding:8px 10px;box-shadow:0 12px 30px rgba(0,0,0,.35);font-size:11px;color:var(--text);min-width:145px;display:none}
+.candle-tooltip-title{font-weight:700;color:var(--accent);margin-bottom:5px}
+.candle-tooltip-row{display:flex;justify-content:space-between;gap:12px;line-height:1.55;color:var(--muted)}
+.candle-tooltip-row strong{color:var(--text);font-weight:600}
+.candle-summary{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;font-size:10px;color:var(--muted)}
+.candle-pill{border:1px solid var(--border);border-radius:999px;padding:3px 8px;background:rgba(255,255,255,0.03)}
+@media (max-width: 900px){.candle-grid{grid-template-columns:1fr}}
+
+/* LEGEND */
+.legend{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:8px}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted)}
+.legend-dot{width:8px;height:8px;border-radius:2px}
+
+/* ============================================================
+   CHAT PANEL IA (igual al de DODET)
+   ============================================================ */
+.chat-panel{
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:14px;
+  box-shadow:0 4px 25px rgba(0,0,0,0.15);
+  overflow:hidden;
+  display:none;
+  flex-direction:column;
+  margin-bottom:1.2rem;
+}
+.chat-panel.visible{display:flex;animation:fadeIn 0.35s ease}
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(-8px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.chat-panel-header{
+  background:linear-gradient(135deg,rgba(255,107,53,0.15),rgba(91,156,246,0.08));
+  padding:14px 20px;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.chat-panel-title{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:12px;
+  font-weight:700;
+  color:var(--accent);
+  letter-spacing:0.5px;
+  text-transform:uppercase;
+}
+.chat-panel-title i{font-size:16px}
+.chat-panel-subtitle{font-size:10px;color:var(--muted);letter-spacing:0.3px}
+.chat-panel-close{
+  background:transparent;
+  border:1px solid var(--border2);
+  color:var(--muted);
+  width:30px;
+  height:30px;
+  border-radius:8px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:all 0.15s;
+}
+.chat-panel-close:hover{color:var(--red);border-color:var(--red)}
+.chat-panel-body{
+  padding:16px 20px;
+  background:rgba(0,0,0,0.15);
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  max-height:340px;
+  min-height:130px;
+  overflow-y:auto;
+}
+body.theme-office .chat-panel-body{background:rgba(15,23,42,0.03)}
+.chat-msg{display:flex;gap:10px;align-items:flex-start;animation:msgIn 0.3s ease}
+@keyframes msgIn{
+  from{opacity:0;transform:translateY(6px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.chat-msg-avatar{
+  width:28px;height:28px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;font-size:12px;
+  border:1px solid var(--border);
+}
+.chat-msg-user .chat-msg-avatar{
+  background:rgba(91,156,246,0.15);
+  color:var(--blue);
+  border-color:rgba(91,156,246,0.3);
+}
+.chat-msg-ai .chat-msg-avatar{
+  background:rgba(255,107,53,0.15);
+  color:var(--accent);
+  border-color:rgba(255,107,53,0.3);
+}
+.chat-msg-content{
+  flex:1;
+  background:rgba(255,255,255,0.03);
+  border-radius:10px;
+  padding:10px 14px;
+  font-size:12px;
+  line-height:1.6;
+  color:var(--text);
+  border-left:3px solid transparent;
+}
+body.theme-office .chat-msg-content{background:rgba(15,23,42,0.03)}
+.chat-msg-user .chat-msg-content{
+  border-left-color:var(--blue);
+  background:rgba(91,156,246,0.05);
+}
+.chat-msg-ai .chat-msg-content{
+  border-left-color:var(--accent);
+  background:rgba(255,107,53,0.05);
+}
+.chat-msg-ai .chat-msg-content p{margin:0 0 8px 0;line-height:1.6}
+.chat-msg-ai .chat-msg-content p:last-child{margin-bottom:0}
+.chat-msg-ai .chat-msg-content strong{color:var(--text);font-weight:700}
+.chat-msg-ai .chat-msg-content ul,
+.chat-msg-ai .chat-msg-content ol{margin:6px 0 8px 0;padding-left:20px}
+.chat-msg-ai .chat-msg-content li{margin-bottom:4px;line-height:1.5}
+.chat-msg-ai .chat-msg-content h1,
+.chat-msg-ai .chat-msg-content h2,
+.chat-msg-ai .chat-msg-content h3,
+.chat-msg-ai .chat-msg-content h4{
+  color:var(--accent);
+  font-weight:700;
+  margin:10px 0 6px 0;
+}
+.chat-msg-ai .chat-msg-content h1{font-size:15px}
+.chat-msg-ai .chat-msg-content h2{font-size:14px}
+.chat-msg-ai .chat-msg-content h3{font-size:13px}
+.chat-msg-ai .chat-msg-content h4{font-size:12px}
+.chat-msg-ai .chat-msg-content code{
+  background:rgba(0,0,0,0.3);
+  padding:2px 6px;
+  border-radius:4px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  color:var(--green);
+  border:1px solid var(--border);
+}
+body.theme-office .chat-msg-ai .chat-msg-content code{background:rgba(15,23,42,0.06)}
+.chat-msg-ai .chat-msg-content pre{
+  background:rgba(0,0,0,0.3);
+  padding:10px 12px;
+  border-radius:6px;
+  overflow-x:auto;
+  border:1px solid var(--border);
+  margin:8px 0;
+}
+.chat-msg-typing .chat-msg-content{
+  border-left-color:var(--yellow);
+  background:rgba(255,179,71,0.05);
+  font-style:italic;
+  color:var(--muted);
+}
+.chat-msg-label{
+  font-size:9px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:0.5px;
+  margin-bottom:4px;
+}
+.chat-msg-user .chat-msg-label{color:var(--blue)}
+.chat-msg-ai .chat-msg-label{color:var(--accent)}
+.chat-msg-typing .chat-msg-label{color:var(--yellow)}
+
+.chat-panel-footer{
+  padding:12px 20px;
+  border-top:1px solid var(--border);
+  background:var(--bg2);
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+.chat-input{
+  flex:1;
+  background:rgba(0,0,0,0.2);
+  border:1px solid var(--border2);
+  border-radius:8px;
+  padding:10px 14px;
+  color:var(--text);
+  font-family:inherit;
+  font-size:12px;
+  outline:none;
+  transition:all 0.2s;
+}
+body.theme-office .chat-input{background:#fff;color:#172033}
+.chat-input:focus{
+  border-color:var(--accent);
+  box-shadow:0 0 10px rgba(255,107,53,0.15);
+}
+.chat-input::placeholder{color:var(--muted)}
+.chat-btn{
+  background:linear-gradient(135deg,var(--accent),#c2410c);
+  border:1px solid var(--accent);
+  border-radius:8px;
+  padding:10px 16px;
+  cursor:pointer;
+  color:#fff;
+  font-weight:700;
+  font-size:12px;
+  transition:all 0.2s;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  white-space:nowrap;
+}
+.chat-btn:hover{
+  transform:translateY(-1px);
+  box-shadow:0 4px 15px rgba(255,107,53,0.4);
+}
+.chat-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none}
+.chat-suggestions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  padding:0 20px 14px 20px;
+  background:var(--bg2);
+}
+.chat-suggestion{
+  background:rgba(255,107,53,0.08);
+  border:1px solid rgba(255,107,53,0.25);
+  border-radius:14px;
+  padding:4px 12px;
+  font-size:10px;
+  color:var(--accent);
+  cursor:pointer;
+  transition:all 0.2s;
+  font-weight:500;
+}
+.chat-suggestion:hover{
+  background:rgba(255,107,53,0.15);
+  transform:translateY(-1px);
+}
+</style>
+<style>
+    /* ========================================
+       BOTÓN FLOTANTE + MENÚ ABANICO
+       ======================================== */
+    .floating-wrapper {
+        position: fixed;
+        right: 2rem;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 99999;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 0.75rem;
+    }
+    .floating-btn {
+        background: white;
+        color: #1e3a8a;
+        padding: 0.75rem 1.5rem;
+        border-radius: 1rem;
+        font-weight: 700;
+        text-align: center;
+        transition: all 0.3s ease;
+        border: 1px solid #cbd5e1;
+        box-shadow: 0 10px 40px rgba(30, 58, 138, 0.2);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        white-space: nowrap;
+        font-size: 1rem;
+        font-family: inherit;
+        line-height: 1.5;
+    }
+    .floating-btn:hover {
+        transform: translateX(-8px);
+        box-shadow: 0 15px 50px rgba(30, 58, 138, 0.3);
+    }
+    .floating-btn.active {
+        color: #dc2626;
+        border-color: #dc2626;
+    }
+    .floating-btn i {
+        font-size: 1.2rem;
+        transition: transform 0.3s ease;
+    }
+    .floating-btn.active i {
+        transform: rotate(90deg);
+    }
+    .fan-menu {
+        position: absolute;
+        right: calc(100% + 1rem);
+        top: 50%;
+        transform: translateY(-50%) scale(0.9);
+        transform-origin: right center;
+        background: white;
+        border-radius: 1.25rem;
+        padding: 1.25rem 1.5rem;
+        min-width: 240px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        border: 1px solid #e2e8f0;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        pointer-events: none;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    .fan-menu.open {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(-50%) scale(1);
+        pointer-events: auto;
+    }
+    .fan-menu .group-label {
+        font-size: 0.6rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-top: 0.25rem;
+        padding: 0.2rem 0.4rem;
+        border-radius: 0.25rem;
+        display: inline-block;
+        background: #f1f5f9;
+        color: #334155;
+    }
+    .fan-menu .group-label:first-of-type { margin-top: 0; }
+    .fan-menu a {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.4rem 0.6rem;
+        border-radius: 0.5rem;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #1e293b;
+        transition: background 0.15s, color 0.15s;
+        text-decoration: none;
+        border-left: 3px solid transparent;
+    }
+    .fan-menu a:hover { background: #f1f5f9; color: #0f172a; }
+    .fan-menu a i { width: 1.2rem; text-align: center; font-size: 0.8rem; }
+    .fan-menu a.strategic { border-left-color: #1e3a8a; }
+    .fan-menu a.strategic i { color: #1e3a8a; }
+    .fan-menu a.tactical { border-left-color: #475569; }
+    .fan-menu a.tactical i { color: #475569; }
+    .fan-menu a.realtime { border-left-color: #10b981; }
+    .fan-menu a.realtime i { color: #10b981; }
+    .fan-menu .divider {
+        height: 1px;
+        background: #e2e8f0;
+        margin: 0.25rem 0;
+    }
+    @media (max-width: 640px) {
+        .floating-wrapper { right: 1rem; }
+        .floating-btn { padding: 0.75rem 1rem !important; font-size: 0; }
+        .floating-btn span { display: none; }
+        .floating-btn i { margin: 0; font-size: 1.4rem; }
+        .fan-menu { min-width: 200px; right: calc(100% + 0.75rem); padding: 1rem; }
+        .fan-menu a { font-size: 0.7rem; padding: 0.3rem 0.5rem; }
+    }
+</style>
+</head>
+<body>
+    <!-- BOTÓN FLOTANTE + MENÚ ABANICO -->
+    <div class="floating-wrapper" id="floatingWrapper">
+        <div class="fan-menu" id="fanMenu">
+            <span class="group-label"><i class="fas fa-chess-queen mr-1" style="color:#1e3a8a;"></i> Estratégico</span>
+            <a href="https://gestor-de-archivos.vercel.app/demos/demos-retailmind/retailmind_ceo.html" class="strategic"><i class="fas fa-user-tie"></i> Vista del CEO</a>
+            <a href="https://gestor-de-archivos.vercel.app/demos/demos-retailmind/retailmind_cfo.html" class="strategic"><i class="fas fa-coins"></i> Vista del CFO</a>
+            <a href="https://gestor-de-archivos.vercel.app/demos/demos-retailmind/retailmind_coo.html" class="strategic"><i class="fas fa-truck-ramp-box"></i> Vista del COO</a>
+
+            <div class="divider"></div>
+
+            <span class="group-label"><i class="fas fa-chess-knight mr-1" style="color:#475569;"></i> Táctico</span>
+            <a href="https://gestor-de-archivos.vercel.app/demos/demos-retailmind/demo-gemini.html" class="tactical"><i class="fas fa-shop"></i> Gerente de Tienda</a>
+            <a href="https://gestor-de-archivos.vercel.app/demos/demos-retailmind/demo_deepseek.html" class="tactical"><i class="fas fa-tags"></i> Gerente de Categorías</a>
+            <a href="https://gestor-de-archivos.vercel.app/demos/demos-retailmind/demo-qwen.html" class="tactical"><i class="fas fa-shield-halved"></i> Prevención de Pérdidas</a>
+
+            <div class="divider"></div>
+
+            <span class="group-label"><i class="fas fa-clock mr-1" style="color:#10b981;"></i> Tiempo Real</span>
+            <a href="https://gestor-de-archivos.vercel.app/demos/demos-retailmind/demo-perplexity.html" class="realtime"><i class="fas fa-cash-register"></i> Panel de Supervisión de Cajas</a>
+            <a href="https://gestor-de-archivos.vercel.app/demos/demos-retailmind/demo-chat-gpt.html" class="realtime"><i class="fas fa-layer-group"></i> Panel de Control de Pasillos</a>
+            <a href="https://gestor-de-archivos.vercel.app/demos/demos-retailmind/Controller-Vista-Financiera-Corporativa.html" class="realtime"><i class="fas fa-layer-group"></i> Controller Vista Financiera Corporativa</a>
+        </div>
+
+        <button class="floating-btn" id="floatingBtn" title="Ver Módulos">
+            <i class="fas fa-cube" id="btnIcon"></i>
+            <span id="btnText">Ver Otros Demos</span>
+        </button>
+    </div>
+
+<div class="shell">
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <button class="menu-toggle" type="button" aria-label="Abrir menú" aria-expanded="false" onclick="toggleMobileMenu()">☰</button>
+  <img src="https://gestor-de-archivos.vercel.app/assets/logos/logo-RetailMind-fondo-negro-1447x352.png" alt="RetailMind">
+  <div class="topbar-divider"></div>
+  <span style="font-size:11px;color:var(--muted)">Centro de Estados Operacionales</span>
+  <span class="topbar-badge">CEO · Vista Holding</span>
+  <div class="topbar-divider"></div>
+  <span class="topbar-date" id="dateLabel"></span>
+  <div class="topbar-user" style="margin-left:auto">
+    <span style="font-size:11px;color:var(--muted)">Director General</span>
+    <div class="avatar">DG</div>
+  </div>
+</div>
+
+<div class="sidebar-overlay" onclick="closeMobileMenu()"></div>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebarMenu">
+  <div class="sidebar-section">Navegación</div>
+  <div class="nav-item active" onclick="setLevel('holding')"><span class="nav-icon">🏢</span> Holding</div>
+  <div class="nav-item" onclick="setLevel('sucursal')" id="nav-suc"><span class="nav-icon">🏪</span> Sucursales <span class="nav-badge green">10</span></div>
+  <div class="nav-item" onclick="setLevel('categoria')" id="nav-cat"><span class="nav-icon">📦</span> Categorías</div>
+  <div class="nav-item" onclick="setLevel('producto')" id="nav-prod"><span class="nav-icon">🏷️</span> Productos</div>
+  <div class="nav-item" onclick="setLevel('cliente')" id="nav-cli"><span class="nav-icon">👥</span> Clientes / RFM</div>
+
+  <div class="sidebar-section">Inteligencia</div>
+  <div class="nav-item" onclick="toggleChatIA()">
+    <span class="nav-icon">🧠</span>
+    <span>Narrativa IA</span>
+    <label class="nav-toggle" onclick="event.stopPropagation()">
+      <input type="checkbox" id="chatToggle">
+      <span class="slider"></span>
+    </label>
+  </div>
+  <div class="nav-item"><span class="nav-icon">📡</span> Order Flow</div>
+  <div class="nav-item"><span class="nav-icon">📈</span> Predicciones</div>
+
+  <div class="sidebar-section">Alertas</div>
+  <div class="nav-item"><span class="nav-icon">⚡</span> Críticas <span class="nav-badge">3</span></div>
+  <div class="nav-item"><span class="nav-icon">🔔</span> Monitoreo <span class="nav-badge">7</span></div>
+
+  <div class="sidebar-section" style="margin-top:auto">Sistema</div>
+  <div class="nav-item" onclick="toggleThemeSettings()"><span class="nav-icon">⚙️</span> Configuración</div>
+  <div class="theme-settings" id="themeSettings">
+    <div class="theme-settings-title">Apariencia</div>
+    <label class="theme-option"><input type="radio" name="rm-theme" value="executive" onchange="setTheme('executive')"> Executive</label>
+    <label class="theme-option"><input type="radio" name="rm-theme" value="office" onchange="setTheme('office')"> Office</label>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main" id="mainContent">
+  <!-- dynamic content injected by JS -->
+</div>
+
+</div>
+
+<script>
+document.getElementById('dateLabel').textContent = new Date().toLocaleDateString('es-MX',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+
+function setTheme(theme) {
+  const safeTheme = theme === 'office' ? 'office' : 'executive';
+  document.body.classList.toggle('theme-office', safeTheme === 'office');
+  localStorage.setItem('rm-theme', safeTheme);
+  document.querySelectorAll('input[name="rm-theme"]').forEach(input => {
+    input.checked = input.value === safeTheme;
+  });
+}
+
+function initTheme() {
+  setTheme(localStorage.getItem('rm-theme') || 'executive');
+}
+
+function toggleThemeSettings() {
+  document.getElementById('themeSettings')?.classList.toggle('open');
+}
+
+function toggleMobileMenu() {
+  const isOpen = document.body.classList.toggle('mobile-menu-open');
+  document.querySelector('.menu-toggle')?.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+}
+
+function closeMobileMenu() {
+  document.body.classList.remove('mobile-menu-open');
+  document.querySelector('.menu-toggle')?.setAttribute('aria-expanded', 'false');
+}
+
+// ============================================================
+// TOGGLE CHAT IA
+// ============================================================
+function toggleChatIA() {
+  const toggle = document.getElementById('chatToggle');
+  if (!toggle) return;
+  toggle.checked = !toggle.checked;
+  const panel = document.getElementById('chatPanelIA');
+  if (panel) {
+    if (toggle.checked) {
+      panel.classList.add('visible');
+      setTimeout(() => {
+        const input = document.getElementById('chatInput');
+        if (input) input.focus();
+      }, 100);
+    } else {
+      panel.classList.remove('visible');
+    }
+  }
+}
+
+// ============================================================
+// ENVIAR CONSULTA AL CHAT
+// ============================================================
+function setChatInput(texto) {
+  const input = document.getElementById('chatInput');
+  if (input) { input.value = texto; input.focus(); }
+}
+
+async function enviarConsultaChat() {
+  const input = document.getElementById('chatInput');
+  const btn = document.getElementById('chatBtn');
+  const body = document.getElementById('chatPanelBody');
+  if (!input || !body) return;
+
+  const mensaje = input.value.trim();
+  if (!mensaje) return;
+
+  const userMsg = document.createElement('div');
+  userMsg.className = 'chat-msg chat-msg-user';
+  userMsg.innerHTML = '<div class="chat-msg-avatar"><i class="fas fa-user"></i></div>' +
+    '<div class="chat-msg-content"><div class="chat-msg-label">Tú</div>' + escapeHtml(mensaje) + '</div>';
+  body.appendChild(userMsg);
+
+  input.value = '';
+  btn.disabled = true;
+  body.scrollTop = body.scrollHeight;
+
+  const typingMsg = document.createElement('div');
+  typingMsg.className = 'chat-msg chat-msg-typing';
+  typingMsg.innerHTML = '<div class="chat-msg-avatar"><i class="fas fa-robot"></i></div>' +
+    '<div class="chat-msg-content"><div class="chat-msg-label">Asistente</div>Pensando...</div>';
+  body.appendChild(typingMsg);
+  body.scrollTop = body.scrollHeight;
+
+  const contexto = 'Vista: ' + (levelLabels[currentLevel] || currentLevel) + ' | Dashboard: Centro de Estados Operacionales de RetailMind 360°';
+
+  try {
+    const response = await fetch('/api/chat-gemini', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: mensaje, contexto: contexto })
+    });
+
+    const data = await response.json();
+    typingMsg.remove();
+
+    const aiMsg = document.createElement('div');
+    aiMsg.className = 'chat-msg chat-msg-ai';
+
+    if (data.reply) {
+      const htmlFormateado = DOMPurify.sanitize(marked.parse(data.reply));
+      aiMsg.innerHTML = '<div class="chat-msg-avatar"><i class="fas fa-robot"></i></div>' +
+        '<div class="chat-msg-content"><div class="chat-msg-label">Asistente RetailMind</div>' + htmlFormateado + '</div>';
+    } else {
+      aiMsg.innerHTML = '<div class="chat-msg-avatar"><i class="fas fa-robot"></i></div>' +
+        '<div class="chat-msg-content"><div class="chat-msg-label">Asistente RetailMind</div>Error: ' + escapeHtml(data.error || 'desconocido') + '</div>';
+    }
+    body.appendChild(aiMsg);
+  } catch (error) {
+    typingMsg.remove();
+    const errMsg = document.createElement('div');
+    errMsg.className = 'chat-msg chat-msg-typing';
+    errMsg.innerHTML = '<div class="chat-msg-avatar"><i class="fas fa-robot"></i></div>' +
+      '<div class="chat-msg-content"><div class="chat-msg-label">Sistema</div>Error de conexión. Verifica tu internet.</div>';
+    body.appendChild(errMsg);
+  } finally {
+    btn.disabled = false;
+    body.scrollTop = body.scrollHeight;
+    input.focus();
+  }
+}
+
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+// ============================================================
+// DATA & NAVEGACIÓN
+// ============================================================
+const levels = ['holding','sucursal','categoria','producto','cliente'];
+const levelLabels = {'holding':'Holding','sucursal':'Sucursales','categoria':'Categorías','producto':'Productos','cliente':'Clientes / RFM'};
+
+const data = {
+  holding: {
+    kpis:[
+      {label:'Ventas MTD',value:'$14.8M',delta:'+11.4%',dir:'up'},
+      {label:'Margen bruto',value:'18.2%',delta:'+0.8pp',dir:'up'},
+      {label:'Fill Rate',value:'93.4%',delta:'-1.1pp',dir:'down'},
+      {label:'Ticket promedio',value:'$348',delta:'+6.7%',dir:'up'},
+    ],
+    states:[
+      {domain:'Clientes · RFM',icon:'👥',state:'Aceleración sostenida',status:'s-green',badge:'Expansión',conf:0.92,rows:[['Champions','▲ +17% ticket'],['Leales','▲ +9% frecuencia']],color:'var(--green)'},
+      {domain:'Clientes · RFM',icon:'🔴',state:'Riesgo de abandono',status:'s-red',badge:'Alerta',conf:0.87,rows:[['Ocasionales','▼ −8% frecuencia'],['Hibernando','▼ −22% recencia']],color:'var(--red)'},
+      {domain:'Productos · ABC',icon:'🔥',state:'Alta volatilidad',status:'s-yellow',badge:'Vigilancia',conf:0.89,rows:[['18 SKUs frescos','Picos Vie–Sáb'],['Lácteos cat. A','Martillo fill rate']],color:'var(--yellow)'},
+      {domain:'Productos · ABC',icon:'📈',state:'Recuperación',status:'s-blue',badge:'Positivo',conf:0.81,rows:[['42 SKUs abarrotes','▲ +14% vol. 7d'],['Limpieza','▲ +7% rotación']],color:'var(--blue)'},
+      {domain:'Sucursales',icon:'🚀',state:'Expansión',status:'s-green',badge:'7 tiendas',conf:0.94,rows:[['Norte / Oeste','▲ +22% ticket'],['Apertura Q2','Sobre meta']],color:'var(--green)'},
+      {domain:'Sucursales',icon:'⚠️',state:'Desaceleración',status:'s-red',badge:'3 tiendas',conf:0.88,rows:[['Zona Centro','▼ Fill rate 81%'],['Zona Este','▼ Tráfico −14%']],color:'var(--red)'},
+    ],
+    narrative:`El <strong>holding registra una aceleración sólida</strong> impulsada por sucursales de la zona Norte y Oeste, donde el ticket promedio creció un 22% respecto al mes anterior. Los clientes <strong>Champions y Leales muestran mayor gasto por visita</strong>, aunque la frecuencia de los segmentos ocasionales cayó, generando una señal temprana de abandono que requiere atención. Los productos en categoría A de frescos presentan <strong>alta volatilidad</strong> concentrada en cierre de semana; el motor de señales detectó patrones de martillo en fill rate que sugieren recuperación inminente. Las sucursales Centro y Este necesitan revisión operativa urgente.`,
+  },
+  sucursal: {
+    kpis:[
+      {label:'Total sucursales',value:'10',delta:'+1 Q2',dir:'up'},
+      {label:'En expansión',value:'7',delta:'+2 vs Q1',dir:'up'},
+      {label:'En desaceleración',value:'3',delta:'−1 vs Q1',dir:'up'},
+      {label:'Fill Rate red',value:'93.4%',delta:'-1.1pp',dir:'down'},
+    ],
+    states:[
+      {domain:'Sucursal Norte',icon:'🚀',state:'Expansión',status:'s-green',badge:'Sobre meta',conf:0.95,rows:[['Ventas','$2.1M MTD ▲+24%'],['Ticket','$412 promedio']],color:'var(--green)'},
+      {domain:'Sucursal Oeste',icon:'🚀',state:'Expansión',status:'s-green',badge:'Sobre meta',conf:0.91,rows:[['Ventas','$1.8M MTD ▲+19%'],['Champions','+31% share']],color:'var(--green)'},
+      {domain:'Sucursal Centro',icon:'⚠️',state:'Desaceleración',status:'s-red',badge:'Alerta',conf:0.88,rows:[['Fill Rate','81% ▼ −9pp'],['Tráfico','−14% vs semana ant']],color:'var(--red)'},
+      {domain:'Sucursal Este',icon:'⚠️',state:'Desaceleración',status:'s-yellow',badge:'Monitoreo',conf:0.77,rows:[['Ventas','$0.9M ▼ −8%'],['Abandonos caja','+22%']],color:'var(--yellow)'},
+      {domain:'Sucursal Sur A',icon:'📊',state:'Consolidación',status:'s-blue',badge:'Estable',conf:0.83,rows:[['Ventas','$1.2M →'],['Margen','19.1% →']],color:'var(--blue)'},
+      {domain:'Sucursal Sur B',icon:'📊',state:'Consolidación',status:'s-blue',badge:'Estable',conf:0.80,rows:[['Ventas','$1.0M →'],['Fill Rate','94.2%']],color:'var(--blue)'},
+    ],
+    narrative:`La <strong>red de 10 sucursales</strong> presenta un comportamiento polarizado: las zonas Norte y Oeste lideran la expansión con crecimientos superiores al 19% en ventas. Sin embargo, las sucursales <strong>Centro y Este requieren intervención</strong>: Centro muestra un fill rate de solo 81% y caída de tráfico, mientras que Este registra un aumento del 22% en abandonos en caja. Las 4 sucursales restantes operan en consolidación con márgenes saludables.`,
+  },
+  categoria: {
+    kpis:[
+      {label:'Categorías activas',value:'24',delta:'Sin cambio',dir:'flat'},
+      {label:'En recuperación',value:'8',delta:'+3 vs Q1',dir:'up'},
+      {label:'Alta volatilidad',value:'5',delta:'+2 vs Q1',dir:'down'},
+      {label:'Margen promedio',value:'18.2%',delta:'+0.8pp',dir:'up'},
+    ],
+    states:[
+      {domain:'Frescos · Cat. A',icon:'🔥',state:'Alta volatilidad',status:'s-yellow',badge:'Vigilancia',conf:0.89,rows:[['SKUs afectados','18 frescos'],['Patrón','Martillo Vie–Sáb']],color:'var(--yellow)'},
+      {domain:'Abarrotes · Cat. B',icon:'📈',state:'Recuperación',status:'s-blue',badge:'Positivo',conf:0.82,rows:[['Volumen','▲ +14% 7d'],['Clientes','Champions +11%']],color:'var(--blue)'},
+      {domain:'Lácteos · Cat. A',icon:'⚠️',state:'Fricción activa',status:'s-red',badge:'Alerta',conf:0.85,rows:[['Imbalance','−0.28 (abandonos)'],['Remove cart','▲ +18%']],color:'var(--red)'},
+      {domain:'Limpieza · Cat. B',icon:'📈',state:'Recuperación',status:'s-green',badge:'Positivo',conf:0.78,rows:[['Rotación','▲ +7%'],['Fill Rate','96.1%']],color:'var(--green)'},
+      {domain:'Bebidas · Cat. A',icon:'📊',state:'Consolidación',status:'s-blue',badge:'Estable',conf:0.84,rows:[['Ventas','$1.4M →'],['Margen','22.3% →']],color:'var(--blue)'},
+      {domain:'Congelados · Cat. C',icon:'❄️',state:'Estancamiento',status:'s-purple',badge:'Sin cambio',conf:0.71,rows:[['Rotación','Sin variación 30d'],['Remove cart','▲ +22%']],color:'var(--purple)'},
+    ],
+    narrative:`Las categorías de <strong>frescos y lácteos concentran el mayor riesgo operacional</strong>. Lácteos presenta un índice de imbalance de −0.28, señal de fricción activa por precio en caja. Frescos muestra alta volatilidad con patrones de martillo detectados en fill rate para el cierre de semana, lo que puede anticipar un rebote. <strong>Abarrotes y Limpieza están en recuperación sostenida</strong>, impulsadas por clientes Champions. Congelados preocupa por el aumento del 22% en removals del carrito.`,
+  },
+  producto: {
+    kpis:[
+      {label:'SKUs totales',value:'1,284',delta:'Sin cambio',dir:'flat'},
+      {label:'Alta volatilidad',value:'18',delta:'▲ +5',dir:'down'},
+      {label:'En recuperación',value:'42',delta:'▲ +12',dir:'up'},
+      {label:'IPO crítico',value:'7',delta:'▲ +2',dir:'down'},
+    ],
+    states:[
+      {domain:'SKU 4512 · Arroz 1kg',icon:'⚡',state:'Riesgo financiero alto',status:'s-red',badge:'IPO Crítico',conf:0.91,rows:[['Margen','9% | Capital: Alto'],['Rotación','▼ −22% mensual']],color:'var(--red)'},
+      {domain:'SKU 2341 · FruVer bandeja',icon:'📈',state:'Recuperación – rebote',status:'s-green',badge:'IPO Medio',conf:0.73,rows:[['LSTM','prob. rebote +14% 7d'],['Fill rate','Martillo confirmado']],color:'var(--green)'},
+      {domain:'SKU 7883 · Refresco imp.',icon:'📊',state:'Consolidación',status:'s-blue',badge:'Consignación',conf:0.80,rows:[['Capital','Cero (consignación)'],['Riesgo fin.','Bajo – solo monitoreo']],color:'var(--blue)'},
+      {domain:'SKU 0891 · Leche entera',icon:'🔥',state:'Alta volatilidad',status:'s-yellow',badge:'Vigilancia',conf:0.86,rows:[['Shooting star','Promoción fallida'],['CHI','3 escaneos sin checkout']],color:'var(--yellow)'},
+      {domain:'SKU 3302 · Detergente A',icon:'📈',state:'Recuperación',status:'s-green',badge:'Positivo',conf:0.79,rows:[['Rotación','▲ +9% semanal'],['Fill Rate','97.2%']],color:'var(--green)'},
+      {domain:'SKU 5590 · Congelado B',icon:'❄️',state:'Estancamiento',status:'s-purple',badge:'Sin cambio',conf:0.68,rows:[['Remove cart','▲ +22%'],['Rotación','Sin cambio 30d']],color:'var(--purple)'},
+    ],
+    narrative:`El motor de señales detectó <strong>7 SKUs con IPO crítico</strong>, priorizando aquellos con capital propio inmovilizado y desaceleración simultánea. El SKU 4512 (Arroz) requiere revisión inmediata: caída del 22% en rotación con margen del 9%. En contraste, <strong>FruVer muestra un patrón de martillo confirmado</strong> en fill rate, con probabilidad del 73% de rebote la próxima semana según el modelo LSTM. Los productos en consignación se tratan con prioridad operacional reducida al no comprometer capital.`,
+  },
+  cliente: {
+    kpis:[
+      {label:'Clientes activos',value:'48.2K',delta:'+3.1K MTD',dir:'up'},
+      {label:'Champions',value:'12.4%',delta:'+0.9pp',dir:'up'},
+      {label:'En riesgo abandono',value:'8.7%',delta:'+1.2pp',dir:'down'},
+      {label:'Ticket Champions',value:'$612',delta:'+17%',dir:'up'},
+    ],
+    states:[
+      {domain:'RFM · Champions',icon:'🏆',state:'Aceleración sostenida',status:'s-green',badge:'Expansión',conf:0.94,rows:[['Ticket','$612 ▲ +17%'],['Frecuencia','▲ +9% mensual']],color:'var(--green)'},
+      {domain:'RFM · Leales',icon:'💚',state:'Aceleración',status:'s-green',badge:'Positivo',conf:0.87,rows:[['Frecuencia','▲ +6%'],['Mix premium','▲ +11%']],color:'var(--green)'},
+      {domain:'RFM · En riesgo',icon:'🔴',state:'Riesgo de abandono',status:'s-red',badge:'Alerta',conf:0.88,rows:[['Recencia','▼ −22% visitas'],['Promociones','Sin respuesta']],color:'var(--red)'},
+      {domain:'RFM · Prometedores',icon:'📈',state:'Recuperación',status:'s-blue',badge:'Positivo',conf:0.76,rows:[['Frecuencia','▲ Tendencia alcista'],['Categorías','Nuevas adopciones']],color:'var(--blue)'},
+      {domain:'RFM · Ocasionales',icon:'⚠️',state:'Consolidación baja',status:'s-yellow',badge:'Monitoreo',conf:0.72,rows:[['Ticket','$148 → sin cambio'],['Frecuencia','1.2 visitas/mes']],color:'var(--yellow)'},
+      {domain:'RFM · Hibernando',icon:'❄️',state:'Abandono potencial',status:'s-red',badge:'Crítico',conf:0.83,rows:[['Recencia','> 90 días sin compra'],['Reactivación','Tasa <12%']],color:'var(--red)'},
+    ],
+    narrative:`Los segmentos <strong>Champions y Leales muestran aceleración sostenida</strong>, con tickets promedio en máximos históricos. Sin embargo, el segmento <strong>Hibernando supera los 90 días de inactividad</strong> con una tasa de reactivación inferior al 12%, lo que representa una pérdida estimada de $8.2K semanales. Los clientes Prometedores muestran señales positivas al adoptar nuevas categorías. Se recomienda una campaña de reactivación dirigida al segmento en riesgo antes del cierre de quincena.`,
+  },
+};
+
+let currentLevel = 'holding';
+let chartInstance = null;
+
+function setLevel(level) {
+  currentLevel = level;
+  closeMobileMenu();
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+  const navMap = {holding:0,sucursal:1,categoria:2,producto:3,cliente:4};
+  const items = document.querySelectorAll('.nav-item');
+  if (items[navMap[level]]) items[navMap[level]].classList.add('active');
+  render();
+}
+
+function render() {
+  const d = data[currentLevel];
+  const crumbLevels = levels.slice(0, levels.indexOf(currentLevel)+1);
+  const main = document.getElementById('mainContent');
+
+  if(chartInstance){chartInstance.destroy();chartInstance=null;}
+
+  // Verificar si el chat está activo para preservar su visibilidad
+  const chatToggle = document.getElementById('chatToggle');
+  const chatActivo = chatToggle && chatToggle.checked;
+
+  main.innerHTML = `
+    <h2 class="sr-only">Centro de Estados Operacionales RetailMind – vista ${levelLabels[currentLevel]}</h2>
+
+    <!-- CHAT IA (visible solo si el toggle está activo) -->
+    <div class="chat-panel ${chatActivo ? 'visible' : ''}" id="chatPanelIA">
+      <div class="chat-panel-header">
+        <div class="chat-panel-title">
+          <i class="fas fa-robot"></i> Asistente RetailMind
+        </div>
+        <div class="chat-panel-subtitle">Powered by Gemini · Contexto: ${levelLabels[currentLevel]}</div>
+        <button class="chat-panel-close" onclick="toggleChatIA()" title="Cerrar">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="chat-panel-body" id="chatPanelBody">
+        <div class="chat-msg chat-msg-ai">
+          <div class="chat-msg-avatar"><i class="fas fa-robot"></i></div>
+          <div class="chat-msg-content">
+            <div class="chat-msg-label">Asistente RetailMind</div>
+            Hola. Puedo ayudarte a interpretar los estados operacionales de la vista <strong>${levelLabels[currentLevel]}</strong>. Pregúntame sobre KPIs, alertas, tendencias o cualquier concepto del dashboard.
+          </div>
+        </div>
+      </div>
+      <div class="chat-panel-footer">
+        <input type="text" class="chat-input" id="chatInput" placeholder="Escribe tu consulta sobre el dashboard..." onkeypress="if(event.key==='Enter') enviarConsultaChat()">
+        <button class="chat-btn" id="chatBtn" onclick="enviarConsultaChat()"><i class="fas fa-paper-plane"></i> Enviar</button>
+      </div>
+      <div class="chat-suggestions">
+        <span class="chat-suggestion" onclick="setChatInput('¿Cuál es el estado general del holding?')">Estado general</span>
+        <span class="chat-suggestion" onclick="setChatInput('¿Qué sucursales requieren atención urgente?')">Sucursales críticas</span>
+        <span class="chat-suggestion" onclick="setChatInput('¿Qué significa un IPO crítico?')">¿Qué es IPO?</span>
+        <span class="chat-suggestion" onclick="setChatInput('¿Qué acciones recomiendas para esta semana?')">Recomendaciones</span>
+      </div>
+    </div>
+
+    <!-- BREADCRUMB + TABS -->
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+      <div class="breadcrumb">
+        ${crumbLevels.map((l,i)=>`
+          <span class="${i===crumbLevels.length-1?'active-crumb':''}" onclick="setLevel('${l}')">${levelLabels[l]}</span>
+          ${i<crumbLevels.length-1?'<span class="sep">›</span>':''}
+        `).join('')}
+      </div>
+      <div class="drill-tabs">
+        ${levels.map(l=>`<div class="drill-tab ${l===currentLevel?'active':''}" onclick="setLevel('${l}')">${levelLabels[l]}</div>`).join('')}
+      </div>
+    </div>
+
+    <!-- KPIs -->
+    <div class="kpi-row">
+      ${d.kpis.map(k=>`
+        <div class="kpi">
+          <div class="kpi-label">${k.label}</div>
+          <div class="kpi-value">${k.value}</div>
+          <div class="kpi-delta ${k.dir}">${k.dir==='up'?'▲':k.dir==='down'?'▼':'→'} ${k.delta}</div>
+        </div>
+      `).join('')}
+    </div>
+
+    <!-- NARRATIVE -->
+    <div class="narrative-box">
+      <div class="narr-header">
+        <span class="narr-icon">🧠</span>
+        <span class="narr-title">Narrativa IA · ${levelLabels[currentLevel]}</span>
+        <span style="margin-left:auto;font-size:10px;color:var(--muted)">Motor analítico + LLM</span>
+      </div>
+      <div class="narr-text">${d.narrative}</div>
+    </div>
+
+    <!-- STATE CARDS -->
+    <div style="font-size:10px;font-weight:600;color:var(--muted);letter-spacing:0.8px;text-transform:uppercase;margin-bottom:4px">Estados Operacionales · ${levelLabels[currentLevel]}</div>
+    <div class="state-grid">
+      ${d.states.map(s=>`
+        <div class="state-card" onclick="this.classList.toggle('selected')">
+          <div class="sc-header">
+            <span class="sc-domain">${s.domain}</span>
+            <span class="sc-status ${s.status}">${s.badge}</span>
+          </div>
+          <div class="sc-state">${s.icon} ${s.state}</div>
+          ${s.rows.map(r=>`<div class="sc-row"><span>${r[0]}</span><strong>${r[1]}</strong></div>`).join('')}
+          <div class="sc-conf">
+            <span>Confianza</span>
+            <div class="conf-bar"><div class="conf-fill" style="width:${s.conf*100}%;background:${s.color}"></div></div>
+            <span style="color:${s.color};font-weight:600">${Math.round(s.conf*100)}%</span>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+
+    <!-- BOTTOM ROW -->
+    <div class="two-col">
+      <div class="panel">
+        <div class="panel-title">${getHierTitle()} · Detalle</div>
+        ${getHierItems()}
+      </div>
+      <div class="panel">
+        <div class="panel-title">Señales de prioridad</div>
+        ${getAlerts()}
+      </div>
+    </div>
+
+    <!-- CHART -->
+    <div class="panel">
+      <div class="panel-title">Tendencia 30 días · ${levelLabels[currentLevel]}</div>
+      <div class="legend" id="legendArea"></div>
+      <div class="chart-wrap"><canvas id="trendChart" role="img" aria-label="Gráfico de tendencia 30 días para ${levelLabels[currentLevel]}">Tendencia de ventas y margen de los últimos 30 días.</canvas></div>
+    </div>
+
+    <!-- JAPANESE CANDLESTICKS -->
+    <div class="candle-grid">
+      <div class="candle-panel">
+        <div class="candle-head">
+          <div class="candle-title">Velas japonesas · Ticket Promedio · 7 días</div>
+          <div class="candle-note">OHLC demo inventado para mostrar evolución diaria del ticket.</div>
+        </div>
+        <div class="candle-wrap"><canvas id="ticketCandleChart" role="img" aria-label="Gráfico de velas japonesas del ticket promedio de los últimos 7 días"></canvas></div>
+        <div class="candle-summary" id="ticketCandleSummary"></div>
+      </div>
+      <div class="candle-panel">
+        <div class="candle-head">
+          <div class="candle-title">Velas japonesas · Margen Bruto · 7 días</div>
+          <div class="candle-note">OHLC demo inventado para mostrar variación intradía del margen.</div>
+        </div>
+        <div class="candle-wrap"><canvas id="marginCandleChart" role="img" aria-label="Gráfico de velas japonesas del margen bruto de los últimos 7 días"></canvas></div>
+        <div class="candle-summary" id="marginCandleSummary"></div>
+      </div>
+    </div>
+  `;
+
+  // Si el chat estaba activo, asegurar su visibilidad y sincronizar el toggle
+  if (chatActivo) {
+    const panel = document.getElementById('chatPanelIA');
+    if (panel) panel.classList.add('visible');
+    if (chatToggle) chatToggle.checked = true;
+  }
+
+  renderChart();
+  renderCandlestickDemos();
+}
+
+function getHierTitle() {
+  const map = {holding:'Sucursales top',sucursal:'Sucursales',categoria:'Categorías',producto:'SKUs críticos (IPO)',cliente:'Segmentos RFM'};
+  return map[currentLevel];
+}
+
+function getHierItems() {
+  const items = {
+    holding:[
+      {name:'Sucursal Norte',state:'Expansión',sc:'s-green',delta:'+24%',color:'var(--green)'},
+      {name:'Sucursal Oeste',state:'Expansión',sc:'s-green',delta:'+19%',color:'var(--green)'},
+      {name:'Sucursal Sur A',state:'Consolidación',sc:'s-blue',delta:'→ 0%',color:'var(--blue)'},
+      {name:'Sucursal Centro',state:'Desaceleración',sc:'s-red',delta:'−8%',color:'var(--red)'},
+      {name:'Sucursal Este',state:'Desaceleración',sc:'s-yellow',delta:'−14%',color:'var(--yellow)'},
+    ],
+    sucursal:[
+      {name:'Norte',state:'Expansión',sc:'s-green',delta:'+24%',color:'var(--green)'},
+      {name:'Oeste',state:'Expansión',sc:'s-green',delta:'+19%',color:'var(--green)'},
+      {name:'Sur A',state:'Consolidación',sc:'s-blue',delta:'→ 0%',color:'var(--blue)'},
+      {name:'Sur B',state:'Consolidación',sc:'s-blue',delta:'→ +2%',color:'var(--blue)'},
+      {name:'Centro',state:'Desaceleración',sc:'s-red',delta:'−8%',color:'var(--red)'},
+    ],
+    categoria:[
+      {name:'Abarrotes',state:'Recuperación',sc:'s-green',delta:'+14%',color:'var(--green)'},
+      {name:'Bebidas',state:'Consolidación',sc:'s-blue',delta:'→ 0%',color:'var(--blue)'},
+      {name:'Frescos',state:'Alta volatilidad',sc:'s-yellow',delta:'±18%',color:'var(--yellow)'},
+      {name:'Lácteos',state:'Fricción activa',sc:'s-red',delta:'−6%',color:'var(--red)'},
+      {name:'Congelados',state:'Estancamiento',sc:'s-purple',delta:'→ 0%',color:'var(--purple)'},
+    ],
+    producto:[
+      {name:'SKU 2341 FruVer',state:'Rebote probable',sc:'s-green',delta:'+14%',color:'var(--green)'},
+      {name:'SKU 3302 Deterg.',state:'Recuperación',sc:'s-green',delta:'+9%',color:'var(--green)'},
+      {name:'SKU 0891 Leche',state:'Alta volatilidad',sc:'s-yellow',delta:'±12%',color:'var(--yellow)'},
+      {name:'SKU 4512 Arroz',state:'IPO Crítico',sc:'s-red',delta:'−22%',color:'var(--red)'},
+      {name:'SKU 5590 Cong.',state:'Estancamiento',sc:'s-purple',delta:'→ 0%',color:'var(--purple)'},
+    ],
+    cliente:[
+      {name:'Champions',state:'Aceleración',sc:'s-green',delta:'+17%',color:'var(--green)'},
+      {name:'Leales',state:'Aceleración',sc:'s-green',delta:'+6%',color:'var(--green)'},
+      {name:'Prometedores',state:'Recuperación',sc:'s-blue',delta:'+4%',color:'var(--blue)'},
+      {name:'Ocasionales',state:'Consolidación baja',sc:'s-yellow',delta:'→ 0%',color:'var(--yellow)'},
+      {name:'Hibernando',state:'Abandono potencial',sc:'s-red',delta:'−22%',color:'var(--red)'},
+    ],
+  };
+  return (items[currentLevel]||[]).map(it=>`
+    <div class="hier-item" onclick="drillDown('${it.name}')">
+      <div class="hi-dot" style="background:${it.color}"></div>
+      <span class="hi-name">${it.name}</span>
+      <span class="hi-state ${it.sc}">${it.state}</span>
+      <span class="hi-delta ${it.color.includes('green')?'up':it.color.includes('red')?'down':it.color.includes('yellow')?'flat':''}">${it.delta}</span>
+      <span class="hi-arrow">›</span>
+    </div>
+  `).join('');
+}
+
+function getAlerts() {
+  const alerts = {
+    holding:[
+      {color:'var(--red)',title:'Fill Rate crítico – Sucursal Centro',sub:'81% fill rate · tráfico −14%',time:'hace 2h'},
+      {color:'var(--red)',title:'Riesgo abandono – Segmento Hibernando',sub:'>90 días sin compra · 8.7% de base',time:'hace 4h'},
+      {color:'var(--yellow)',title:'Alta volatilidad frescos – Vie/Sáb',sub:'18 SKUs con picos de demanda detectados',time:'hace 6h'},
+      {color:'var(--blue)',title:'Rebote probable – SKU 2341 FruVer',sub:'Martillo confirmado · LSTM prob. 73%',time:'hace 8h'},
+    ],
+    sucursal:[
+      {color:'var(--red)',title:'Centro: Fill Rate 81%',sub:'Caída de 9pp vs semana anterior',time:'hace 2h'},
+      {color:'var(--yellow)',title:'Este: Abandonos en caja +22%',sub:'Fricción detectada en checkout digital',time:'hace 3h'},
+      {color:'var(--green)',title:'Norte: Meta superada +24%',sub:'Ticket promedio en máximo histórico',time:'hace 5h'},
+    ],
+    categoria:[
+      {color:'var(--red)',title:'Lácteos: Imbalance −0.28',sub:'Precio en caja genera fricción alta',time:'hace 1h'},
+      {color:'var(--yellow)',title:'Frescos: Volatilidad Vie–Sáb',sub:'Patrón estacional confirmado',time:'hace 3h'},
+      {color:'var(--green)',title:'Abarrotes en recuperación',sub:'+14% volumen últimos 7 días',time:'hace 6h'},
+    ],
+    producto:[
+      {color:'var(--red)',title:'SKU 4512 IPO Crítico',sub:'Capital inmovilizado alto + −22% rotación',time:'hace 1h'},
+      {color:'var(--yellow)',title:'SKU 0891 Shooting Star',sub:'Promoción fallida · 3 escaneos sin checkout',time:'hace 2h'},
+      {color:'var(--green)',title:'SKU 2341 Rebote inminente',sub:'Martillo en fill rate · prob. 73%',time:'hace 4h'},
+    ],
+    cliente:[
+      {color:'var(--red)',title:'Hibernando >90 días',sub:'Tasa reactivación <12% · $8.2K/sem',time:'hace 2h'},
+      {color:'var(--red)',title:'Ocasionales: baja respuesta promo',sub:'Campañas premium sin absorción',time:'hace 4h'},
+      {color:'var(--green)',title:'Champions en máximo histórico',sub:'Ticket $612 · frecuencia +9%',time:'hace 6h'},
+    ],
+  };
+  return (alerts[currentLevel]||[]).map(a=>`
+    <div class="alert-item">
+      <div class="alert-dot" style="background:${a.color}"></div>
+      <div class="alert-body">
+        <div class="alert-title">${a.title}</div>
+        <div class="alert-sub">${a.sub}</div>
+      </div>
+      <span class="alert-time">${a.time}</span>
+    </div>
+  `).join('');
+}
+
+function drillDown(name) {
+  const next = levels[levels.indexOf(currentLevel)+1];
+  if(next) setLevel(next);
+}
+
+const candleDemos = {
+  ticket: [
+    {label:'Lun', o:342, h:351, l:337, c:348},
+    {label:'Mar', o:348, h:356, l:344, c:353},
+    {label:'Mié', o:353, h:358, l:346, c:349},
+    {label:'Jue', o:349, h:361, l:347, c:357},
+    {label:'Vie', o:357, h:372, l:354, c:368},
+    {label:'Sáb', o:368, h:376, l:360, c:364},
+    {label:'Dom', o:364, h:371, l:359, c:369},
+  ],
+  margin: [
+    {label:'Lun', o:17.8, h:18.3, l:17.5, c:18.1},
+    {label:'Mar', o:18.1, h:18.5, l:17.9, c:18.4},
+    {label:'Mié', o:18.4, h:18.6, l:18.0, c:18.2},
+    {label:'Jue', o:18.2, h:18.9, l:18.1, c:18.7},
+    {label:'Vie', o:18.7, h:19.3, l:18.5, c:19.1},
+    {label:'Sáb', o:19.1, h:19.4, l:18.6, c:18.9},
+    {label:'Dom', o:18.9, h:19.2, l:18.7, c:19.0},
+  ]
+};
+
+function drawCandles(canvasId, rows, opts={}) {
+  const canvas = document.getElementById(canvasId);
+  if(!canvas) return;
+  const parent = canvas.parentElement;
+  const rect = parent.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = Math.max(1, Math.floor(rect.width * dpr));
+  canvas.height = Math.max(1, Math.floor(rect.height * dpr));
+  canvas.style.width = rect.width + 'px';
+  canvas.style.height = rect.height + 'px';
+  const ctx = canvas.getContext('2d');
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+
+  const w = rect.width, h = rect.height;
+  const pad = {l:42,r:10,t:12,b:28};
+  const vals = rows.flatMap(r=>[r.h,r.l]);
+  const min = Math.min(...vals), max = Math.max(...vals);
+  const span = (max-min) || 1;
+  const y = v => pad.t + (max-v) / span * (h-pad.t-pad.b);
+  const up = getComputedStyle(document.body).getPropertyValue('--green').trim() || '#2ed88a';
+  const down = getComputedStyle(document.body).getPropertyValue('--red').trim() || '#ff5c5c';
+  const muted = getComputedStyle(document.body).getPropertyValue('--muted').trim() || '#8a96b8';
+  const grid = getComputedStyle(document.body).getPropertyValue('--border').trim() || 'rgba(255,255,255,.08)';
+  ctx.clearRect(0,0,w,h);
+  ctx.font = '10px Inter, sans-serif';
+  ctx.strokeStyle = grid;
+  ctx.lineWidth = 1;
+  for(let i=0;i<4;i++){
+    const yy = pad.t + i*(h-pad.t-pad.b)/3;
+    ctx.beginPath(); ctx.moveTo(pad.l,yy); ctx.lineTo(w-pad.r,yy); ctx.stroke();
+    const val = max - i*span/3;
+    ctx.fillStyle = muted;
+    ctx.textAlign = 'right';
+    ctx.fillText(opts.suffix ? val.toFixed(1)+opts.suffix : '$'+Math.round(val), pad.l-6, yy+3);
+  }
+  const step = (w-pad.l-pad.r)/rows.length;
+  const bodyW = Math.min(18, step*0.45);
+  const hitAreas = [];
+  rows.forEach((r,i)=>{
+    const x = pad.l + step*i + step/2;
+    const color = r.c >= r.o ? up : down;
+    ctx.strokeStyle = color;
+    ctx.fillStyle = color;
+    ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(x,y(r.h)); ctx.lineTo(x,y(r.l)); ctx.stroke();
+    const top = y(Math.max(r.o,r.c));
+    const bot = y(Math.min(r.o,r.c));
+    const bh = Math.max(3, bot-top);
+    ctx.globalAlpha = 0.92;
+    ctx.fillRect(x-bodyW/2, top, bodyW, bh);
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = muted;
+    ctx.textAlign = 'center';
+    ctx.fillText(r.label, x, h-8);
+    hitAreas.push({x1:x-step/2, x2:x+step/2, row:r, color});
+  });
+  canvas._candleHitAreas = hitAreas;
+  canvas._candleOptions = opts;
+  attachCandleTooltip(canvas);
+}
+
+function ensureCandleTooltip() {
+  let tip = document.getElementById('candleTooltip');
+  if(!tip) {
+    tip = document.createElement('div');
+    tip.id = 'candleTooltip';
+    tip.className = 'candle-tooltip';
+    document.body.appendChild(tip);
+  }
+  return tip;
+}
+
+function formatCandleValue(v, opts={}) {
+  if(opts.suffix) return v.toFixed(opts.decimals ?? 1) + opts.suffix;
+  return '$' + Math.round(v);
+}
+
+function attachCandleTooltip(canvas) {
+  if(canvas._candleTooltipAttached) return;
+  canvas._candleTooltipAttached = true;
+  const tip = ensureCandleTooltip();
+  canvas.addEventListener('mousemove', (ev) => {
+    const rect = canvas.getBoundingClientRect();
+    const x = ev.clientX - rect.left;
+    const area = (canvas._candleHitAreas || []).find(a => x >= a.x1 && x <= a.x2);
+    if(!area) { tip.style.display = 'none'; return; }
+    const r = area.row;
+    const opts = canvas._candleOptions || {};
+    const delta = r.c - r.o;
+    tip.innerHTML = `
+      <div class="candle-tooltip-title">${r.label} · ${delta >= 0 ? 'Alcista' : 'Bajista'}</div>
+      <div class="candle-tooltip-row"><span>Apertura</span><strong>${formatCandleValue(r.o, opts)}</strong></div>
+      <div class="candle-tooltip-row"><span>Máximo</span><strong>${formatCandleValue(r.h, opts)}</strong></div>
+      <div class="candle-tooltip-row"><span>Mínimo</span><strong>${formatCandleValue(r.l, opts)}</strong></div>
+      <div class="candle-tooltip-row"><span>Cierre</span><strong>${formatCandleValue(r.c, opts)}</strong></div>
+      <div class="candle-tooltip-row"><span>Movimiento</span><strong style="color:${area.color}">${delta >= 0 ? '+' : ''}${formatCandleValue(delta, opts)}</strong></div>
+    `;
+    tip.style.display = 'block';
+    const margin = 14;
+    const tw = tip.offsetWidth || 150;
+    const th = tip.offsetHeight || 110;
+    let left = ev.clientX + margin;
+    let top = ev.clientY + margin;
+    if(left + tw > window.innerWidth - 8) left = ev.clientX - tw - margin;
+    if(top + th > window.innerHeight - 8) top = ev.clientY - th - margin;
+    tip.style.left = left + 'px';
+    tip.style.top = top + 'px';
+  });
+  canvas.addEventListener('mouseleave', () => { tip.style.display = 'none'; });
+  canvas.addEventListener('touchstart', (ev) => {
+    if(ev.touches && ev.touches[0]) canvas.dispatchEvent(new MouseEvent('mousemove', {clientX:ev.touches[0].clientX, clientY:ev.touches[0].clientY}));
+  }, {passive:true});
+  canvas.addEventListener('touchmove', (ev) => {
+    if(ev.touches && ev.touches[0]) canvas.dispatchEvent(new MouseEvent('mousemove', {clientX:ev.touches[0].clientX, clientY:ev.touches[0].clientY}));
+  }, {passive:true});
+}
+
+function renderCandleSummary(id, rows, opts={}) {
+  const el = document.getElementById(id);
+  if(!el) return;
+  const first = rows[0].o;
+  const last = rows[rows.length-1].c;
+  const delta = last-first;
+  const pct = delta/first*100;
+  const prefix = opts.suffix ? '' : '$';
+  const suffix = opts.suffix || '';
+  el.innerHTML = `
+    <span class="candle-pill">Inicio: ${prefix}${first.toFixed(opts.decimals||0)}${suffix}</span>
+    <span class="candle-pill">Cierre: ${prefix}${last.toFixed(opts.decimals||0)}${suffix}</span>
+    <span class="candle-pill ${delta>=0?'up':'down'}">${delta>=0?'▲':'▼'} ${prefix}${Math.abs(delta).toFixed(opts.decimals||0)}${suffix} (${pct>=0?'+':''}${pct.toFixed(1)}%)</span>
+  `;
+}
+
+function renderCandlestickDemos() {
+  drawCandles('ticketCandleChart', candleDemos.ticket, {});
+  drawCandles('marginCandleChart', candleDemos.margin, {suffix:'%'});
+  renderCandleSummary('ticketCandleSummary', candleDemos.ticket, {decimals:0});
+  renderCandleSummary('marginCandleSummary', candleDemos.margin, {suffix:'%', decimals:1});
+}
+
+function renderChart() {
+  const ctx = document.getElementById('trendChart');
+  if(!ctx) return;
+
+  const labels = Array.from({length:30},(_,i)=>{
+    const d = new Date(); d.setDate(d.getDate()-29+i);
+    return d.toLocaleDateString('es-MX',{month:'short',day:'numeric'});
+  }).filter((_,i)=>i%4===0||i===29);
+  const idxs = Array.from({length:30},(_,i)=>i).filter(i=>i%4===0||i===29);
+
+  const ventas = [88,91,87,93,95,89,92,96,94,97,91,88,90,93,98,95,99,97,101,98,102,99,104,101,105,103,107,105,109,108];
+  const margen = [17.1,17.4,17.2,17.8,18.0,17.6,17.9,18.2,18.0,18.3,17.8,17.5,17.7,18.0,18.4,18.1,18.5,18.3,18.7,18.4,18.8,18.5,18.9,18.6,19.0,18.8,19.1,18.9,19.2,18.2];
+
+  const filtV = idxs.map(i=>ventas[i]);
+  const filtM = idxs.map(i=>parseFloat(margen[i].toFixed(1)));
+
+  const leg = document.getElementById('legendArea');
+  if(leg) leg.innerHTML = `
+    <div class="legend-item"><div class="legend-dot" style="background:#ff6b35"></div>Ventas (índice base 100)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#5b9cf6;border-radius:2px;border:2px dashed #5b9cf6;background:transparent"></div>Margen bruto %</div>
+  `;
+
+  chartInstance = new Chart(ctx, {
+    type:'line',
+    data:{
+      labels: idxs.map(i=>{
+        const d2=new Date();d2.setDate(d2.getDate()-29+i);
+        return d2.toLocaleDateString('es-MX',{month:'short',day:'numeric'});
+      }),
+      datasets:[
+        {label:'Ventas',data:filtV,borderColor:'#ff6b35',backgroundColor:'rgba(255,107,53,0.08)',fill:true,tension:0.4,pointRadius:3,pointBackgroundColor:'#ff6b35',yAxisID:'y'},
+        {label:'Margen %',data:filtM,borderColor:'#5b9cf6',borderDash:[5,3],backgroundColor:'transparent',fill:false,tension:0.4,pointRadius:3,pointBackgroundColor:'#5b9cf6',yAxisID:'y1'},
+      ]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false,backgroundColor:'#0d1528',borderColor:'rgba(255,255,255,0.1)',borderWidth:1,titleColor:'#e8eeff',bodyColor:'#8a96b8'}},
+      scales:{
+        x:{ticks:{color:'#8a96b8',font:{size:10}},grid:{color:'rgba(255,255,255,0.04)'}},
+        y:{position:'left',ticks:{color:'#8a96b8',font:{size:10}},grid:{color:'rgba(255,255,255,0.04)'}},
+        y1:{position:'right',ticks:{color:'#5b9cf6',font:{size:10}},grid:{display:false}},
+      }
+    }
+  });
+}
+
+window.addEventListener('resize', () => {
+  if(document.getElementById('ticketCandleChart')) renderCandlestickDemos();
+});
+
+initTheme();
+render();
+</script>
+<script>
+    (function() {
+        const btn = document.getElementById('floatingBtn');
+        const menu = document.getElementById('fanMenu');
+        const btnIcon = document.getElementById('btnIcon');
+        const btnText = document.getElementById('btnText');
+        let isOpen = false;
+
+        function toggleMenu(e) {
+            e.stopPropagation();
+            isOpen = !isOpen;
+            if (isOpen) {
+                menu.classList.add('open');
+                btn.classList.add('active');
+                btnIcon.className = 'fas fa-times';
+                btnText.textContent = 'Cerrar';
+            } else {
+                menu.classList.remove('open');
+                btn.classList.remove('active');
+                btnIcon.className = 'fas fa-cube';
+                btnText.textContent = 'Ver Módulos';
+            }
+        }
+
+        btn.addEventListener('click', toggleMenu);
+
+        const links = menu.querySelectorAll('a');
+        links.forEach(link => {
+            link.addEventListener('click', function(e) {
+                if (this.getAttribute('href') === '#') {
+                    e.preventDefault();
+                }
+                if (isOpen) {
+                    menu.classList.remove('open');
+                    btn.classList.remove('active');
+                    btnIcon.className = 'fas fa-cube';
+                    btnText.textContent = 'Ver Módulos';
+                    isOpen = false;
+                }
+            });
+        });
+
+        document.addEventListener('click', function(e) {
+            const wrapper = document.getElementById('floatingWrapper');
+            if (isOpen && !wrapper.contains(e.target)) {
+                menu.classList.remove('open');
+                btn.classList.remove('active');
+                btnIcon.className = 'fas fa-cube';
+                btnText.textContent = 'Ver Módulos';
+                isOpen = false;
+            }
+        });
+    })();
+</script>
+</body>
+</html>

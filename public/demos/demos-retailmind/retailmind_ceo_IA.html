@@ -44,7 +44,9 @@ body.theme-office{
   --blue:#2563eb;
   --purple:#7c3aed;
 }
-.shell{display:grid;grid-template-rows:56px 1fr;grid-template-columns:220px 1fr;height:100vh;overflow:hidden}
+.shell{display:grid;grid-template-rows:56px auto;grid-template-columns:220px 1fr;min-height:100vh}
+.sidebar{position:sticky;top:56px;height:calc(100vh - 56px)}
+.main{overflow-y:visible}
 
 /* TOPBAR */
 .topbar{grid-column:1/-1;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 1.5rem;gap:1rem;position:relative;z-index:10}
@@ -83,7 +85,7 @@ body.theme-office .nav-toggle .slider{background:rgba(15,23,42,0.15)}
 .theme-option{display:flex;align-items:center;gap:8px;padding:6px 0;font-size:12px;color:var(--text);cursor:pointer}
 .theme-option input{accent-color:var(--accent)}
 @media (max-width: 720px){
-  .shell{grid-template-columns:1fr;grid-template-rows:56px 1fr}
+ .shell{grid-template-columns:1fr;grid-template-rows:56px auto;min-height:100vh}
   .topbar{padding:0 0.75rem;gap:0.6rem}
   .topbar img{height:22px;max-width:130px;object-fit:contain}
   .topbar-badge,.topbar-user,.topbar-date{display:none}
@@ -606,14 +608,16 @@ body.theme-office .chat-input{background:#fff;color:#172033}
   <div class="nav-item" onclick="setLevel('cliente')" id="nav-cli"><span class="nav-icon">👥</span> Clientes / RFM</div>
 
   <div class="sidebar-section">Inteligencia</div>
-  <div class="nav-item" onclick="toggleChatIA()">
-    <span class="nav-icon">🧠</span>
-    <span>Narrativa IA</span>
-    <label class="nav-toggle" onclick="event.stopPropagation()">
-      <input type="checkbox" id="chatToggle">
-      <span class="slider"></span>
-    </label>
-  </div>
+
+<div class="nav-item" id="navNarrativa" onclick="toggleChatIA()">
+  <span class="nav-icon">🧠</span>
+  <span>Narrativa IA</span>
+  <label class="nav-toggle">
+    <input type="checkbox" id="chatToggle" onchange="toggleChatIA(true)">
+    <span class="slider"></span>
+  </label>
+</div>
+
   <div class="nav-item"><span class="nav-icon">📡</span> Order Flow</div>
   <div class="nav-item"><span class="nav-icon">📈</span> Predicciones</div>
 
@@ -670,21 +674,25 @@ function closeMobileMenu() {
 // ============================================================
 // TOGGLE CHAT IA
 // ============================================================
-function toggleChatIA() {
+function toggleChatIA(desdeSwitch) {
   const toggle = document.getElementById('chatToggle');
-  if (!toggle) return;
-  toggle.checked = !toggle.checked;
   const panel = document.getElementById('chatPanelIA');
-  if (panel) {
-    if (toggle.checked) {
-      panel.classList.add('visible');
-      setTimeout(() => {
-        const input = document.getElementById('chatInput');
-        if (input) input.focus();
-      }, 100);
-    } else {
-      panel.classList.remove('visible');
-    }
+  if (!toggle || !panel) return;
+
+  // Si viene del switch, el checkbox YA cambió de estado, no lo invertimos
+  // Si viene del div (click en el texto), invertimos el estado del checkbox
+  if (!desdeSwitch) {
+    toggle.checked = !toggle.checked;
+  }
+
+  if (toggle.checked) {
+    panel.classList.add('visible');
+    setTimeout(() => {
+      const input = document.getElementById('chatInput');
+      if (input) input.focus();
+    }, 100);
+  } else {
+    panel.classList.remove('visible');
   }
 }
 

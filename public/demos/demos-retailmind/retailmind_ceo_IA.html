@@ -730,7 +730,13 @@ async function enviarConsultaChat() {
   body.appendChild(typingMsg);
   body.scrollTop = body.scrollHeight;
 
-  const contexto = 'Vista: ' + (levelLabels[currentLevel] || currentLevel) + ' | Dashboard: Centro de Estados Operacionales de RetailMind 360°';
+const d = data[currentLevel];
+const contexto = `
+Vista actual: ${levelLabels[currentLevel]}
+KPIs visibles: ${d.kpis.map(k => k.label + ': ' + k.value + ' (' + k.delta + ')').join(' | ')}
+Estados operacionales activos: ${d.states.map(s => s.domain + ': ' + s.state + ' (' + s.badge + ')').join(' | ')}
+Narrativa IA actual: ${d.narrative.replace(/<[^>]*>/g, '')}
+`.trim();
 
   try {
     const response = await fetch('/api/chat-retailmind-ceo', {

@@ -1003,7 +1003,30 @@
         }
 
         async function enviarConsultaChat() {
-            const input = document.getElementById('chatInput');
+ // Contexto enriquecido con velas
+const d = data[currentLevel];
+const velasFCF = candleData.fcf.map(v =>
+  `${v.label}: O=${v.o} H=${v.h} L=${v.l} C=${v.c}`
+).join(' | ');
+const velasMargen = candleData.margin.map(v =>
+  `${v.label}: O=${v.o} H=${v.h} L=${v.l} C=${v.c}`
+).join(' | ');
+
+const contexto = `
+Vista actual: ${levelLabels[currentLevel]}
+KPIs visibles: ${d.kpis.map(k => k.label + ': ' + k.value + ' (' + k.delta + ')').join(' | ')}
+Estados financieros activos: ${d.states.map(s => s.domain + ': ' + s.state + ' (' + s.badge + ')').join(' | ')}
+Narrativa IA actual: ${d.narrative.replace(/<[^>]*>/g, '')}
+
+VELAS JAPONESAS - FCF Diario (USD K):
+${velasFCF}
+
+VELAS JAPONESAS - Margen EBITDA (%) :
+${velasMargen}
+
+Cashflow consolidado: Flujo Operativo $8.4M (+16.3%), Flujo Inversión -$2.1M (-8.2%), Flujo Financiamiento -$2.1M (-2.1%), FCF $4.2M, FCF Yield 8.7%, CCC 32.4 días.
+`.trim();
+           const input = document.getElementById('chatInput');
             const btn = document.getElementById('chatBtn');
             const body = document.getElementById('chatPanelBody');
             if (!input || !body) return;

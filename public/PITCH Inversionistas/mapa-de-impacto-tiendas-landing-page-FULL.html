@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa de Impacto, Riesgo y Oportunidad | RetailMind 360°</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Reset y base */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f8fafc; color: #0f172a; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+        /* Hero Section con imagen de fondo */
+        .hero {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            padding: 80px 0 64px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-bg-image {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://gestor-de-archivos.vercel.app/assets/imagenes/matriz-doble-escenario-01.png');
+            background-size: cover;
+            background-position: center right;
+            background-repeat: no-repeat;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+        /* Overlay oscuro para que el texto sea legible */
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.85) 0%, rgba(30, 41, 59, 0.75) 100%);
+            pointer-events: none;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 48px;
+        }
+        .hero-text { flex: 1; }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(56, 189, 248, 0.15);
+            color: #38bdf8;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+        .hero h1 {
+            font-size: 3.25rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+        .hero h1 span { color: #38bdf8; }
+        .hero p {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            max-width: 520px;
+            line-height: 1.6;
+            margin-bottom: 32px;
+        }
+        .hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; }
+        .btn-primary {
+            background: #38bdf8;
+            color: #0f172a;
+            padding: 14px 36px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-primary:hover {
+            background: #7dd3fc;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(56, 189, 248, 0.3);
+        }
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            padding: 14px 36px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            border: 1px solid #475569;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.05);
+            border-color: #94a3b8;
+        }
+        .hero-visual {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .hero-visual img {
+            max-width: 100%;
+            height: auto;
+            max-height: 320px;
+            filter: drop-shadow(0 8px 32px rgba(0,0,0,0.4));
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .logo-container img {
+            height: 48px;
+            width: auto;
+        }
+        .logo-container span {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #38bdf8;
+            letter-spacing: -0.5px;
+        }
+
+        @media (max-width: 768px) {
+            .hero { padding: 48px 0; }
+            .hero-content { flex-direction: column; text-align: center; }
+            .hero h1 { font-size: 2.25rem; }
+            .hero p { max-width: 100%; }
+            .hero-buttons { justify-content: center; }
+            .hero-visual img { max-height: 200px; }
+            .hero-bg-image { opacity: 0.2; }
+        }
+
+        /* Sección Metodología con imagen */
+        .metodologia {
+            padding: 80px 0;
+            background: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .metodologia-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            align-items: center;
+            margin-top: 40px;
+        }
+        .metodologia-text { order: 1; }
+        .metodologia-image {
+            order: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .metodologia-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+        .pasos {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 24px;
+        }
+        .paso-item {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 20px 24px;
+            border-left: 4px solid #38bdf8;
+        }
+        .paso-item .numero {
+            display: inline-block;
+            background: #38bdf8;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 32px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+        .paso-item h4 {
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .paso-item p {
+            color: #64748b;
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 768px) {
+            .metodologia-grid {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+            .metodologia-text { order: 2; }
+            .metodologia-image { order: 1; }
+            .pasos { grid-template-columns: 1fr; }
+        }
+
+        /* Otras secciones (mantienen estilo anterior) */
+        .section-padding { padding: 80px 0; }
+        .bg-gray { background: #f8fafc; }
+        .bg-dark { background: #0f172a; color: white; }
+        .text-center { text-align: center; }
+        .text-white { color: white; }
+        .text-muted { color: #64748b; }
+        .text-muted-light { color: #94a3b8; }
+        
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+        .grid-3-dash {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+        }
+        .card-dark {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 32px;
+        }
+        .card-dashboard {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+            text-align: center;
+        }
+        .card-dashboard span { font-size: 2rem; }
+        .card-dashboard h4 { margin: 12px 0 8px; font-weight: 700; }
+        .card-dashboard p { color: #64748b; font-size: 0.95rem; }
+        
+        .badge-blue {
+            color: #38bdf8;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+        }
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 16px;
+        }
+        .section-title-white { color: white; }
+        .section-subtitle {
+            color: #64748b;
+            max-width: 600px;
+            margin: 12px auto 0;
+            font-size: 1.1rem;
+        }
+        .section-subtitle-white { color: #94a3b8; }
+
+        .testimonial-card {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 32px;
+            border-left: 4px solid #38bdf8;
+            text-align: left;
+        }
+        .testimonial-card p {
+            font-style: italic;
+            color: #cbd5e1;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+        .testimonial-card .autor {
+            margin-top: 16px;
+            font-weight: 700;
+            color: white;
+        }
+        .testimonial-card .cargo {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        .pricing-box {
+            background: #f1f5f9;
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 32px;
+            text-align: center;
+        }
+        .pricing-box .price {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #0f172a;
+        }
+        .pricing-box .price-label {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-bottom: 4px;
+        }
+
+        footer {
+            background: #0f172a;
+            color: #94a3b8;
+            padding: 48px 0;
+            border-top: 1px solid #1e293b;
+        }
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .footer-logo img { height: 36px; }
+        .footer-logo span { font-weight: 700; color: white; }
+        .footer-links { display: flex; gap: 24px; font-size: 0.9rem; }
+        .footer-links a { color: #94a3b8; text-decoration: none; }
+        .footer-links a:hover { color: white; }
+        .footer-copy { font-size: 0.85rem; }
+
+        @media (max-width: 768px) {
+            .grid-3 { grid-template-columns: 1fr; }
+            .grid-3-dash { grid-template-columns: 1fr; }
+            .section-title { font-size: 2rem; }
+            .footer-content { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ======== HERO CON IMAGEN DE FONDO Y SVG REAL ======== -->
+<section class="hero">
+    <!-- Imagen de fondo -->
+    <div class="hero-bg-image"></div>
+    <!-- Overlay oscuro -->
+    <div class="hero-overlay"></div>
+    
+    <div class="container hero-content">
+        <div class="hero-text">
+            <div class="logo-container">
+                <img src="https://gestor-de-archivos.vercel.app/logos/logo-retailmind-SVG-000.svg" alt="RetailMind 360°" />
+                <span>RetailMind 360°</span>
+            </div>
+            <div class="hero-badge">🔵 Subproducto Estrella</div>
+            <h1>¿Sabes qué tiendas <span>defender</span> y cuáles <span>abandonar</span> antes de que llegue Walmart?</h1>
+            <p>El <strong>Mapa de Impacto, Riesgo y Oportunidad</strong> de tu red de tiendas te da la respuesta. Un diagnóstico estratégico que evalúa cada tienda en 4 dimensiones críticas y 2 escenarios macroeconómicos.</p>
+            <div class="hero-buttons">
+                <a href="#demo" class="btn-primary">🚀 Solicitar Demo</a>
+                <a href="#metodologia" class="btn-secondary">📊 Ver Metodología</a>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <!-- SVG Dashboard Preview (realista y funcional) -->
+            <svg width="500" height="400" viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg" style="max-width:100%; height:auto; border-radius:12px; box-shadow: 0 8px 32px rgba(0,0,0,0.4);">
+                <!-- Fondo -->
+                <rect width="500" height="400" rx="12" fill="#1e293b"/>
+                
+                <!-- Header del Dashboard -->
+                <rect x="0" y="0" width="500" height="60" rx="12" fill="#0f172a"/>
+                <text x="20" y="38" font-family="Inter, sans-serif" font-size="16" font-weight="700" fill="#38bdf8">DASHBOARD EJECUTIVO</text>
+                <text x="230" y="38" font-family="Inter, sans-serif" font-size="12" fill="#64748b">MAP DE IMPACTO, RIESGO Y OPORTUNIDAD</text>
+                
+                <!-- Grid de 4 dimensiones -->
+                <!-- Salud Financiera -->
+                <rect x="16" y="76" width="110" height="90" rx="8" fill="#0f172a" stroke="#38bdf8" stroke-width="1.5"/>
+                <text x="24" y="98" font-family="Inter, sans-serif" font-size="10" font-weight="700" fill="#38bdf8">🟢 SALUD</text>
+                <text x="24" y="116" font-family="Inter, sans-serif" font-size="9" fill="#94a3b8">Margen: 2.8</text>
+                <text x="24" y="130" font-family="Inter, sans-serif" font-size="9" fill="#94a3b8">Vtas/m²: 2.5</text>
+                <text x="24" y="144" font-family="Inter, sans-serif" font-size="9" fill="#94a3b8">Rotación: 2.2</text>
+                <text x="24" y="158" font-family="Inter, sans-serif" font-size="9" font-weight="700" fill="#38bdf8">Prom: 2.5</text>
+                
+                <!-- Resiliencia Defensiva -->
+                <rect x="134" y="76" width="110" height="90" rx="8" fill="#0f172a" stroke="#3b82f6" stroke-width="1.5"/>
+                <text x="142" y="98" font-family="Inter, sans-serif" font-size="10" font-weight="700" fill="#3b82f6">🛡️ RESILIENCIA</text>
+                <text x="142" y="116" font-family="Inter, sans-serif" font-size="9" fill="#94a3b8">Mix: 2.9</text>
+                <text x="142" y="130" font-family="Inter, sans-serif" font-size="9" fill="#94a3b8">Conc.: 2.7</text>
+                <text x="142" y="144" font-family="Inter, sans-serif" font-size="9" fill="#94a3b8">Costo: 2.1</text>
+                <text x="142" y="158" font-family="Inter, sans-serif" font-size="9" font-weight="700" fill="#3b82f6">Prom: 2.6</text>
+                
+                <!-- Potencial Ofensivo -->
+                <rect x="252" y="76" width="110" height="90" rx="8" fill="#0f172a" stroke="#f59e0b" stroke-width="1.5"/>
+                <text x="260" y="98" font-family="Inter, sans-serif" font-size="10" font-weight="700" fill="#f59e0b">🚀 POTENCIAL</text>
+                <text x="260" y="116" font-family="Inter, sans-serif" font-size="9" fill="#94a3b8">Ubicac.: 2.6</text>
+                <text x="260" y="130" font-family="Inter, sans-serif" font-size="9" fill="#94a3b8">Capac.: 2.4</text>
+                <text x="260" y="144" font-family="Inter, sans-serif" font-size="9" fill="#94a3b8">Penetr.: 2.3</text>
+                <text x="260" y="158" font-family="Inter, sans-serif" font-size="9" font-weight="700" fill="#f59e0b">Prom: 2.4</text>
+                
+                <!-- Exposición Competitiva -->
+                <rect x="370" y="76" width="110" height="90" rx="8" fill="#0f172a" stroke="#ef4444" stroke-width="1.5"/>
+                <text x="378" y="98" font-family="Inter, sans-serif" font-size="10" font-weight="700" fill="#ef4444">⚠️ EXPOSICIÓN</text>
+                <text x="378" y="116" font-family="Inter, sans-serif" font-size="9" fill="#94a3b8">Dist.: 1.8</text>
+                <text x="378" y="130" font-family="Inter, sans-serif" font-size="9" fill="#94a3b8">Atract.: 2.1</text>
+                <text x="378" y="144" font-family="Inter, sans-serif" font-size="9" fill="#94a3b8">Dif.: 2.5</text>
+                <text x="378" y="158" font-family="Inter, sans-serif" font-size="9" font-weight="700" fill="#ef4444">Prom: 2.1</text>
+                
+                <!-- Matriz de Tipología (JOYA / APUESTA / BUNKER / LASTRE) -->
+                <rect x="16" y="180" width="464" height="100" rx="8" fill="#0f172a"/>
+                <text x="30" y="204" font-family="Inter, sans-serif" font-size="12" font-weight="700" fill="#f8fafc">MATRIZ DE DECISIÓN</text>
+                
+                <!-- JOYA -->
+                <rect x="30" y="216" width="100" height="48" rx="6" fill="#22c55e" opacity="0.2"/>
+                <rect x="30" y="216" width="100" height="48" rx="6" fill="none" stroke="#22c55e" stroke-width="1.5"/>
+                <text x="50" y="236" font-family="Inter, sans-serif" font-size="14" font-weight="700" fill="#22c55e">🟢 JOYA</text>
+                <text x="50" y="254" font-family="Inter, sans-serif" font-size="9" fill="#94a3b8">5 tiendas</text>
+                
+                <!-- APUESTA -->
+                <rect x="146" y="216" width="100" height="48" rx="6" fill="#eab308" opacity="0.2"/>
+                <rect x="146" y="216" width="100" height="48" rx="6" fill="none" stroke="#eab308" stroke-width="1.5"/>
+                <text x="162" y="236" font-family="Inter, sans-serif" font-size="14" font-weight="700" fill="#eab308">🟡 APUESTA</text>
+                <text x="162" y="254" font-family="Inter, sans-serif" font-size="9" fill="#94a3b8">2 tiendas</text>
+                
+                <!-- BUNKER -->
+                <rect x="262" y="216" width="100" height="48" rx="6" fill="#f97316" opacity="0.2"/>
+                <rect x="262" y="216" width="100" height="48" rx="6" fill="none" stroke="#f97316" stroke-width="1.5"/>
+                <text x="276" y="236" font-family="Inter, sans-serif" font-size="14" font-weight="700" fill="#f97316">🟠 BUNKER</text>
+                <text x="276" y="254" font-family="Inter, sans-serif" font-size="9" fill="#94a3b8">2 tiendas</text>
+                
+                <!-- LASTRE -->
+                <rect x="378" y="216" width="100" height="48" rx="6" fill="#ef4444" opacity="0.2"/>
+                <rect x="378" y="216" width="100" height="48" rx="6" fill="none" stroke="#ef4444" stroke-width="1.5"/>
+                <text x="390" y="236" font-family="Inter, sans-serif" font-size="14" font-weight="700" fill="#ef4444">🔴 LASTRE</text>
+                <text x="390" y="254" font-family="Inter, sans-serif" font-size="9" fill="#94a3b8">1 tienda</text>
+                
+                <!-- Footer del Dashboard -->
+                <rect x="16" y="292" width="464" height="90" rx="8" fill="#0f172a"/>
+                <text x="30" y="316" font-family="Inter, sans-serif" font-size="10" font-weight="700" fill="#f8fafc">PLAN DE ACCIÓN POR ESCENARIO</text>
+                
+                <!-- Escenario Crecimiento -->
+                <rect x="30" y="328" width="210" height="38" rx="4" fill="#064e3b" opacity="0.3"/>
+                <rect x="30" y="328" width="210" height="38" rx="4" fill="none" stroke="#22c55e" stroke-width="1"/>
+                <text x="40" y="344" font-family="Inter, sans-serif" font-size="9" font-weight="700" fill="#22c55e">🚀 Crecimiento</text>
+                <text x="40" y="358" font-family="Inter, sans-serif" font-size="8" fill="#94a3b8">Invertir en JOYA (5) · Evaluar APUESTA (2)</text>
+                
+                <!-- Escenario Depresión -->
+                <rect x="256" y="328" width="210" height="38" rx="4" fill="#450a0a" opacity="0.3"/>
+                <rect x="256" y="328" width="210" height="38" rx="4" fill="none" stroke="#ef4444" stroke-width="1"/>
+                <text x="266" y="344" font-family="Inter, sans-serif" font-size="9" font-weight="700" fill="#ef4444">🐻 Depresión</text>
+                <text x="266" y="358" font-family="Inter, sans-serif" font-size="8" fill="#94a3b8">Proteger JOYA · Cerrar LASTRE (1)</text>
+            </svg>
+        </div>
+    </div>
+</section>
+    
+<!-- ======== PROPUESTA DE VALOR ======== -->
+<section class="section-padding" style="background: white;">
+    <div class="container">
+        <div class="text-center" style="margin-bottom: 56px;">
+            <p class="badge-blue">Propuesta de Valor</p>
+            <h2 class="section-title">Lo que realmente necesitas saber</h2>
+            <p class="section-subtitle">No es un análisis financiero más. Es un <strong>plan de batalla</strong> para tu red de tiendas.</p>
+        </div>
+
+        <div class="grid-3">
+            <div class="card" style="border-bottom: 4px solid #38bdf8;">
+                <div style="font-size: 2.5rem; margin-bottom: 16px;">🛡️</div>
+                <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 12px;">Defiende lo que vale la pena</h3>
+                <p style="color: #475569; line-height: 1.6;">Identifica qué tiendas son <strong>defendibles</strong> ante un entrante global y cuáles son vulnerables. No gastes recursos en lo que no se puede salvar.</p>
+            </div>
+            <div class="card" style="border-bottom: 4px solid #f59e0b;">
+                <div style="font-size: 2.5rem; margin-bottom: 16px;">🎯</div>
+                <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 12px;">Ataca donde hay oportunidad</h3>
+                <p style="color: #475569; line-height: 1.6;">Descubre qué tiendas tienen <strong>potencial de crecimiento</strong> y merecen inversión. Convierte tus joyas ocultas en motores de expansión.</p>
+            </div>
+            <div class="card" style="border-bottom: 4px solid #ef4444;">
+                <div style="font-size: 2.5rem; margin-bottom: 16px;">⚡</div>
+                <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 12px;">Actúa antes de que sea tarde</h3>
+                <p style="color: #475569; line-height: 1.6;">Con <strong>dos escenarios macroeconómicos</strong> (crecimiento vs recesión), sabrás exactamente qué hacer en cada tienda, pase lo que pase.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ======== ¿QUÉ INCLUYE? ======== -->
+<section class="section-padding bg-gray">
+    <div class="container">
+        <div class="text-center" style="margin-bottom: 56px;">
+            <p class="badge-blue">El Entregable</p>
+            <h2 class="section-title">6 Dashboards en 1</h2>
+            <p class="section-subtitle">Un solo diagnóstico, múltiples miradas. Todo lo que necesitas para tomar decisiones estratégicas.</p>
+        </div>
+
+        <div class="grid-3-dash">
+            <div class="card-dashboard">
+                <span>📊</span>
+                <h4>Diagnóstico 4×3</h4>
+                <p>Evaluación de cada tienda en 4 dimensiones y 3 variables. La foto completa.</p>
+            </div>
+            <div class="card-dashboard">
+                <span>🗺️</span>
+                <h4>Mapa de Calor de Riesgo</h4>
+                <p>Visualización geográfica de vulnerabilidad. Sabrás <strong>dónde</strong> está el riesgo.</p>
+            </div>
+            <div class="card-dashboard">
+                <span>🏆</span>
+                <h4>Top/Bottom Performers</h4>
+                <p>Líderes y rezagados por dimensión. ¿Quién tira del carro y quién lo frena?</p>
+            </div>
+            <div class="card-dashboard">
+                <span>📈</span>
+                <h4>Análisis de Brecha</h4>
+                <p>¿En qué debe mejorar cada tienda? Radar charts y brechas vs promedio.</p>
+            </div>
+            <div class="card-dashboard">
+                <span>⚙️</span>
+                <h4>Simulación de Pesos</h4>
+                <p>Ajusta la importancia de cada variable. ¿Qué pasa si cambias los pesos?</p>
+            </div>
+            <div class="card-dashboard">
+                <span>📋</span>
+                <h4>Plan de Acción</h4>
+                <p>Recomendaciones concretas por tienda y escenario. <strong>Ejecutable</strong>.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ======== METODOLOGÍA CON IMAGEN ======== -->
+<section id="metodologia" class="metodologia">
+    <div class="container">
+        <div class="text-center" style="margin-bottom: 16px;">
+            <p class="badge-blue">Metodología</p>
+            <h2 class="section-title">Simple, pero poderosa</h2>
+        </div>
+
+        <div class="metodologia-grid">
+            <div class="metodologia-text">
+                <div class="pasos">
+                    <div class="paso-item">
+                        <div class="numero">1</div>
+                        <h4>Datos</h4>
+                        <p>Cargamos 12 variables clave de tu red de tiendas.</p>
+                    </div>
+                    <div class="paso-item">
+                        <div class="numero">2</div>
+                        <h4>Evaluamos</h4>
+                        <p>Cada tienda en 4 dimensiones: Salud, Resiliencia, Potencial y Exposición.</p>
+                    </div>
+                    <div class="paso-item">
+                        <div class="numero">3</div>
+                        <h4>Clasificamos</h4>
+                        <p>JOYA, APUESTA, BUNKER o LASTRE. Sabrás qué hacer con cada una.</p>
+                    </div>
+                    <div class="paso-item">
+                        <div class="numero">4</div>
+                        <h4>Actúas</h4>
+                        <p>Recibes un plan de acción claro para cada escenario macroeconómico.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="metodologia-image">
+                <img src="https://gestor-de-archivos.vercel.app//assets/imagenes/hero-mesh-00.png" alt="Visualización de la metodología" />
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ======== PARA QUIÉN ES ======== -->
+<section class="section-padding bg-gray">
+    <div class="container">
+        <div class="text-center" style="margin-bottom: 56px;">
+            <p class="badge-blue">Audiencia</p>
+            <h2 class="section-title">Para quienes toman decisiones</h2>
+        </div>
+
+        <div class="grid-3">
+            <div class="card" style="text-align: center;">
+                <span style="font-size: 2.5rem;">👔</span>
+                <h4 style="font-weight: 700; margin: 12px 0 8px;">CEO / Director General</h4>
+                <p style="color: #64748b;">Visión estratégica y asignación de recursos. ¿Dónde invierto y dónde cierro?</p>
+            </div>
+            <div class="card" style="text-align: center;">
+                <span style="font-size: 2.5rem;">📈</span>
+                <h4 style="font-weight: 700; margin: 12px 0 8px;">Director de Finanzas</h4>
+                <p style="color: #64748b;">Evaluación de inversión y desinversión. ¿Qué tienda genera valor y cuál es un lastre?</p>
+            </div>
+            <div class="card" style="text-align: center;">
+                <span style="font-size: 2.5rem;">🏬</span>
+                <h4 style="font-weight: 700; margin: 12px 0 8px;">Director de Operaciones</h4>
+                <p style="color: #64748b;">Implementación de acciones en tiendas. ¿Qué hago en cada tienda y cuándo?</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ======== TESTIMONIOS ======== -->
+<section class="section-padding bg-dark">
+    <div class="container text-center">
+        <p class="badge-blue" style="color: #38bdf8;">Resultados Reales</p>
+        <h2 class="section-title section-title-white">Lo que dicen nuestros clientes</h2>
+
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; text-align: left; margin-top: 48px;">
+            <div class="testimonial-card">
+                <p>"Identificamos 5 tiendas LASTRE que estaban drenando recursos. Las cerramos y redirigimos la inversión a nuestras JOYA. El resultado: <strong>+18% en EBITDA</strong> en 6 meses."</p>
+                <div class="autor">— Director Financiero</div>
+                <div class="cargo">Cadena Regional de Supermercados</div>
+            </div>
+            <div class="testimonial-card">
+                <p>"El análisis de escenarios nos preparó para la recesión. Cuando el mercado cayó, ya sabíamos qué tiendas proteger y cuáles dejar caer. <strong>No tomamos decisiones en caliente</strong>."</p>
+                <div class="autor">— Director de Operaciones</div>
+                <div class="cargo">Cadena de Retail con 50+ tiendas</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ======== PRECIO Y CTA ======== -->
+<section id="demo" class="section-padding" style="background: white;">
+    <div class="container">
+        <div style="max-width: 720px; margin: 0 auto; text-align: center;">
+            <h2 class="section-title">¿Listo para conocer el mapa de tu red?</h2>
+            <p class="section-subtitle" style="margin-bottom: 32px;">Un diagnóstico que te dice qué tiendas defender, cuáles abandonar y dónde invertir. En <strong>menos de 2 semanas</strong>.</p>
+
+            <div class="pricing-box">
+                <p class="price-label">Inversión desde</p>
+                <p class="price">$3,990 USD</p>
+                <p style="color: #64748b; font-size: 0.9rem;">por cadena (hasta 50 tiendas) · Consultoría incluida</p>
+            </div>
+
+            <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+                <a href="#" class="btn-primary" style="font-size: 1.1rem; padding: 16px 48px;">🚀 Solicitar Demo</a>
+                <a href="#" class="btn-secondary" style="border-color: #cbd5e1; color: #0f172a;">📄 Descargar Brochure</a>
+            </div>
+
+            <p style="color: #94a3b8; font-size: 0.8rem; margin-top: 24px;">🔒 Sin compromiso · Demo personalizada con tus datos · Garantía de satisfacción</p>
+        </div>
+    </div>
+</section>
+
+<!-- ======== FOOTER ======== -->
+<footer>
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="https://gestor-de-archivos.vercel.app/logos/logo-retailmind-SVG-000.svg" alt="RetailMind 360°" />
+                <span>RetailMind 360°</span>
+            </div>
+            <div class="footer-links">
+                <a href="#">Política de Privacidad</a>
+                <a href="#">Términos de Uso</a>
+                <a href="#">Contacto</a>
+            </div>
+            <div class="footer-copy">&copy; 2025 RetailMind 360°. Todos los derechos reservados.</div>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>

@@ -1,820 +1,1545 @@
 <!DOCTYPE html>
-<html lang="es" class="scroll-smooth">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DODET - Medicina de Precisión para tu Cadena de Supermercados</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-    <!-- FontAwesome Icons -->
+    <title>DODET · Constructor de Escenarios</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brandDark: '#0B132B',
-                        brandBlue: '#1C2541',
-                        brandAccent: '#FF5A1F',
-                        brandMutedGreen: '#D4EDB8',
-                    }
-                }
-            }
-        }
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', system-ui, sans-serif; }
 
-        @keyframes pulse-soft {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+        /* ============================================================
+           TEMA EXECUTIVE (default, oscuro)
+           ============================================================ */
+        :root,
+        [data-theme="executive"] {
+            --hulk: #008744;
+            --hulk-vibrant: #00E676;
+            --abyssal: #050B08;
+            --surface: #0B1612;
+            --surface-card: #0F1F1A;
+            --border-deep: rgba(212, 175, 55, 0.25);
+            --border-glow: rgba(212, 175, 55, 0.4);
+            --rolex-gold: #D4AF37;
+            --rolex-gold-light: #F3E5AB;
+            --steel-light: #F1F5F9;
+            --steel-muted: #7E998F;
+            --steel-silver: #CBD5E1;
+            --red: #FF4D4D;
+            --blue-accent: #29B6F6;
+            --orange: #FFA500;
+            --body-bg-image:
+                radial-gradient(circle at 50% 0%, rgba(0, 135, 68, 0.15) 0%, transparent 75%),
+                radial-gradient(circle at 85% 30%, rgba(212, 175, 55, 0.05) 0%, transparent 50%);
         }
-        .pulse-soft { animation: pulse-soft 3s ease-in-out infinite; }
 
-        html { scroll-behavior: smooth; }
+        /* ============================================================
+           TEMA OFFICE (claro)
+           ============================================================ */
+        [data-theme="office"] {
+            --hulk: #008744;
+            --hulk-vibrant: #00A857;
+            --abyssal: #F4F6FB;
+            --surface: #FFFFFF;
+            --surface-card: #FFFFFF;
+            --border-deep: rgba(15, 23, 42, 0.12);
+            --border-glow: rgba(15, 23, 42, 0.2);
+            --rolex-gold: #B8860B;
+            --rolex-gold-light: #7A5800;
+            --steel-light: #0F172A;
+            --steel-muted: #64748B;
+            --steel-silver: #475569;
+            --red: #DC2626;
+            --blue-accent: #0284C7;
+            --orange: #EA580C;
+            --body-bg-image:
+                radial-gradient(circle at 50% 0%, rgba(0, 135, 68, 0.05) 0%, transparent 75%),
+                radial-gradient(circle at 85% 30%, rgba(184, 134, 11, 0.03) 0%, transparent 50%);
+        }
 
-        details summary::-webkit-details-marker { display: none; }
-        details summary { list-style: none; cursor: pointer; }
-        details[open] summary .fa-chevron-down { transform: rotate(180deg); }
-        details summary .fa-chevron-down { transition: transform 0.3s ease; }
+        body {
+            background: var(--abyssal);
+            background-image: var(--body-bg-image);
+            font-family: 'Outfit', -apple-system, sans-serif;
+            color: var(--steel-light);
+            min-height: 100vh;
+            font-size: 13px;
+            line-height: 1.5;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
 
-        /* ========================================
-           BOTÓN FLOTANTE + MENÚ ABANICO
-           (mismo patrón que index.html / dashboards RetailMind)
-           ======================================== */
-        .floating-wrapper {
-            position: fixed;
-            right: 2rem;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 99999;
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: var(--abyssal); }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--hulk), var(--rolex-gold));
+            border-radius: 20px;
+        }
+
+        .shell {
+            display: grid;
+            grid-template-rows: 56px 1fr;
+            grid-template-columns: 240px 1fr;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* TOPBAR */
+        .topbar {
+            grid-column: 1/-1;
+            background: color-mix(in srgb, var(--surface) 85%, transparent);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-deep);
             display: flex;
             align-items: center;
-            justify-content: flex-end;
-            gap: 0.75rem;
+            padding: 0 1.5rem;
+            gap: 1rem;
+            z-index: 10;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            transition: background-color 0.3s ease;
+        }
+        .topbar img { height: 32px; filter: drop-shadow(0 0 8px rgba(0,230,118,0.3)); }
+        .topbar-divider {
+            width: 1px; height: 24px;
+            background: linear-gradient(180deg, transparent, var(--rolex-gold), transparent);
+            margin: 0 0.5rem; opacity: 0.5;
+        }
+        .topbar-title { font-size: 13px; color: var(--steel-muted); letter-spacing: 0.5px; }
+        .topbar-badge {
+            background: linear-gradient(135deg, color-mix(in srgb, var(--hulk) 30%, transparent), color-mix(in srgb, var(--rolex-gold) 15%, transparent));
+            color: var(--rolex-gold-light);
+            padding: 3px 14px; border-radius: 20px;
+            font-size: 10px; font-weight: 700;
+            border: 1px solid var(--rolex-gold);
+            margin-left: auto; letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .topbar-user { display: flex; align-items: center; gap: 8px; margin-left: 1rem; }
+        .avatar {
+            width: 30px; height: 30px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--rolex-gold), var(--hulk));
+            display: flex; align-items: center; justify-content: center;
+            font-size: 11px; font-weight: 800; color: #fff;
+            border: 1px solid var(--rolex-gold-light);
         }
 
-        .floating-btn {
-            background: white;
-            color: #1e3a8a;
-            padding: 0.75rem 1.5rem;
-            border-radius: 1rem;
+        /* SIDEBAR */
+        .sidebar {
+            background: var(--surface);
+            border-right: 1px solid var(--border-deep);
+            padding: 1rem 0;
+            overflow-y: auto;
+            transition: background-color 0.3s ease;
+        }
+        .sidebar-section {
+            padding: 0.5rem 1.2rem;
+            font-size: 10px; font-weight: 700;
+            color: var(--rolex-gold);
+            letter-spacing: 1.2px; text-transform: uppercase;
+            margin-top: 0.5rem;
+            font-family: 'Cinzel', serif;
+        }
+        .nav-item {
+            display: flex; align-items: center; gap: 10px;
+            padding: 9px 1.2rem; cursor: pointer;
+            color: var(--steel-muted); font-size: 12px;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+        .nav-item:hover {
+            color: var(--steel-light);
+            background: color-mix(in srgb, var(--hulk-vibrant) 5%, transparent);
+            border-left-color: var(--rolex-gold);
+        }
+        .nav-item.active {
+            color: var(--steel-light); border-left-color: var(--rolex-gold);
+            background: linear-gradient(90deg, color-mix(in srgb, var(--hulk) 25%, transparent) 0%, transparent 100%);
+            font-weight: 600;
+        }
+        .nav-icon { font-size: 14px; width: 18px; text-align: center; }
+
+        /* PANEL DE CONFIGURACIÓN */
+        .theme-settings {
+            margin: 8px 1rem 0;
+            padding: 12px;
+            border: 1px solid var(--border-deep);
+            border-radius: 12px;
+            background: var(--surface-card);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .theme-settings-title {
+            font-size: 10px;
             font-weight: 700;
-            text-align: center;
-            transition: all 0.3s ease;
-            border: 1px solid #cbd5e1;
-            box-shadow: 0 10px 40px rgba(30, 58, 138, 0.2);
-            cursor: pointer;
+            color: var(--rolex-gold);
+            letter-spacing: 0.7px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            font-family: 'Cinzel', serif;
+        }
+        .theme-option {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 8px;
+            padding: 6px 8px;
+            font-size: 12px;
+            color: var(--steel-light);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+        .theme-option:hover {
+            background: color-mix(in srgb, var(--hulk-vibrant) 8%, transparent);
+        }
+        .theme-option input[type="radio"] {
+            accent-color: var(--hulk);
+            cursor: pointer;
+        }
+        .theme-preview {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+            border: 1px solid var(--border-deep);
+            margin-left: auto;
+        }
+        .theme-preview.executive {
+            background: linear-gradient(135deg, #050B08 50%, #D4AF37 50%);
+        }
+        .theme-preview.office {
+            background: linear-gradient(135deg, #FFFFFF 50%, #B8860B 50%);
+        }
+
+        /* MAIN */
+        .main {
+            overflow-y: auto;
+            padding: 1.5rem;
+            background: transparent;
+        }
+
+        .dashboard-container { display: block; width: 100%; }
+
+        .breadcrumb {
+            display: flex; align-items: center; gap: 6px;
+            font-size: 11px; color: var(--steel-muted);
+            margin-bottom: 1.2rem;
+        }
+        .breadcrumb .active-crumb { color: var(--steel-light); font-weight: 600; }
+
+        /* SELECTOR */
+        .selector-panel {
+            background: linear-gradient(145deg, var(--surface-card), var(--surface));
+            border: 1px solid var(--border-glow);
+            border-radius: 14px;
+            padding: 1.4rem;
+            margin-bottom: 1.2rem;
+            box-shadow: 0 4px 25px rgba(0,0,0,0.1);
+        }
+        .selector-title {
+            font-size: 11px; font-weight: 700;
+            color: var(--rolex-gold);
+            letter-spacing: 1px; text-transform: uppercase;
+            font-family: 'Cinzel', serif;
+            margin-bottom: 16px;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .selector-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 16px;
+            align-items: end;
+        }
+        .selector-field { display: flex; flex-direction: column; gap: 6px; }
+        .selector-field label {
+            font-size: 10px; font-weight: 700;
+            color: var(--steel-muted);
+            letter-spacing: 1px; text-transform: uppercase;
+            font-family: 'Cinzel', serif;
+        }
+        .selector-field select {
+            background: var(--abyssal);
+            border: 1px solid var(--border-deep);
+            border-radius: 8px;
+            padding: 10px 14px;
+            color: var(--steel-light);
+            font-family: 'Outfit', sans-serif;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        [data-theme="office"] .selector-field select {
+            background: #FFFFFF;
+            color: #0F172A;
+        }
+        .selector-field select:hover,
+        .selector-field select:focus {
+            border-color: var(--rolex-gold);
+            outline: none;
+            box-shadow: 0 0 12px color-mix(in srgb, var(--rolex-gold) 20%, transparent);
+        }
+        .btn-generate {
+            background: linear-gradient(135deg, var(--hulk), color-mix(in srgb, var(--hulk) 80%, #000));
+            color: #fff;
+            border: 1px solid var(--rolex-gold);
+            border-radius: 8px;
+            padding: 10px 22px;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-family: 'Cinzel', serif;
+            transition: all 0.2s;
             white-space: nowrap;
-            font-size: 1rem;
-            font-family: inherit;
+            box-shadow: 0 0 15px color-mix(in srgb, var(--hulk) 30%, transparent);
+        }
+        .btn-generate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px color-mix(in srgb, var(--hulk) 50%, transparent);
+        }
+
+        /* CHAT PANEL */
+        .chat-panel {
+            background: linear-gradient(145deg, var(--surface-card), var(--surface));
+            border: 1px solid var(--border-glow);
+            border-radius: 14px;
+            margin-bottom: 1.2rem;
+            box-shadow: 0 4px 25px rgba(0,0,0,0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .chat-panel-header {
+            background: linear-gradient(135deg, color-mix(in srgb, var(--hulk) 25%, transparent), color-mix(in srgb, var(--rolex-gold) 10%, transparent));
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--border-deep);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .chat-panel-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--rolex-gold);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-family: 'Cinzel', serif;
+        }
+        .chat-panel-title i {
+            font-size: 16px;
+            color: var(--hulk-vibrant);
+        }
+        .chat-panel-subtitle {
+            font-size: 10px;
+            color: var(--steel-muted);
+            letter-spacing: 0.3px;
+        }
+        .chat-panel-body {
+            padding: 16px 20px;
+            background: color-mix(in srgb, var(--abyssal) 60%, transparent);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 320px;
+            min-height: 120px;
+            overflow-y: auto;
+        }
+        .chat-msg {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .chat-msg-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 12px;
+            border: 1px solid var(--border-deep);
+        }
+        .chat-msg-user .chat-msg-avatar {
+            background: color-mix(in srgb, var(--blue-accent) 15%, transparent);
+            color: var(--blue-accent);
+            border-color: color-mix(in srgb, var(--blue-accent) 30%, transparent);
+        }
+        .chat-msg-ai .chat-msg-avatar {
+            background: color-mix(in srgb, var(--hulk-vibrant) 15%, transparent);
+            color: var(--hulk-vibrant);
+            border-color: color-mix(in srgb, var(--hulk-vibrant) 30%, transparent);
+        }
+        .chat-msg-content {
+            flex: 1;
+            background: color-mix(in srgb, var(--steel-light) 3%, transparent);
+            border-radius: 10px;
+            padding: 10px 14px;
+            font-size: 12px;
+            line-height: 1.6;
+            color: var(--steel-silver);
+            border-left: 3px solid transparent;
+        }
+        .chat-msg-user .chat-msg-content {
+            border-left-color: var(--blue-accent);
+            background: color-mix(in srgb, var(--blue-accent) 5%, transparent);
+        }
+        .chat-msg-ai .chat-msg-content {
+            border-left-color: var(--hulk-vibrant);
+            background: color-mix(in srgb, var(--hulk-vibrant) 5%, transparent);
+            white-space: pre-wrap;
+        }
+        .chat-msg-typing .chat-msg-content {
+            border-left-color: var(--rolex-gold);
+            background: color-mix(in srgb, var(--rolex-gold) 5%, transparent);
+            font-style: italic;
+            color: var(--steel-muted);
+        }
+        .chat-msg-label {
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+            font-family: 'Cinzel', serif;
+        }
+        .chat-msg-user .chat-msg-label { color: var(--blue-accent); }
+        .chat-msg-ai .chat-msg-label { color: var(--hulk-vibrant); }
+        .chat-msg-typing .chat-msg-label { color: var(--rolex-gold); }
+
+        .chat-panel-footer {
+            padding: 12px 20px;
+            border-top: 1px solid var(--border-deep);
+            background: var(--surface);
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .chat-input {
+            flex: 1;
+            background: var(--abyssal);
+            border: 1px solid var(--border-deep);
+            border-radius: 8px;
+            padding: 10px 14px;
+            color: var(--steel-light);
+            font-family: 'Outfit', sans-serif;
+            font-size: 12px;
+            outline: none;
+            transition: all 0.2s;
+        }
+        [data-theme="office"] .chat-input {
+            background: #FFFFFF;
+            color: #0F172A;
+        }
+        .chat-input:focus {
+            border-color: var(--rolex-gold);
+            box-shadow: 0 0 10px color-mix(in srgb, var(--rolex-gold) 20%, transparent);
+        }
+        .chat-input::placeholder { color: var(--steel-muted); }
+        .chat-btn {
+            background: linear-gradient(135deg, var(--hulk), color-mix(in srgb, var(--hulk) 80%, #000));
+            border: 1px solid var(--rolex-gold);
+            border-radius: 8px;
+            padding: 10px 16px;
+            cursor: pointer;
+            color: #fff;
+            font-weight: 700;
+            font-size: 12px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+        .chat-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px color-mix(in srgb, var(--hulk) 40%, transparent);
+        }
+        .chat-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .chat-suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 4px;
+        }
+        .chat-suggestion {
+            background: color-mix(in srgb, var(--rolex-gold) 8%, transparent);
+            border: 1px solid color-mix(in srgb, var(--rolex-gold) 25%, transparent);
+            border-radius: 14px;
+            padding: 4px 12px;
+            font-size: 10px;
+            color: var(--rolex-gold);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+        .chat-suggestion:hover {
+            background: color-mix(in srgb, var(--rolex-gold) 15%, transparent);
+            transform: translateY(-1px);
+        }
+
+        /* TWO-COL */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr;
+            gap: 12px;
+            margin-bottom: 1.2rem;
+        }
+
+        /* MATRIZ */
+        .matrix-layout {
+            display: grid;
+            grid-template-columns: 40px 1fr;
+            grid-template-rows: auto 1fr;
+            gap: 12px;
+            background: linear-gradient(145deg, var(--surface-card), var(--surface));
+            border: 1px solid var(--border-deep);
+            border-radius: 14px;
+            padding: 1.2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .matrix-y-axis {
+            grid-row: 1 / 3;
+            grid-column: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .matrix-y-axis-label {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--rolex-gold);
+            font-family: 'Cinzel', serif;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+        .matrix-x-axis {
+            grid-row: 1;
+            grid-column: 2;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 4px;
+        }
+        .matrix-x-axis-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--rolex-gold);
+            font-family: 'Cinzel', serif;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+        .matrix-area {
+            grid-row: 2;
+            grid-column: 2;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 8px;
+            aspect-ratio: 16/11;
+            position: relative;
+        }
+        .quadrant {
+            background: linear-gradient(145deg, var(--surface-card), var(--surface));
+            border: 1px solid var(--border-deep);
+            border-radius: 12px;
+            padding: 14px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .quadrant::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: var(--q-color, var(--rolex-gold));
+            opacity: 0.7;
+        }
+        .quadrant:hover {
+            border-color: var(--q-color, var(--rolex-gold));
+            box-shadow: 0 6px 20px color-mix(in srgb, var(--rolex-gold) 15%, transparent);
+        }
+        .q-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-deep);
+        }
+        .q-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            font-family: 'Cinzel', serif;
+            color: var(--q-color);
+            letter-spacing: 0.5px;
+        }
+        .q-title i { font-size: 1.1rem; }
+        .q-count {
+            font-size: 10px;
+            color: var(--steel-muted);
+            padding: 2px 8px;
+            background: color-mix(in srgb, var(--steel-light) 5%, transparent);
+            border-radius: 10px;
+            font-weight: 600;
+        }
+        .q-signs {
+            position: absolute;
+            top: 8px;
+            right: 10px;
+            font-size: 9px;
+            color: var(--steel-muted);
+            font-family: 'Courier New', monospace;
+            opacity: 0.7;
+        }
+        .q-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            max-height: 140px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+        .tienda-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 9px;
+            background: color-mix(in srgb, var(--steel-light) 5%, transparent);
+            border: 1px solid var(--q-color, var(--border-deep));
+            border-radius: 14px;
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--steel-silver);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .tienda-chip:hover {
+            background: color-mix(in srgb, var(--steel-light) 10%, transparent);
+            transform: translateY(-1px);
+        }
+        .tienda-chip i {
+            font-size: 9px;
+            color: var(--q-color);
+        }
+        .q-empty {
+            font-size: 10px;
+            color: var(--steel-muted);
+            font-style: italic;
+            padding: 8px 0;
+        }
+
+        .q-joya { --q-color: var(--hulk-vibrant); }
+        .q-apuesta { --q-color: var(--rolex-gold); }
+        .q-bunker { --q-color: var(--orange); }
+        .q-lastre { --q-color: var(--red); }
+
+        .kpi-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px dashed var(--border-deep);
+        }
+        .kpi-tag {
+            font-size: 9px;
+            padding: 2px 8px;
+            border-radius: 8px;
+            background: color-mix(in srgb, var(--rolex-gold) 10%, transparent);
+            color: var(--rolex-gold);
+            border: 1px solid color-mix(in srgb, var(--rolex-gold) 30%, transparent);
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        /* NARRATIVA IA */
+        .narrative-box {
+            background: linear-gradient(135deg, color-mix(in srgb, var(--hulk) 12%, transparent) 0%, color-mix(in srgb, var(--surface) 80%, transparent) 100%);
+            border: 1px solid var(--border-glow);
+            border-left: 4px solid var(--rolex-gold);
+            border-radius: 14px;
+            padding: 1.2rem;
+            box-shadow: 0 4px 25px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+        }
+        .narr-header {
+            display: flex; align-items: center; gap: 8px;
+            margin-bottom: 10px;
+        }
+        .narr-icon { font-size: 16px; }
+        .narr-title {
+            font-size: 11px; font-weight: 700;
+            color: var(--rolex-gold);
+            letter-spacing: 1px; text-transform: uppercase;
+            font-family: 'Cinzel', serif;
+        }
+        .narr-text {
+            font-size: 12px;
+            color: var(--steel-silver);
+            line-height: 1.7;
+        }
+        .narr-text strong { color: var(--steel-light); font-weight: 600; }
+        .narr-recommendation {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+            margin-top: 14px;
+            padding-top: 14px;
+            border-top: 1px solid var(--border-deep);
+        }
+        .rec-card {
+            background: color-mix(in srgb, var(--abyssal) 50%, transparent);
+            border-radius: 10px;
+            padding: 10px 12px;
+            border-left: 3px solid var(--q-color, var(--rolex-gold));
+        }
+        .rec-card-title {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--q-color);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+            font-family: 'Cinzel', serif;
+        }
+        .rec-card-text {
+            font-size: 11px;
+            color: var(--steel-silver);
             line-height: 1.5;
         }
 
-        .floating-btn:hover {
-            transform: translateX(-8px);
-            box-shadow: 0 15px 50px rgba(30, 58, 138, 0.3);
+        /* PANELES */
+        .panel {
+            background: linear-gradient(145deg, var(--surface-card), var(--surface));
+            border: 1px solid var(--border-deep);
+            border-radius: 14px;
+            padding: 1.2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .panel-title {
+            font-size: 11px; font-weight: 700;
+            color: var(--rolex-gold);
+            letter-spacing: 1px; text-transform: uppercase;
+            margin-bottom: 14px;
+            font-family: 'Cinzel', serif;
+            display: flex; align-items: center; gap: 8px;
         }
 
-        .floating-btn.active {
-            color: #dc2626;
-            border-color: #dc2626;
+        /* TABLA */
+        .tabla-wrapper {
+            overflow-x: auto;
+            margin-top: 8px;
+            width: 100%;
         }
-
-        .floating-btn i {
-            font-size: 1.2rem;
-            transition: transform 0.3s ease;
+        .matrix-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            min-width: 700px;
         }
-
-        .floating-btn.active i {
-            transform: rotate(90deg);
-        }
-
-        /* Menú abanico (desplegable hacia la izquierda) */
-        .fan-menu {
-            position: absolute;
-            right: calc(100% + 1rem);
-            top: 50%;
-            transform: translateY(-50%) scale(0.9);
-            transform-origin: right center;
-            background: white;
-            border-radius: 1.25rem;
-            padding: 1.25rem 1.5rem;
-            min-width: 260px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-            border: 1px solid #e2e8f0;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-            pointer-events: none;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .fan-menu.open {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(-50%) scale(1);
-            pointer-events: auto;
-        }
-
-        .fan-menu .group-label {
-            font-size: 0.6rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-top: 0.25rem;
-            padding: 0.2rem 0.4rem;
-            border-radius: 0.25rem;
-            display: inline-block;
-            background: #f1f5f9;
-            color: #334155;
-        }
-
-        .fan-menu .group-label:first-of-type {
-            margin-top: 0;
-        }
-
-        .fan-menu a {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.4rem 0.6rem;
-            border-radius: 0.5rem;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: #1e293b;
-            transition: background 0.15s, color 0.15s;
-            text-decoration: none;
-            border-left: 3px solid transparent;
-        }
-
-        .fan-menu a:hover {
-            background: #f1f5f9;
-            color: #0f172a;
-        }
-
-        .fan-menu a i {
-            width: 1.2rem;
+        .matrix-table th,
+        .matrix-table td {
+            padding: 9px 10px;
             text-align: center;
-            font-size: 0.8rem;
+            border: 1px solid var(--border-deep);
+        }
+        .matrix-table th {
+            background: var(--surface);
+            color: var(--rolex-gold);
+            font-family: 'Cinzel', serif;
+            letter-spacing: 0.5px;
+            font-size: 10px;
+        }
+        .matrix-table td { color: var(--steel-silver); }
+        .matrix-table .joya { background: color-mix(in srgb, var(--hulk-vibrant) 12%, transparent); color: var(--hulk-vibrant); font-weight: 700; }
+        .matrix-table .apuesta { background: color-mix(in srgb, var(--rolex-gold) 12%, transparent); color: var(--rolex-gold); font-weight: 700; }
+        .matrix-table .bunker { background: color-mix(in srgb, var(--orange) 12%, transparent); color: var(--orange); font-weight: 700; }
+        .matrix-table .lastre { background: color-mix(in srgb, var(--red) 12%, transparent); color: var(--red); font-weight: 700; }
+        .matrix-table .tipo-cell { display: inline-flex; align-items: center; gap: 5px; }
+
+        /* MAPA SVG */
+        .map-container {
+            background: var(--abyssal);
+            border-radius: 12px;
+            border: 1px solid var(--border-deep);
+            padding: 8px;
+            overflow: hidden;
+        }
+        .map-container svg { width: 100%; height: auto; display: block; }
+        .map-legend {
+            display: flex; gap: 16px; justify-content: center;
+            flex-wrap: wrap; margin-top: 6px;
+        }
+        .map-legend-item {
+            display: flex; align-items: center; gap: 6px;
+            font-size: 9px; color: var(--steel-muted);
+        }
+        .map-legend-dot {
+            width: 10px; height: 10px; border-radius: 50%;
+            border: 1px solid color-mix(in srgb, var(--steel-light) 20%, transparent);
         }
 
-        .fan-menu a.strategic { border-left-color: #1e3a8a; }
-        .fan-menu a.strategic i { color: #1e3a8a; }
-
-        .fan-menu a.tactical { border-left-color: #475569; }
-        .fan-menu a.tactical i { color: #475569; }
-
-        .fan-menu a.realtime { border-left-color: #10b981; }
-        .fan-menu a.realtime i { color: #10b981; }
-
-        .fan-menu a.highlight { border-left-color: #FF5A1F; background: rgba(255, 90, 31, 0.06); }
-        .fan-menu a.highlight i { color: #FF5A1F; }
-        .fan-menu a.highlight:hover { background: rgba(255, 90, 31, 0.12); }
-
-        .fan-menu .divider {
-            height: 1px;
-            background: #e2e8f0;
-            margin: 0.25rem 0;
+        /* RESPONSIVE */
+        @media (max-width: 1100px) {
+            .two-col { grid-template-columns: 1fr; }
         }
-
-        /* Responsive: ocultar texto en móvil, solo icono */
-        @media (max-width: 640px) {
-            .floating-wrapper {
-                right: 1rem;
-            }
-            .floating-btn {
-                padding: 0.75rem 1rem !important;
-                font-size: 0;
-            }
-            .floating-btn span {
-                display: none;
-            }
-            .floating-btn i {
-                margin: 0;
-                font-size: 1.4rem;
-            }
-            .fan-menu {
-                min-width: 220px;
-                right: calc(100% + 0.75rem);
-                padding: 1rem;
-            }
-            .fan-menu a {
-                font-size: 0.7rem;
-                padding: 0.3rem 0.5rem;
-            }
+        @media (max-width: 900px) {
+            .shell { grid-template-columns: 1fr; }
+            .sidebar { display: none; }
+            .main { padding: 1rem; }
+            .selector-grid { grid-template-columns: 1fr; }
+            .matrix-area { aspect-ratio: auto; min-height: 500px; }
         }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 antialiased">
+<body>
+    <div class="shell">
 
-    <!-- ============================================================
-         BOTÓN FLOTANTE + MENÚ ABANICO (ECOSISTEMA RETAILMIND 360°)
-         ============================================================ -->
-    <div class="floating-wrapper" id="floatingWrapper">
-        <!-- Menú desplegable (abanico) -->
-        <div class="fan-menu" id="fanMenu">
-            <!-- Nivel 1: Estratégico -->
-            <span class="group-label"><i class="fas fa-chess-queen mr-1" style="color:#1e3a8a;"></i> Estratégico</span>
-            <a href="https://gestor-de-archivos.vercel.app/demos/demos-retailmind/retailmind_ceo.html" class="strategic"><i class="fas fa-user-tie"></i> Vista del CEO</a>
-            <a href="https://gestor-de-archivos.vercel.app/demos/demos-retailmind/retailmind_cfo.html" class="strategic"><i class="fas fa-coins"></i> Vista del CFO</a>
-            <a href="https://gestor-de-archivos.vercel.app/demos/demos-retailmind/retailmind_coo.html" class="strategic"><i class="fas fa-truck-ramp-box"></i> Vista del COO</a>
-
-            <div class="divider"></div>
-
-            <!-- Nivel 2: Táctico -->
-            <span class="group-label"><i class="fas fa-chess-knight mr-1" style="color:#475569;"></i> Táctico</span>
-            <a href="https://gestor-de-archivos.vercel.app/demos/demos-retailmind/demo-gemini.html" class="tactical"><i class="fas fa-shop"></i> Gerente de Tienda</a>
-            <a href="https://gestor-de-archivos.vercel.app/demos/demos-retailmind/demo_deepseek.html" class="tactical"><i class="fas fa-tags"></i> Gerente de Categorías</a>
-            <a href="https://gestor-de-archivos.vercel.app/demos/demos-retailmind/demo-qwen.html" class="tactical"><i class="fas fa-shield-halved"></i> Prevención de Pérdidas</a>
-
-            <div class="divider"></div>
-
-            <!-- Nivel 3: Tiempo Real -->
-            <span class="group-label"><i class="fas fa-clock mr-1" style="color:#10b981;"></i> Tiempo Real</span>
-            <a href="https://gestor-de-archivos.vercel.app/demos/demos-retailmind/demo-perplexity.html" class="realtime"><i class="fas fa-cash-register"></i> Panel de Supervisión de Cajas</a>
-            <a href="https://gestor-de-archivos.vercel.app/demos/demos-retailmind/demo-chat-gpt.html" class="realtime"><i class="fas fa-layer-group"></i> Panel de Control de Pasillos</a>
-            <a href="https://gestor-de-archivos.vercel.app/demos/demos-retailmind/Controller-Vista-Financiera-Corporativa.html" class="realtime"><i class="fas fa-layer-group"></i> Controller Vista Financiera</a>
-
-            <div class="divider"></div>
-
-            <!-- DODET (self-reference) -->
-            <span class="group-label"><i class="fas fa-bullseye mr-1" style="color:#FF5A1F;"></i> Estás Aquí</span>
-            <a href="https://gestor-de-archivos.vercel.app/Demo-KALEA/DODET%20%C2%B7%20Constructor%20de%20Escenarios-IA-AVANZADO.html" class="highlight" onclick="event.preventDefault();"><i class="fas fa-crosshairs"></i> Módulo DODET</a>
+        <!-- TOPBAR -->
+        <div class="topbar">
+            <img src="https://gestor-de-archivos.vercel.app/logos/logo-retailmind-SVG-000.svg" alt="RetailMind 360°">
+            <div class="topbar-divider"></div>
+            <span class="topbar-title">DODET · Constructor de Escenarios</span>
+            <span class="topbar-badge">Matriz de Doble Impacto</span>
+            <div class="topbar-user">
+                <span style="font-size:11px;color:var(--steel-muted)">Demo Interactiva</span>
+                <div class="avatar">DD</div>
+            </div>
         </div>
 
-        <!-- Botón disparador -->
-        <button class="floating-btn" id="floatingBtn" title="Ver Demos RetailMind">
-            <i class="fas fa-wand-magic-sparkles" id="btnIcon"></i>
-            <span id="btnText">Ver Demos</span>
-        </button>
+        <!-- SIDEBAR -->
+        <div class="sidebar">
+            <div class="sidebar-section">Navegación</div>
+            <div class="nav-item active" data-view="constructor" onclick="cambiarVista('constructor')">
+                <span class="nav-icon">🎯</span> Constructor de Escenarios
+            </div>
+            <div class="nav-item" data-view="diagnostico" onclick="cambiarVista('diagnostico')">
+                <span class="nav-icon">📊</span> Diagnóstico 4×3
+            </div>
+            <div class="nav-item" data-view="riesgo" onclick="cambiarVista('riesgo')">
+                <span class="nav-icon">🗺️</span> Mapa de Riesgo
+            </div>
+            <div class="nav-item" data-view="topbottom" onclick="cambiarVista('topbottom')">
+                <span class="nav-icon">🏆</span> Top/Bottom
+            </div>
+            <div class="nav-item" data-view="brecha" onclick="cambiarVista('brecha')">
+                <span class="nav-icon">📈</span> Análisis de Brecha
+            </div>
+            <div class="nav-item" data-view="accion" onclick="cambiarVista('accion')">
+                <span class="nav-icon">📋</span> Plan de Acción
+            </div>
+            <div class="sidebar-section" style="margin-top:auto;">Sistema</div>
+            <div class="nav-item" onclick="toggleThemeSettings()">
+                <span class="nav-icon">⚙️</span> Configuración
+            </div>
+            <div class="theme-settings" id="themeSettings" style="display:none;">
+                <div class="theme-settings-title">Apariencia</div>
+                <label class="theme-option">
+                    <input type="radio" name="rm-theme" value="executive" onchange="setTheme('executive')" checked>
+                    <span>Executive (oscuro)</span>
+                    <span class="theme-preview executive"></span>
+                </label>
+                <label class="theme-option">
+                    <input type="radio" name="rm-theme" value="office" onchange="setTheme('office')">
+                    <span>Office (claro)</span>
+                    <span class="theme-preview office"></span>
+                </label>
+            </div>
+        </div>
+
+        <!-- MAIN -->
+        <div class="main" id="mainContent"></div>
     </div>
 
-    <!-- ============================================================
-         TOP BAR (RetailMind Endorsement) - CON LOGO
-         ============================================================ -->
-    <div class="bg-brandDark text-white py-3 px-6 flex justify-between items-center border-b border-gray-800 text-xs sm:text-sm">
-        <div class="flex items-center space-x-3">
-            <span class="text-gray-400 text-xs">Un producto exclusivo de</span>
-            <img src="https://gestor-de-archivos.vercel.app/logos/logo-retailmind-SVG-000.svg" alt="RetailMind 360°" class="h-8 object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
-            <span class="font-bold text-brandAccent tracking-wider" style="display:none;">RETAILMIND 360°</span>
-        </div>
-        <div class="hidden md:flex space-x-4 text-gray-300">
-            <span><i class="fa-solid fa-earth-americas text-brandAccent mr-1"></i> Solución Optimizada para LATAM</span>
-        </div>
-    </div>
-
-    <!-- ============================================================
-         MAIN NAVBAR - CON LOGO DODET
-         ============================================================ -->
-    <nav class="sticky top-0 bg-white shadow-md z-50 px-6 py-3 flex justify-between items-center">
-        <div class="flex items-center space-x-3">
-            <img src="https://gestor-de-archivos.vercel.app/logos/logo-DODET-transparente.png" alt="DODET" class="h-12 object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
-            <span class="text-2xl font-extrabold text-brandDark tracking-tight" style="display:none;">DODET</span>
-        </div>
-        <div class="hidden md:flex space-x-8 font-medium text-gray-600 text-sm">
-            <a href="#propuesta" class="hover:text-brandAccent transition">Beneficios</a>
-            <a href="#comofunciona" class="hover:text-brandAccent transition">Cómo Funciona</a>
-            <a href="#precios" class="hover:text-brandAccent transition">Precios</a>
-            <a href="#faq" class="hover:text-brandAccent transition">Preguntas</a>
-        </div>
-        <div>
-            <a href="#contacto" class="bg-brandAccent text-white px-5 py-2.5 rounded-lg font-bold shadow-md hover:bg-orange-600 transition tracking-wide text-sm">
-                Agendar Demo Gratis
-            </a>
-        </div>
-    </nav>
-
-    <!-- ============================================================
-         HERO SECTION - CON HERO DODET
-         ============================================================ -->
-    <header class="relative bg-gradient-to-br from-brandDark to-brandBlue text-white py-20 px-6 overflow-hidden">
-        <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
-            <div class="space-y-6">
-                <span class="bg-orange-500/20 text-brandAccent font-bold text-xs uppercase px-3 py-1 rounded-full tracking-wider">
-                    Para Dueños y Directores de Supermercados
-                </span>
-                <h1 class="text-4xl sm:text-5xl font-extrabold leading-tight">
-                    ¿Sabes cuáles de tus tiendas <span class="text-brandAccent">van a sobrevivir</span> a la próxima crisis?
-                </h1>
-                <p class="text-lg text-gray-300 leading-relaxed">
-                    Mensualmente te decimos cuáles sucursales <strong class="text-white">defender</strong>, cuáles <strong class="text-white">abandonar</strong> y dónde <strong class="text-white">invertir</strong>. DODET analiza tu cadena bajo dos escenarios económicos simultáneos y te da la respuesta con precisión quirúrgica.
-                </p>
-                <div class="flex flex-col sm:flex-row gap-4 pt-2">
-                    <a href="#contacto" class="bg-brandAccent text-center text-white px-8 py-3.5 rounded-lg font-bold shadow-lg hover:bg-orange-600 transition text-lg">
-                        Solicitar Diagnóstico
-                    </a>
-                    <a href="#comofunciona" class="border border-gray-500 text-center text-white px-8 py-3.5 rounded-lg font-semibold hover:bg-white/10 transition text-lg">
-                        Ver Cómo Funciona <i class="fa-solid fa-arrow-down ml-2 text-sm"></i>
-                    </a>
-                </div>
-                <p class="text-sm text-gray-400">
-                    <i class="fa-solid fa-check-circle text-brandMutedGreen mr-1"></i> Sin compromiso
-                    <i class="fa-solid fa-check-circle text-brandMutedGreen ml-4 mr-1"></i> Demo personalizada
-                    <i class="fa-solid fa-check-circle text-brandMutedGreen ml-4 mr-1"></i> Caso de éxito garantizado
-                </p>
-            </div>
-            <!-- Visual: Retículo de mira con KPIs -->
-            <div class="flex justify-center relative">
-                <div class="bg-white/5 p-6 rounded-2xl border border-white/10 shadow-2xl backdrop-blur-sm w-full max-w-md relative">
-                    <div class="absolute top-4 right-4 flex space-x-2">
-                        <span class="w-3 h-3 rounded-full bg-red-500 pulse-soft"></span>
-                        <span class="w-3 h-3 rounded-full bg-green-500"></span>
-                    </div>
-                    <div class="aspect-square w-full border-2 border-dashed border-gray-600 rounded-full flex items-center justify-center relative bg-brandMutedGreen/10 p-4">
-                        <div class="absolute w-full h-0.5 bg-gray-500/50"></div>
-                        <div class="absolute h-full w-0.5 bg-gray-500/50"></div>
-                        <div class="w-16 h-16 rounded-full border border-brandAccent/40 flex items-center justify-center bg-brandDark/40">
-                            <i class="fa-solid fa-crosshairs text-brandAccent text-2xl"></i>
-                        </div>
-                        <span class="absolute top-1/4 left-1/4 w-4 h-4 rounded-full bg-green-500 shadow-lg shadow-green-500/50 flex items-center justify-center text-[8px] text-white font-bold">T1</span>
-                        <span class="absolute bottom-1/3 left-1/3 w-4 h-4 rounded-full bg-red-500 shadow-lg shadow-red-500/50 flex items-center justify-center text-[8px] text-white font-bold">T2</span>
-                        <span class="absolute top-1/3 right-1/4 w-4 h-4 rounded-full bg-green-500 shadow-lg shadow-green-500/50 flex items-center justify-center text-[8px] text-white font-bold">T3</span>
-                        <span class="absolute bottom-1/4 right-1/3 w-4 h-4 rounded-full bg-red-500 shadow-lg shadow-red-500/50 flex items-center justify-center text-[8px] text-white font-bold">T4</span>
-                    </div>
-                    <div class="mt-4 text-center">
-                        <p class="text-xs text-gray-400 font-mono"><i class="fa-solid fa-circle-info mr-1 text-brandAccent"></i> Vista Simulada Matriz de Escenarios DODET</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- ============================================================
-         CÓMO FUNCIONA
-         ============================================================ -->
-    <section id="comofunciona" class="py-20 px-6 bg-white">
-        <div class="max-w-6xl mx-auto">
-            <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
-                <span class="bg-orange-100 text-brandAccent px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Cómo Funciona</span>
-                <h2 class="text-3xl font-bold text-brandDark">De datos dispersos a decisiones claras en 4 pasos</h2>
-                <p class="text-gray-600 text-lg">No necesitas ser experto en datos. Nosotros hacemos el trabajo pesado y te entregamos las conclusiones listas para actuar.</p>
-            </div>
-
-            <div class="grid md:grid-cols-4 gap-6">
-                <div class="bg-gray-50 p-6 rounded-xl border border-gray-100 hover:shadow-md transition relative">
-                    <div class="absolute -top-4 left-6 w-10 h-10 bg-brandAccent text-white rounded-full flex items-center justify-center font-bold text-lg shadow-lg">1</div>
-                    <div class="pt-4 space-y-3">
-                        <i class="fa-solid fa-database text-brandAccent text-2xl"></i>
-                        <h3 class="text-lg font-bold text-brandDark">Conectamos tus datos</h3>
-                        <p class="text-gray-600 text-sm leading-relaxed">Nos integramos con tu POS, ERP o sistemas existentes. Sin que tengas que cambiar nada.</p>
-                    </div>
-                </div>
-                <div class="bg-gray-50 p-6 rounded-xl border border-gray-100 hover:shadow-md transition relative">
-                    <div class="absolute -top-4 left-6 w-10 h-10 bg-brandAccent text-white rounded-full flex items-center justify-center font-bold text-lg shadow-lg">2</div>
-                    <div class="pt-4 space-y-3">
-                        <i class="fa-solid fa-filter text-brandAccent text-2xl"></i>
-                        <h3 class="text-lg font-bold text-brandDark">Limpiamos y ordenamos</h3>
-                        <p class="text-gray-600 text-sm leading-relaxed">Nuestros algoritmos normalizan, deduplican y enriquecen la información de cada tienda.</p>
-                    </div>
-                </div>
-                <div class="bg-gray-50 p-6 rounded-xl border border-gray-100 hover:shadow-md transition relative">
-                    <div class="absolute -top-4 left-6 w-10 h-10 bg-brandAccent text-white rounded-full flex items-center justify-center font-bold text-lg shadow-lg">3</div>
-                    <div class="pt-4 space-y-3">
-                        <i class="fa-solid fa-chart-scatter text-brandAccent text-2xl"></i>
-                        <h3 class="text-lg font-bold text-brandDark">Analizamos 2 escenarios</h3>
-                        <p class="text-gray-600 text-sm leading-relaxed">Cruzamos dos variables críticas (ej. recuperación económica vs. llegada de competencia) y ubicamos cada tienda.</p>
-                    </div>
-                </div>
-                <div class="bg-gray-50 p-6 rounded-xl border border-gray-100 hover:shadow-md transition relative">
-                    <div class="absolute -top-4 left-6 w-10 h-10 bg-brandAccent text-white rounded-full flex items-center justify-center font-bold text-lg shadow-lg">4</div>
-                    <div class="pt-4 space-y-3">
-                        <i class="fa-solid fa-bullseye text-brandAccent text-2xl"></i>
-                        <h3 class="text-lg font-bold text-brandDark">Recibes el plan de acción</h3>
-                        <p class="text-gray-600 text-sm leading-relaxed">Cada tienda queda clasificada como <strong>JOYA, APUESTA, BUNKER o LASTRE</strong> con recomendaciones concretas, y recibes una actualización mensual con la evolución de cada tienda.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mt-12 text-center">
-                <a href="#contacto" class="inline-block bg-brandDark text-white px-8 py-3.5 rounded-lg font-bold shadow-lg hover:bg-brandBlue transition text-lg">
-                    Quiero ver este proceso con mis datos <i class="fa-solid fa-arrow-right ml-2"></i>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================================================
-         RESULTADOS / CASO DE ÉXITO
-         ============================================================ -->
-    <section class="py-20 px-6 bg-gradient-to-br from-brandDark to-brandBlue text-white">
-        <div class="max-w-6xl mx-auto">
-            <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
-                <span class="bg-orange-500/20 text-brandAccent px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Resultados Reales</span>
-                <h2 class="text-3xl font-bold">Lo que ha logrado DODET para cadenas como la tuya</h2>
-            </div>
-
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="bg-white/5 p-8 rounded-xl border border-white/10 text-center space-y-3">
-                    <div class="text-5xl font-extrabold text-brandAccent">18%</div>
-                    <p class="text-gray-300 text-sm">Aumento promedio en EBITDA tras cerrar tiendas LASTRE y reinvertir en JOYA</p>
-                </div>
-                <div class="bg-white/5 p-8 rounded-xl border border-white/10 text-center space-y-3">
-                    <div class="text-5xl font-extrabold text-brandAccent">30</div>
-                    <p class="text-gray-300 text-sm">Días para la primera actualización mensual con decisiones accionables</p>
-                </div>
-                <div class="bg-white/5 p-8 rounded-xl border border-white/10 text-center space-y-3">
-                    <div class="text-5xl font-extrabold text-brandAccent">3x</div>
-                    <p class="text-gray-300 text-sm">Retorno de la inversión promedio en el primer año de uso</p>
-                </div>
-            </div>
-
-            <div class="mt-12 bg-white/5 p-8 rounded-xl border border-white/10 max-w-3xl mx-auto">
-                <p class="text-lg italic text-gray-200 leading-relaxed">
-                    "Identificamos 5 tiendas LASTRE que estábamos sosteniendo por inercia. Las cerramos, redirigimos la inversión a nuestras JOYA y en 6 meses nuestro EBITDA creció un 18%. DODET nos dio la claridad que ningún reporte contable nos había dado."
-                </p>
-                <div class="mt-4 flex items-center space-x-3">
-                    <div class="w-12 h-12 bg-brandAccent rounded-full flex items-center justify-center font-bold">DF</div>
-                    <div>
-                        <p class="font-bold text-white">Director Financiero</p>
-                        <p class="text-sm text-gray-400">Cadena Regional de Supermercados · LATAM</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================================================
-         PROPUESTA DE VALOR
-         ============================================================ -->
-    <section id="propuesta" class="py-20 px-6 max-w-6xl mx-auto">
-        <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
-            <span class="bg-orange-100 text-brandAccent px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Para Dueños de Supermercados</span>
-            <h2 class="text-3xl font-bold text-brandDark">Cada sucursal que sostienes sin saberlo te cuesta dinero cada mes</h2>
-            <p class="text-gray-600 text-lg">DODET actúa como un panel de control clínico para blindar el futuro de tu rentabilidad. <strong class="text-brandDark">No es una prueba de 1 mes. Es un diagnóstico de 3 meses que transforma tu cadena.</strong></p>
-        </div>
-        <div class="grid md:grid-cols-3 gap-8">
-            <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition space-y-4">
-                <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center text-brandAccent text-xl font-bold">
-                    <i class="fa-solid fa-chart-line"></i>
-                </div>
-                <h3 class="text-xl font-bold text-brandDark">Acción Predictiva</h3>
-                <p class="text-gray-600 text-sm leading-relaxed">
-                    No esperes al cierre de mes para saber qué sucursal perdió margen. Modela escenarios de inflación o desabastecimiento y mira cómo se redistribuyen tus KPIs en tiempo real.
-                </p>
-            </div>
-            <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition space-y-4">
-                <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center text-brandAccent text-xl font-bold">
-                    <i class="fa-solid fa-bullseye"></i>
-                </div>
-                <h3 class="text-xl font-bold text-brandDark">Precisión Quirúrgica</h3>
-                <p class="text-gray-600 text-sm leading-relaxed">
-                    La interfaz basada en retículas de mira telescópica aísla los problemas de inventario y mermas por tienda, permitiendo aplicar correcciones logísticas en el cuadrante exacto.
-                </p>
-            </div>
-            <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition space-y-4">
-                <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center text-brandAccent text-xl font-bold">
-                    <i class="fa-solid fa-layer-group"></i>
-                </div>
-                <h3 class="text-xl font-bold text-brandDark">Arquitectura Multitienda</h3>
-                <p class="text-gray-600 text-sm leading-relaxed">
-                    Diseñado nativamente para corporaciones de Retail que manejan cadenas complejas. Consolida datos distribuidos en una sola pantalla estratégica.
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================================================
-         INTEGRACIÓN CON RETAILMIND 360°
-         ============================================================ -->
-    <section class="py-16 px-6 bg-brandMutedGreen/30">
-        <div class="max-w-4xl mx-auto text-center space-y-4">
-            <span class="bg-white text-brandAccent px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider border border-brandAccent/30">Ecosistema RetailMind</span>
-            <h2 class="text-2xl font-bold text-brandDark">DODET se integra nativamente con RetailMind 360°</h2>
-            <p class="text-gray-700 text-lg leading-relaxed">
-                DODET no es una herramienta aislada. Es un <strong>módulo de inteligencia estratégica</strong> dentro de la plataforma RetailMind 360°, lo que significa que puedes combinar el análisis de doble escenario con dashboards operativos, predictivos y de inteligencia artificial en un solo lugar.
-            </p>
-            <div class="flex justify-center gap-8 mt-6 flex-wrap">
-                <div class="flex items-center space-x-2 text-brandDark">
-                    <i class="fa-solid fa-check-circle text-brandAccent"></i>
-                    <span class="font-semibold">Vista CFO</span>
-                </div>
-                <div class="flex items-center space-x-2 text-brandDark">
-                    <i class="fa-solid fa-check-circle text-brandAccent"></i>
-                    <span class="font-semibold">Vista CEO</span>
-                </div>
-                <div class="flex items-center space-x-2 text-brandDark">
-                    <i class="fa-solid fa-check-circle text-brandAccent"></i>
-                    <span class="font-semibold">Vista COO</span>
-                </div>
-                <div class="flex items-center space-x-2 text-brandDark">
-                    <i class="fa-solid fa-check-circle text-brandAccent"></i>
-                    <span class="font-semibold">Analítica IA</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================================================
-         ALCANCE TÉCNICO
-         ============================================================ -->
-    <section id="alcance" class="bg-gray-100 py-20 px-6">
-        <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
-            <div class="space-y-6">
-                <h2 class="text-3xl font-bold text-brandDark">¿Cómo funciona el recálculo bajo los 4 cuadrantes?</h2>
-                <p class="text-gray-600 leading-relaxed">
-                    El sistema cruza dinámicamente dos ejes de simulación macroeconómica u operativa (Ej: Eje X = Elasticidad de Demanda, Eje Y = Costo Logístico de Reposición).
-                </p>
-                <div class="space-y-4">
-                    <div class="flex items-start space-x-3">
-                        <i class="fa-solid fa-circle-check text-green-600 mt-1"></i>
-                        <div>
-                            <h4 class="font-bold text-brandDark">Cuadrante I: Máxima Eficiencia</h4>
-                            <p class="text-gray-600 text-sm">Tiendas saludables con alta rotación y costos controlados.</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start space-x-3">
-                        <i class="fa-solid fa-circle-exclamation text-amber-500 mt-1"></i>
-                        <div>
-                            <h4 class="font-bold text-brandDark">Cuadrante II y III: Alerta de Ajuste</h4>
-                            <p class="text-gray-600 text-sm">Riesgos potenciales en ticket promedio o mermas elevadas.</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start space-x-3">
-                        <i class="fa-solid fa-triangle-exclamation text-red-500 mt-1"></i>
-                        <div>
-                            <h4 class="font-bold text-brandDark">Cuadrante IV: Zona de Rescate</h4>
-                            <p class="text-gray-600 text-sm">Sucursales críticas que requieren intervención inmediata de precios o stock.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-brandDark/5 p-4 rounded-lg border border-brandDark/10">
-                    <p class="text-sm text-gray-600"><i class="fa-solid fa-clock text-brandAccent mr-2"></i> <strong>¿Por qué compromiso mínimo de 3 meses?</strong> Aunque las actualizaciones son mensuales, se necesita al menos un trimestre para ver la evolución real de las tiendas y validar el impacto de las decisiones tomadas.</p>
-                </div>
-            </div>
-
-            <div class="bg-white p-8 rounded-xl shadow-md border border-gray-200">
-                <h3 class="text-lg font-bold text-brandDark mb-4"><i class="fa-solid fa-microchip mr-2 text-brandAccent"></i> Alcance del Motor SaaS</h3>
-                <ul class="space-y-3 text-sm text-gray-600">
-                    <li class="flex items-center"><i class="fa-solid fa-check text-brandAccent mr-3"></i> Integración via API con POS/ERP del Supermercado</li>
-                    <li class="flex items-center"><i class="fa-solid fa-check text-brandAccent mr-3"></i> Recálculo automatizado cada 24 horas</li>
-                    <li class="flex items-center"><i class="fa-solid fa-check text-brandAccent mr-3"></i> Alertas directas a gerentes de operaciones vía WhatsApp/Email</li>
-                    <li class="flex items-center"><i class="fa-solid fa-check text-brandAccent mr-3"></i> Reportes exportables para juntas de accionistas</li>
-                </ul>
-                <div class="mt-6 p-4 bg-brandMutedGreen/30 rounded-lg border border-brandMutedGreen text-xs text-brandDark">
-                    <i class="fa-solid fa-shield-halved mr-1"></i> <strong>Nota regional:</strong> Servidores redundantes localizados localmente para garantizar baja latencia y cumplimiento regulatorio en LATAM.
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================================================
-         PRECIOS
-         ============================================================ -->
-    <section id="precios" class="py-20 px-6 max-w-6xl mx-auto">
-        <div class="text-center max-w-2xl mx-auto mb-16 space-y-4">
-            <span class="bg-orange-100 text-brandAccent px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Inversión con ROI Garantizado</span>
-            <h2 class="text-3xl font-bold text-brandDark">Planes pensados para tu realidad</h2>
-            <p class="text-gray-600">Sin costos ocultos ni permanencias forzadas. Elige el compromiso que mejor se adapte a tu cadena.</p>
-            <div class="bg-brandAccent/10 border border-brandAccent/30 rounded-lg p-3 max-w-lg mx-auto">
-                <p class="text-sm font-semibold text-brandDark"><i class="fa-solid fa-gift text-brandAccent mr-2"></i> Plan Anual: <strong class="text-brandAccent">Implantación GRATIS</strong> (ahorro de $399–$1,599)</p>
-            </div>
-        </div>
-
-
-<div class="overflow-x-auto bg-white rounded-xl shadow-md border border-gray-200">
-            <table class="w-full text-left border-collapse">
-                <thead>
-                    <tr class="bg-brandDark text-white">
-                        <th class="p-5 font-bold tracking-wide uppercase text-xs sm:text-sm">Tamaño de la Cadena</th>
-                        <th class="p-5 font-bold tracking-wide uppercase text-xs sm:text-sm text-center bg-brandBlue">
-                            Trimestral
-                            <span class="block text-[10px] font-normal text-brandAccent">3 meses · Diagnóstico completo</span>
-                        </th>
-                        <th class="p-5 font-bold tracking-wide uppercase text-xs sm:text-sm text-center">
-                            Semestral
-                            <span class="block text-[10px] font-normal text-gray-400">6 meses · Seguimiento de evolución</span>
-                        </th>
-                        <th class="p-5 font-bold tracking-wide uppercase text-xs sm:text-sm text-center bg-emerald-700">
-                            Anual
-                            <span class="block text-[10px] font-normal text-emerald-300">⭐ Implantación GRATIS</span>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-200 text-sm sm:text-base">
-                    <tr class="hover:bg-gray-50 transition">
-                        <td class="p-5 font-semibold text-brandDark">
-                            <span class="block text-base">De 1 a 5 Tiendas</span>
-                            <span class="text-xs text-gray-500 font-normal">Supermercados independientes o cadenas locales</span>
-                        </td>
-                        <td class="p-5 text-center font-extrabold text-brandBlue bg-brandMutedGreen/10">$4,788 <span class="text-xs text-gray-400 block">($1,596/mes)</span></td>
-                        <td class="p-5 text-center font-medium text-gray-700">$8,379 <span class="text-xs text-gray-400 block">($1,397/mes)</span></td>
-                        <td class="p-5 text-center font-extrabold text-white bg-emerald-600/90">$14,364 <span class="text-xs text-emerald-200 block">($1,197/mes) ⭐</span></td>
-                    </tr>
-                    <tr class="hover:bg-gray-50 transition">
-                        <td class="p-5 font-semibold text-brandDark">
-                            <span class="block text-base">De 5 a 10 Tiendas</span>
-                            <span class="text-xs text-gray-500 font-normal">Cadenas regionales en plena expansión</span>
-                        </td>
-                        <td class="p-5 text-center font-extrabold text-brandBlue bg-brandMutedGreen/10">$9,588 <span class="text-xs text-gray-400 block">($3,196/mes)</span></td>
-                        <td class="p-5 text-center font-medium text-gray-700">$16,779 <span class="text-xs text-gray-400 block">($2,797/mes)</span></td>
-                        <td class="p-5 text-center font-extrabold text-white bg-emerald-600/90">$28,764 <span class="text-xs text-emerald-200 block">($2,397/mes) ⭐</span></td>
-                    </tr>
-                    <tr class="hover:bg-gray-50 transition">
-                        <td class="p-5 font-semibold text-brandDark">
-                            <span class="block text-base">Más de 10 Tiendas (10+)</span>
-                            <span class="text-xs text-gray-500 font-normal">Líderes de Retail y Grandes Cadenas Nacionales</span>
-                        </td>
-                        <td class="p-5 text-center font-extrabold text-brandBlue bg-brandMutedGreen/10">$19,188 <span class="text-xs text-gray-400 block">($6,396/mes)</span></td>
-                        <td class="p-5 text-center font-medium text-gray-700">$33,579 <span class="text-xs text-gray-400 block">($5,597/mes)</span></td>
-                        <td class="p-5 text-center font-extrabold text-white bg-emerald-600/90">$57,564 <span class="text-xs text-gray-400 block">($4,797/mes) ⭐</span></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        
-        <div class="mt-6 text-center text-xs text-gray-500">
-            * Valores expresados en USD. Precios ajustados a la realidad corporativa de Latinoamérica.
-            <span class="block text-gray-400 mt-1">El plan trimestral es el <strong class="text-brandDark">mínimo recomendado</strong>: el tiempo justo para diagnosticar, actuar y medir resultados.</span>
-        </div>
-    </section>
-
-    <!-- ============================================================
-         FAQ
-         ============================================================ -->
-    <section id="faq" class="py-20 px-6 bg-gray-100">
-        <div class="max-w-3xl mx-auto">
-            <div class="text-center mb-12 space-y-4">
-                <span class="bg-orange-100 text-brandAccent px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Preguntas Frecuentes</span>
-                <h2 class="text-3xl font-bold text-brandDark">Lo que todo dueño de supermercado nos pregunta</h2>
-            </div>
-
-            <div class="space-y-4">
-                <details class="bg-white p-5 rounded-lg border border-gray-200 shadow-sm">
-                    <summary class="flex justify-between items-center font-bold text-brandDark">
-                        ¿Cuánto tiempo toma ver resultados?
-                        <i class="fa-solid fa-chevron-down text-brandAccent"></i>
-                    </summary>
-                    <p class="mt-3 text-gray-600 text-sm leading-relaxed">
-                        Los primeros insights accionables aparecen en las primeras 2 semanas. Los resultados medibles (mejoras en EBITDA, reducción de mermas) suelen verse al cierre del primer trimestre. Por eso el plan mínimo es de 90 días.
-                    </p>
-                </details>
-
-                <details class="bg-white p-5 rounded-lg border border-gray-200 shadow-sm">
-                    <summary class="flex justify-between items-center font-bold text-brandDark">
-                        ¿Qué datos necesitan de mi cadena?
-                        <i class="fa-solid fa-chevron-down text-brandAccent"></i>
-                    </summary>
-                    <p class="mt-3 text-gray-600 text-sm leading-relaxed">
-                        Solo necesitamos datos que ya tienes: ventas por tienda, costos, inventario, transacciones y datos básicos de clientes. Nos integramos con tu POS, ERP o CRM existente. No necesitas cambiar ningún sistema.
-                    </p>
-                </details>
-
-                <details class="bg-white p-5 rounded-lg border border-gray-200 shadow-sm">
-                    <summary class="flex justify-between items-center font-bold text-brandDark">
-                        ¿Es seguro compartir mis datos?
-                        <i class="fa-solid fa-chevron-down text-brandAccent"></i>
-                    </summary>
-                    <p class="mt-3 text-gray-600 text-sm leading-relaxed">
-                        Sí. Trabajamos con estándares de seguridad empresarial (encriptación en tránsito y en reposo, control de acceso basado en roles, auditoría continua). Tus datos nunca se comparten con terceros.
-                    </p>
-                </details>
-
-                <details class="bg-white p-5 rounded-lg border border-gray-200 shadow-sm">
-                    <summary class="flex justify-between items-center font-bold text-brandDark">
-                        ¿Puedo cancelar en cualquier momento?
-                        <i class="fa-solid fa-chevron-down text-brandAccent"></i>
-                    </summary>
-                    <p class="mt-3 text-gray-600 text-sm leading-relaxed">
-                        Sí. No hay permanencias forzadas. Puedes cancelar al final de cada ciclo (trimestral, semestral o anual) sin penalización. Sin embargo, recomendamos al menos 90 días para ver resultados significativos.
-                    </p>
-                </details>
-
-                <details class="bg-white p-5 rounded-lg border border-gray-200 shadow-sm">
-                    <summary class="flex justify-between items-center font-bold text-brandDark">
-                        ¿Qué pasa si mi cadena tiene más de 50 tiendas?
-                        <i class="fa-solid fa-chevron-down text-brandAccent"></i>
-                    </summary>
-                    <p class="mt-3 text-gray-600 text-sm leading-relaxed">
-                        Contamos con planes Enterprise personalizados. El precio se ajusta según el volumen de datos y el número de sucursales. Agenda una llamada con nuestro equipo para recibir una propuesta a tu medida.
-                    </p>
-                </details>
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================================================
-         CONTACT / DEMO FORM
-         ============================================================ -->
-    <section id="contacto" class="bg-brandDark text-white py-20 px-6">
-        <div class="max-w-3xl mx-auto space-y-8 text-center">
-            <div class="space-y-2">
-                <h2 class="text-3xl font-bold">Solicita un Diagnóstico para tu Cadena</h2>
-                <p class="text-gray-400">Deja que nuestros ingenieros de datos en RetailMind te muestren una simulación con datos reales de tu sector.</p>
-            </div>
-            <form class="bg-brandBlue p-8 rounded-xl border border-gray-800 text-left space-y-4 shadow-xl max-w-xl mx-auto" onsubmit="event.preventDefault(); alert('¡Solicitud recibida con éxito! Un especialista de RetailMind se contactará contigo.');">
-                <div class="grid sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-semibold uppercase text-gray-400 mb-1">Nombre Completo</label>
-                        <input type="text" required class="w-full bg-brandDark/50 border border-gray-700 rounded p-2.5 text-white focus:outline-none focus:border-brandAccent text-sm">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold uppercase text-gray-400 mb-1">Email Corporativo</label>
-                        <input type="email" required class="w-full bg-brandDark/50 border border-gray-700 rounded p-2.5 text-white focus:outline-none focus:border-brandAccent text-sm">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold uppercase text-gray-400 mb-1">Nombre de la Cadena de Supermercados</label>
-                    <input type="text" required class="w-full bg-brandDark/50 border border-gray-700 rounded p-2.5 text-white focus:outline-none focus:border-brandAccent text-sm">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold uppercase text-gray-400 mb-1">Número de Sucursales</label>
-                    <select class="w-full bg-brandDark/50 border border-gray-700 rounded p-2.5 text-gray-300 focus:outline-none focus:border-brandAccent text-sm">
-                        <option selected>1 a 5 tiendas</option>
-                        <option>5 a 10 tiendas</option>
-                        <option>Más de 10 tiendas</option>
-                    </select>
-                </div>
-                <button type="submit" class="w-full bg-brandAccent text-white p-3 rounded font-bold shadow-md hover:bg-orange-600 transition tracking-wide text-sm uppercase mt-2">
-                    Agendar Llamada Estratégica
-                </button>
-            </form>
-        </div>
-    </section>
-
-    <!-- ============================================================
-         FOOTER - CON LOGOS
-         ============================================================ -->
-    <footer class="bg-gray-900 text-gray-400 py-12 px-6 text-center space-y-4 border-t border-gray-800 text-sm">
-        <div class="flex justify-center items-center space-x-6 flex-wrap gap-4">
-            <img src="https://gestor-de-archivos.vercel.app/logos/logo-DODET-negro-transparente.png" alt="DODET" class="h-12 opacity-80 object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
-            <span class="text-xl font-bold text-white" style="display:none;">DODET</span>
-            <span class="text-gray-600">|</span>
-            <img src="https://gestor-de-archivos.vercel.app/logos/logo-retailmind-SVG-000.svg" alt="RetailMind 360°" class="h-8 opacity-80 object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
-            <span class="text-lg font-bold text-brandAccent" style="display:none;">RETAILMIND 360°</span>
-        </div>
-        <p>© 2026 RetailMind 360°. Todos los derechos reservados. RetailMind, DODET y sus módulos analíticos son marcas registradas.</p>
-        <p class="text-xs text-gray-600">Desarrollado para optimización de cadenas de suministro, retail analítico y control de mermas comerciales en América Latina.</p>
-    </footer>
-
-    <!-- ============================================================
-         SCRIPT DEL BOTÓN FLOTANTE + MENÚ ABANICO
-         ============================================================ -->
     <script>
-        (function() {
-            const btn = document.getElementById('floatingBtn');
-            const menu = document.getElementById('fanMenu');
-            const btnIcon = document.getElementById('btnIcon');
-            const btnText = document.getElementById('btnText');
+        // ============================================================
+        // SISTEMA DE TEMAS
+        // ============================================================
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('dodet-theme', theme);
+            // Sincronizar radio buttons
+            document.querySelectorAll('input[name="rm-theme"]').forEach(input => {
+                input.checked = input.value === theme;
+            });
+        }
 
-            // Estado del menú
-            let isOpen = false;
+        function initTheme() {
+            const saved = localStorage.getItem('dodet-theme') || 'executive';
+            setTheme(saved);
+        }
 
-            function toggleMenu(e) {
-                e.stopPropagation();
-                isOpen = !isOpen;
-                if (isOpen) {
-                    menu.classList.add('open');
-                    btn.classList.add('active');
-                    btnIcon.className = 'fas fa-times'; // icono cerrar
-                    btnText.textContent = 'Cerrar';
-                } else {
-                    menu.classList.remove('open');
-                    btn.classList.remove('active');
-                    btnIcon.className = 'fas fa-wand-magic-sparkles'; // restaurar
-                    btnText.textContent = 'Ver Demos';
-                }
+        function toggleThemeSettings() {
+            const el = document.getElementById('themeSettings');
+            if (el) {
+                el.style.display = el.style.display === 'none' ? 'block' : 'none';
             }
+        }
 
-            // click en el botón
-            btn.addEventListener('click', toggleMenu);
+        // ============================================================
+        // CATÁLOGO DE ESCENARIOS
+        // ============================================================
+        const ESCENARIOS = {
+            macroeconomicos: {
+                nombre: "Macroeconómicos",
+                escenarios: [
+                    { id: 'recuperacion', nombre: 'Recuperación Económica' },
+                    { id: 'recesion', nombre: 'Recesión / Contracción' },
+                    { id: 'estanflacion', nombre: 'Estanflación' },
+                    { id: 'dolarizacion', nombre: 'Dolarización de la Economía' },
+                    { id: 'devaluacion', nombre: 'Devaluación Brusca' },
+                    { id: 'control_precios', nombre: 'Control de Precios / Regulación' }
+                ]
+            },
+            competitivos: {
+                nombre: "Competitivos",
+                escenarios: [
+                    { id: 'walmart', nombre: 'Llegada de Walmart / Global Player' },
+                    { id: 'consolidacion', nombre: 'Consolidación Local' },
+                    { id: 'hard_discount', nombre: 'Auge del Hard Discount' },
+                    { id: 'ecommerce', nombre: 'Auge del E-commerce' },
+                    { id: 'proximidad', nombre: 'Nuevos Formatos de Proximidad' },
+                    { id: 'salida_competidor', nombre: 'Salida de un Competidor Clave' }
+                ]
+            },
+            consumidor: {
+                nombre: "Consumidor",
+                escenarios: [
+                    { id: 'habitos_inflacion', nombre: 'Cambio de Hábitos por Inflación' },
+                    { id: 'premium', nombre: 'Auge del Consumo Premium' },
+                    { id: 'envejecimiento', nombre: 'Envejecimiento Poblacional' },
+                    { id: 'migracion', nombre: 'Migración Masiva' },
+                    { id: 'omnicanal', nombre: 'Consumidor Omnicanal' },
+                    { id: 'saludable', nombre: 'Consumidor Saludable' }
+                ]
+            },
+            operacionales: {
+                nombre: "Operacionales",
+                escenarios: [
+                    { id: 'costos_logisticos', nombre: 'Aumento de Costos Logísticos' },
+                    { id: 'escasez_talento', nombre: 'Escasez de Talento' },
+                    { id: 'automatizacion', nombre: 'Automatización de Tiendas' },
+                    { id: 'renegociacion', nombre: 'Renegociación con Proveedores' },
+                    { id: 'crisis_energetica', nombre: 'Crisis Energética' },
+                    { id: 'ciberseguridad', nombre: 'Ciberseguridad / Fuga de Datos' }
+                ]
+            },
+            geopoliticos: {
+                nombre: "Geopolíticos",
+                escenarios: [
+                    { id: 'apertura', nombre: 'Apertura Comercial' },
+                    { id: 'cierre_fronteras', nombre: 'Cierre de Fronteras' },
+                    { id: 'reformas_fiscales', nombre: 'Reformas Fiscales' },
+                    { id: 'inestabilidad', nombre: 'Inestabilidad Política' },
+                    { id: 'subsidios', nombre: 'Subsidios Gubernamentales' },
+                    { id: 'nacionalizacion', nombre: 'Nacionalización / Expropiación' }
+                ]
+            },
+            estrategicos: {
+                nombre: "Estratégicos",
+                escenarios: [
+                    { id: 'adquisicion', nombre: 'Adquisición por un Competidor' },
+                    { id: 'fusion', nombre: 'Fusión con Cadena Regional' },
+                    { id: 'expansion', nombre: 'Entrada a Nuevo País' },
+                    { id: 'venta_activos', nombre: 'Venta de Activos No Rentables' },
+                    { id: 'marketplace', nombre: 'Alianza con Marketplace' },
+                    { id: 'dark_store', nombre: 'Transformación a Dark Store' }
+                ]
+            }
+        };
 
-            // Cerrar menú al hacer click en un enlace
-            const links = menu.querySelectorAll('a');
-            links.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    if (this.getAttribute('href') === '#') {
-                        e.preventDefault();
-                    }
-                    if (isOpen) {
-                        menu.classList.remove('open');
-                        btn.classList.remove('active');
-                        btnIcon.className = 'fas fa-wand-magic-sparkles';
-                        btnText.textContent = 'Ver Demos';
-                        isOpen = false;
-                    }
+        const KPIS_POR_ESCENARIO = {
+            recuperacion: ['MB', 'VM2', 'ROT', 'TKT', 'UD', 'PEN', 'CREC'],
+            recesion: ['MB', 'ROT', 'MIX', 'COV', 'CON', 'LOG'],
+            estanflacion: ['MB', 'ROT', 'COV', 'MIX'],
+            dolarizacion: ['MB', 'VM2', 'MIX', 'SKU', 'COV', 'DIF'],
+            devaluacion: ['MB', 'ROT', 'MIX', 'SKU', 'DIF'],
+            control_precios: ['MB', 'TKT', 'MIX', 'COV'],
+            walmart: ['MIX', 'COV', 'CON', 'DIF', 'DIS', 'ATR', 'LOG'],
+            consolidacion: ['MB', 'VM2', 'DIF', 'DIS'],
+            hard_discount: ['MB', 'MIX', 'SKU', 'DIF', 'DIS', 'TRF'],
+            ecommerce: ['VM2', 'CON', 'NPS', 'DIG', 'LOG'],
+            proximidad: ['UD', 'TRF', 'FRQ', 'DIF'],
+            salida_competidor: ['MB', 'VM2', 'PEN', 'DIS'],
+            habitos_inflacion: ['MB', 'MIX', 'SKU', 'NPS'],
+            premium: ['MB', 'TKT', 'SKU', 'NSE'],
+            envejecimiento: ['UD', 'CREC', 'NSE', 'MIX', 'FRQ'],
+            migracion: ['UD', 'CREC', 'NSE', 'MIX', 'SKU'],
+            omnicanal: ['VM2', 'CON', 'NPS', 'DIG', 'FRQ'],
+            saludable: ['TKT', 'SKU', 'NSE', 'DIF'],
+            costos_logisticos: ['ROT', 'COV', 'LOG'],
+            escasez_talento: ['COV', 'TAL', 'DIG'],
+            automatizacion: ['VM2', 'COV', 'TAL', 'DIG', 'LOG'],
+            renegociacion: ['MB', 'COV', 'LOG'],
+            crisis_energetica: ['COV', 'ENE', 'LOG'],
+            ciberseguridad: ['CON', 'NPS', 'DIG'],
+            apertura: ['MB', 'VM2', 'LOG'],
+            cierre_fronteras: ['MB', 'MIX', 'LOG'],
+            reformas_fiscales: ['MB', 'COV', 'MIX'],
+            inestabilidad: ['MB', 'COV', 'CON'],
+            subsidios: ['MB', 'TKT', 'MIX'],
+            nacionalizacion: ['MB', 'COV', 'MIX', 'DIF'],
+            adquisicion: ['MB', 'VM2', 'ROT', 'UD', 'PEN', 'DIF'],
+            fusion: ['MB', 'VM2', 'CAP', 'LOG'],
+            expansion: ['MB', 'VM2', 'UD', 'CREC', 'NSE'],
+            venta_activos: ['MB', 'ROT', 'DIF'],
+            marketplace: ['VM2', 'DIG', 'LOG'],
+            dark_store: ['VM2', 'CAP', 'DIG', 'LOG']
+        };
+
+        const TIPOLOGIAS = {
+            JOYA: { nombre: 'JOYA', icono: '<i class="fas fa-gem"></i>', color: '#00E676', cuadrante: 'q-joya', signos: '++' },
+            APUESTA: { nombre: 'APUESTA', icono: '<i class="fas fa-dice"></i>', color: '#D4AF37', cuadrante: 'q-apuesta', signos: '+-' },
+            BUNKER: { nombre: 'BUNKER', icono: '<i class="fas fa-shield-halved"></i>', color: '#FFA500', cuadrante: 'q-bunker', signos: '-+' },
+            LASTRE: { nombre: 'LASTRE', icono: '<i class="fas fa-triangle-exclamation"></i>', color: '#FF4D4D', cuadrante: 'q-lastre', signos: '--' }
+        };
+
+        const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'];
+
+// ============================================================
+// CONFIGURACIÓN DE LA CADENA
+// ============================================================
+// Cambia este valor por el nombre de la cadena que estés evaluando.
+// Ejemplos: "Plaza ", "Sucursal ", "Kalea ", "Tienda ", "Hipermercado "
+const cadena = "Kalea ";
+
+const tiendasBase = [
+    { nombre: cadena + 'Norte', ciudad: 'Caracas', lat: 10.5, lng: -66.9, salud: 3.0, resiliencia: 3.0, potencial: 3.0, exposicion: 2.7, tipo: 'JOYA' },
+    { nombre: cadena + 'Centro', ciudad: 'Caracas', lat: 10.48, lng: -66.92, salud: 3.0, resiliencia: 3.0, potencial: 2.9, exposicion: 2.6, tipo: 'JOYA' },
+    { nombre: cadena + 'Este', ciudad: 'Caracas', lat: 10.52, lng: -66.85, salud: 1.5, resiliencia: 1.0, potencial: 2.8, exposicion: 2.5, tipo: 'APUESTA' },
+    { nombre: cadena + 'Maracaibo', ciudad: 'Maracaibo', lat: 10.65, lng: -71.61, salud: 1.2, resiliencia: 1.0, potencial: 3.0, exposicion: 1.3, tipo: 'APUESTA' },
+    { nombre: cadena + 'Valencia', ciudad: 'Valencia', lat: 10.18, lng: -68.00, salud: 1.0, resiliencia: 1.0, potencial: 2.7, exposicion: 1.3, tipo: 'APUESTA' },
+    { nombre: cadena + 'Oeste', ciudad: 'Caracas', lat: 10.46, lng: -66.95, salud: 2.0, resiliencia: 2.8, potencial: 1.7, exposicion: 2.8, tipo: 'BUNKER' },
+    { nombre: cadena + 'Barquisimeto', ciudad: 'Barquisimeto', lat: 10.08, lng: -69.32, salud: 2.0, resiliencia: 3.0, potencial: 1.3, exposicion: 2.0, tipo: 'BUNKER' },
+    { nombre: cadena + 'Maturín', ciudad: 'Maturín', lat: 9.75, lng: -63.18, salud: 2.0, resiliencia: 3.0, potencial: 1.0, exposicion: 2.0, tipo: 'BUNKER' },
+    { nombre: cadena + 'Sur', ciudad: 'Caracas', lat: 10.44, lng: -66.88, salud: 1.0, resiliencia: 1.0, potencial: 1.0, exposicion: 2.9, tipo: 'LASTRE' },
+    { nombre: cadena + 'San Cristóbal', ciudad: 'San Cristóbal', lat: 7.77, lng: -72.22, salud: 1.0, resiliencia: 1.0, potencial: 1.0, exposicion: 3.0, tipo: 'LASTRE' }
+];        function generarHistorico(t, meses) {
+            const historico = [];
+            const seed = t.nombre.length * 7 + t.salud * 3;
+            let vS = t.salud - 0.6 + (seed % 5) * 0.1;
+            let vR = t.resiliencia - 0.5 + (seed % 7) * 0.08;
+            let vP = t.potencial - 0.4 + (seed % 6) * 0.09;
+            let vE = t.exposicion - 0.3 + (seed % 8) * 0.07;
+            for (let i = 0; i < meses.length; i++) {
+                const trend = i / meses.length * 0.4;
+                const noise = (Math.sin(i * 0.8 + seed) * 0.15) + (Math.random() * 0.1 - 0.05);
+                vS = Math.max(0.5, Math.min(3.0, vS + 0.04 * trend + noise * 0.3));
+                vR = Math.max(0.5, Math.min(3.0, vR + 0.03 * trend + noise * 0.25));
+                vP = Math.max(0.5, Math.min(3.0, vP + 0.05 * trend + noise * 0.35));
+                vE = Math.max(0.5, Math.min(3.0, vE + 0.02 * trend + noise * 0.2));
+                historico.push({ mes: meses[i], salud: parseFloat(vS.toFixed(2)), resiliencia: parseFloat(vR.toFixed(2)), potencial: parseFloat(vP.toFixed(2)), exposicion: parseFloat(vE.toFixed(2)) });
+            }
+            return historico;
+        }
+
+        const tiendas = tiendasBase.map(t => {
+            const historico = generarHistorico(t, meses);
+            const ultimo = historico[historico.length - 1];
+            return { ...t, historico, salud: ultimo.salud, resiliencia: ultimo.resiliencia, potencial: ultimo.potencial, exposicion: ultimo.exposicion };
+        });
+
+        function colorTipoHex(tipo) {
+            const map = { JOYA: '#00E676', APUESTA: '#D4AF37', BUNKER: '#FFA500', LASTRE: '#FF4D4D' };
+            return map[tipo] || '#7E998F';
+        }
+
+        function calcularScorePorEscenario(tienda, escenarioId) {
+            const kpis = KPIS_POR_ESCENARIO[escenarioId] || [];
+            if (kpis.length === 0) return 1.5;
+            const mapaKPI = {
+                MB: tienda.salud * 0.9, VM2: tienda.salud, ROT: tienda.salud * 0.85, TKT: tienda.salud,
+                UD: tienda.potencial, PEN: tienda.potencial * 0.9, CAP: tienda.potencial * 0.8,
+                TRF: tienda.potencial * 0.95, CREC: tienda.potencial,
+                MIX: tienda.resiliencia, COV: tienda.resiliencia * 0.9, CON: tienda.resiliencia,
+                NPS: tienda.resiliencia * 0.95, FRQ: tienda.resiliencia, SKU: tienda.resiliencia * 0.85,
+                DIF: tienda.exposicion, DIS: tienda.exposicion, ATR: tienda.exposicion,
+                NSE: tienda.potencial * 0.9,
+                TAL: tienda.resiliencia * 0.9, ENE: tienda.exposicion * 0.8,
+                DIG: tienda.resiliencia * 0.85, LOG: tienda.resiliencia * 0.9
+            };
+            const valores = kpis.map(k => mapaKPI[k] || 1.5);
+            const promedio = valores.reduce((a, b) => a + b, 0) / valores.length;
+            const esNegativo = ['recesion', 'estanflacion', 'devaluacion', 'control_precios', 'walmart', 'hard_discount', 'habitos_inflacion', 'costos_logisticos', 'escasez_talento', 'crisis_energetica', 'ciberseguridad', 'cierre_fronteras', 'reformas_fiscales', 'inestabilidad', 'nacionalizacion'].includes(escenarioId);
+            if (esNegativo) {
+                return parseFloat(((promedio * 0.6) + (tienda.resiliencia * 0.4)).toFixed(2));
+            }
+            return parseFloat(promedio.toFixed(2));
+        }
+
+        function clasificarTienda(scoreX, scoreY) {
+            const umbral = 2.0;
+            if (scoreX >= umbral && scoreY >= umbral) return 'JOYA';
+            if (scoreX >= umbral && scoreY < umbral) return 'APUESTA';
+            if (scoreX < umbral && scoreY >= umbral) return 'BUNKER';
+            return 'LASTRE';
+        }
+
+        let escenarioXActual = 'recuperacion';
+        let escenarioYActual = 'walmart';
+        let vistaActual = 'constructor';
+
+        // ============================================================
+        // NAVEGACIÓN
+        // ============================================================
+        function cambiarVista(vista) {
+            vistaActual = vista;
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            const navActivo = document.querySelector('.nav-item[data-view="' + vista + '"]');
+            if (navActivo) navActivo.classList.add('active');
+            // Cerrar panel de tema si está abierto
+            const themePanel = document.getElementById('themeSettings');
+            if (themePanel) themePanel.style.display = 'none';
+            renderVistaActual();
+        }
+
+        function renderVistaActual() {
+            if (vistaActual === 'constructor') renderConstructor();
+            else if (vistaActual === 'diagnostico') renderDiagnostico();
+            else if (vistaActual === 'riesgo') renderRiesgo();
+            else if (vistaActual === 'topbottom') renderTopBottom();
+            else if (vistaActual === 'brecha') renderBrecha();
+            else if (vistaActual === 'accion') renderAccion();
+        }
+
+        // ============================================================
+        // VISTA: CONSTRUCTOR DE ESCENARIOS
+        // ============================================================
+        function renderConstructor() {
+            const ejeX = document.getElementById('selectEjeX')?.value || escenarioXActual;
+            const ejeY = document.getElementById('selectEjeY')?.value || escenarioYActual;
+            escenarioXActual = ejeX;
+            escenarioYActual = ejeY;
+
+            let nombreX = '', nombreY = '';
+            Object.values(ESCENARIOS).forEach(dominio => {
+                dominio.escenarios.forEach(e => {
+                    if (e.id === ejeX) nombreX = e.nombre;
+                    if (e.id === ejeY) nombreY = e.nombre;
                 });
             });
 
-            // Cerrar menú si se hace clic fuera del wrapper
-            document.addEventListener('click', function(e) {
-                const wrapper = document.getElementById('floatingWrapper');
-                if (isOpen && !wrapper.contains(e.target)) {
-                    menu.classList.remove('open');
-                    btn.classList.remove('active');
-                    btnIcon.className = 'fas fa-wand-magic-sparkles';
-                    btnText.textContent = 'Ver Demos';
-                    isOpen = false;
-                }
+            const tiendasClasificadas = tiendas.map(t => {
+                const scoreX = calcularScorePorEscenario(t, ejeX);
+                const scoreY = calcularScorePorEscenario(t, ejeY);
+                const tipo = clasificarTienda(scoreX, scoreY);
+                return { ...t, scoreX, scoreY, tipoCalculado: tipo };
             });
-        })();
-    </script>
 
+            const cuadrantes = {
+                JOYA: tiendasClasificadas.filter(t => t.tipoCalculado === 'JOYA'),
+                APUESTA: tiendasClasificadas.filter(t => t.tipoCalculado === 'APUESTA'),
+                BUNKER: tiendasClasificadas.filter(t => t.tipoCalculado === 'BUNKER'),
+                LASTRE: tiendasClasificadas.filter(t => t.tipoCalculado === 'LASTRE')
+            };
+
+            const kpisX = KPIS_POR_ESCENARIO[ejeX] || [];
+            const kpisY = KPIS_POR_ESCENARIO[ejeY] || [];
+
+            let html = '<div class="dashboard-container">';
+            html += '<div class="breadcrumb"><span class="active-crumb">🎯 Constructor de Escenarios</span></div>';
+
+            html += '<div class="selector-panel">';
+            html += '<div class="selector-title"><i class="fas fa-sliders-h"></i> Configura los dos escenarios a cruzar</div>';
+            html += '<div class="selector-grid">';
+            html += '<div class="selector-field"><label>Eje X (Horizontal)</label><select id="selectEjeX" onchange="renderConstructor()">';
+            Object.values(ESCENARIOS).forEach(dominio => {
+                html += '<optgroup label="' + dominio.nombre + '">';
+                dominio.escenarios.forEach(e => {
+                    html += '<option value="' + e.id + '"' + (e.id === ejeX ? ' selected' : '') + '>' + e.nombre + '</option>';
+                });
+                html += '</optgroup>';
+            });
+            html += '</select></div>';
+            html += '<div class="selector-field"><label>Eje Y (Vertical)</label><select id="selectEjeY" onchange="renderConstructor()">';
+            Object.values(ESCENARIOS).forEach(dominio => {
+                html += '<optgroup label="' + dominio.nombre + '">';
+                dominio.escenarios.forEach(e => {
+                    html += '<option value="' + e.id + '"' + (e.id === ejeY ? ' selected' : '') + '>' + e.nombre + '</option>';
+                });
+                html += '</optgroup>';
+            });
+            html += '</select></div>';
+            html += '<button class="btn-generate" onclick="renderConstructor()"><i class="fas fa-sync-alt"></i> Recalcular</button>';
+            html += '</div>';
+            html += '</div>';
+
+            html += '<div class="panel" style="margin-bottom:1.2rem; padding:1rem 1.2rem;">';
+            html += '<div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">';
+            html += '<div><div style="font-size:10px;color:var(--steel-muted);text-transform:uppercase;font-weight:700;font-family:\'Cinzel\';margin-bottom:6px;">KPIs del Eje X</div><div style="display:flex;flex-wrap:wrap;gap:4px;">';
+            kpisX.forEach(k => html += '<span class="kpi-tag">' + k + '</span>');
+            html += '</div></div>';
+            html += '<div><div style="font-size:10px;color:var(--steel-muted);text-transform:uppercase;font-weight:700;font-family:\'Cinzel\';margin-bottom:6px;">KPIs del Eje Y</div><div style="display:flex;flex-wrap:wrap;gap:4px;">';
+            kpisY.forEach(k => html += '<span class="kpi-tag">' + k + '</span>');
+            html += '</div></div>';
+            html += '</div></div>';
+
+            html += '<div class="two-col">';
+            html += '<div class="matrix-layout">';
+            html += '<div class="matrix-y-axis"><span class="matrix-y-axis-label">↑ ' + nombreY + ' ←→ ' + nombreY + ' ↓</span></div>';
+            html += '<div class="matrix-x-axis">';
+            html += '<span class="matrix-x-axis-label">← ' + nombreX + '</span>';
+            html += '<span class="matrix-x-axis-label">' + nombreX + ' →</span>';
+            html += '</div>';
+            html += '<div class="matrix-area">';
+            html += renderCuadrante('BUNKER', cuadrantes.BUNKER);
+            html += renderCuadrante('JOYA', cuadrantes.JOYA);
+            html += renderCuadrante('LASTRE', cuadrantes.LASTRE);
+            html += renderCuadrante('APUESTA', cuadrantes.APUESTA);
+            html += '</div>';
+            html += '</div>';
+
+            html += '<div class="narrative-box">';
+            html += '<div class="narr-header"><span class="narr-icon">🧠</span><span class="narr-title">Narrativa IA · Análisis del Cruce</span></div>';
+            html += '<div class="narr-text">';
+            html += 'Al cruzar <strong>' + nombreX + '</strong> (Eje X) con <strong>' + nombreY + '</strong> (Eje Y), se generan 4 cuadrantes que clasifican tu red de tiendas según su comportamiento esperado en cada escenario. ';
+            html += 'De un total de <strong>' + tiendas.length + ' tiendas</strong>, se identificaron: ';
+            html += '<strong style="color:var(--hulk-vibrant);">' + cuadrantes.JOYA.length + ' ' + TIPOLOGIAS.JOYA.nombre + '</strong>, ';
+            html += '<strong style="color:var(--rolex-gold);">' + cuadrantes.APUESTA.length + ' ' + TIPOLOGIAS.APUESTA.nombre + '</strong>, ';
+            html += '<strong style="color:var(--orange);">' + cuadrantes.BUNKER.length + ' ' + TIPOLOGIAS.BUNKER.nombre + '</strong> y ';
+            html += '<strong style="color:var(--red);">' + cuadrantes.LASTRE.length + ' ' + TIPOLOGIAS.LASTRE.nombre + '</strong>. ';
+            html += 'Esta clasificación permite priorizar decisiones de inversión, defensa o desinversión.';
+            html += '</div>';
+            html += '<div class="narr-recommendation">';
+            html += renderRecCard('JOYA', cuadrantes.JOYA.length, 'Invertir y atacar. Mejor comportamiento en ambos escenarios.');
+            html += renderRecCard('APUESTA', cuadrantes.APUESTA.length, 'Invertir con cautela. Alto potencial si el escenario es favorable.');
+            html += renderRecCard('BUNKER', cuadrantes.BUNKER.length, 'Mantener mínimo. Defendibles pero sin crecimiento.');
+            html += renderRecCard('LASTRE', cuadrantes.LASTRE.length, 'Prioridad de cierre o venta. No sobreviven.');
+            html += '</div>';
+            html += '</div>';
+            html += '</div>';
+
+            html += '<div class="two-col" style="grid-template-columns:1fr 1fr;">';
+            html += '<div class="panel">';
+            html += '<div class="panel-title"><i class="fas fa-table"></i> Clasificación por Escenario</div>';
+            html += '<div class="tabla-wrapper"><table class="matrix-table">';
+            html += '<thead><tr><th>Tienda</th><th>Ciudad</th><th>Score X</th><th>Score Y</th><th>Tipología</th></tr></thead>';
+            html += '<tbody>';
+            tiendasClasificadas.forEach(t => {
+                const config = TIPOLOGIAS[t.tipoCalculado];
+                html += '<tr class="' + t.tipoCalculado.toLowerCase() + '">';
+                html += '<td style="font-weight:600;color:var(--steel-light);text-align:left;padding-left:12px;">' + t.nombre + '</td>';
+                html += '<td style="color:var(--steel-muted);">' + t.ciudad + '</td>';
+                html += '<td>' + t.scoreX.toFixed(2) + '</td>';
+                html += '<td>' + t.scoreY.toFixed(2) + '</td>';
+                html += '<td><span class="tipo-cell" style="color:' + config.color + ';">' + config.icono + ' ' + config.nombre + '</span></td>';
+                html += '</tr>';
+            });
+            html += '</tbody></table></div>';
+            html += '</div>';
+
+            html += '<div class="panel">';
+            html += '<div class="panel-title"><i class="fas fa-map-location-dot"></i> Ubicación Geográfica</div>';
+            html += renderMapaSVG(tiendasClasificadas);
+            html += '</div>';
+            html += '</div>';
+
+            html += '<div class="chat-panel">';
+            html += '<div class="chat-panel-header">';
+            html += '<div class="chat-panel-title"><i class="fas fa-comments"></i> Consulta al Asistente DODET</div>';
+            html += '<div class="chat-panel-subtitle">Powered by Gemini · Respuestas en tiempo real</div>';
+            html += '</div>';
+            html += '<div class="chat-panel-body" id="chatPanelBody">';
+            html += '<div class="chat-msg chat-msg-ai">';
+            html += '<div class="chat-msg-avatar"><i class="fas fa-robot"></i></div>';
+            html += '<div class="chat-msg-content">';
+            html += '<div class="chat-msg-label">Asistente DODET</div>';
+            html += 'Hola. Estoy aquí para ayudarte a interpretar el análisis del cruce de escenarios. Puedes preguntarme sobre tipologías, KPIs, recomendaciones estratégicas o cualquier concepto del dashboard.';
+            html += '</div></div>';
+            html += '</div>';
+            html += '<div class="chat-panel-footer">';
+            html += '<input type="text" class="chat-input" id="chatInput" placeholder="Escribe tu consulta sobre el análisis..." onkeypress="if(event.key===\'Enter\') enviarConsultaChat()">';
+            html += '<button class="chat-btn" id="chatBtn" onclick="enviarConsultaChat()"><i class="fas fa-paper-plane"></i> Enviar</button>';
+            html += '</div>';
+            html += '<div style="padding: 0 20px 14px 20px; background: var(--surface);">';
+            html += '<div class="chat-suggestions">';
+            html += '<span class="chat-suggestion" onclick="setChatInput(\'¿Qué significa que una tienda sea JOYA?\')">¿Qué significa JOYA?</span>';
+            html += '<span class="chat-suggestion" onclick="setChatInput(\'¿Cómo se calcula la clasificación?\')">¿Cómo se calcula?</span>';
+            html += '<span class="chat-suggestion" onclick="setChatInput(\'¿Qué estrategia recomiendas para las APUESTA?\')">Estrategia APUESTA</span>';
+            html += '<span class="chat-suggestion" onclick="setChatInput(\'Explícame el cuadrante LASTRE\')">Explícame LASTRE</span>';
+            html += '</div>';
+            html += '</div>';
+            html += '</div>';
+
+            html += '</div>';
+
+            document.getElementById('mainContent').innerHTML = html;
+        }
+
+        // ============================================================
+        // VISTAS SECUNDARIAS
+        // ============================================================
+        function renderDiagnostico() {
+            let html = '<div class="dashboard-container">';
+            html += '<div class="breadcrumb"><span class="active-crumb">📊 Diagnóstico 4×3</span></div>';
+            html += '<div class="panel"><div class="panel-title"><i class="fas fa-chart-bar"></i> Diagnóstico de las 4 Dimensiones</div>';
+            html += '<div class="tabla-wrapper"><table class="matrix-table">';
+            html += '<thead><tr><th>Tienda</th><th>Ciudad</th><th>Salud</th><th>Resiliencia</th><th>Potencial</th><th>Exposición</th><th>Tipología</th></tr></thead><tbody>';
+            tiendas.forEach(t => {
+                const config = TIPOLOGIAS[t.tipo];
+                html += '<tr class="' + t.tipo.toLowerCase() + '">';
+                html += '<td style="font-weight:600;color:var(--steel-light);text-align:left;padding-left:12px;">' + t.nombre + '</td>';
+                html += '<td style="color:var(--steel-muted);">' + t.ciudad + '</td>';
+                html += '<td>' + t.salud.toFixed(2) + '</td>';
+                html += '<td>' + t.resiliencia.toFixed(2) + '</td>';
+                html += '<td>' + t.potencial.toFixed(2) + '</td>';
+                html += '<td>' + t.exposicion.toFixed(2) + '</td>';
+                html += '<td><span class="tipo-cell" style="color:' + config.color + ';">' + config.icono + ' ' + config.nombre + '</span></td>';
+                html += '</tr>';
+            });
+            html += '</tbody></table></div></div></div>';
+            document.getElementById('mainContent').innerHTML = html;
+        }
+
+        function renderRiesgo() {
+            let html = '<div class="dashboard-container">';
+            html += '<div class="breadcrumb"><span class="active-crumb">🗺️ Mapa de Riesgo</span></div>';
+            html += '<div class="panel"><div class="panel-title"><i class="fas fa-map-location-dot"></i> Distribución Geográfica</div>';
+            html += renderMapaSVG(tiendas.map(t => ({ ...t, tipoCalculado: t.tipo })));
+            html += '</div></div>';
+            document.getElementById('mainContent').innerHTML = html;
+        }
+
+        function renderTopBottom() {
+            const sorted = [...tiendas].sort((a, b) => (b.salud + b.resiliencia + b.potencial) - (a.salud + a.resiliencia + a.potencial));
+            const top3 = sorted.slice(0, 3);
+            const bottom3 = sorted.slice(-3);
+            let html = '<div class="dashboard-container">';
+            html += '<div class="breadcrumb"><span class="active-crumb">🏆 Top/Bottom Performers</span></div>';
+            html += '<div class="two-col" style="grid-template-columns:1fr 1fr;">';
+            html += '<div class="panel"><div class="panel-title">🏆 Top 3</div>';
+            top3.forEach(t => {
+                const config = TIPOLOGIAS[t.tipo];
+                html += '<div style="padding:10px 0;border-bottom:1px solid var(--border-deep);display:flex;justify-content:space-between;align-items:center;">';
+                html += '<span style="color:' + config.color + ';">' + config.icono + ' ' + t.nombre + '</span>';
+                html += '<strong style="color:var(--hulk-vibrant);">' + ((t.salud + t.resiliencia + t.potencial) / 3).toFixed(2) + '</strong>';
+                html += '</div>';
+            });
+            html += '</div>';
+            html += '<div class="panel"><div class="panel-title">📉 Bottom 3</div>';
+            bottom3.forEach(t => {
+                const config = TIPOLOGIAS[t.tipo];
+                html += '<div style="padding:10px 0;border-bottom:1px solid var(--border-deep);display:flex;justify-content:space-between;align-items:center;">';
+                html += '<span style="color:' + config.color + ';">' + config.icono + ' ' + t.nombre + '</span>';
+                html += '<strong style="color:var(--red);">' + ((t.salud + t.resiliencia + t.potencial) / 3).toFixed(2) + '</strong>';
+                html += '</div>';
+            });
+            html += '</div></div></div>';
+            document.getElementById('mainContent').innerHTML = html;
+        }
+
+        function renderBrecha() {
+            const avg = {
+                salud: tiendas.reduce((s, t) => s + t.salud, 0) / tiendas.length,
+                resiliencia: tiendas.reduce((s, t) => s + t.resiliencia, 0) / tiendas.length,
+                potencial: tiendas.reduce((s, t) => s + t.potencial, 0) / tiendas.length,
+                exposicion: tiendas.reduce((s, t) => s + t.exposicion, 0) / tiendas.length
+            };
+            let html = '<div class="dashboard-container">';
+            html += '<div class="breadcrumb"><span class="active-crumb">📈 Análisis de Brecha</span></div>';
+            html += '<div class="panel"><div class="panel-title">Promedios de la Cadena</div>';
+            html += '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">';
+            ['salud', 'resiliencia', 'potencial', 'exposicion'].forEach(k => {
+                html += '<div style="text-align:center;padding:12px;background:color-mix(in srgb, var(--abyssal) 30%, transparent);border-radius:10px;">';
+                html += '<div style="font-size:10px;color:var(--steel-muted);text-transform:uppercase;">' + k + '</div>';
+                html += '<div style="font-size:24px;font-weight:700;color:var(--hulk-vibrant);">' + avg[k].toFixed(2) + '</div>';
+                html += '</div>';
+            });
+            html += '</div></div></div>';
+            document.getElementById('mainContent').innerHTML = html;
+        }
+
+        function renderAccion() {
+            const counts = {
+                JOYA: tiendas.filter(t => t.tipo === 'JOYA').length,
+                APUESTA: tiendas.filter(t => t.tipo === 'APUESTA').length,
+                BUNKER: tiendas.filter(t => t.tipo === 'BUNKER').length,
+                LASTRE: tiendas.filter(t => t.tipo === 'LASTRE').length
+            };
+            let html = '<div class="dashboard-container">';
+            html += '<div class="breadcrumb"><span class="active-crumb">📋 Plan de Acción</span></div>';
+            html += '<div class="panel"><div class="panel-title">Recomendaciones por Tipología</div>';
+            html += '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">';
+            Object.entries(TIPOLOGIAS).forEach(([k, v]) => {
+                html += '<div style="text-align:center;padding:16px;background:color-mix(in srgb, var(--abyssal) 30%, transparent);border-radius:10px;border-left:3px solid ' + v.color + ';">';
+                html += '<div style="font-size:24px;">' + v.icono + '</div>';
+                html += '<div style="color:' + v.color + ';font-weight:700;margin:6px 0;">' + v.nombre + '</div>';
+                html += '<div style="font-size:20px;font-weight:800;">' + counts[k] + '</div>';
+                html += '<div style="font-size:10px;color:var(--steel-muted);">tiendas</div>';
+                html += '</div>';
+            });
+            html += '</div></div></div>';
+            document.getElementById('mainContent').innerHTML = html;
+        }
+
+        // ============================================================
+        // RENDER: Cuadrantes, Rec Cards, Mapa
+        // ============================================================
+        function renderCuadrante(tipo, tiendas) {
+            const config = TIPOLOGIAS[tipo];
+            let html = '<div class="quadrant ' + config.cuadrante + '">';
+            html += '<span class="q-signs">' + config.signos + '</span>';
+            html += '<div class="q-header">';
+            html += '<div class="q-title" style="color:' + config.color + ';">' + config.icono + ' ' + config.nombre + '</div>';
+            html += '<span class="q-count">' + tiendas.length + ' tiendas</span>';
+            html += '</div>';
+            html += '<div class="q-chips">';
+            if (tiendas.length === 0) {
+                html += '<span class="q-empty">Sin tiendas en este cuadrante</span>';
+            } else {
+                tiendas.forEach(t => {
+                    html += '<span class="tienda-chip"><i class="fas fa-store"></i> ' + t.nombre.replace('Plaza ', '') + '</span>';
+                });
+            }
+            html += '</div>';
+            html += '</div>';
+            return html;
+        }
+
+        function renderRecCard(tipo, cantidad, texto) {
+            const config = TIPOLOGIAS[tipo];
+            return '<div class="rec-card" style="--q-color:' + config.color + ';">' +
+                '<div class="rec-card-title">' + config.icono + ' ' + config.nombre + ' (' + cantidad + ')</div>' +
+                '<div class="rec-card-text">' + texto + '</div>' +
+                '</div>';
+        }
+
+        function renderMapaSVG(tiendas) {
+            const lats = tiendas.map(t => t.lat);
+            const lngs = tiendas.map(t => t.lng);
+            const minLat = Math.min(...lats) - 0.3;
+            const maxLat = Math.max(...lats) + 0.3;
+            const minLng = Math.min(...lngs) - 0.3;
+            const maxLng = Math.max(...lngs) + 0.3;
+            const toX = (lng) => ((lng - minLng) / (maxLng - minLng)) * 360 + 20;
+            const toY = (lat) => ((maxLat - lat) / (maxLat - minLat)) * 260 + 20;
+
+            let bubbles = '';
+            tiendas.forEach(t => {
+                const cx = toX(t.lng);
+                const cy = toY(t.lat);
+                const r = 10 + (t.salud + t.resiliencia + t.potencial) / 3 * 6;
+                const color = colorTipoHex(t.tipoCalculado);
+                bubbles += '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="' + color + '30" stroke="' + color + '" stroke-width="2"/>';
+                bubbles += '<text x="' + cx + '" y="' + (cy + 2) + '" font-size="7" fill="#fff" font-weight="700" text-anchor="middle">' + t.nombre.split(' ').pop() + '</text>';
+            });
+
+            let grid = '';
+            for (let i = 0; i < 3; i++) {
+                grid += '<line x1="' + (20 + i * 120) + '" y1="20" x2="' + (20 + i * 120) + '" y2="280" stroke="rgba(212,175,55,0.06)" stroke-width="1"/>';
+                grid += '<line x1="20" y1="' + (20 + i * 87) + '" x2="380" y2="' + (20 + i * 87) + '" stroke="rgba(212,175,55,0.06)" stroke-width="1"/>';
+            }
+
+            return '<div class="map-container"><svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="300" fill="var(--abyssal)" rx="8"/>' + grid + bubbles + '</svg>' +
+                '<div class="map-legend">' +
+                Object.entries(TIPOLOGIAS).map(([k, v]) => '<div class="map-legend-item"><div class="map-legend-dot" style="background:' + v.color + ';"></div>' + v.nombre + '</div>').join('') +
+                '</div></div>';
+        }
+
+        // ============================================================
+        // CHAT
+        // ============================================================
+        function setChatInput(texto) {
+            const input = document.getElementById('chatInput');
+            if (input) {
+                input.value = texto;
+                input.focus();
+            }
+        }
+
+        async function enviarConsultaChat() {
+            const input = document.getElementById('chatInput');
+            const btn = document.getElementById('chatBtn');
+            const body = document.getElementById('chatPanelBody');
+            if (!input || !body) return;
+
+            const mensaje = input.value.trim();
+            if (!mensaje) return;
+
+            const userMsg = document.createElement('div');
+            userMsg.className = 'chat-msg chat-msg-user';
+            userMsg.innerHTML = '<div class="chat-msg-avatar"><i class="fas fa-user"></i></div>' +
+                '<div class="chat-msg-content"><div class="chat-msg-label">Tú</div>' + escapeHtml(mensaje) + '</div>';
+            body.appendChild(userMsg);
+
+            input.value = '';
+            btn.disabled = true;
+            body.scrollTop = body.scrollHeight;
+
+            const typingMsg = document.createElement('div');
+            typingMsg.className = 'chat-msg chat-msg-typing';
+            typingMsg.innerHTML = '<div class="chat-msg-avatar"><i class="fas fa-robot"></i></div>' +
+                '<div class="chat-msg-content"><div class="chat-msg-label">Asistente</div>Pensando...</div>';
+            body.appendChild(typingMsg);
+            body.scrollTop = body.scrollHeight;
+
+            const contexto = 'Escenario X: ' + escenarioXActual + ' | Escenario Y: ' + escenarioYActual;
+
+            try {
+                const response = await fetch('/api/chat-gemini', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: mensaje, contexto: contexto })
+                });
+
+                const data = await response.json();
+                typingMsg.remove();
+
+                const aiMsg = document.createElement('div');
+                aiMsg.className = 'chat-msg chat-msg-ai';
+
+                if (data.reply) {
+                    aiMsg.innerHTML = '<div class="chat-msg-avatar"><i class="fas fa-robot"></i></div>' +
+                        '<div class="chat-msg-content"><div class="chat-msg-label">Asistente DODET</div>' + escapeHtml(data.reply) + '</div>';
+                } else {
+                    aiMsg.innerHTML = '<div class="chat-msg-avatar"><i class="fas fa-robot"></i></div>' +
+                        '<div class="chat-msg-content"><div class="chat-msg-label">Asistente DODET</div>Error: ' + escapeHtml(data.error || 'desconocido') + '</div>';
+                }
+                body.appendChild(aiMsg);
+            } catch (error) {
+                typingMsg.remove();
+                const errMsg = document.createElement('div');
+                errMsg.className = 'chat-msg chat-msg-typing';
+                errMsg.innerHTML = '<div class="chat-msg-avatar"><i class="fas fa-robot"></i></div>' +
+                    '<div class="chat-msg-content"><div class="chat-msg-label">Sistema</div>Error de conexión. Verifica tu internet.</div>';
+                body.appendChild(errMsg);
+            } finally {
+                btn.disabled = false;
+                body.scrollTop = body.scrollHeight;
+                input.focus();
+            }
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // ============================================================
+        // INICIALIZACIÓN
+        // ============================================================
+        initTheme();
+        renderVistaActual();
+    </script>
 </body>
 </html>

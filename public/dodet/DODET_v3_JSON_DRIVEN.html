@@ -237,19 +237,19 @@
         <!-- SIDEBAR -->
         <div class="sidebar">
             <div class="sidebar-section">Vistas</div>
-            <div class="nav-item active" onclick="switchView('resumen')">
+            <div class="nav-item active" onclick="switchView('resumen', this)">
                 <i class="fas fa-chart-pie"></i> Resumen
             </div>
-            <div class="nav-item" onclick="switchView('cuadrantes')">
+            <div class="nav-item" onclick="switchView('cuadrantes', this)">
                 <i class="fas fa-border-all"></i> Cuadrantes
             </div>
-            <div class="nav-item" onclick="switchView('recomendaciones')">
+            <div class="nav-item" onclick="switchView('recomendaciones', this)">
                 <i class="fas fa-lightbulb"></i> Recomendaciones
             </div>
-            <div class="nav-item" onclick="switchView('mapa')">
+            <div class="nav-item" onclick="switchView('mapa', this)">
                 <i class="fas fa-map"></i> Mapa Red
             </div>
-            <div class="nav-item" onclick="switchView('kpis')">
+            <div class="nav-item" onclick="switchView('kpis', this)">
                 <i class="fas fa-gauge"></i> KPIs
             </div>
             <div class="sidebar-section" style="margin-top: 2rem;">Sistema</div>
@@ -295,7 +295,7 @@
 
                 // Procesar datos
                 tiendas = tiendas_data.tiendas || [];
-                tipologias = tiendas_data.tipologias || {};
+                tipologias = tipologias_data.tipologias || {};  // ✅ CORREGIDO: Leer de tipologias_data
                 escenarios = escenarios_data.escenarios || [];
                 recomendaciones = recomendaciones_data.recomendaciones || {};
                 kpi_data = kpi_data_raw || {};
@@ -307,8 +307,8 @@
                 // Clasificar tiendas
                 clasificarTiendas();
 
-                // Renderizar vista inicial
-                switchView('resumen');
+                // Renderizar vista inicial (sin elemento, es programática)
+                switchView('resumen', null);
             } catch (error) {
                 console.error('Error cargando datos:', error);
                 document.getElementById('mainContent').innerHTML = 
@@ -337,10 +337,15 @@
         // ============================================================
         // VISTAS
         // ============================================================
-        function switchView(view) {
+        function switchView(view, eventElement) {
             // Actualizar nav
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            event.target.closest('.nav-item').classList.add('active');
+            // ✅ CORREGIDO: Verificar si existe evento o elemento
+            if (eventElement) {
+                eventElement.classList.add('active');
+            } else if (event?.target) {
+                event.target.closest('.nav-item').classList.add('active');
+            }
 
             // Renderizar vista
             const content = document.getElementById('mainContent');

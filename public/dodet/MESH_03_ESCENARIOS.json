@@ -1,0 +1,249 @@
+{
+  "metadata": {
+    "mesh_id": "MESH_03",
+    "mesh_name": "ESCENARIOS",
+    "version": "2.0",
+    "description": "Matriz de escenarios alternativos para modelar impacto de intervenciones estratégicas en la salud operacional de tiendas",
+    "created": "2026-01-15T10:30:00Z",
+    "updated": "2026-01-15T10:30:00Z",
+    "schema": {
+      "id": "string - ID único del escenario",
+      "nombre": "string - Nombre descriptivo",
+      "slug": "string - URL-safe identifier",
+      "descripcion": "string - Descripción narrativa",
+      "tipo": "string - Tipo de intervención (optimizacion|reposicionamiento|cierre|expansion)",
+      "impacto_meta": "string - Métrica objetivo principal",
+      "modificadores": "object - Ajustes de parámetros",
+      "duracion_meses": "number - Tiempo estimado de implementación",
+      "inversion_usd": "number - Costo estimado de intervención",
+      "roi_esperado": "number - ROI esperado en meses"
+    }
+  },
+  "escenarios": [
+    {
+      "id": "SCENARIO_BASE",
+      "nombre": "Escenario Base",
+      "slug": "escenario-base",
+      "descripcion": "Proyección sin cambios. Mantiene operaciones actuales con crecimiento orgánico esperado (2-3% anual).",
+      "tipo": "status_quo",
+      "impacto_meta": "Mantención de margen",
+      "modificadores": {
+        "salud_delta": 0,
+        "resiliencia_delta": 0,
+        "potencial_delta": 0,
+        "margen_bruto_delta": 0,
+        "ticket_promedio_delta": 0
+      },
+      "duracion_meses": 0,
+      "inversion_usd": 0,
+      "roi_esperado": "N/A",
+      "implicaciones": [
+        "No requiere inversión adicional",
+        "Baja probabilidad de disrupting",
+        "Riesgo de estancamiento vs competencia",
+        "Gradual deterioro relativo vs nuevos formatos"
+      ],
+      "poblacion_target": ["APUESTA", "BUNKER", "LASTRE"]
+    },
+    {
+      "id": "SCENARIO_APUESTA_OPTIMIZA",
+      "nombre": "Apuesta: Optimización Operacional",
+      "slug": "apuesta-optimiza",
+      "descripcion": "Intervención en tiendas APUESTA. Rediseño de planograma, reducción de SKU innecesarias, reentrenamiento de personal, ajuste de horarios.",
+      "tipo": "optimizacion",
+      "impacto_meta": "Mejorar salud de APUESTA de 70 a 82+",
+      "modificadores": {
+        "salud_delta": 12,
+        "resiliencia_delta": 8,
+        "potencial_delta": 10,
+        "margen_bruto_delta": 2.5,
+        "ticket_promedio_delta": 15,
+        "ocupacion_personal_delta": 8,
+        "satisfaccion_cliente_delta": 5
+      },
+      "duracion_meses": 8,
+      "inversion_usd": 45000,
+      "roi_esperado": 3.2,
+      "acciones_clave": [
+        "Auditoría de SKU y reducción del 15-20%",
+        "Rediseño de planograma (40% del tiempo de trabajo)",
+        "Programa de incentivos por rendimiento",
+        "Entrenamiento intensivo (40 horas/empleado)",
+        "Implementación de merchandising mejorado"
+      ],
+      "poblacion_target": ["APUESTA"],
+      "poblacion_tiendas": 6,
+      "beneficio_esperado_anual": 45000
+    },
+    {
+      "id": "SCENARIO_JOYA_EXPANSION",
+      "nombre": "Joya: Expansión Acelerada",
+      "slug": "joya-expansion",
+      "descripcion": "Invertir en tiendas JOYA para replicar modelo, expandir categorías premium, implementar automatización y tecnología.",
+      "tipo": "expansion",
+      "impacto_meta": "Llevar JOYA de 88% a 95%+ en salud",
+      "modificadores": {
+        "salud_delta": 7,
+        "resiliencia_delta": 10,
+        "potencial_delta": 15,
+        "margen_bruto_delta": 3.5,
+        "ticket_promedio_delta": 35,
+        "satisfaccion_cliente_delta": 8
+      },
+      "duracion_meses": 12,
+      "inversion_usd": 180000,
+      "roi_esperado": 2.1,
+      "acciones_clave": [
+        "Expansión de superficie (+15%)",
+        "Implementación de self-checkout",
+        "Programa de fidelización digital",
+        "Categorías premium (vinos, gourmet)",
+        "Experiencia de compra mejorada"
+      ],
+      "poblacion_target": ["JOYA"],
+      "poblacion_tiendas": 8,
+      "beneficio_esperado_anual": 380000
+    },
+    {
+      "id": "SCENARIO_BUNKER_DEFENSA",
+      "nombre": "Bunker: Defensa y Contención",
+      "slug": "bunker-defensa",
+      "descripcion": "Reducción de costos, simplificación operacional, eliminación de SKU de lenta rotación, foco en essentials de alto margen.",
+      "tipo": "optimizacion",
+      "impacto_meta": "Mejorar margen bruto BUNKER de 23.5% a 26%+",
+      "modificadores": {
+        "salud_delta": 5,
+        "resiliencia_delta": 8,
+        "potencial_delta": 0,
+        "margen_bruto_delta": 2.5,
+        "costo_operacional_delta": -15,
+        "rotacion_inventario_delta": -5
+      },
+      "duracion_meses": 6,
+      "inversion_usd": 25000,
+      "roi_esperado": 1.8,
+      "acciones_clave": [
+        "Reducción de SKU del 25-30%",
+        "Renegociación con proveedores",
+        "Reducción de horarios periféricos",
+        "Optimización de nómina (-12%)",
+        "Categorización de productos por margen"
+      ],
+      "poblacion_target": ["BUNKER"],
+      "poblacion_tiendas": 6,
+      "beneficio_esperado_anual": 45000
+    },
+    {
+      "id": "SCENARIO_LASTRE_DECISION",
+      "nombre": "Lastre: Decisión Estratégica",
+      "slug": "lastre-decision",
+      "descripcion": "Bifurcación: Cierre ordenado (60%) o reestructuración radical (40%). Ambas opciones terminan destrucción de valor.",
+      "tipo": "cierre",
+      "impacto_meta": "Eliminar drag de LASTRE del EBITDA corporativo",
+      "modificadores": {
+        "salud_delta": -100,
+        "resiliencia_delta": -100,
+        "potencial_delta": -100,
+        "impacto_ebitda": "Liberación de 5-8% del EBITDA actual"
+      },
+      "duracion_meses": 12,
+      "inversion_usd": 15000,
+      "roi_esperado": "Indefinido (ahorro de pérdidas)",
+      "opciones": [
+        {
+          "opcion": "CIERRE ORDENADO (60%)",
+          "descripcion": "Liquidación en 6 meses, transferencia de inventario, reducción de personal",
+          "costo_cierre": 12000,
+          "ahorro_anual": 35000
+        },
+        {
+          "opcion": "REESTRUCTURA RADICAL (40%)",
+          "descripcion": "Conversión a formato urban-express de 50% del espacio, contratación nueva",
+          "inversion_reestructura": 45000,
+          "potencial_salud": 55,
+          "roi_36_meses": 1.5
+        }
+      ],
+      "poblacion_target": ["LASTRE"],
+      "poblacion_tiendas": 5,
+      "beneficio_esperado_anual": 35000
+    },
+    {
+      "id": "SCENARIO_BUNKER_TRANSFORMATION",
+      "nombre": "Bunker: Transformación a Joya (Agresivo)",
+      "slug": "bunker-transformation",
+      "descripcion": "Inyección de capital y cambio operacional para llevar BUNKER a nivel JOYA en 18 meses. Requiere compromiso total.",
+      "tipo": "reposicionamiento",
+      "impacto_meta": "Elevar salud BUNKER de 50 a 82+",
+      "modificadores": {
+        "salud_delta": 32,
+        "resiliencia_delta": 25,
+        "potencial_delta": 20,
+        "margen_bruto_delta": 6,
+        "ticket_promedio_delta": 40
+      },
+      "duracion_meses": 18,
+      "inversion_usd": 95000,
+      "roi_esperado": 2.5,
+      "acciones_clave": [
+        "Renovación de local (50-60% de la inversión)",
+        "Nuevo equipo de gerencia",
+        "Reentrenamiento completo de personal",
+        "Rediseño total de planograma",
+        "Programa de marketing local intensivo",
+        "Implementación de tecnología retail"
+      ],
+      "poblacion_target": ["BUNKER"],
+      "poblacion_tiendas": 2,
+      "beneficio_esperado_anual": 240000,
+      "riesgo": "Alto - Requiere ejecución perfecta"
+    },
+    {
+      "id": "SCENARIO_NETWORK_OPTIMIZATION",
+      "nombre": "Optimización de Red (Holística)",
+      "slug": "network-optimization",
+      "descripcion": "Estrategia simultánea en toda la red: expandir JOYA, optimizar APUESTA, defender BUNKER, cerrar LASTRE. Visión integral.",
+      "tipo": "portfolio",
+      "impacto_meta": "Mejorar EBITDA corporativo 18-22% en 18 meses",
+      "modificadores": {
+        "salud_promedio_delta": 8,
+        "margen_bruto_promedio_delta": 2.2,
+        "ticket_promedio_promedio_delta": 18,
+        "porcentaje_joya_delta": 5,
+        "porcentaje_lastre_delta": -8
+      },
+      "duracion_meses": 18,
+      "inversion_usd": 360000,
+      "roi_esperado": 3.8,
+      "fases": [
+        {
+          "fase": 1,
+          "meses": "1-3",
+          "focus": "Diagnóstico, cierre LASTRE, lanzamiento defensa BUNKER"
+        },
+        {
+          "fase": 2,
+          "meses": "4-9",
+          "focus": "Optimización APUESTA, inyección JOYA"
+        },
+        {
+          "fase": 3,
+          "meses": "10-18",
+          "focus": "Consolidación, replicación, mejora continua"
+        }
+      ],
+      "beneficio_esperado_anual": 1368000,
+      "poblacion_tiendas": 24,
+      "probabilidad_exito": "72%"
+    }
+  ],
+  "matriz_escenarios": {
+    "dimensiones": ["Inversión Requerida", "Riesgo de Ejecución", "Beneficio Esperado"],
+    "mapa_visual": {
+      "bajo_riesgo_alto_retorno": ["JOYA_EXPANSION", "APUESTA_OPTIMIZA"],
+      "alto_riesgo_alto_retorno": ["BUNKER_TRANSFORMATION", "NETWORK_OPTIMIZATION"],
+      "bajo_riesgo_bajo_retorno": ["BUNKER_DEFENSA"],
+      "alto_riesgo_bajo_retorno": ["LASTRE_DECISION"]
+    }
+  }
+}

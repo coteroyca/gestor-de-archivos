@@ -1,0 +1,64 @@
+{
+  "name": "dodet-mesh",
+  "version": "3.0.0",
+  "description": "DODET · Constructor de Escenarios Operacionales. Arquitectura modular JSON-MESH para gestión estratégica de redes minoristas.",
+  "homepage": "https://github.com/TU_USUARIO/dodet-mesh",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TU_USUARIO/dodet-mesh.git"
+  },
+  "bugs": {
+    "url": "https://github.com/TU_USUARIO/dodet-mesh/issues"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Tu Nombre",
+    "email": "tu.email@example.com",
+    "url": "https://github.com/TU_USUARIO"
+  },
+  "keywords": [
+    "retail",
+    "estrategia",
+    "operaciones",
+    "tiendas",
+    "análisis",
+    "json",
+    "mesh",
+    "vercel",
+    "minorista"
+  ],
+  "type": "module",
+  "main": "DODET_v3_JSON_DRIVEN.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "serve": "npx http-server",
+    "build": "npm run validate",
+    "validate": "node scripts/validate-mesh.js",
+    "report": "node scripts/generate-report.js",
+    "dev": "npm run start",
+    "deploy": "git push origin main",
+    "test": "npm run validate"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "files": [
+    "DODET_v3_JSON_DRIVEN.html",
+    "MESH_01_TIENDAS.json",
+    "MESH_02_TIPOLOGIAS.json",
+    "MESH_03_ESCENARIOS.json",
+    "MESH_04_RECOMENDACIONES.json",
+    "MESH_05_KPI.json",
+    "REPORTE_ARQUITECTURA_MESH.md",
+    "GUIA_RAPIDA_MESH.md",
+    "INDICE_ARCHIVOS_GENERADOS.md",
+    "README.md",
+    "LICENSE",
+    "vercel.json",
+    ".gitignore",
+    "scripts/"
+  ]
+}

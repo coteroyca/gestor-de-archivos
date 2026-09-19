@@ -1,0 +1,185 @@
+{
+  "metadata": {
+    "mesh_id": "MESH_02",
+    "mesh_name": "TIPOLOGIAS",
+    "version": "2.0",
+    "description": "Matriz de clasificación de tiendas según salud operacional, resiliencia y potencial. Define cuadrantes estratégicos",
+    "created": "2026-01-15T10:30:00Z",
+    "updated": "2026-01-15T10:30:00Z",
+    "schema": {
+      "id": "string - Identificador único de tipología",
+      "nombre": "string - Nombre estratégico de la tipología",
+      "icono": "string - Emoji o símbolo representativo",
+      "color": "string - Color hexadecimal para UI",
+      "signos": "string - Símbolo matemático del cuadrante",
+      "cuadrante": "string - Posición en matriz (top-left|top-right|bottom-left|bottom-right)",
+      "descripcion": "string - Descripción narrativa",
+      "estrategia": "string - Estrategia recomendada",
+      "criterios": "object - Criterios de clasificación",
+      "acciones_prioritarias": "array - Recomendaciones de acción",
+      "rango_salud": {
+        "min": "number - Mínimo salud operacional",
+        "max": "number - Máximo salud operacional"
+      }
+    }
+  },
+  "tipologias": {
+    "JOYA": {
+      "id": "JOYA",
+      "nombre": "JOYA",
+      "icono": "💎",
+      "color": "#00C853",
+      "signos": "↗",
+      "cuadrante": "top-right",
+      "descripcion": "Tiendas con máxima salud operacional, alta resiliencia y potencial de crecimiento acelerado. Generan valor consistente.",
+      "estrategia": "POTENCIAR: Invertir en expansión, replicar modelo, automatizar procesos, expandir categorías premium.",
+      "criterios": {
+        "salud_min": 80,
+        "resiliencia_min": 75,
+        "potencial_min": 80,
+        "margen_bruto_min": 30
+      },
+      "acciones_prioritarias": [
+        "Expansión de surtido premium",
+        "Implementar programas de fidelización",
+        "Optimizar layout para crossselling",
+        "Capacitación avanzada de personal",
+        "Replicar mejores prácticas en otras tiendas"
+      ],
+      "rango_salud": { "min": 80, "max": 100 },
+      "rango_margen": { "min": 30, "max": 35 },
+      "objetivo_anual_crecimiento": "15-20%"
+    },
+    "APUESTA": {
+      "id": "APUESTA",
+      "nombre": "APUESTA",
+      "icono": "🎯",
+      "color": "#D4AF37",
+      "signos": "→",
+      "cuadrante": "top-left",
+      "descripcion": "Tiendas con potencial de mejora. Muestran síntomas de recuperación pero requieren intervención estratégica.",
+      "estrategia": "MEJORAR: Diagnóstico profundo, intervención operacional, redefinición de mix de productos, incentivos de rendimiento.",
+      "criterios": {
+        "salud_min": 60,
+        "salud_max": 79,
+        "resiliencia_min": 50,
+        "potencial_min": 60
+      },
+      "acciones_prioritarias": [
+        "Auditoría operacional integral",
+        "Rediseño de planograma",
+        "Ajuste de mix de SKUs",
+        "Programa de incentivos intensivo",
+        "Entrenamiento de gerencia local"
+      ],
+      "rango_salud": { "min": 60, "max": 79 },
+      "rango_margen": { "min": 25, "max": 29 },
+      "objetivo_anual_crecimiento": "8-12%"
+    },
+    "BUNKER": {
+      "id": "BUNKER",
+      "nombre": "BUNKER",
+      "icono": "🛡️",
+      "color": "#FFA500",
+      "signos": "←",
+      "cuadrante": "bottom-right",
+      "descripcion": "Tiendas en territorio defensivo. Enfoque en estabilización, retención de margen y contención de daños operacionales.",
+      "estrategia": "DEFENDER: Contención de costos, rotación de personal de bajo rendimiento, simplificación de operaciones, promociones defensivas.",
+      "criterios": {
+        "salud_min": 40,
+        "salud_max": 59,
+        "resiliencia_min": 30,
+        "potencial_max": 65
+      },
+      "acciones_prioritarias": [
+        "Auditoría de costos operacionales",
+        "Reducción de SKU complejidad",
+        "Revisión de nómina",
+        "Mejora de eficiencia de procesos",
+        "Reposicionamiento de categorías básicas"
+      ],
+      "rango_salud": { "min": 40, "max": 59 },
+      "rango_margen": { "min": 22, "max": 26 },
+      "objetivo_anual_crecimiento": "2-5%"
+    },
+    "LASTRE": {
+      "id": "LASTRE",
+      "nombre": "LASTRE",
+      "icono": "⚓",
+      "color": "#FF6B6B",
+      "signos": "↙",
+      "cuadrante": "bottom-left",
+      "descripcion": "Tiendas en crisis operacional. Destruyen valor, drenan recursos y contaminan red. Requieren decisión estratégica inmediata.",
+      "estrategia": "DECIDIR: Reestructuración radical, cierre, spin-off operacional, o desinversión. No hay término medio.",
+      "criterios": {
+        "salud_max": 39,
+        "resiliencia_max": 40,
+        "potencial_max": 50,
+        "margen_bruto_max": 20
+      },
+      "acciones_prioritarias": [
+        "Evaluación de viabilidad económica",
+        "Plan de cierre ordenado (si aplica)",
+        "Gestión de deuda operacional",
+        "Comunicación de transición",
+        "Redirección de capital a opciones viables"
+      ],
+      "rango_salud": { "min": 0, "max": 39 },
+      "rango_margen": { "min": 15, "max": 20 },
+      "objetivo_anual_crecimiento": "Evitar descenso > 5%"
+    }
+  },
+  "matriz_estrategica": {
+    "descripcion": "Matriz 2x2 de Salud vs Resiliencia, con cuadrantes estratégicos",
+    "dimensiones": {
+      "x_axis": "RESILIENCIA (Capacidad de adaptación)",
+      "y_axis": "SALUD OPERACIONAL (Rendimiento)",
+      "diagonal_color": "#D4AF37"
+    },
+    "cuadrantes": [
+      {
+        "id": 1,
+        "nombre": "JOYA",
+        "posicion": "top-right",
+        "x": "Alta Resiliencia",
+        "y": "Alta Salud",
+        "porcentaje_red": "25-35%",
+        "valor_generado": "80% del EBITDA"
+      },
+      {
+        "id": 2,
+        "nombre": "APUESTA",
+        "posicion": "top-left",
+        "x": "Baja Resiliencia",
+        "y": "Alta Salud",
+        "porcentaje_red": "20-30%",
+        "valor_generado": "10-15% del EBITDA"
+      },
+      {
+        "id": 3,
+        "nombre": "BUNKER",
+        "posicion": "bottom-right",
+        "x": "Alta Resiliencia",
+        "y": "Baja Salud",
+        "porcentaje_red": "20-25%",
+        "valor_generado": "5-10% del EBITDA"
+      },
+      {
+        "id": 4,
+        "nombre": "LASTRE",
+        "posicion": "bottom-left",
+        "x": "Baja Resiliencia",
+        "y": "Baja Salud",
+        "porcentaje_red": "10-15%",
+        "valor_generado": "-5% a 0% del EBITDA (DRENA)"
+      }
+    ]
+  },
+  "reglas_clasificacion": {
+    "prioridad_1": "Si salud < 40 => LASTRE (automático)",
+    "prioridad_2": "Si (salud + resiliencia + potencial) / 3 > 80 Y margen > 30 => JOYA",
+    "prioridad_3": "Si 60 <= salud < 80 => APUESTA",
+    "prioridad_4": "Si 40 <= salud < 60 => BUNKER",
+    "exception": "Si tienda es terminal (cierre anunciado) => LASTRE independiente de métricas"
+  }
+}

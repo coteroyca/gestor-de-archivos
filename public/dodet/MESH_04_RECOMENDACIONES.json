@@ -1,0 +1,326 @@
+{
+  "metadata": {
+    "mesh_id": "MESH_04",
+    "mesh_name": "RECOMENDACIONES",
+    "version": "2.0",
+    "description": "Motor de recomendaciones estratégicas según tipología. Proporciona acciones priorizadas, timeline y métricas de seguimiento.",
+    "created": "2026-01-15T10:30:00Z",
+    "updated": "2026-01-15T10:30:00Z",
+    "schema": {
+      "tipologia": "string - JOYA|APUESTA|BUNKER|LASTRE",
+      "accion_id": "string - Identificador único",
+      "accion_nombre": "string - Nombre de la acción",
+      "prioridad": "number - 1-5 (1=máxima)",
+      "descripcion": "string - Descripción detallada",
+      "objetivo_kpi": "string - KPI objetivo",
+      "meta_numerica": "string - Meta cuantificada",
+      "duracion_semanas": "number - Tiempo estimado",
+      "recursos_requeridos": "array - Equipo y materiales",
+      "presupuesto_usd": "number - Costo estimado",
+      "metricas_seguimiento": "array - Indicadores de progreso",
+      "responsable_rol": "string - Rol de responsabilidad",
+      "dependencias": "array - Acciones precedentes"
+    }
+  },
+  "recomendaciones": {
+    "JOYA": {
+      "descripcion_estrategia": "JOYA: Potenciación. Expandir liderazgo, replicar modelo, inversión agresiva en crecimiento.",
+      "contexto": "Estas tiendas generan 80% del EBITDA con solo 28% de la red. Inversión en ellas tiene máximo ROI.",
+      "acciones": [
+        {
+          "accion_id": "JOYA_REC_001",
+          "accion_nombre": "Expansión de surtido premium",
+          "prioridad": 1,
+          "descripcion": "Agregar líneas premium de vinos, quesos, productos gourmet. Apunta a elevar ticket en 25-35%.",
+          "objetivo_kpi": "Ticket Promedio",
+          "meta_numerica": "+25% ($145 → $180)",
+          "duracion_semanas": 4,
+          "recursos_requeridos": ["Merchandising especializado", "Proveedores premium", "Personal entrenado"],
+          "presupuesto_usd": 8500,
+          "metricas_seguimiento": ["Ticket promedio semanal", "Margen bruto premium", "Satisfacción cliente"],
+          "responsable_rol": "Gerente Categoría Premium",
+          "roi_proyectado": 4.2
+        },
+        {
+          "accion_id": "JOYA_REC_002",
+          "accion_nombre": "Programa de fidelización digital",
+          "prioridad": 1,
+          "descripcion": "App de puntos, ofertas personalizadas, historial de compras. Objetivo: 40% penetración en 6 meses.",
+          "objetivo_kpi": "Frecuencia de Compra",
+          "meta_numerica": "+18% (6.2 visitas/mes → 7.3)",
+          "duracion_semanas": 8,
+          "recursos_requeridos": ["Desarrollador mobile", "Gestor de datos", "Personal checkout"],
+          "presupuesto_usd": 15000,
+          "metricas_seguimiento": ["Penetración de app", "Frecuencia de transacciones", "Customer lifetime value"],
+          "responsable_rol": "Jefe de Marketing",
+          "roi_proyectado": 3.8
+        },
+        {
+          "accion_id": "JOYA_REC_003",
+          "accion_nombre": "Optimización de layout (crossselling)",
+          "prioridad": 2,
+          "descripcion": "Rediseño de circulación de clientes, zones de impulse buying, asociación estratégica de productos.",
+          "objetivo_kpi": "Margen Bruto",
+          "meta_numerica": "+2.1% (31.8% → 33.9%)",
+          "duracion_semanas": 6,
+          "recursos_requeridos": ["Consultor retail", "Equipo de reposición", "Material de signalética"],
+          "presupuesto_usd": 6200,
+          "metricas_seguimiento": ["Margen bruto diario", "Transacciones multiples", "Rotación por zona"],
+          "responsable_rol": "Gerente de Tienda",
+          "roi_proyectado": 5.1
+        },
+        {
+          "accion_id": "JOYA_REC_004",
+          "accion_nombre": "Capacitación avanzada de vendedores",
+          "prioridad": 2,
+          "descripcion": "Entrenamiento en venta consultiva, upselling, satisfacción del cliente. 40 horas/trimestre.",
+          "objetivo_kpi": "Satisfacción Cliente",
+          "meta_numerica": "+4% (91% → 95%)",
+          "duracion_semanas": 12,
+          "recursos_requeridos": ["Capacitador externo", "Material de entrenamiento", "Time away from register"],
+          "presupuesto_usd": 4500,
+          "metricas_seguimiento": ["NPS tienda", "Ticket promedio", "Rotación de personal"],
+          "responsable_rol": "Jefe de Recursos Humanos",
+          "roi_proyectado": 3.2
+        },
+        {
+          "accion_id": "JOYA_REC_005",
+          "accion_nombre": "Replicación de modelo a APUESTA top",
+          "prioridad": 1,
+          "descripcion": "Usar JOYA como template para acelerar las 3-4 APUESTA más cercanas al umbral de JOYA.",
+          "objetivo_kpi": "Número de JOYA",
+          "meta_numerica": "+3 tiendas en 12 meses",
+          "duracion_semanas": 52,
+          "recursos_requeridos": ["JOYA gerente como mentor", "Consultor, fondos de inversión"],
+          "presupuesto_usd": 35000,
+          "metricas_seguimiento": ["Tiendas ascendidas", "Progreso métrica APUESTA", "EBITDA marginal"],
+          "responsable_rol": "Director de Operaciones",
+          "roi_proyectado": 2.8
+        }
+      ],
+      "kpi_objetivo_general": "Margen Bruto promedio JOYA: 31.8% → 33.5%; Satisfacción: 88% → 93%"
+    },
+    "APUESTA": {
+      "descripcion_estrategia": "APUESTA: Mejora. Diagnóstico profundo, intervención quirúrgica, redefinición de mix, incentivos.",
+      "contexto": "25% de tiendas en territorio gris. 50% pueden llegar a JOYA con intervención correcta. 50% bajarán si no actúas.",
+      "acciones": [
+        {
+          "accion_id": "APUESTA_REC_001",
+          "accion_nombre": "Auditoría operacional integral",
+          "prioridad": 1,
+          "descripcion": "Diag de 3 semanas: eficiencia, planograma, procesos, personal, margen. Genera roadmap personalizado.",
+          "objetivo_kpi": "Diagnóstico Operacional",
+          "meta_numerica": "100% de tiendas APUESTA auditadas",
+          "duracion_semanas": 3,
+          "recursos_requeridos": ["Consultor retail", "Aceso a sistemas"],
+          "presupuesto_usd": 5000,
+          "metricas_seguimiento": ["Hallazgos, quick wins identificados"],
+          "responsable_rol": "Gerente Regional",
+          "roi_proyectado": "N/A - Investment in info"
+        },
+        {
+          "accion_id": "APUESTA_REC_002",
+          "accion_nombre": "Rediseño de planograma",
+          "prioridad": 1,
+          "descripcion": "Reducir SKU 15-20%, elevar high-margin items, mejorar velocidad de rotación general.",
+          "objetivo_kpi": "Margen Bruto",
+          "meta_numerica": "+2.5% (28.3% → 30.8%)",
+          "duracion_semanas": 4,
+          "recursos_requeridos": ["Planograma especialista", "Reposición", "Nuevo material de punto"],
+          "presupuesto_usd": 7200,
+          "metricas_seguimiento": ["Margen diario", "Rotación promedio", "Out-of-stock %"],
+          "responsable_rol": "Gerente de Categoría",
+          "roi_proyectado": 3.6
+        },
+        {
+          "accion_id": "APUESTA_REC_003",
+          "accion_nombre": "Programa de incentivos de rendimiento",
+          "prioridad": 1,
+          "descripcion": "Bonus por ticket promedio, satisfacción cliente, cumplimiento de metas diarias. 3-6 meses.",
+          "objetivo_kpi": "Ticket Promedio",
+          "meta_numerica": "+12% ($120.5 → $135)",
+          "duracion_semanas": 26,
+          "recursos_requeridos": ["Sistema de tracking", "Presupuesto de incentivos"],
+          "presupuesto_usd": 6800,
+          "metricas_seguimiento": ["Ticket promedio diario", "Rotación personal", "Clima laboral"],
+          "responsable_rol": "Jefe de Recursos Humanos",
+          "roi_proyectado": 2.9
+        },
+        {
+          "accion_id": "APUESTA_REC_004",
+          "accion_nombre": "Entrenamiento de gerencia local",
+          "prioridad": 2,
+          "descripcion": "30 horas de capacitación en liderazgo, sales management, análisis de datos para gerentes locales.",
+          "objetivo_kpi": "Desempeño Tienda",
+          "meta_numerica": "Gerentes con score 85+ en evaluación",
+          "duracion_semanas": 8,
+          "recursos_requeridos": ["Facilitador", "Material, conferencing"],
+          "presupuesto_usd": 4500,
+          "metricas_seguimiento": ["Evaluación, KPI tienda, feedback 360"],
+          "responsable_rol": "Jefe de Operaciones",
+          "roi_proyectado": 2.5
+        },
+        {
+          "accion_id": "APUESTA_REC_005",
+          "accion_nombre": "Quick wins (primeras 2 semanas)",
+          "prioridad": 1,
+          "descripcion": "Limpieza, señalización, reposición, ajuste de horarios, promociones de movimiento rápido.",
+          "objetivo_kpi": "Momentum Operacional",
+          "meta_numerica": "100% implementación",
+          "duracion_semanas": 2,
+          "recursos_requeridos": ["Equipo local, materiales menores"],
+          "presupuesto_usd": 2000,
+          "metricas_seguimiento": ["Fotos antes/después, satisfacción staff"],
+          "responsable_rol": "Gerente de Tienda",
+          "roi_proyectado": 8.0
+        }
+      ],
+      "kpi_objetivo_general": "Margen Bruto promedio APUESTA: 28.3% → 30.8%; Salud: 72% → 80%"
+    },
+    "BUNKER": {
+      "descripcion_estrategia": "BUNKER: Defensa. Contención de costos, simplificación, orientación a basics, evitar hemorragia.",
+      "contexto": "Tiendas en riesgo. Enfoque: no empeorar. Simplificación drástica. Contención de costos.",
+      "acciones": [
+        {
+          "accion_id": "BUNKER_REC_001",
+          "accion_nombre": "Reducción drástica de SKU",
+          "prioridad": 1,
+          "descripcion": "Eliminar SKU con rotación < 12x anual. Ir de ~4.500 SKU a ~2.800 (38% reducción).",
+          "objetivo_kpi": "Complejidad Operacional",
+          "meta_numerica": "-38% SKU",
+          "duracion_semanas": 4,
+          "recursos_requeridos": ["Data analyst", "Planograma", "Comunicación proveedor"],
+          "presupuesto_usd": 3000,
+          "metricas_seguimiento": ["SKU reducido, margen por SKU, rotación"],
+          "responsable_rol": "Gerente de Categoría",
+          "roi_proyectado": 4.1
+        },
+        {
+          "accion_id": "BUNKER_REC_002",
+          "accion_nombre": "Renegociación agresiva con proveedores",
+          "prioridad": 1,
+          "descripcion": "Eliminar SKU de bajo margen, negociar mejor términos en basics, implementar exclusividades locales.",
+          "objetivo_kpi": "Margen Bruto",
+          "meta_numerica": "+2.5% (23.7% → 26.2%)",
+          "duracion_semanas": 6,
+          "recursos_requeridos": ["Jefe de compras, negociadores"],
+          "presupuesto_usd": 1000,
+          "metricas_seguimiento": ["Costo promedio por SKU, margen"],
+          "responsable_rol": "Jefe de Compras",
+          "roi_proyectado": 6.8
+        },
+        {
+          "accion_id": "BUNKER_REC_003",
+          "accion_nombre": "Optimización de nómina",
+          "prioridad": 1,
+          "descripcion": "Reducción de 12-15%: eliminación de turnos bajos, aumentar productividad/hora, redefinir roles.",
+          "objetivo_kpi": "Costo Operacional",
+          "meta_numerica": "-12% nómina",
+          "duracion_semanas": 8,
+          "recursos_requeridos": ["Time-motion study, gerente RH"],
+          "presupuesto_usd": 2500,
+          "metricas_seguimiento": ["Labor cost ratio", "Producción/FTE", "Rotación"],
+          "responsable_rol": "Jefe de Recursos Humanos",
+          "roi_proyectado": 3.9
+        },
+        {
+          "accion_id": "BUNKER_REC_004",
+          "accion_nombre": "Simplificación de operaciones",
+          "prioridad": 2,
+          "descripcion": "Reducir complejidad de procesos: depósito, recepción, reposición. Automatizar donde sea posible.",
+          "objetivo_kpi": "Productividad",
+          "meta_numerica": "+15% eficiencia operacional",
+          "duracion_semanas": 10,
+          "recursos_requeridos": ["Consultor de procesos, WMS upgrade"],
+          "presupuesto_usd": 8000,
+          "metricas_seguimiento": ["Horas por SKU reposición, errores"],
+          "responsable_rol": "Gerente de Operaciones",
+          "roi_proyectado": 2.6
+        },
+        {
+          "accion_id": "BUNKER_REC_005",
+          "accion_nombre": "Evaluación de viabilidad a 18 meses",
+          "prioridad": 1,
+          "descripcion": "Si en 18 meses salud no mejora a 58+, evaluar cierre u otra estrategia. No hacer esfuerzo infinito.",
+          "objetivo_kpi": "Decisión Estratégica",
+          "meta_numerica": "Salud ≥ 58 o ejecutar plan B",
+          "duracion_semanas": 78,
+          "recursos_requeridos": ["CFO analysis, consejo directivo"],
+          "presupuesto_usd": 5000,
+          "metricas_seguimiento": ["Progreso mensual vs meta"],
+          "responsable_rol": "Director General",
+          "roi_proyectado": "N/A"
+        }
+      ],
+      "kpi_objetivo_general": "Margen Bruto promedio BUNKER: 23.7% → 26.2%; Costo operacional -12%; Salud: 52% → 58%"
+    },
+    "LASTRE": {
+      "descripcion_estrategia": "LASTRE: Decisión. Cierre (60%), Reestructura radical (40%), o termina drenando la red.",
+      "contexto": "Estas tiendas destruyen valor. Cada mes que operan es pérdida. Decisión debe ser en 3 meses máximo.",
+      "acciones": [
+        {
+          "accion_id": "LASTRE_REC_001",
+          "accion_nombre": "Análisis de viabilidad económica",
+          "prioridad": 1,
+          "descripcion": "¿Puede ser rentable? ¿A qué costo? ¿En qué plazo? ¿Comparar vs cierre?",
+          "objetivo_kpi": "Decisión Binaria",
+          "meta_numerica": "Decisión clara en 6 semanas",
+          "duracion_semanas": 6,
+          "recursos_requeridos": ["CFO, consultor de viabilidad"],
+          "presupuesto_usd": 4000,
+          "metricas_seguimiento": ["Análisis completado"],
+          "responsable_rol": "Director Financiero",
+          "roi_proyectado": "N/A"
+        },
+        {
+          "accion_id": "LASTRE_REC_002_CIERRE",
+          "accion_nombre": "Plan de Cierre Ordenado (Opción A)",
+          "prioridad": 2,
+          "descripcion": "Si viabilidad es negativa: liquidación ordenada en 6 meses, transferencia de inventario, gestión de personal.",
+          "objetivo_kpi": "Minimizar Pérdida",
+          "meta_numerica": "Cierre con ≤$5K pérdida residual",
+          "duracion_semanas": 26,
+          "recursos_requeridos": ["Legal, HR, operaciones"],
+          "presupuesto_usd": 12000,
+          "metricas_seguimiento": ["Progreso cierre, inventario transferido"],
+          "responsable_rol": "Director General",
+          "roi_proyectado": "Ahorro de pérdidas futuras"
+        },
+        {
+          "accion_id": "LASTRE_REC_003_TRANSFORMA",
+          "accion_nombre": "Plan de Transformación Radical (Opción B)",
+          "prioridad": 2,
+          "descripcion": "Si viabilidad marginal: conversión a formato mini/express, equipo nuevo, inversión agresiva en 18 meses.",
+          "objetivo_kpi": "Elevar a BUNKER",
+          "meta_numerica": "Salud 45 → 58",
+          "duracion_semanas": 78,
+          "recursos_requeridos": ["Inversión capital, nuevos líderes"],
+          "presupuesto_usd": 45000,
+          "metricas_seguimiento": ["Progreso mensual vs meta"],
+          "responsable_rol": "Director de Operaciones",
+          "roi_proyectado": 1.3
+        },
+        {
+          "accion_id": "LASTRE_REC_004",
+          "accion_nombre": "Comunicación de transición",
+          "prioridad": 1,
+          "descripcion": "Transparencia interna con empleados, proveedores, cliente. Gestión de reputación.",
+          "objetivo_kpi": "Gestión Comunicacional",
+          "meta_numerica": "100% comunicado en D-1 de acción",
+          "duracion_semanas": 2,
+          "recursos_requeridos": ["Comunicaciones, HR"],
+          "presupuesto_usd": 2000,
+          "metricas_seguimiento": ["Mensajes entregados, feedback recopilado"],
+          "responsable_rol": "Gerente de Comunicaciones",
+          "roi_proyectado": "N/A"
+        }
+      ],
+      "kpi_objetivo_general": "Decisión ejecutada en 3 meses. LASTRE eliminado de portfolio u elevado a BUNKER."
+    }
+  },
+  "matriz_recomendaciones": {
+    "rapido": "Acciones que pueden implementarse en 2-4 semanas",
+    "medio": "Acciones que requieren 5-12 semanas",
+    "largo": "Acciones que requieren 13+ semanas"
+  }
+}

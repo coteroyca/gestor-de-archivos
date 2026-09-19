@@ -1,0 +1,69 @@
+# Dependencias de Node
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+.env
+.env.local
+.env.*.local
+
+# IDEs y editores
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+*.swp
+*.swo
+*~
+.project
+.classpath
+.c9/
+*.tern-port
+
+# Vercel
+.vercel/
+.next/
+out/
+build/
+
+# Testing
+coverage/
+.nyc_output/
+
+# Logs
+logs/
+*.log
+
+# Temporal
+tmp/
+temp/
+*.tmp
+
+# OS-specific
+.AppleDouble
+.LSOverride
+Icon
+._*
+.Spotlight-V100
+.Trashes
+
+# Directorios comunes a ignorar (pero no los MESH JSON)
+# ✓ Los 5 MESH se deben versionear
+# ✓ El HTML se debe versionear
+# ✓ La documentación se debe versionear
+
+# Solo ignorar carpetas de build/dist si las generas
+dist/
+build/
+.nuxt/
+.cache/
+
+# Backups
+*.bak
+*.backup
+*~

@@ -1,0 +1,361 @@
+{
+  "metadata": {
+    "mesh_id": "MESH_05",
+    "mesh_name": "KPI",
+    "version": "2.0",
+    "description": "Sistema de KPIs y métricas para seguimiento de salud operacional, resiliencia y potencial de tiendas",
+    "created": "2026-01-15T10:30:00Z",
+    "updated": "2026-01-15T10:30:00Z",
+    "schema": {
+      "categoria": "string - Dimensión de medición (Rendimiento|Margen|Cliente|Personal|Operacional)",
+      "kpi_id": "string - Identificador único",
+      "kpi_nombre": "string - Nombre descriptivo",
+      "metrica_base": "string - Fórmula de cálculo",
+      "frecuencia": "string - Diaria|Semanal|Mensual",
+      "unitario": "string - Unidad de medida",
+      "benchmark": "object - Rango de desempeño",
+      "impacto_tipologia": "object - Peso en clasificación"
+    }
+  },
+  "indicadores_salud": {
+    "descripcion": "Indicadores que componen el índice de SALUD OPERACIONAL (0-100)",
+    "peso_total": 100,
+    "salud": [
+      {
+        "kpi_id": "SALUD_001",
+        "kpi_nombre": "Margen Bruto",
+        "metrica_base": "(Ventas - Costo de Ventas) / Ventas",
+        "frecuencia": "Diaria",
+        "unitario": "%",
+        "peso": 25,
+        "benchmark": {
+          "excelente": { "min": 31, "max": 100 },
+          "bueno": { "min": 28, "max": 30.9 },
+          "aceptable": { "min": 24, "max": 27.9 },
+          "pobre": { "min": 0, "max": 23.9 }
+        },
+        "impacto": "Indica rentabilidad fundamental de la tienda",
+        "driver_principal": "Mix de SKU, promociones, proveedores"
+      },
+      {
+        "kpi_id": "SALUD_002",
+        "kpi_nombre": "Rotación de Inventario",
+        "metrica_base": "365 / (Inventario Promedio / COGS Mensual)",
+        "frecuencia": "Mensual",
+        "unitario": "veces/año",
+        "peso": 20,
+        "benchmark": {
+          "excelente": { "min": 24, "max": 100 },
+          "bueno": { "min": 20, "max": 23.9 },
+          "aceptable": { "min": 16, "max": 19.9 },
+          "pobre": { "min": 0, "max": 15.9 }
+        },
+        "impacto": "Capital atrapado en inventario (alto = eficiente)",
+        "driver_principal": "Planograma, demanda, promociones"
+      },
+      {
+        "kpi_id": "SALUD_003",
+        "kpi_nombre": "Ticket Promedio",
+        "metrica_base": "Ventas Totales / Número de Transacciones",
+        "frecuencia": "Diaria",
+        "unitario": "USD",
+        "peso": 15,
+        "benchmark": {
+          "excelente": { "min": 130, "max": 1000 },
+          "bueno": { "min": 110, "max": 129.9 },
+          "aceptable": { "min": 90, "max": 109.9 },
+          "pobre": { "min": 0, "max": 89.9 }
+        },
+        "impacto": "Capacidad de venta consultiva y crossselling",
+        "driver_principal": "Formación vendedor, layout, incentivos"
+      },
+      {
+        "kpi_id": "SALUD_004",
+        "kpi_nombre": "Cumplimiento de Horarios",
+        "metrica_base": "Apertura puntual % + Cierre puntual %",
+        "frecuencia": "Diaria",
+        "unitario": "%",
+        "peso": 10,
+        "benchmark": {
+          "excelente": { "min": 98, "max": 100 },
+          "bueno": { "min": 95, "max": 97.9 },
+          "aceptable": { "min": 90, "max": 94.9 },
+          "pobre": { "min": 0, "max": 89.9 }
+        },
+        "impacto": "Disciplina operacional y confianza en cliente",
+        "driver_principal": "Liderazgo, sistemas, consecuencias"
+      },
+      {
+        "kpi_id": "SALUD_005",
+        "kpi_nombre": "Stock-outs (Out of Stock %)",
+        "metrica_base": "1 - (Items disponibles / Items programados) * 100",
+        "frecuencia": "Semanal",
+        "unitario": "%",
+        "peso": 10,
+        "benchmark": {
+          "excelente": { "min": 98, "max": 100 },
+          "bueno": { "min": 95, "max": 97.9 },
+          "aceptable": { "min": 90, "max": 94.9 },
+          "pobre": { "min": 0, "max": 89.9 }
+        },
+        "impacto": "Pérdida de ventas por falta de producto",
+        "driver_principal": "Reposición, proveedores, demanda forecast"
+      },
+      {
+        "kpi_id": "SALUD_006",
+        "kpi_nombre": "Tasa de Devoluciones",
+        "metrica_base": "(Unidades Devueltas / Unidades Vendidas) * 100",
+        "frecuencia": "Semanal",
+        "unitario": "%",
+        "peso": 10,
+        "benchmark": {
+          "excelente": { "min": 98.5, "max": 100 },
+          "bueno": { "min": 97.5, "max": 98.4 },
+          "aceptable": { "min": 95, "max": 97.4 },
+          "pobre": { "min": 0, "max": 94.9 }
+        },
+        "impacto": "Indica problemas de calidad o recepción",
+        "driver_principal": "Control de calidad, proveedores, capacitación"
+      }
+    ]
+  },
+  "indicadores_resiliencia": {
+    "descripcion": "Indicadores que componen el índice de RESILIENCIA (0-100)",
+    "peso_total": 100,
+    "resiliencia": [
+      {
+        "kpi_id": "RESIL_001",
+        "kpi_nombre": "Ocupación de Personal",
+        "metrica_base": "Horas Disponibles / Horas Programadas * 100",
+        "frecuencia": "Mensual",
+        "unitario": "%",
+        "peso": 20,
+        "benchmark": {
+          "excelente": { "min": 92, "max": 100 },
+          "bueno": { "min": 85, "max": 91.9 },
+          "aceptable": { "min": 75, "max": 84.9 },
+          "pobre": { "min": 0, "max": 74.9 }
+        },
+        "impacto": "Disponibilidad de recursos humanos",
+        "driver_principal": "Retención, clima laboral, remuneración"
+      },
+      {
+        "kpi_id": "RESIL_002",
+        "kpi_nombre": "Satisfacción del Cliente (NPS)",
+        "metrica_base": "% Promotores - % Detractores",
+        "frecuencia": "Mensual",
+        "unitario": "puntos",
+        "peso": 25,
+        "benchmark": {
+          "excelente": { "min": 50, "max": 100 },
+          "bueno": { "min": 30, "max": 49.9 },
+          "aceptable": { "min": 0, "max": 29.9 },
+          "pobre": { "min": -100, "max": -0.1 }
+        },
+        "impacto": "Indicador de futuro (frecuencia, recomendación)",
+        "driver_principal": "Experiencia, limpieza, atención"
+      },
+      {
+        "kpi_id": "RESIL_003",
+        "kpi_nombre": "Tasa de Retención de Personal",
+        "metrica_base": "1 - (Bajas Mensuales / Promedio Plantilla) * 100",
+        "frecuencia": "Mensual",
+        "unitario": "%",
+        "peso": 20,
+        "benchmark": {
+          "excelente": { "min": 95, "max": 100 },
+          "bueno": { "min": 90, "max": 94.9 },
+          "aceptable": { "min": 80, "max": 89.9 },
+          "pobre": { "min": 0, "max": 79.9 }
+        },
+        "impacto": "Estabilidad operacional y curva de aprendizaje",
+        "driver_principal": "Clima laboral, desarrollo, compensación"
+      },
+      {
+        "kpi_id": "RESIL_004",
+        "kpi_nombre": "Productividad por FTE",
+        "metrica_base": "Ventas por Mes / Número de FTE",
+        "frecuencia": "Mensual",
+        "unitario": "USD/FTE/mes",
+        "peso": 20,
+        "benchmark": {
+          "excelente": { "min": 32000, "max": 100000 },
+          "bueno": { "min": 25000, "max": 31999 },
+          "aceptable": { "min": 18000, "max": 24999 },
+          "pobre": { "min": 0, "max": 17999 }
+        },
+        "impacto": "Eficiencia de conversión de costo a ingreso",
+        "driver_principal": "Entrenamiento, incentivos, sistemas"
+      },
+      {
+        "kpi_id": "RESIL_005",
+        "kpi_nombre": "Cumplimiento de Presupuesto",
+        "metrica_base": "(Ventas Reales / Ventas Presupuestadas) * 100",
+        "frecuencia": "Mensual",
+        "unitario": "%",
+        "peso": 15,
+        "benchmark": {
+          "excelente": { "min": 100, "max": 110 },
+          "bueno": { "min": 95, "max": 99.9 },
+          "aceptable": { "min": 85, "max": 94.9 },
+          "pobre": { "min": 0, "max": 84.9 }
+        },
+        "impacto": "Predictibilidad y control operacional",
+        "driver_principal": "Forecasting, ejecución, externos"
+      }
+    ]
+  },
+  "indicadores_potencial": {
+    "descripcion": "Indicadores que componen el índice de POTENCIAL (0-100)",
+    "peso_total": 100,
+    "potencial": [
+      {
+        "kpi_id": "POT_001",
+        "kpi_nombre": "Crecimiento YoY",
+        "metrica_base": "(Ventas Año N - Ventas Año N-1) / Ventas Año N-1 * 100",
+        "frecuencia": "Anual",
+        "unitario": "%",
+        "peso": 25,
+        "benchmark": {
+          "excelente": { "min": 12, "max": 100 },
+          "bueno": { "min": 8, "max": 11.9 },
+          "aceptable": { "min": 2, "max": 7.9 },
+          "pobre": { "min": -100, "max": 1.9 }
+        },
+        "impacto": "Trayectoria ascendente vs mercado",
+        "driver_principal": "Estrategia, mercado, competencia"
+      },
+      {
+        "kpi_id": "POT_002",
+        "kpi_nombre": "Penetración de Zonas Nueva",
+        "metrica_base": "Ventas en zonas nuevas / Total Ventas * 100",
+        "frecuencia": "Trimestral",
+        "unitario": "%",
+        "peso": 15,
+        "benchmark": {
+          "excelente": { "min": 15, "max": 100 },
+          "bueno": { "min": 10, "max": 14.9 },
+          "aceptable": { "min": 5, "max": 9.9 },
+          "pobre": { "min": 0, "max": 4.9 }
+        },
+        "impacto": "Expansión geográfica de base cliente",
+        "driver_principal": "Marketing, accesibilidad, marca"
+      },
+      {
+        "kpi_id": "POT_003",
+        "kpi_nombre": "Frecuencia de Compra",
+        "metrica_base": "Número de transacciones únicas / Clientes activos",
+        "frecuencia": "Mensual",
+        "unitario": "visitas/cliente/mes",
+        "peso": 20,
+        "benchmark": {
+          "excelente": { "min": 8, "max": 30 },
+          "bueno": { "min": 6, "max": 7.9 },
+          "aceptable": { "min": 4, "max": 5.9 },
+          "pobre": { "min": 0, "max": 3.9 }
+        },
+        "impacto": "Lealtad y hábito de compra establecido",
+        "driver_principal": "Experiencia, fidelización, conveniencia"
+      },
+      {
+        "kpi_id": "POT_004",
+        "kpi_nombre": "Capacidad de Línea (Espacio Utilizado)",
+        "metrica_base": "Espacio en tienda siendo rentable / Espacio total disponible * 100",
+        "frecuencia": "Trimestral",
+        "unitario": "%",
+        "peso": 20,
+        "benchmark": {
+          "excelente": { "min": 95, "max": 100 },
+          "bueno": { "min": 85, "max": 94.9 },
+          "aceptable": { "min": 70, "max": 84.9 },
+          "pobre": { "min": 0, "max": 69.9 }
+        },
+        "impacto": "Oportunidad de expansión de línea",
+        "driver_principal": "Planograma, diseño, mix"
+      },
+      {
+        "kpi_id": "POT_005",
+        "kpi_nombre": "Share de Categoría vs Competencia",
+        "metrica_base": "(Ventas categoría tienda / Ventas categoría mercado) * 100",
+        "frecuencia": "Trimestral",
+        "unitario": "%",
+        "peso": 20,
+        "benchmark": {
+          "excelente": { "min": 18, "max": 100 },
+          "bueno": { "min": 14, "max": 17.9 },
+          "aceptable": { "min": 10, "max": 13.9 },
+          "pobre": { "min": 0, "max": 9.9 }
+        },
+        "impacto": "Competitividad y oportunidad de ganancia",
+        "driver_principal": "Precio, surtido, promoción, experiencia"
+      }
+    ]
+  },
+  "kpi_operacionales_criticos": {
+    "descripcion": "KPIs críticos para monitoreo diario",
+    "criticos": [
+      {
+        "kpi_id": "CRITICO_001",
+        "nombre": "Ventas Diarias",
+        "meta_joya": ">$4.500",
+        "meta_apuesta": "$3.200-4.200",
+        "meta_bunker": "$2.200-3.100",
+        "meta_lastre": "<$2.200"
+      },
+      {
+        "kpi_id": "CRITICO_002",
+        "nombre": "Margen Diario",
+        "meta_joya": ">31%",
+        "meta_apuesta": "28-30%",
+        "meta_bunker": "23-27%",
+        "meta_lastre": "<23%"
+      },
+      {
+        "kpi_id": "CRITICO_003",
+        "nombre": "Ticket Promedio",
+        "meta_joya": ">$135",
+        "meta_apuesta": "$115-130",
+        "meta_bunker": "$85-110",
+        "meta_lastre": "<$85"
+      },
+      {
+        "kpi_id": "CRITICO_004",
+        "nombre": "Out of Stock %",
+        "meta_joya": "<2%",
+        "meta_apuesta": "<3%",
+        "meta_bunker": "<5%",
+        "meta_lastre": ">5%"
+      },
+      {
+        "kpi_id": "CRITICO_005",
+        "nombre": "Satisfacción Cliente (NPS)",
+        "meta_joya": ">85",
+        "meta_apuesta": "70-84",
+        "meta_bunker": "55-69",
+        "meta_lastre": "<55"
+      }
+    ]
+  },
+  "matriz_kpi_por_area": {
+    "area_finanzas": [
+      "SALUD_001 (Margen Bruto)",
+      "SALUD_002 (Rotación)",
+      "POT_001 (Crecimiento YoY)"
+    ],
+    "area_operaciones": [
+      "SALUD_003 (Ticket Promedio)",
+      "SALUD_004 (Cumplimiento Horarios)",
+      "SALUD_005 (Stock-outs)"
+    ],
+    "area_talento": [
+      "RESIL_001 (Ocupación Personal)",
+      "RESIL_003 (Retención)",
+      "RESIL_004 (Productividad FTE)"
+    ],
+    "area_cliente": [
+      "RESIL_002 (NPS/Satisfacción)",
+      "POT_002 (Penetración Zonas)",
+      "POT_003 (Frecuencia Compra)"
+    ]
+  }
+}
